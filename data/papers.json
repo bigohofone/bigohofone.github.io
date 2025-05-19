@@ -1,0 +1,12 @@
+[
+  {
+    "title": "ReSCORE: Label-free Iterative Retriever Training for Multi-hop Question Answering with Relevance-Consistency Supervision",
+    "first_authors": ["Dosung Lee", "Wonjun Oh"],
+    "co_authors": ["Boyoung Kim", "Minyoung Kim"],
+    "corresponding_authors": ["Joonsuk Park", "Paul Hongsuck Seo"],
+    "venue": "ACL",
+    "year": 2025,
+    "tag": "Oral",
+    "link": ""
+  }
+]
