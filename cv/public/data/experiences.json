@@ -1,0 +1,26 @@
+[
+  {
+    "organization": "GenON",
+    "position": "AI Engineer Intern",
+    "location": "Seoul, Korea",
+    "start_date": [2024, 12],
+    "end_date": [2025, 2],
+    "description": ""
+  },
+  {
+    "organization": "LS Electric",
+    "position": "AI Engineer Intern",
+    "location": "Seoul, Korea",
+    "start_date": [2024, 12],
+    "end_date": [2025, 2],
+    "description": ""
+  },
+  {
+    "organization": "Multimodal Interactive Intelligence Laboratory",
+    "position": "Research Intern",
+    "location": "Korea University, Seoul, Korea",
+    "start_date": [2024, 3],
+    "end_date": [2024, 10],
+    "description": "(Advisor: Prof. Paul Hongsuck Seo)"
+  }
+]
