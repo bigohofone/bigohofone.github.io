@@ -1,45 +1,74 @@
-import React from 'react';
+import BaseCard from './BaseCard';
 
-const formatAuthor = (author, isFirst, markFirst, markCorresponding) => {
-  const name = author === 'Wonjun Oh' ? <u>{author}</u> : author;
+const AUTHOR_NAME = 'Wonjun Oh';
 
+const formatAuthor = (author, { isFirst = false, markFirst = false, markCorresponding = false } = {}) => {
+  const displayName = author === AUTHOR_NAME ? <u>{author}</u> : author;
   return (
     <>
-      {name}
+      {displayName}
       {markFirst && isFirst && <sup>*</sup>}
       {markCorresponding && <sup>†</sup>}
     </>
   );
 };
 
-const PaperCard = ({ data }) => {
-  const { title, tag, first_authors, co_authors, corresponding_authors, venue, year } = data;
+const renderAuthors = ({ first_authors = [], co_authors = [], corresponding_authors = [] }) => {
+  const authors = [];
 
-  return (
-    <div className="card">
-      <p className="date">{year}</p>
-      <h3>
-        {title}
-        {tag && <span className="tag">{tag}</span>}
-      </h3>
-      <p>
-        {first_authors.map((author, idx) => (
-          <span key={`fa-${idx}`}>
-            {formatAuthor(author, true, true, false)}
-            {idx < first_authors.length - 1 && ', '}
-          </span>
-        ))}
-        {co_authors.length > 0 && `, ${co_authors.join(', ')}`}
-        {corresponding_authors.map((author, idx) => (
-          <span key={`ca-${idx}`}>
-            {`, `}
-            {formatAuthor(author, false, false, true)}
-          </span>
-        ))}
-      </p>
-      <p>{venue}</p>
-    </div>
-  );
+  // First authors
+  first_authors.forEach((author, idx) => {
+    authors.push(
+      <span key={`fa-${idx}`}>
+        {formatAuthor(author, { isFirst: true, markFirst: true })}
+        {idx < first_authors.length - 1 && ', '}
+      </span>
+    );
+  });
+
+  // Co-authors
+  if (co_authors.length > 0) {
+    if (authors.length > 0) authors.push(', ');
+    authors.push(
+      <span key="co-authors">{co_authors.join(', ')}</span>
+    );
+  }
+
+  // Corresponding authors
+  corresponding_authors.forEach((author, idx) => {
+    if (authors.length > 0) authors.push(', ');
+    authors.push(
+      <span key={`ca-${idx}`}>
+        {formatAuthor(author, { markCorresponding: true })}
+      </span>
+    );
+  });
+
+  return authors;
 };
 
+const PaperCard = ({ data, expanded, onToggle }) => (
+  <BaseCard
+    expanded={expanded}
+    onToggle={onToggle}
+    description={<p>{data.description}</p>}
+  >
+    <p className="date">{data.year}</p>
+    <h3>
+      {data.title}
+      {data.tag && <span className="tag">{data.tag}</span>}
+    </h3>
+    <p>
+      {renderAuthors({
+        first_authors: data.first_authors,
+        co_authors: data.co_authors,
+        corresponding_authors: data.corresponding_authors
+      })}
+    </p>
+    <p>{data.venue}</p>
+  </BaseCard>
+);
+
 export default PaperCard;
+
+

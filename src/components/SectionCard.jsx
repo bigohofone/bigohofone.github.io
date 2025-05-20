@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SECTIONS } from './sectionConfig';
 
 const SectionCard = ({ section, data }) => {
-  const sectionConfig = SECTIONS[section]; // 섹션에 해당하는 설정 가져오기
+  const [expanded, setExpanded] = useState(false);
 
-  if (!sectionConfig || !sectionConfig.component) {
-    return null; // 지원되지 않는 섹션일 경우
-  }
+  const sectionConfig = SECTIONS[section];
+  if (!sectionConfig || !sectionConfig.component) return null;
 
-  const CardComponent = sectionConfig.component; // 컴포넌트 가져오기
+  const handleToggle = () => setExpanded(prev => !prev);
 
-  return <CardComponent data={data} />; // 컴포넌트를 렌더링
+  const CardComponent = sectionConfig.component;
+
+  return (
+    <div className={`section-card${expanded ? ' expanded' : ''}`}>
+      <CardComponent
+        data={data}
+        expanded={expanded}
+        onToggle={handleToggle}
+      />
+    </div>
+  );
 };
 
 export default SectionCard;

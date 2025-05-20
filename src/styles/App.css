@@ -6,11 +6,6 @@
   --color-primary-dark: #0f5cc9;
   --color-primary-light: #e7f3ff;
 
-  /* Secondary: Meta Gray */
-  --color-secondary: #65676b;
-  --color-secondary-dark: #4e4f52;
-  --color-secondary-light: #ced0d4;
-
   /* Accent: Meta Teal for modern touches */
   --color-accent: #00b2a9;
   --color-accent-dark: #00817a;
@@ -31,35 +26,35 @@
   --color-error-dark: #c0061e;
   --color-error-light: #fdd8dc;
 
-  /* Info: Meta Blue (alternative usage) */
-  --color-info: #1877f2;
-  --color-info-dark: #0f5cc9;
-  --color-info-light: #e7f3ff;
-
   /* Neutral Colors */
-  --color-black: #050505;
-  --color-white: #ffffff;
-  --color-gray: #f0f2f5;
-  --color-dark-gray: #65676b;
-  --color-border: #dadde1;
-  --color-background: #ffffff;
-
-  /* Additional Neutral Shades */
-  --color-surface: #f5f6f7;
-  --color-overlay: rgba(0, 0, 0, 0.6);
+  --color-black: #000;
+  --color-white: #fff;
+  --color-gray-50: #f9f9f9;
+  --color-gray-100: #f3f3f3;
+  --color-gray-200: #e5e5e5;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-border: #e5e7eb;
+  --color-background: var(--color-white);
 }
 
-@import url('https://hangeul.pstatic.net/hangeul_static/css/NanumHuman.css');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
-html {
+html * {
   font-size: 16px;
-  font-family: 'NanumHuman', 'Nanum Human', Arial, sans-serif;
-  font-weight: 400;
-  line-height: 1.25;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-weight: 300;
+  line-height: 1.5em;
+  color: var(--color-gray-900);
 }
 
 @media (max-width: 600px) {
-  html {
+  html * {
     font-size: 12px;
   }
 }
@@ -67,9 +62,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  /* background: #fafafa; */
   background: white;
-  color: #333;
 }
 
 .container {
@@ -105,7 +98,7 @@ body {
 
 .footer-title {
   font-size: 4rem;
-  font-weight: 400;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -116,8 +109,7 @@ body {
 }
 
 .nav {
-  /* border-top: 2px solid var(--color-primary); */
-  border-bottom: 2px solid var(--color-primary); /* 하단 구분선 */
+  border-bottom: 1px solid var(--color-gray-900); /* 하단 구분선 */
   display: flex;
   flex-direction: row;
   overflow-x: auto;
@@ -149,11 +141,11 @@ body {
   border: 0;
   padding: 1.5rem 2rem;
   cursor: pointer;
-  color: var(--color-secondary-light);
-  font-size: 2rem;
-  white-space: nowrap;
+  color: var(--color-gray-900);
+  font-size: 1.5rem;
   flex: 0 0 auto;
   margin: 0 0 0 -0.1em;
+  font-weight: 500;
 }
 
 .nav-btn.active {
@@ -171,49 +163,60 @@ body {
   /* max-width: 900px; */
   min-height: 100vh;
 }
+
 .content .card {
   background: transparent;
   padding: 1.5rem 2rem;
   margin: 0;
-  border-top: 1px solid #e0e0e0;    /* 카드 상단 구분선 */
-  border-bottom: 1px solid #e0e0e0; /* 카드 하단 구분선 */
+  border-bottom: 1px solid var(--color-gray-900);
+  
+}
+
+.content .card:hover {
+  background: var(--color-gray-100);
+  transition: background 0.2s;
 }
 
 .content .card h3 {
-  color: #444;
-  font-size: 2rem;
-  font-weight: 400;
-  margin: 0 0 0.5rem -0.1em;
+  color: var(--color-gray-900);
+  font-size: 1.25rem;
+  margin: 0 0 0.25em -0.1em;
+  padding: 0;
+  font-weight: 500;
+}
+
+.content .card p,
+.content .card span,
+.content .card u {
+  color: var(--color-gray-700);
+  font-size: 1rem;
+  margin: 0 0 0.25em -0.1em;
   padding: 0;
 }
 
-.content .card p {
-  /* margin: 1rem 0; */
-  color: #888;
-
-  font-size: 1rem;
-  font-weight: 100;
-  line-height: 2;
-  margin: 0 0 0 -0.1em;
-  padding: 0;
+.content .card p sup {
+  line-height: 0;
+  vertical-align: super;
+  font-size: 0.75em;
 }
 
 .content .card .date {
-  /* margin: 1rem 0; */
-  color: #888;
+  color: var(--color-gray-500);
   font-size: 1rem;
-  font-weight: 400;
+  margin: 0 0 0.25em -0.1em;
+  padding: 0;
 }
 
 .content .card .tag {
   display: inline-flex;
   align-items: center;
   background: var(--color-primary);
-  color: var(--color-white);
   padding: 0.25rem 0.5rem;
   border-radius: 0.5rem;
+
+  color: var(--color-white);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 300;
   margin-left: 0.2em;
   height: 1rem;
   line-height: 1;

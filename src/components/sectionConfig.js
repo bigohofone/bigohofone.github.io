@@ -30,7 +30,7 @@ export const SECTIONS = {
     component: "",
   },
   other: {
-    label: '기타 정보',
+    label: 'Etc.',
     component: "",
   }
 };
