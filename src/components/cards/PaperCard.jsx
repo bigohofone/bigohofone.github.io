@@ -17,9 +17,10 @@ const PaperCard = ({ data }) => {
 
   return (
     <div className="card">
+      <p className="date">{year}</p>
       <h3>
         {title}
-        <span className="tag">{tag}</span>
+        {tag && <span className="tag">{tag}</span>}
       </h3>
       <p>
         {first_authors.map((author, idx) => (
@@ -36,7 +37,7 @@ const PaperCard = ({ data }) => {
           </span>
         ))}
       </p>
-      <p>{venue} {year}</p>
+      <p>{venue}</p>
     </div>
   );
 };

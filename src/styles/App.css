@@ -1,20 +1,112 @@
+:root {
+  /* Meta (Facebook) Inspired Color Palette */
+
+  /* Primary: Meta Blue */
+  --color-primary: #1877f2;
+  --color-primary-dark: #0f5cc9;
+  --color-primary-light: #e7f3ff;
+
+  /* Secondary: Meta Gray */
+  --color-secondary: #65676b;
+  --color-secondary-dark: #4e4f52;
+  --color-secondary-light: #ced0d4;
+
+  /* Accent: Meta Teal for modern touches */
+  --color-accent: #00b2a9;
+  --color-accent-dark: #00817a;
+  --color-accent-light: #e0f7f6;
+
+  /* Success: Meta Green */
+  --color-success: #31a24c;
+  --color-success-dark: #237a38;
+  --color-success-light: #e6f4ea;
+
+  /* Warning: Meta Amber */
+  --color-warning: #f7b500;
+  --color-warning-dark: #c79100;
+  --color-warning-light: #fff4e5;
+
+  /* Error: Meta Red */
+  --color-error: #f02849;
+  --color-error-dark: #c0061e;
+  --color-error-light: #fdd8dc;
+
+  /* Info: Meta Blue (alternative usage) */
+  --color-info: #1877f2;
+  --color-info-dark: #0f5cc9;
+  --color-info-light: #e7f3ff;
+
+  /* Neutral Colors */
+  --color-black: #050505;
+  --color-white: #ffffff;
+  --color-gray: #f0f2f5;
+  --color-dark-gray: #65676b;
+  --color-border: #dadde1;
+  --color-background: #ffffff;
+
+  /* Additional Neutral Shades */
+  --color-surface: #f5f6f7;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+}
+
+@import url('https://hangeul.pstatic.net/hangeul_static/css/NanumHuman.css');
+
+html {
+  font-size: 16px;
+  font-family: 'NanumHuman', 'Nanum Human', Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 12px;
+  }
+}
+
 body {
-  font-family: sans-serif;
   margin: 0;
   padding: 0;
-  background: #fafafa;
+  /* background: #fafafa; */
+  background: white;
   color: #333;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 100vw;
   margin: auto;
-  padding: 1rem;
+  padding: 0rem;
 }
 
 .header {
+  /* background: var(--color-primary); */
   text-align: center;
-  margin-bottom: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.footer {
+  /* background: var(--color-primary); */
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--color-primary);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 4rem 2rem 1rem;
+}
+
+.footer-title {
+  font-size: 4rem;
+  font-weight: 400;
+  margin: 0;
 }
 
 .profile-img {
@@ -24,29 +116,108 @@ body {
 }
 
 .nav {
+  /* border-top: 2px solid var(--color-primary); */
+  border-bottom: 2px solid var(--color-primary); /* 하단 구분선 */
   display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-  gap: 1rem;
+  flex-direction: row;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.nav-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: white;
+}
+
+.nav::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .nav-btn {
   background: none;
-  border: 1px solid #ccc;
-  padding: 0.5rem 1rem;
+  border: 0;
+  padding: 1.5rem 2rem;
   cursor: pointer;
-  border-radius: 8px;
+  color: var(--color-secondary-light);
+  font-size: 2rem;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  margin: 0 0 0 -0.1em;
 }
 
 .nav-btn.active {
-  background: #333;
-  color: white;
+  color: var(--color-primary);
 }
 
-.content .card {
-  background: white;
-  border: 1px solid #ddd;
-  padding: 1rem;
-  border-radius: 12px;
-  margin-bottom: 1rem;
+.nav-btn:hover,
+.nav-btn:focus {
+  color: var(--color-primary-dark);
+  outline: none;
+  transition: color 0.2s;
 }
+
+.content {
+  /* max-width: 900px; */
+  min-height: 100vh;
+}
+.content .card {
+  background: transparent;
+  padding: 1.5rem 2rem;
+  margin: 0;
+  border-top: 1px solid #e0e0e0;    /* 카드 상단 구분선 */
+  border-bottom: 1px solid #e0e0e0; /* 카드 하단 구분선 */
+}
+
+.content .card h3 {
+  color: #444;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0 0 0.5rem -0.1em;
+  padding: 0;
+}
+
+.content .card p {
+  /* margin: 1rem 0; */
+  color: #888;
+
+  font-size: 1rem;
+  font-weight: 100;
+  line-height: 2;
+  margin: 0 0 0 -0.1em;
+  padding: 0;
+}
+
+.content .card .date {
+  /* margin: 1rem 0; */
+  color: #888;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.content .card .tag {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 0.2em;
+  height: 1rem;
+  line-height: 1;
+  position: relative;
+  top: -0.25rem;
+}
+

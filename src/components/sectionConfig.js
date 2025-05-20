@@ -25,4 +25,12 @@ export const SECTIONS = {
     label: 'Honors and Awards',
     component: HonerAndAwardCard,
   },
+  talks: {
+    label: 'Talks',
+    component: "",
+  },
+  other: {
+    label: '기타 정보',
+    component: "",
+  }
 };
