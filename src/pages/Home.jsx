@@ -20,6 +20,14 @@ const Home = () => {
   const [isNavFixed, setIsNavFixed] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
 
+  const handleNavClick = (section) => {
+    setPendingSection(section);
+    if (navContainerRef.current) {
+      const top = navContainerRef.current.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  };
+
   // Nav fixed 처리
   useEffect(() => {
     const onScroll = () => handleNavFixed(navContainerRef, setIsNavFixed);
@@ -64,7 +72,7 @@ const Home = () => {
           <Navigation
             sections={Object.entries(SECTIONS)}
             active={activeSection}
-            setActive={setPendingSection}
+            setActive={handleNavClick}
           />
         </div>
       </div>

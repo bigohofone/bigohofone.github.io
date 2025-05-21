@@ -3,24 +3,32 @@
     "organization": "GenON",
     "position": "AI Engineer Intern",
     "location": "Seoul, Korea",
-    "start_date": [2024, 12],
-    "end_date": [2025, 2],
+    "start_date": [2024, 12, null],
+    "end_date": [2025, 2, null],
     "description": "Korea University 2024 Winter Internship Program"
   },
   {
     "organization": "LS Electric",
     "position": "AI Engineer Intern",
     "location": "Seoul, Korea",
-    "start_date": [2024, 12],
-    "end_date": [2025, 2],
+    "start_date": [2024, 4, null],
+    "end_date": [2024, 8, null],
     "description": "Korea University 2024 Summer Internship Program"
   },
   {
     "organization": "Multimodal Interactive Intelligence Laboratory",
     "position": "Research Intern",
     "location": "Korea University, Seoul, Korea",
-    "start_date": [2024, 3],
-    "end_date": [2024, 10],
+    "start_date": [2024, 3, null],
+    "end_date": [2024, 10, null],
     "description": "(Advisor: Prof. Paul Hongsuck Seo)"
+  },
+  {
+    "organization": "AIKU (Artificial Intelligence Club of Korea University)",
+    "position": "President",
+    "location": "Korea University, Seoul, Korea",
+    "start_date": [2023, 6, null],
+    "end_date": [2023, 12, null],
+    "description": "None"
   }
 ]

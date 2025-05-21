@@ -3,6 +3,7 @@ import ExperienceCard from './cards/ExperienceCard';
 import PaperCard from './cards/PaperCard';
 import ProjectCard from './cards/ProjectCard';
 import HonerAndAwardCard from './cards/HonerAndAwardCard';
+import TalkCard from './cards/TalkCard';
 
 export const SECTIONS = {
   papers: {
@@ -27,10 +28,6 @@ export const SECTIONS = {
   },
   talks: {
     label: 'Talks',
-    component: "",
-  },
-  other: {
-    label: 'Etc.',
-    component: "",
+    component: TalkCard,
   }
 };

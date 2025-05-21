@@ -7,7 +7,14 @@ const ExperienceCard = ({ data, expanded, onToggle }) => (
     onToggle={onToggle}
     description={<p>{data.description}</p>}
   >
-    <p className="date">{`${data.start_date[0]}/${data.start_date[1]} - ${data.end_date[0]}/${data.end_date[1]}`}</p>
+    <p className="date">
+      {[
+        [data.start_date[0], data.start_date[1]].filter(v => v != null).join('/'),
+        [data.end_date[0], data.end_date[1]].filter(v => v != null).join('/')
+      ]
+        .filter(v => v) // 빈 문자열 제거
+        .join(' - ')}
+    </p>
     <h3>{data.organization}, {data.location}</h3>
     <p>{data.position}</p>
   </BaseCard>
