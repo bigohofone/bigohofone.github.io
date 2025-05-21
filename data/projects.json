@@ -2,19 +2,22 @@
   {
     "name": "Samsung Fire & Marine Insurance Chatbot",
     "organization": "GenON",
-    "year": "2024",
+    "start_date": [2024, 12, null],
+    "end_date": [2025, 2, null],
     "description": "사고의 보험 약관상 면/부책 여부를 판단하는 ToD 챗봇 개발을 수행하였습니다. 복잡한 보험 서류 참고, 다단계/다양한 사고 패턴을 요구하는 보험 태스크를 범용적인 하나의 CoT 계열 프롬프트로 해결하는 것이 어려운 문제가 있었습니다. 따라서, 실무와 협업하여 태스크를 분류한 후 사고 로직을 디자인, 파이프라인화하였고 실무에서 요구하는 정성적 평가 기준을 만족할 수 있었습니다. 또한 FastAPI 기반의 WebSocket 실시간 대화형 엔드 포인트 개발, 비동기 처리, Singleton 패턴 적용, Docker를 활용한 배포까지 전체 엔지니어링을 경험하고, 인퍼런스 시간을 기존 12초에서 6초로 절반가량 단축했습니다."
   },
   {
     "name": "Product QA Chatbot",
     "organization": "LS Electric",
-    "year": "2024",
+    "start_date": [2024, 4, null],
+    "end_date": [2024, 8, null],
     "description": "제품 문의에 대한 QA를 수행하는 RAG 챗봇 개발을 수행하였습니다. 제품에 따라 봐야 하는 문서가 정해져있지만, 모든 문서의 내용이 대동소이하여 의미를 기반으로 검색하는 기존 검색 시스템으로는 개선하기 어렵다는 문제가 있었습니다. 쿼리에 따라 제품의 종류를 추출하는 모델을 개발하고, 이를 검색 필터링에 적용하여 현업에서 측정한 QA 정확도를 기존 50%에서 85%로 개선하였습니다. 또한 추출되지 않을 경우 대답하지 않도록 하여 답변 안정성을 크게 개선하였습니다. 또한 이를 LangChain을 사용하여 Flask로 실제 고객에게 배포하고, 피드백을 받아 개선하였습니다."
   },
   {
     "name": "Outfit Transformer Re-implementation",
     "organization": "Persnonal Project",
-    "year": "2024",
+    "start_date": [2023, 12, null],
+    "end_date": [2024, 2, null],
     "description": "CVPR 2023에 발표된 Outfit Transformer를 구현하여 옷 추천에서 SoTA(State-of-the-Art)를 달성하였습니다. 기존 모델은 옷의 표현과 추천에 대한 정보를 동시에 학습해 적은 데이터 셋으로 학습 하는 것이 어렵다고 판단하였습니다. 이에, 두 기능을 각 모듈로 구분하였고, 옷의 표현부는 CLIP으로 대체하여 Compatibility AUC는 93에서 95로, Fill-in-the-blank 정확도는 65%에서 69%로 개선했습니다. 또한 실사용성을 고려하여 임베딩을 사전 추출하는 방식으로 학습을 최적화하였고, Epoch 당 학습 시간을 기존 2시간에서 20분으로 약 5배 단축하였습니다. (Repository: https://github.com/owj0421/outfit-transformer)"
   }
 ]
