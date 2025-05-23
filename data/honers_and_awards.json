@@ -1,33 +1,33 @@
 [
   {
     "title": "Honourable Mention (₩300,000)",
-    "date": [2024, null, null],
+    "date": [null, null, 2024],
     "organization": "Digital Competition of the Nat’l Program of Excellence in Software",
-    "mainImage": "images/honers_and_awards/2024-DSC.png",
+    "mainImage": null,
     "description": "A competition hosted by the Ministry of Science&ICT. Developed an OOD classification model for detecting fake audio."
   },
   {
     "title": "NIA Director's Award (₩3,000,000)",
-    "date": [2023, null, null],
+    "date": [null, null, 2023],
     "organization": "Korean AI Contest",
-    "mainImage": "images/honers_and_awards/2023-KAC.png",
+    "mainImage": null,
     "description": "A competition hosted by the Ministry of Science&ICT and the National Information Society Agency. Developed a Korean speech recognition model tailored for the elderly and children."
   },
   {
     "title": "President’s List",
-    "date": ["2024", "Spring", null],
+    "date": [null, "Spring", "2024"],
     "organization": "Korea University",
     "description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."
   },
   {
     "title": "President’s List",
-    "date": ["2023", "Fall", null],
+    "date": [null, "Fall", "2023"],
     "organization": "Korea University",
     "description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."
   },
   {
     "title": "Dean’s List",
-    "date": ["2023", "Spring", null],
+    "date": [null, "Spring", "2023"],
     "organization": "Korea University",
     "description": "An award given to an undergraduate student with GPA 4.5/4.5 for a semester."
   }
