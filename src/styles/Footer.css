@@ -2,20 +2,30 @@
     Footer - Meta Style
     ========================= */
 .footer {
-    padding: 1.5rem 2rem;
+    padding: 3rem 2rem 1.5rem;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    justify-content: space-between;
+    position: relative;
+    gap: 1rem;
+}
+
+.footer-container {
+    padding: 0;
     margin: 0;
 
     display: flex;
     flex-direction: row;
-    align-items: space-between;
     justify-content: space-between;
-    position: relative;
+    align-items: center;
+    gap: 1rem;
 }
 
-.footer > :nth-child(2) {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+.footer-container:only-child {
+    justify-content: center;
 }
 
 .footer-links {
@@ -26,15 +36,16 @@
     align-items: center;
 }
 
-.footer-title * {
-    font-size: 1rem;
+.footer-title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.25rem;
     font-weight: 500;
     color: var(--color-gray-900);
 }
 
-.footer-date * {
+.footer-date {
     font-size: 1rem;
     font-weight: 500;
     color: var(--color-gray-900);
-    text-decoration: none;
 }

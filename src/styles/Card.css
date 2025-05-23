@@ -37,10 +37,10 @@
 .card-main-info .paper-type {
     display: inline-flex;
     align-items: center;
-    background: var(--color-primary);
+    background: var(--color-gray-900);
     color: var(--color-white);
     padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
+    /* border-radius: 0.25rem; */
     margin: 0 0 0 0.5rem;
     line-height: 1;
     font-size: 1rem;

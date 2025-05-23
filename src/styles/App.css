@@ -2,26 +2,6 @@
   Meta (Facebook) Inspired Palette
   ========================= */
 :root {
-  --color-primary: #1877f2;
-  --color-primary-dark: #0f5cc9;
-  --color-primary-light: #e7f3ff;
-
-  --color-accent: #00b2a9;
-  --color-accent-dark: #00817a;
-  --color-accent-light: #e0f7f6;
-
-  --color-success: #31a24c;
-  --color-success-dark: #237a38;
-  --color-success-light: #e6f4ea;
-
-  --color-warning: #f7b500;
-  --color-warning-dark: #c79100;
-  --color-warning-light: #fff4e5;
-
-  --color-error: #f02849;
-  --color-error-dark: #c0061e;
-  --color-error-light: #fdd8dc;
-
   --color-black: #000;
   --color-white: #fff;
   --color-gray-50: #f9f9f9;
@@ -70,15 +50,4 @@ body {
   margin: 0;
   padding: 0;
   background: var(--color-background);
-}
-
-/* =========================
-  Header
-  ========================= */
-.header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
 }

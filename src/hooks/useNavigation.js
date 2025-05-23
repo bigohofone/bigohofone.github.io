@@ -1,56 +1,71 @@
-import { useRef, useState, useEffect } from 'react';
-import { 
-	updateNavHeightState, 
-	updateIsNavFixedState,
-	scrollToNavSection,
-} from '../utils/navHelpers';
-
-/**
- * Custom hook for navigation bar state and behavior.
- * @param {string} initialSection - The default active section.
+/*
+ * Copyright (c) 2025 Wonjun Oh (owj0421@naver.com)
+ * All rights reserved.
+ *
+ * This source code is the property of Wonjun Oh.
+ * Unauthorized copying, distribution, or use of this code, in whole or in part, is strictly prohibited.
  */
-export default function useNavigation(
-	initialSection = 'papers'
-) {
-	// 스테이트 관리
+
+import { useRef, useState, useEffect, useCallback } from 'react';
+
+
+const getNavHeight = (ref) => ref.current?.offsetHeight || 0;
+
+
+const isNavFixed = (ref) => ref.current?.getBoundingClientRect().top <= 0;
+
+
+const scrollToSection = (ref) => {
+	const el = ref.current;
+	if (el) {
+		window.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
+	}
+};
+
+export default function useNavigation(initialSection = 'papers') {
 	const [sectionActive, setSectionActive] = useState(initialSection);
 	const [sectionPending, setSectionPending] = useState(initialSection);
-	const [isNavFixed, setIsNavBarFixed] = useState(false);
-	const [navHeight, setNavBarHeight] = useState(0);
+	const [isFixed, setIsFixed] = useState(false);
+	const [navHeight, setNavHeight] = useState(0);
 
-	// 레퍼런스 관리
 	const navRef = useRef(null);
 	const navContainerRef = useRef(null);
 
-	// 섹션 클릭 시 active 섹션 변경
-	const handleNavClick = (section) => {
-		setSectionPending(section)
-		scrollToNavSection(navContainerRef);
-	};
-
-	useEffect(() => {
-		setSectionActive(sectionPending);
-	}, [sectionPending]);
-
-	// 스크롤이 발생할 때마다 navContainerRef의 위치를 확인하여 fixed 상태 업데이트
-	const onScroll = () => {
-		updateIsNavFixedState(navContainerRef, setIsNavBarFixed);
-	};
-	useEffect(() => {
-		window.addEventListener('scroll', onScroll, { passive: true });
-		return () => window.removeEventListener('scroll', onScroll);
+	// 섹션 클릭 처리
+	const handleNavClick = useCallback((section) => {
+		setSectionPending(section);
 	}, []);
 
+	// 스크롤 핸들러
+	const handleScroll = useCallback(() => {
+		setIsFixed(isNavFixed(navContainerRef));
+	}, []);
+
+	// 섹션 변경 시 스크롤
 	useEffect(() => {
-		if (isNavFixed) {
-			updateNavHeightState(isNavFixed, navRef, setNavBarHeight);
+		if (sectionPending !== sectionActive) {
+			setSectionActive(sectionPending);
+			scrollToSection(navContainerRef);
 		}
-	}, [isNavFixed]);
+	}, [sectionPending, sectionActive]);
+
+	// 스크롤 이벤트 리스너 등록
+	useEffect(() => {
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, [handleScroll]);
+
+	// 고정 상태일 때 네비게이션 높이 측정
+	useEffect(() => {
+		if (isFixed) {
+			setNavHeight(getNavHeight(navRef));
+		}
+	}, [isFixed]);
 
 	return {
 		sectionActive,
 		sectionPending,
-		isNavFixed,
+		isNavFixed: isFixed,
 		navHeight,
 		navRef,
 		navContainerRef,

@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2025 Wonjun Oh (owj0421@naver.com)
+ * All rights reserved.
+ *
+ * This source code is the property of Wonjun Oh.
+ * Unauthorized copying, distribution, or use of this code, in whole or in part, is strictly prohibited.
+ */
+
 import React from 'react';
 import { SECTIONS } from '../utils/sectionConfig';
 
