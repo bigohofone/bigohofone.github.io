@@ -68,7 +68,7 @@ const Introduction = () => {
       <div className="introduction-arrow" style={{ position: 'relative', zIndex: 1 }}>
         <ArrowDown />
       </div>
-      <NeuralNetBackground />
+      <NeuralNetBackground containerRef={introRef} />
     </header>
   );
 };
