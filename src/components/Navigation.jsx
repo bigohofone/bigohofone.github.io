@@ -1,17 +1,33 @@
 import React from 'react';
+import { SECTIONS } from '../utils/sectionConfig';
 
-const Navigation = ({ sections, active, setActive }) => (
-  <nav className="nav">
-    {sections.map(([key, section]) => (
-      <button
-        key={key}
-        className={active === key ? 'nav-btn active' : 'nav-btn'}
-        onClick={() => setActive(key)}
-      >
-        {section.label}
-      </button>
-    ))}
-  </nav>
-);
+function Navigation({
+	sectionActive,
+	isNavFixed,
+	navHeight,
+	navRef,
+	navContainerRef,
+	onNavClick,
+}) {
+	const navClass = `nav${isNavFixed ? ' nav-fixed' : ''}`;
+
+	return (
+		<div ref={navContainerRef}>
+			<nav ref={navRef} className={navClass}>
+				{Object.entries(SECTIONS).map(([key, section]) => (
+					<button
+						key={key}
+						className={`nav-btn${sectionActive === key ? ' active' : ''}`}
+						onClick={() => onNavClick(key)}
+						type="button"
+					>
+						{section.label}
+					</button>
+				))}
+			</nav>
+			{isNavFixed && <div style={{ height: navHeight }} />}
+		</div>
+	);
+}
 
 export default Navigation;

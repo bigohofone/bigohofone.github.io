@@ -1,5 +1,6 @@
 import React from 'react';
 import BaseCard from './BaseCard';
+import { formatDate } from '../../utils/contentUtils';
 
 const ProjectCard = ({ data, expanded, onToggle }) => (
   <BaseCard
@@ -8,12 +9,7 @@ const ProjectCard = ({ data, expanded, onToggle }) => (
     description={<p>{data.description}</p>}
   >
     <p className="date">
-      {[
-        [data.start_date[0], data.start_date[1]].filter(v => v != null).join('/'),
-        [data.end_date[0], data.end_date[1]].filter(v => v != null).join('/')
-      ]
-        .filter(v => v) // 빈 문자열 제거
-        .join(' - ')}
+      {formatDate(data.start_date)} - {formatDate(data.end_date)}{' '}
     </p>
     <h3>{data.name}</h3>
     <p>{data.organization}</p>

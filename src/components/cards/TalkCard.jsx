@@ -1,5 +1,6 @@
 import React from 'react';
 import BaseCard from './BaseCard';
+import { formatDate } from '../../utils/contentUtils';
 
 const TalkCard = ({ data, expanded, onToggle }) => (
   <BaseCard
@@ -7,7 +8,9 @@ const TalkCard = ({ data, expanded, onToggle }) => (
     onToggle={onToggle}
     description={<p>{data.description}</p>}
   >
-    <p className="date">{`${data.date[0]}/${data.date[1]}`}</p>
+    <p className="date">
+      {formatDate(data.date)}{' '}
+    </p>
     <h3>{data.title}</h3>
     <p>{data.organization}</p>
   </BaseCard>

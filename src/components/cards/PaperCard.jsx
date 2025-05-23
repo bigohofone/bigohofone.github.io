@@ -1,4 +1,5 @@
 import BaseCard from './BaseCard';
+import { formatDate } from '../../utils/contentUtils';
 
 const AUTHOR_NAME = 'Wonjun Oh';
 
@@ -55,13 +56,10 @@ const PaperCard = ({ data, expanded, onToggle }) => (
     description={<p>{data.description}</p>}
   >
     <p className="date">
-      {[data.date[0], data.date[1], data.date[2]]
-        .filter((val) => val !== undefined && val !== null)
-        .join('/')}
+      {formatDate(data.date)}{' '}
     </p>
     <h3>
       {data.title}
-      {data.tag && <span className="tag">{data.tag}</span>}
     </h3>
     <p>
       {renderAuthors({
@@ -70,7 +68,7 @@ const PaperCard = ({ data, expanded, onToggle }) => (
         corresponding_authors: data.corresponding_authors
       })}
     </p>
-    <p>{data.venue}</p>
+    <p>{data.venue}{data.paper_type && <span className="paper-type">{data.paper_type}</span>}</p>
   </BaseCard>
 );
 

@@ -1,0 +1,134 @@
+.card-container {
+    min-height: 100vh;
+}
+
+.card {
+    border-bottom: 1px solid var(--color-gray-900);
+}
+
+/* .card:last-child {
+    border-bottom: 0;
+} */
+
+.card-main {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    margin: 0;
+    gap: 1rem;
+}
+
+.card-main-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    gap: 1rem;
+}
+
+.card-main-info h3 {
+    font-weight: 700;
+}
+
+.card-main-info .paper-type {
+    display: inline-flex;
+    align-items: center;
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin: 0 0 0 0.5rem;
+    line-height: 1;
+    font-size: 1rem;
+    position: relative;
+}
+
+.card-detail {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+    padding: 0 2rem;
+    border-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition:
+        padding 0.4s,
+        max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+}
+
+.card-detail.expanded {
+    border-top: 1px dashed var(--color-gray-900);
+    max-height: 1000px;
+    padding: 1.5rem 2rem;
+    background: var(--color-gray-100);
+    transition: background 0.4s;
+}
+
+.card-detail-item {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition:
+        opacity 0.4s,
+        transform 0.4s;
+}
+
+.card-detail.expanded .card-detail-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-detail.expanded .card-detail-item {
+    transition-delay: calc(0.05s + (var(--item-index, 0) * 0.1s));
+}
+
+.card-detail-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    gap: 1rem;
+
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5em;
+    color: var(--color-gray-900);
+}
+
+@media (max-width: 600px) {
+    .card-detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.card-detail-item .title{
+    width: 20%;
+}
+
+@media (max-width: 600px) {
+    .card-detail-item .title{
+        width: 100%;
+    }
+}
+
+.card-detail-item .content{
+    width: 80%;
+}
+
+@media (max-width: 600px) {
+    .card-detail-item .content{
+        width: 100%;
+    }
+}
+
+.card-detail-item .content .dummy-text{
+    color: var(--color-gray-300);
+}

@@ -1,9 +1,9 @@
-import EducationCard from './cards/EducationCard';
-import ExperienceCard from './cards/ExperienceCard';
-import PaperCard from './cards/PaperCard';
-import ProjectCard from './cards/ProjectCard';
-import HonerAndAwardCard from './cards/HonerAndAwardCard';
-import TalkCard from './cards/TalkCard';
+import EducationCard from '../components/cards/EducationCard';
+import ExperienceCard from '../components/cards/ExperienceCard';
+import PaperCard from '../components/cards/PaperCard';
+import ProjectCard from '../components/cards/ProjectCard';
+import HonerAndAwardCard from '../components/cards/HonerAndAwardCard';
+import TalkCard from '../components/cards/TalkCard';
 
 export const SECTIONS = {
   papers: {

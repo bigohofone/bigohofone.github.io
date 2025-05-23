@@ -1,5 +1,6 @@
 import React from 'react';
 import BaseCard from './BaseCard';
+import { formatDate } from '../../utils/contentUtils';
 
 const HonerAndAwardCard = ({ data, expanded, onToggle }) => (
   <BaseCard
@@ -9,9 +10,7 @@ const HonerAndAwardCard = ({ data, expanded, onToggle }) => (
     description={<p>{data.description}</p>}
   >
     <p className="date">
-      {[data.date[0], data.date[1], data.date[2]]
-        .filter((val) => val !== undefined && val !== null)
-        .join('/')}
+      {formatDate(data.date)}{' '}
     </p>
     <h3>{data.organization}</h3>
     <p>{data.title}</p>

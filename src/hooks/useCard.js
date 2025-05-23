@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useSectionData = (section) => {
+const useCard = (section) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,4 +27,4 @@ const useSectionData = (section) => {
   return { data, loading, error };
 };
 
-export default useSectionData;
+export default useCard;

@@ -4,9 +4,9 @@
     "first_authors": ["Dosung Lee", "Wonjun Oh"],
     "co_authors": ["Boyoung Kim", "Minyoung Kim"],
     "corresponding_authors": ["Joonsuk Park", "Paul Hongsuck Seo"],
-    "venue": "ACL 2025 Main",
-    "date": [2025, 5, null],
-    "tag": "",
+    "venue": "ACL 2025",
+    "date": [null, 5, 2025],
+    "paper_type": "Main",
     "link": "",
     "mainImage": "images/papers/2025-ACL-ReSCORE.png",
     "description": "Multi-hop question answering (MHQA) involves reasoning across multiple documents to answer complex questions. Dense retrievers typically outperform sparse methods like BM25 by leveraging semantic embeddings in many tasks; however, they require labeled query-document pairs for fine-tuning, which poses a significant challenge in MHQA due to the complexity of the reasoning steps. To overcome this limitation, we introduce Retriever Supervision with Consistency and Relevance (ReSCORE), a novel method for training dense retrievers for MHQA without the need for labeled documents. ReSCORE leverages large language models to measure document-question relevance with answer consistency and utilizes this information to train a retriever within an iterative question-answering framework. Evaluated on three MHQA benchmarks, our extensive experiments demonstrate the effectiveness of ReSCORE, with significant improvements in retrieval performance that consequently lead to state-of-the-art Exact Match and F1 scores for MHQA."
