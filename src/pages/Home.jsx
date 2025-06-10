@@ -23,6 +23,7 @@ const Home = () => {
     navHeight,
     navRef,
     navContainerRef,
+    prevSectionRef,
     handleNavClick,
   } = useNavigation('papers');
 
@@ -34,7 +35,9 @@ const Home = () => {
 
   return (
     <div className="container">
-      <Introduction />
+      <Introduction 
+        introRef={prevSectionRef}
+      />
       <Navigation
         sectionActive={sectionActive}
         isNavFixed={isNavFixed}

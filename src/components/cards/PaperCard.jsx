@@ -63,9 +63,6 @@ const PaperCard = ({ data, expanded, onToggle }) => (
     mainImage={data.mainImage}
     description={<p>{data.description}</p>}
   >
-    <p className="date">
-      {formatDate(data.date)}{' '}
-    </p>
     <h3>
       {data.title}
     </h3>

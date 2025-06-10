@@ -1,14 +1,12 @@
-:root {
-  --nn-edge-color: var(--color-gray-500);
-  --nn-edge-width: 1px;
-  --nn-node-color: var(--color-gray-100);
-  --nn-node-stroke: var(--color-gray-500);
-  --nn-node-highlight-color: var(--color-gray-100);
-  --nn-node-highlight-stroke: var(--color-gray-500);
-  --nn-node-size: 32rem;
-  --nn-node-shape: rect; /* 'rect' 또는 'circle' */
+.intro-background-canvas {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  background: white;
+  /* max-width: 1200px; */
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
 }
-
-/* .neuralnet-bg-canvas {
-  background: linear-gradient(120deg, #f8f9fa 0%, #e9eaf3 100%);
-} */

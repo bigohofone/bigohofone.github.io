@@ -7,7 +7,7 @@
  */
 
 import React, { useRef } from 'react';
-import NeuralNetBackground from '../utils/backgroundUtils';
+import IntroductionBackground from '../utils/backgroundUtils';
 
 function ArrowDown() {
   return (
@@ -37,8 +37,9 @@ function ArrowDown() {
   );
 }
 
-const Introduction = () => {
-  const introRef = useRef(null);
+const Introduction = (
+  { introRef } // Assuming prevSectionRef is used for scrolling or other purposes
+) => {
 
   const handleClick = () => {
     if (introRef.current) {
@@ -68,7 +69,7 @@ const Introduction = () => {
       <div className="introduction-arrow" style={{ position: 'relative', zIndex: 1 }}>
         <ArrowDown />
       </div>
-      <NeuralNetBackground containerRef={introRef} />
+      <IntroductionBackground containerRef={introRef} />
     </header>
   );
 };

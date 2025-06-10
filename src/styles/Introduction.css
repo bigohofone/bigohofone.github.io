@@ -8,6 +8,9 @@
 }
 
 .introduction .introduction-content {
+  max-width: var(--pc-max-width);
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   flex-direction: row;
   align-items: flex-start;

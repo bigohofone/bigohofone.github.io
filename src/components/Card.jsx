@@ -49,17 +49,17 @@ export default function Content({
 
     if (loading) {
         return (
-            <main className="content" style={contentStyle}>
+            <div className="card-container" style={contentStyle}>
                 <div>Loading...</div>
-            </main>
+            </div>
         );
     }
 
     if (error) {
         return (
-            <main className="content" style={contentStyle}>
+            <div className="card-container" style={contentStyle}>
                 <div>Error!</div>
-            </main>
+            </div>
         );
     }
 

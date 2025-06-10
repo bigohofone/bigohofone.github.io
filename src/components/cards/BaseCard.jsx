@@ -118,25 +118,29 @@ function BaseCard({
         if (e.key === 'Enter' || e.key === ' ') onToggle();
       }}
     >
-      <div className="card-main">
-        <div className="card-main-info">{children}</div>
-        <ArrowButton expanded={expanded} ArrowIcon={ArrowIcon} onClick={onToggle} />
-      </div>
-      <div className={`card-detail${expanded ? ' expanded' : ''}`}>
-        <div className="card-detail-item">
-          <div className="card-detail-item title">Desc.</div>
-          <div className="card-detail-item content">
-            <DetailsSection description={description} />
-          </div>
+      <div className="card-header-container">
+        <div className="card-header">
+          <div className="card-header-content">{children}</div>
+          <ArrowButton expanded={expanded} ArrowIcon={ArrowIcon} onClick={onToggle} />
         </div>
-        {Array.isArray(tags) && tags.length > 0 && (
+      </div>
+      <div className={`card-detail-container${expanded ? ' expanded' : ''}`}>
+        <div className={`card-detail${expanded ? ' expanded' : ''}`}>
           <div className="card-detail-item">
-            <div className="card-detail-item title">Tags</div>
+            <div className="card-detail-item title">Desc.</div>
             <div className="card-detail-item content">
-              <TagList tags={tags} />
+              <DetailsSection description={description} />
             </div>
           </div>
-        )}
+          {Array.isArray(tags) && tags.length > 0 && (
+            <div className="card-detail-item">
+              <div className="card-detail-item title">Tags</div>
+              <div className="card-detail-item content">
+                <TagList tags={tags} />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

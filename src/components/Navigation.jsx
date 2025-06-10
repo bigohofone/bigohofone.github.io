@@ -18,10 +18,13 @@ function Navigation({
 	onNavClick,
 }) {
 	const navClass = `nav${isNavFixed ? ' nav-fixed' : ''}`;
+	const navStyle = {
+		paddingLeft: `calc((100vw - var(--pc-max-width)) / 2)`,
+	};
 
 	return (
 		<div ref={navContainerRef}>
-			<nav ref={navRef} className={navClass}>
+			<nav ref={navRef} className={navClass} style={navStyle}>
 				{Object.entries(SECTIONS).map(([key, section]) => (
 					<button
 						key={key}

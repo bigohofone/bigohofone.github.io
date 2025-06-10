@@ -15,10 +15,13 @@ const getNavHeight = (ref) => ref.current?.offsetHeight || 0;
 const isNavFixed = (ref) => ref.current?.getBoundingClientRect().top <= 0;
 
 
-const scrollToSection = (ref) => {
+const scrollToNextSection = (ref) => {
 	const el = ref.current;
 	if (el) {
-		window.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
+		const rect = el.getBoundingClientRect();
+		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+		const bottom = rect.bottom + scrollTop;
+		window.scrollTo({ top: bottom, behavior: 'smooth' });
 	}
 };
 
@@ -30,6 +33,7 @@ export default function useNavigation(initialSection = 'papers') {
 
 	const navRef = useRef(null);
 	const navContainerRef = useRef(null);
+	const prevSectionRef = useRef(null);
 
 	// 섹션 클릭 처리
 	const handleNavClick = useCallback((section) => {
@@ -45,7 +49,7 @@ export default function useNavigation(initialSection = 'papers') {
 	useEffect(() => {
 		if (sectionPending !== sectionActive) {
 			setSectionActive(sectionPending);
-			scrollToSection(navContainerRef);
+			scrollToNextSection(prevSectionRef);
 		}
 	}, [sectionPending, sectionActive]);
 
@@ -69,6 +73,7 @@ export default function useNavigation(initialSection = 'papers') {
 		navHeight,
 		navRef,
 		navContainerRef,
+		prevSectionRef,
 		handleNavClick,
 	};
 }
