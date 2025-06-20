@@ -7,11 +7,11 @@
  */
 
 import React from 'react';
-import BaseCard from './BaseCard';
+import BaseContentElement from './Base';
 import { formatDate } from '../../utils/contentUtils';
 
-const EducationCard = ({ data, expanded, onToggle }) => (
-  <BaseCard
+const EducationContentElement = ({ data, expanded, onToggle }) => (
+  <BaseContentElement
     expanded={expanded}
     onToggle={onToggle}
     description={<p>{data.description}</p>}
@@ -21,7 +21,7 @@ const EducationCard = ({ data, expanded, onToggle }) => (
     </p>
     <h3>{data.institution}</h3>
     <p>{data.degree}</p>
-  </BaseCard>
+  </BaseContentElement>
 );
 
-export default EducationCard;
+export default EducationContentElement;

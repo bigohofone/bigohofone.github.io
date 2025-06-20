@@ -2,7 +2,7 @@
     Footer - Meta Style
     ========================= */
 .footer {
-    padding: 3rem 2rem 1.5rem;
+    padding: 10rem 2rem 2rem;
     margin: 0;
 
     display: flex;
@@ -11,9 +11,13 @@
     justify-content: space-between;
     position: relative;
     gap: 1rem;
+    background: var(--color-gray-900);
+    color: var(--color-gray-100);
+    fill: var(--color-gray-100);
+    stroke: var(--color-gray-100);
 }
 
-.footer-container {
+.footer-block {
     padding: 0;
     margin: 0;
 
@@ -41,11 +45,11 @@
     text-align: center;
     font-size: 1.25rem;
     font-weight: 500;
-    color: var(--color-gray-900);
+    /* color: var(--color-gray-900); */
 }
 
 .footer-date {
     font-size: 1rem;
     font-weight: 500;
-    color: var(--color-gray-900);
+    /* color: var(--color-gray-900); */
 }

@@ -7,54 +7,70 @@
  */
 
 import React from 'react';
-import Introduction from '../components/Introduction';
 import Footer from '../components/Footer';
 import Navigation from '../components/Navigation';
-import Card from '../components/Card';
-import useCard from '../hooks/useCard';
+// import Card from '../components/Section';
+// import useCard from '../hooks/useCard';
 import useNavigation from '../hooks/useNavigation';
+import Content from '../components/Content';
+import Introduction from '../components/Introduction';
+import News from '../components/News';
+
+import useContent from '../hooks/useContent';
+
+import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
 
 const Home = () => {
 
   const {
-    sectionActive,
-    sectionPending,
-    isNavFixed,
-    navHeight,
-    navRef,
-    navContainerRef,
-    prevSectionRef,
-    handleNavClick,
-  } = useNavigation('papers');
+    contentsRef,
+    getContentRef,
+    getCurrentContentKey,
+    scrollToContentKey
+  } = useContent();
 
-  const { 
-    data: sectionData = [], 
-    loading: sectionLoading, 
-    error: sectionError 
-  } = useCard(sectionPending);
+  const {
+		navContainerRef,
+		navRefs,
+		sectionActive,
+		handleNavClick
+  } = useNavigation({
+    contentsRef,
+    getContentRef,
+    getCurrentContentKey,
+    scrollToContentKey
+  });
 
   return (
-    <div className="container">
-      <Introduction 
-        introRef={prevSectionRef}
-      />
-      <Navigation
-        sectionActive={sectionActive}
-        isNavFixed={isNavFixed}
-        navRef={navRef}
-        navContainerRef={navContainerRef}
-        onNavClick={handleNavClick}
-      />
-      <Card
-        sectionActive={sectionActive}
-        sectionData={sectionData}
-        loading={sectionLoading}
-        error={sectionError}
-        isNavFixed={isNavFixed}
-        navHeight={navHeight}
-      />
+    <>
+      <div className='home-container' style={{ display: 'flex' }}>
+        <div className='home-sidebar-container'>
+          <div className="home-sidebar">
+            <Navigation
+              sectionActive={sectionActive}
+              navContainerRef={navContainerRef}
+              navRefs={navRefs}
+              onNavClick={handleNavClick}
+            />
+          </div>
+        </div>
+        <div className='home-main'>
+          <div className='home-main-elem'>
+            <Introduction />
+            <News />
+          </div>
+          <div className='home-main-elem'>
+            <Content
+              contentsRef={contentsRef}
+              getContentRef={getContentRef}
+              getCurrentContentKey={getCurrentContentKey}
+              scrollToContentKey={scrollToContentKey}
+            />
+          </div>
+        </div>
+      </div>
       <Footer />
-    </div>
+    </>
   );
 };
 

@@ -8,72 +8,42 @@
 
 import { useRef, useState, useEffect, useCallback } from 'react';
 
-
-const getNavHeight = (ref) => ref.current?.offsetHeight || 0;
-
-
-const isNavFixed = (ref) => ref.current?.getBoundingClientRect().top <= 0;
-
-
-const scrollToNextSection = (ref) => {
-	const el = ref.current;
-	if (el) {
-		const rect = el.getBoundingClientRect();
-		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-		const bottom = rect.bottom + scrollTop;
-		window.scrollTo({ top: bottom, behavior: 'smooth' });
-	}
-};
-
-export default function useNavigation(initialSection = 'papers') {
-	const [sectionActive, setSectionActive] = useState(initialSection);
-	const [sectionPending, setSectionPending] = useState(initialSection);
-	const [isFixed, setIsFixed] = useState(false);
-	const [navHeight, setNavHeight] = useState(0);
-
-	const navRef = useRef(null);
+export default function useNavigation({
+	contentsRef,
+	getContentRef,
+	getCurrentContentKey,
+	scrollToContentKey
+}) {
 	const navContainerRef = useRef(null);
-	const prevSectionRef = useRef(null);
+	const navRefs = useRef({});
 
-	// 섹션 클릭 처리
-	const handleNavClick = useCallback((section) => {
-		setSectionPending(section);
-	}, []);
+	// sectionActive는 getCurrentContentKey가 반환하는 현재 활성화된 콘텐츠의 키를 저장합니다.
+	const [sectionActive, setSectionActive] = useState(getCurrentContentKey());
 
-	// 스크롤 핸들러
-	const handleScroll = useCallback(() => {
-		setIsFixed(isNavFixed(navContainerRef));
-	}, []);
-
-	// 섹션 변경 시 스크롤
 	useEffect(() => {
-		if (sectionPending !== sectionActive) {
-			setSectionActive(sectionPending);
-			scrollToNextSection(prevSectionRef);
-		}
-	}, [sectionPending, sectionActive]);
+		const handleScroll = () => {
+			const currentKey = getCurrentContentKey();
+			setSectionActive(currentKey);
+		};
 
-	// 스크롤 이벤트 리스너 등록
-	useEffect(() => {
 		window.addEventListener('scroll', handleScroll, { passive: true });
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, [handleScroll]);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, [getCurrentContentKey]);
 
-	// 고정 상태일 때 네비게이션 높이 측정
-	useEffect(() => {
-		if (isFixed) {
-			setNavHeight(getNavHeight(navRef));
-		}
-	}, [isFixed]);
+	const handleNavClick = useCallback((key) => {
+		scrollToContentKey(key);
+	}, []);
 
+	// You can use contentsRef, contentRefs, getCurrentContentKey, scrollToContentKey as needed here
+	
+
+	// Example: expose them if needed
 	return {
-		sectionActive,
-		sectionPending,
-		isNavFixed: isFixed,
-		navHeight,
-		navRef,
 		navContainerRef,
-		prevSectionRef,
-		handleNavClick,
+		navRefs,
+		sectionActive,
+		handleNavClick
 	};
 }

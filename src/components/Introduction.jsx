@@ -6,72 +6,33 @@
  * Unauthorized copying, distribution, or use of this code, in whole or in part, is strictly prohibited.
  */
 
-import React, { useRef } from 'react';
-import IntroductionBackground from '../utils/backgroundUtils';
+import React from 'react';
+import { ContentConfig } from '../utils/contentConfig';
 
-function ArrowDown() {
-  return (
-    <span
-      className="material-symbols-outlined"
-      style={{
-        position: 'relative',
-        bottom: '3rem',
-        fontSize: '3.5rem',
-        fontVariationSettings: "'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24",
-        display: 'inline-block',
-        margin: 0,
-        transform: 'rotate(90deg)',
-        animation: 'bounce-arrow 1s infinite alternate',
-      }}
-    >
-      arrow_forward
-      <style>
-        {`
-          @keyframes bounce-arrow {
-            0% { transform: rotate(90deg) translateX(0); }
-            100% { transform: rotate(90deg) translateX(1rem); }
-          }
-        `}
-      </style>
-    </span>
-  );
+function Introduction({
+}) {
+
+    return (
+        <div className="content-container" style={{ backgroundColor: 'var(--color-gray-100)' }}>
+            <nav className='content'>
+                <h2 className="content-title">Introduction.</h2>
+                <div className="introduction">
+                    <div>
+                        안녕하세요. 이 페이지는 임시로 작성된 소개 섹션입니다.<br />
+                        실제 내용이 준비되기 전까지 임시 텍스트가 표시됩니다.<br />
+                        개발 및 디자인 테스트를 위해 작성되었습니다.<br />
+                        레이아웃과 스타일을 확인하는 용도입니다.<br />
+                        곧 더 알찬 정보로 채워질 예정입니다.<br />
+                        현재는 구조와 컴포넌트 동작을 점검하고 있습니다.<br />
+                        임시 데이터는 언제든지 변경될 수 있습니다.<br />
+                        피드백이나 제안이 있으시면 언제든 연락주세요.<br />
+                        방문해주셔서 감사합니다.<br />
+                        앞으로 더 좋은 콘텐츠로 찾아뵙겠습니다.
+                    </div>
+                </div>
+            </nav>
+        </div>
+    );
 }
-
-const Introduction = (
-  { introRef } // Assuming prevSectionRef is used for scrolling or other purposes
-) => {
-
-  const handleClick = () => {
-    if (introRef.current) {
-      const rect = introRef.current.getBoundingClientRect();
-      window.scrollTo({
-        top: rect.bottom + window.scrollY,
-        behavior: 'smooth',
-      });
-    }
-  };
-
-  return (
-    <header
-      className="introduction responsive-header"
-      ref={introRef}
-      onClick={handleClick}
-      style={{ cursor: 'pointer' }}
-    >
-      <div className="introduction-content" style={{ position: 'relative', zIndex: 1 }}>
-        <h1>
-          Hello World <br /> I'm Wonjun Oh
-        </h1>
-        <p>
-          I’m an undergraduate student at Korea University, driven by a curiosity for how machines understand and reason in an increasingly complex world. My research interests lie in building intelligent systems that can sift through vast, multimodal streams of information to surface what’s relevant and make informed decisions. Currently, I explore topics in search systems and conversational AI with a broader goal of understanding and advancing multimodal intelligence that can ground, reason, and interact across diverse forms of information.
-        </p>
-      </div>
-      <div className="introduction-arrow" style={{ position: 'relative', zIndex: 1 }}>
-        <ArrowDown />
-      </div>
-      <IntroductionBackground containerRef={introRef} />
-    </header>
-  );
-};
 
 export default Introduction;

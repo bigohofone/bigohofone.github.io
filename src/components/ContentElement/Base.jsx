@@ -20,6 +20,7 @@ function ArrowButton({ expanded, ArrowIcon, onClick }) {
       }}
       aria-label={expanded ? '접기' : '더보기'}
       style={{
+        color: 'inherit',
         border: 'none',
         background: 'none',
         cursor: 'pointer',
@@ -64,7 +65,7 @@ ArrowButton.propTypes = {
 // 태그 리스트 렌더링 컴포넌트
 function TagList({ tags }) {
   return (
-    <div className="card-tags">
+    <div className="content-elem-tags">
       {tags.map((tag, idx) => (
         <div className="tag" key={idx}>
           {tag}
@@ -84,10 +85,10 @@ function DetailsSection({ description }) {
     return <div className="dummy-text">No description available</div>;
   }
   return (
-    // <ReactMarkdown className="card-detail-markdown">
+    // <ReactMarkdown className="content-elem-detail-markdown">
     //   {description}
     // </ReactMarkdown>
-    <div className="card-detail-markdown">
+    <div className="content-elem-detail-markdown">
       {description}
     </div>
   );
@@ -97,7 +98,7 @@ DetailsSection.propTypes = {
   description: PropTypes.string,
 };
 
-function BaseCard({
+function BaseContentElement({
   expanded,
   onToggle,
   children,
@@ -109,7 +110,7 @@ function BaseCard({
 }) {
   return (
     <div
-      className={`card${expanded ? ' expanded' : ''}`}
+      className={`content-elem${expanded ? ' expanded' : ''}`}
       onClick={onToggle}
       tabIndex={0}
       role="button"
@@ -118,24 +119,24 @@ function BaseCard({
         if (e.key === 'Enter' || e.key === ' ') onToggle();
       }}
     >
-      <div className="card-header-container">
-        <div className="card-header">
-          <div className="card-header-content">{children}</div>
+      <div className="content-elem-header-container">
+        <div className="content-elem-header">
+          <div className="content-elem-header-content">{children}</div>
           <ArrowButton expanded={expanded} ArrowIcon={ArrowIcon} onClick={onToggle} />
         </div>
       </div>
-      <div className={`card-detail-container${expanded ? ' expanded' : ''}`}>
-        <div className={`card-detail${expanded ? ' expanded' : ''}`}>
-          <div className="card-detail-item">
-            <div className="card-detail-item title">Desc.</div>
-            <div className="card-detail-item content">
+      <div className={`content-elem-detail-container${expanded ? ' expanded' : ''}`}>
+        <div className={`content-elem-detail${expanded ? ' expanded' : ''}`}>
+          <div className="content-elem-detail-item">
+            <div className="content-elem-detail-item title">Desc.</div>
+            <div className="content-elem-detail-item content">
               <DetailsSection description={description} />
             </div>
           </div>
           {Array.isArray(tags) && tags.length > 0 && (
-            <div className="card-detail-item">
-              <div className="card-detail-item title">Tags</div>
-              <div className="card-detail-item content">
+            <div className="content-elem-detail-item">
+              <div className="content-elem-detail-item title">Tags</div>
+              <div className="content-elem-detail-item content">
                 <TagList tags={tags} />
               </div>
             </div>
@@ -146,7 +147,7 @@ function BaseCard({
   );
 }
 
-BaseCard.propTypes = {
+BaseContentElement.propTypes = {
   expanded: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,
   children: PropTypes.node,
@@ -157,4 +158,4 @@ BaseCard.propTypes = {
   sectionName: PropTypes.string,
 };
 
-export default BaseCard;
+export default BaseContentElement;

@@ -7,11 +7,11 @@
  */
 
 import React from 'react';
-import BaseCard from './BaseCard';
+import BaseContentElement from './Base';
 import { formatDate } from '../../utils/contentUtils';
 
-const HonerAndAwardCard = ({ data, expanded, onToggle }) => (
-  <BaseCard
+const HonorAndAwardContentElement = ({ data, expanded, onToggle }) => (
+  <BaseContentElement
     expanded={expanded}
     onToggle={onToggle}
     mainImage={data.mainImage}
@@ -22,7 +22,7 @@ const HonerAndAwardCard = ({ data, expanded, onToggle }) => (
     </p>
     <h3>{data.organization}</h3>
     <p>{data.title}</p>
-  </BaseCard>
+  </BaseContentElement>
 );
 
-export default HonerAndAwardCard;
+export default HonorAndAwardContentElement;

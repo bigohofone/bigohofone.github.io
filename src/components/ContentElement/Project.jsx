@@ -7,11 +7,11 @@
  */
 
 import React from 'react';
-import BaseCard from './BaseCard';
+import BaseContentElement from './Base';
 import { formatDate } from '../../utils/contentUtils';
 
-const ExperienceCard = ({ data, expanded, onToggle }) => (
-  <BaseCard
+const ProjectContentElement = ({ data, expanded, onToggle }) => (
+  <BaseContentElement
     expanded={expanded}
     onToggle={onToggle}
     description={<p>{data.description}</p>}
@@ -19,9 +19,9 @@ const ExperienceCard = ({ data, expanded, onToggle }) => (
     <p className="date">
       {formatDate(data.start_date)} - {formatDate(data.end_date)}{' '}
     </p>
-    <h3>{data.organization}, {data.location}</h3>
-    <p>{data.position}</p>
-  </BaseCard>
+    <h3>{data.name}</h3>
+    <p>{data.organization}</p>
+  </BaseContentElement>
 );
 
-export default ExperienceCard;
+export default ProjectContentElement;

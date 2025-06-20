@@ -1,7 +1,6 @@
-/* =========================
-  Meta (Facebook) Inspired Palette
-  ========================= */
 :root {
+  --color-primary: #2563eb;
+
   --color-black: #000;
   --color-white: #fff;
   --color-gray-50: #f9f9f9;
@@ -16,20 +15,15 @@
   --color-gray-900: #111827;
   --color-border: #e5e7eb;
   --color-background: var(--color-white);
-  --pc-max-width: 800px;
-  --mobile-max-width: 600px;
 }
 
-/* =========================
-  Font Import & Base Styles
-  ========================= */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 html {
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  
   background: var(--color-background);
+  color: var(--color-gray-900);
   box-sizing: border-box;
 }
 
@@ -37,7 +31,7 @@ html {
   box-sizing: inherit;
   font-weight: 500;
   line-height: 1.5em;
-  color: var(--color-gray-900);
+  
   padding: 0;
   margin: 0;
 }
@@ -52,4 +46,6 @@ body {
   margin: 0;
   padding: 0;
   background: var(--color-background);
+  margin-left: auto;
+  margin-right: auto;
 }

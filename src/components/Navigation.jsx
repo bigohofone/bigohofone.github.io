@@ -7,32 +7,27 @@
  */
 
 import React from 'react';
-import { SECTIONS } from '../utils/sectionConfig';
+import { ContentConfig } from '../utils/contentConfig';
 
 function Navigation({
 	sectionActive,
-	isNavFixed,
-	navHeight,
 	navRef,
 	navContainerRef,
 	onNavClick,
 }) {
-	const navClass = `nav${isNavFixed ? ' nav-fixed' : ''}`;
-	const navStyle = {
-		paddingLeft: `calc((100vw - var(--pc-max-width)) / 2)`,
-	};
 
 	return (
-		<div ref={navContainerRef}>
-			<nav ref={navRef} className={navClass} style={navStyle}>
-				{Object.entries(SECTIONS).map(([key, section]) => (
+		<div ref={navContainerRef} className='nav-container'>
+			<nav ref={navRef} className='nav'>
+				<p style={{ margin: '1rem 0rem 2rem 0rem', textAlign: 'center', fontSize: '1.5rem', textAlign: 'left'}}>Index.</p>
+				{Object.entries(ContentConfig).map(([key, value]) => (
 					<button
 						key={key}
 						className={`nav-btn${sectionActive === key ? ' active' : ''}`}
 						onClick={() => onNavClick(key)}
 						type="button"
 					>
-						{section.label}
+						{value.contentName}
 					</button>
 				))}
 			</nav>

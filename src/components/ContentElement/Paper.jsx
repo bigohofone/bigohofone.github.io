@@ -6,7 +6,7 @@
  * Unauthorized copying, distribution, or use of this code, in whole or in part, is strictly prohibited.
  */
 
-import BaseCard from './BaseCard';
+import BaseContentElement from './Base';
 import { formatDate } from '../../utils/contentUtils';
 
 const AUTHOR_NAME = 'Wonjun Oh';
@@ -56,13 +56,14 @@ const renderAuthors = ({ first_authors = [], co_authors = [], corresponding_auth
   return authors;
 };
 
-const PaperCard = ({ data, expanded, onToggle }) => (
-  <BaseCard
+const PaperContentElement = ({ data, expanded, onToggle }) => (
+  <BaseContentElement
     expanded={expanded}
     onToggle={onToggle}
     mainImage={data.mainImage}
     description={<p>{data.description}</p>}
   >
+    <p>{data.venue}{data.paper_type && <span className="paper-type">{data.paper_type}</span>}</p>
     <h3>
       {data.title}
     </h3>
@@ -73,10 +74,9 @@ const PaperCard = ({ data, expanded, onToggle }) => (
         corresponding_authors: data.corresponding_authors
       })}
     </p>
-    <p>{data.venue}{data.paper_type && <span className="paper-type">{data.paper_type}</span>}</p>
-  </BaseCard>
+  </BaseContentElement>
 );
 
-export default PaperCard;
+export default PaperContentElement;
 
 
