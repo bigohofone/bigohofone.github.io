@@ -57,3 +57,32 @@
 .nav-btn.active {
     color: var(--color-primary);
 }
+
+/* @media (max-width: 1200px) {
+    .nav {
+        position: fixed;
+        top: 0;
+        height: 5rem;
+        background: white;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        gap: 0;
+        padding: 2rem;
+        justify-content: flex-start;
+        align-items: center;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .nav-btn {
+        width: auto;
+        text-align: center;
+        border-top: none;
+        padding: 0.5em 2em;
+    }
+    .nav-btn:last-child {
+        border-bottom: none;
+    }
+} */

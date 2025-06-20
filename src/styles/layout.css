@@ -20,6 +20,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    border-right: 2px dashed;
 }
 
 .home-main {
@@ -37,6 +38,21 @@
 }
 
 @media (max-width: 1200px) {
+    .home-container {
+        display: flex;
+        flex-direction: column;
+    }
+    .home-sidebar {
+        position: sticky;
+        top: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-right: 0;
+        border-bottom: 2px solid;
+    }
     .home-main-elem {
         flex-direction: column;
     }

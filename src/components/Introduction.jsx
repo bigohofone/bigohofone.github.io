@@ -13,7 +13,7 @@ function Introduction({
 }) {
 
     return (
-        <div className="content-container" style={{ backgroundColor: 'var(--color-gray-100)' }}>
+        <div className="content-container"> {/* style={{ backgroundColor: 'var(--color-gray-100)' }} */}
             <nav className='content'>
                 <h2 className="content-title">Introduction.</h2>
                 <div className="introduction">

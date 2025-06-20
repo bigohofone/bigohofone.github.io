@@ -65,7 +65,7 @@ export const colorPalette = [
 
     // 더 높은 대비비를 가진 색상 선택 (최소 4.5:1 권장)
     // const font = contrastWithWhite >= contrastWithBlack ? '#FFFFFF' : '#000000';
-    // bg = '#FFFFFF'
+    bg = 'transparent'
     const font = '#000000';
 
     return { bg, font };

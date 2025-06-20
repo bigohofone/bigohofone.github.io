@@ -11,10 +11,11 @@
     justify-content: space-between;
     position: relative;
     gap: 1rem;
-    background: var(--color-gray-900);
-    color: var(--color-gray-100);
-    fill: var(--color-gray-100);
-    stroke: var(--color-gray-100);
+    border-top: 2px dashed;
+    background: transparent;
+    color: var(--color-gray-900);
+    fill: var(--color-gray-900);
+    stroke: var(--color-gray-900);
 }
 
 .footer-block {
