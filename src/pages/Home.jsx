@@ -42,13 +42,13 @@ const Home = () => {
   });
 
   return (
-    <>
+    <div className='app'>
       <header className="header">
         <div className="header__inner">
           <h1 className="header__title">WONJUN OH</h1>
         </div>
       </header>
-      <div className="app-container">
+      <div className="app__inner">
         <aside className="sidebar">
           <nav className="sidebar-navigation">
             <Navigation
@@ -72,7 +72,7 @@ const Home = () => {
         <Footer />
       </main>
     </div>
-  </>
+  </div>
   );
 };
 

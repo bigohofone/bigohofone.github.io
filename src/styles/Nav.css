@@ -26,7 +26,8 @@
 }
 
 .nav-btn {
-    width: calc(var(--base-height) * 6);
+    /* width: calc(var(--base-height) * 6); */
+    width: auto;
     height: var(--base-height);
     font-size: 1.25rem;
     font-weight: 500;

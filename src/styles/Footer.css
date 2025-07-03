@@ -2,7 +2,7 @@
     Footer - Meta Style
     ========================= */
 .footer {
-    padding: 9rem 1rem var(--base-height);
+    padding: 9rem 1rem 0;
     margin: 0;
 
     display: flex;
