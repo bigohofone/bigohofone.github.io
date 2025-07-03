@@ -42,10 +42,16 @@ const Home = () => {
   });
 
   return (
-    <div className="app-container">
-      <aside className="sidebar">
-        <nav className="sidebar-navigation">
-          <Navigation
+    <>
+      <header className="header">
+        <div className="header__inner">
+          <h1 className="header__title">WONJUN OH</h1>
+        </div>
+      </header>
+      <div className="app-container">
+        <aside className="sidebar">
+          <nav className="sidebar-navigation">
+            <Navigation
             sectionActive={sectionActive}
             navContainerRef={navContainerRef}
             navRefs={navRefs}
@@ -66,6 +72,7 @@ const Home = () => {
         <Footer />
       </main>
     </div>
+  </>
   );
 };
 

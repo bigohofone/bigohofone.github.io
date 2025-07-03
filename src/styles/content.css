@@ -21,19 +21,18 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+    margin-top: var(--base-height);
+    margin-bottom: var(--base-height);
 }
 
 .content-block__title {
-    height: 3rem;
+    height: var(--base-height);
     font-size: 1.25rem;
     font-weight: 500;
     display: flex;
     align-items: center;
     padding: 0 1rem;
     margin: 0;
-    /* margin: 3rem 0 0; */
 
     border-top: none;
     border-left: none;

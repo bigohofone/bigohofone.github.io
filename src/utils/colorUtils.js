@@ -1,72 +1,25 @@
-// hex 색상 밝기 조정 함수
-function adjustColor(hex, percent) {
-    let num = parseInt(hex.replace('#', ''), 16);
-    let r = (num >> 16) + Math.round(255 * percent);
-    let g = ((num >> 8) & 0x00FF) + Math.round(255 * percent);
-    let b = (num & 0x0000FF) + Math.round(255 * percent);
-
-    r = Math.max(0, Math.min(255, r));
-    g = Math.max(0, Math.min(255, g));
-    b = Math.max(0, Math.min(255, b));
-
-    return '#' + (r << 16 | g << 8 | b).toString(16).padStart(6, '0').toUpperCase();
-}
-
 export const colorPalette = [
-    { bg: '#FF002E' }, // RED
-    // { bg: '#F30064' }, // Magenta
-    { bg: '#A000BE' }, // Purple
-    // { bg: '#7242EA' }, // Deep Purple
-    // { bg: '#4339E3' }, // Indigo
-    // { bg: '#2F59CC' }, // Blue
-    { bg: '#3795FF' }, // Sky Blue
-    // { bg: '#009BE1' }, // Light Blue
-    // { bg: '#00908F' }, // Cyan
-    // { bg: '#15A37A' }, // Teal
-    { bg: '#22B25D' }, // Green
-    // { bg: '#8CC44A' }, // Light Green
-    // { bg: '#CDDD39' }, // Lime
-    { bg: '#FAE735' }, // Yellow
-    // { bg: '#FFC008' }, // Amber
-    { bg: '#FF9A01' }, // Orange
-    // { bg: '#FF5622' }, // Deep Orange
-    // { bg: '#795548' }, // Brown
-    // { bg: '#9e9e9e' }, // Gray
-    // { bg: '#607d8b' }, // BlueGray
+  // 1. Surface Bright (페이지 시작, 매우 가벼운 톤)
+  { bg: '#fefefe', font: '#1c1b1f' },
 
-].map(({ bg }) => {
-    // W3C 권장 대비비(contrast ratio) 기준으로 가독성 높은 폰트 색상 선택
-    const getLuminance = (hex) => {
-        const num = parseInt(hex.replace('#', ''), 16);
-        const r = (num >> 16) & 0xFF;
-        const g = (num >> 8) & 0xFF;
-        const b = num & 0xFF;
-        const srgb = [r, g, b].map(v => {
-            v /= 255;
-            return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-        });
-        return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
-    };
+  // 2. Tinted Yellow (희미한 따뜻함, 시각적 전환)
+  { bg: '#fff8e1', font: '#1c1b1f' },
 
-    // 대비비 계산 함수
-    const contrastRatio = (lum1, lum2) => {
-        const L1 = Math.max(lum1, lum2);
-        const L2 = Math.min(lum1, lum2);
-        return (L1 + 0.05) / (L2 + 0.05);
-    };
+  // 3. Soft Rose (은은한 핑크, 부드러운 분위기)
+  { bg: '#fdecef', font: '#1c1b1f' },
 
-    const bgLum = getLuminance(bg);
-    const whiteLum = getLuminance('#FFFFFF');
-    const blackLum = getLuminance('#000000');
+  // 4. Tinted Sky Blue (밝고 깨끗한 느낌)
+  { bg: '#e8f0fe', font: '#1c1b1f' },
 
-    // 흰색/검정 대비비 계산
-    const contrastWithWhite = contrastRatio(bgLum, whiteLum);
-    const contrastWithBlack = contrastRatio(bgLum, blackLum);
+  // 5. Mint / Seafoam (구글 캘린더 스타일, 산뜻함 추가)
+  { bg: '#dff5ea', font: '#1c1b1f' },
 
-    // 더 높은 대비비를 가진 색상 선택 (최소 4.5:1 권장)
-    // const font = contrastWithWhite >= contrastWithBlack ? '#FFFFFF' : '#000000';
-    bg = 'transparent'
-    const font = '#000000';
+  // 6. Lavender Gray (살짝 무게감 있는 중간 섹션)
+  { bg: '#eae6f6', font: '#1c1b1f' },
 
-    return { bg, font };
-})
+  // 7. Sand Neutral (컨텐츠 마무리용 섹션)
+  { bg: '#f5f5f5', font: '#1c1b1f' },
+
+  // 8. Footer Off White (페이지 가장 아래 영역)
+  { bg: '#fafbfc', font: '#1c1b1f' },
+];

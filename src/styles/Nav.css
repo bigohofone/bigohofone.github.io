@@ -3,6 +3,8 @@
   Navigation Bar
   ========================= */
 .nav {
+    color: var(--color-gray-900);
+    background: white;
     width: auto;
     height: auto;
 
@@ -24,8 +26,8 @@
 }
 
 .nav-btn {
-    width: 16rem;
-    height: 3rem;
+    width: calc(var(--base-height) * 6);
+    height: var(--base-height);
     font-size: 1.25rem;
     font-weight: 500;
     text-align: left;
@@ -62,5 +64,10 @@
 @media (max-width: 800px) {
     .nav {
         flex-direction: row;
+        border-bottom: 2px solid;
+    }
+    .nav-btn {
+        width: auto;
+        border-bottom: 0;
     }
 }
