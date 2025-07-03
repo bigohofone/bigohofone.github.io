@@ -1,41 +1,66 @@
 [
   {
     "title": "2nd Place (₩2,000,000)",
-    "date": [null, null, 2025],
-    "organization": "Korea University College of Informatics NE:XT Software Contest",
-    "mainImage": null,
-    "description": "A contest hosted by the College of Informatics at Korea University. Led the development of AI services for the dating assistant app Rendi."
+    "event": "Korea University College of Informatics NE:XT Software Contest",
+    "start": [null, null, 2025],
+    "end": null,
+    "details": {
+      "Description": "A contest hosted by the College of Informatics at Korea University. Led the development of AI services for the dating assistant app Rendi."
+    }
   },
   {
     "title": "Honourable Mention (₩300,000)",
-    "date": [null, null, 2024],
-    "organization": "Digital Competition of the Nat’l Program of Excellence in Software",
-    "mainImage": null,
-    "description": "A competition hosted by the Ministry of Science&ICT. Developed an OOD classification model for detecting fake audio."
+    "event": "Digital Competition of the Nat’l Program of Excellence in Software",
+    "start": [null, null, 2024],
+    "end": null,
+    "details": {
+      "Description": "A competition hosted by the Ministry of Science&ICT. Developed an OOD classification model for detecting fake audio."
+    }
   },
   {
     "title": "NIA Director's Award (₩3,000,000)",
-    "date": [null, null, 2023],
-    "organization": "Korean AI Contest",
+    "event": "Korean AI Contest",
+    "start": [null, null, 2023],
+    "end": null,
     "mainImage": null,
-    "description": "A competition hosted by the Ministry of Science&ICT and the National Information Society Agency. Developed a Korean speech recognition model tailored for the elderly and children."
+    "details": {
+      "Description": "A competition hosted by the Ministry of Science&ICT and the National Information Society Agency. Developed a Korean speech recognition model tailored for the elderly and children."
+    }
   },
   {
     "title": "President’s List",
-    "date": [null, "Spring", "2024"],
-    "organization": "Korea University",
-    "description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."
+    "event": "Korea University",
+    "start": [null, "Spring", "2024"],
+    "end": null,
+    "details": {
+      "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."
+    }
   },
   {
     "title": "President’s List",
-    "date": [null, "Fall", "2023"],
-    "organization": "Korea University",
-    "description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."
+    "event": "Korea University",
+    "start": [null, "Fall", "2023"],
+    "end": null,
+    "details": {
+      "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."
+    }
+  },
+  {
+    "title": "President’s List",
+    "event": "Korea University",
+    "start": [null, "Fall", "2023"],
+    "end": null,
+    "details": {
+      "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."
+    }
   },
   {
     "title": "Dean’s List",
-    "date": [null, "Spring", "2023"],
-    "organization": "Korea University",
-    "description": "An award given to an undergraduate student with GPA 4.5/4.5 for a semester."
+    "event": "Korea University",
+    "start": [null, "Spring", "2023"],
+    "end": null,
+    "details": {
+      "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for a semester."
+    }
   }
 ]
