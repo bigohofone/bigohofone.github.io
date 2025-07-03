@@ -16,8 +16,12 @@ const formatAuthor = (author, { isFirst = false, markFirst = false, markCorrespo
   return (
     <>
       {displayName}
-      {markFirst && isFirst && <sup>*</sup>}
-      {markCorresponding && <sup>†</sup>}
+      {markFirst && isFirst && (
+        <sup style={{ lineHeight: 1, verticalAlign: 'text-top', fontSize: '0.7em' }}>*</sup>
+      )}
+      {markCorresponding && (
+        <sup style={{ lineHeight: 1, verticalAlign: 'text-top', fontSize: '0.7em' }}>†</sup>
+      )}
     </>
   );
 };
@@ -60,20 +64,23 @@ const PaperContentElement = ({ data, expanded, onToggle }) => (
   <BaseContentElement
     expanded={expanded}
     onToggle={onToggle}
-    mainImage={data.mainImage}
-    description={<p>{data.description}</p>}
+    details={data.details}
   >
-    <p>{data.venue}{data.paper_type && <span className="paper-type">{data.paper_type}</span>}</p>
-    <h3>
+    <div className="content-item__header-top">
+      <p>{data.venue}{data.paper_type && <span className="paper-type">{data.paper_type}</span>}</p>
+    </div>
+    <div className="content-item__header-mid">
       {data.title}
-    </h3>
-    <p>
-      {renderAuthors({
-        first_authors: data.first_authors,
-        co_authors: data.co_authors,
-        corresponding_authors: data.corresponding_authors
-      })}
-    </p>
+    </div>
+    <div className="content-item__header-bottom">
+      <p>
+        {renderAuthors({
+          first_authors: data.first_authors,
+          co_authors: data.co_authors,
+          corresponding_authors: data.corresponding_authors
+        })}
+      </p>
+    </div>
   </BaseContentElement>
 );
 

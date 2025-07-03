@@ -1,11 +1,11 @@
 import { useRef, useCallback } from 'react';
 
 export default function useContent() {
-    const contentsRef = useRef(null);
+    const contentSectionRef = useRef(null);
     const contentRefs = useRef({});
 
     // key에 해당하는 ref를 반환, 없으면 새로 생성
-    const getContentRef = useCallback((key) => {
+    const getContentBlockRef = useCallback((key) => {
         if (!contentRefs.current[key]) {
             contentRefs.current[key] = { current: null };
         }
@@ -36,8 +36,8 @@ export default function useContent() {
     }, []);
 
     return {
-        contentsRef,
-        getContentRef,
+        contentSectionRef,
+        getContentBlockRef,
         getCurrentContentKey,
         scrollToContentKey
     };

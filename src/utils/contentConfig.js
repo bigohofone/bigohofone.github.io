@@ -1,10 +1,10 @@
-import EducationContentElement from '../components/ContentElement/Education';
-import ExperienceContentElement from '../components/ContentElement/Experience';
-import PaperContentElement from '../components/ContentElement/Paper';
-import ProjectContentElement from '../components/ContentElement/Project';
-import HonorAndAwardContentElement from '../components/ContentElement/HonorAndAward';
-import TalkContentElement from '../components/ContentElement/Talk';
-import NewsContentElement from '../components/News';
+import EducationContentItem from '../components/ContentItem/Education';
+import ExperienceContentItem from '../components/ContentItem/Experience';
+import PaperContentItem from '../components/ContentItem/Paper';
+import ProjectContentItem from '../components/ContentItem/Project';
+import HonorAndAwardContentItem from '../components/ContentItem/HonorAndAward';
+import TalkContentItem from '../components/ContentItem/Talk';
+import NewsContentItem from '../components/News';
 
 // 캐시와 fetch promise를 저장할 객체
 const contentDataCache = {};
@@ -44,12 +44,12 @@ const defineContent = (key, contentName, contentComponent) => ({
 });
 
 export const ContentConfig = {
-  papers: defineContent('papers', 'Papers.', PaperContentElement),
-  education: defineContent('education', 'Education.', EducationContentElement),
-  experiences: defineContent('experiences', 'Experiences.', ExperienceContentElement),
-  projects: defineContent('projects', 'Projects.', ProjectContentElement),
-  honors_and_awards: defineContent('honors_and_awards', 'Honors and Awards.', HonorAndAwardContentElement),
-  talks: defineContent('talks', 'Talks.', TalkContentElement)
+  papers: defineContent('papers', 'Papers', PaperContentItem),
+  education: defineContent('education', 'Education', EducationContentItem),
+  experiences: defineContent('experiences', 'Experiences', ExperienceContentItem),
+  projects: defineContent('projects', 'Projects', ProjectContentItem),
+  honors_and_awards: defineContent('honors_and_awards', 'Honors and Awards', HonorAndAwardContentItem),
+  talks: defineContent('talks', 'Talks', TalkContentItem)
 };
 
-export const NewsContent = defineContent('news', 'News.', NewsContentElement);
+export const NewsContent = defineContent('news', 'News.', NewsContentItem);

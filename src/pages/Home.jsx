@@ -23,8 +23,8 @@ import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
 const Home = () => {
 
   const {
-    contentsRef,
-    getContentRef,
+    contentSectionRef,
+    getContentBlockRef,
     getCurrentContentKey,
     scrollToContentKey
   } = useContent();
@@ -35,42 +35,37 @@ const Home = () => {
 		sectionActive,
 		handleNavClick
   } = useNavigation({
-    contentsRef,
-    getContentRef,
+    contentSectionRef,
+    getContentBlockRef,
     getCurrentContentKey,
     scrollToContentKey
   });
 
   return (
-    <>
-      <div className='home-container' style={{ display: 'flex' }}>
-        <div className='home-sidebar-container'>
-          <div className="home-sidebar">
-            <Navigation
-              sectionActive={sectionActive}
-              navContainerRef={navContainerRef}
-              navRefs={navRefs}
-              onNavClick={handleNavClick}
-            />
-          </div>
-        </div>
-        <div className='home-main'>
-          <div className='home-main-elem'>
-            <Introduction />
-            <News />
-          </div>
-          <div className='home-main-elem'>
-            <Content
-              contentsRef={contentsRef}
-              getContentRef={getContentRef}
-              getCurrentContentKey={getCurrentContentKey}
-              scrollToContentKey={scrollToContentKey}
-            />
-          </div>
-        </div>
-      </div>
-      <Footer />
-    </>
+    <div className="app-container">
+      <aside className="sidebar">
+        <nav className="sidebar-navigation">
+          <Navigation
+            sectionActive={sectionActive}
+            navContainerRef={navContainerRef}
+            navRefs={navRefs}
+            onNavClick={handleNavClick}
+          />
+        </nav>
+        <section className="sidebar-extras">
+          {/* 기타 컴포넌트나 정보가 들어갈 수 있는 영역 */}
+        </section>
+      </aside>
+      <main className="main-content">
+        {/* <Introduction /> */}
+        {/* <News /> */}
+        <Content
+          contentSectionRef={contentSectionRef}
+          getContentBlockRef={getContentBlockRef}
+        />
+        <Footer />
+      </main>
+    </div>
   );
 };
 

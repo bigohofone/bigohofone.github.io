@@ -17,21 +17,19 @@ function Navigation({
 }) {
 
 	return (
-		<div ref={navContainerRef} className='nav-container'>
-			<nav ref={navRef} className='nav'>
-				<p style={{ margin: '1rem 0rem 2rem 0rem', textAlign: 'center', fontSize: '1.5rem', textAlign: 'left'}}>Index.</p>
-				{Object.entries(ContentConfig).map(([key, value]) => (
-					<button
-						key={key}
-						className={`nav-btn${sectionActive === key ? ' active' : ''}`}
-						onClick={() => onNavClick(key)}
-						type="button"
-					>
-						{value.contentName}
-					</button>
-				))}
-			</nav>
-		</div>
+		<nav ref={navRef} className='nav'>
+			<p class='nav-title'>Index.</p>
+			{Object.entries(ContentConfig).map(([key, value]) => (
+				<button
+					key={key}
+					className={`nav-btn${sectionActive === key ? ' nav-btn--active' : ''}`}
+					onClick={() => onNavClick(key)}
+					type="button"
+				>
+					{value.contentName}
+				</button>
+			))}
+		</nav>
 	);
 }
 

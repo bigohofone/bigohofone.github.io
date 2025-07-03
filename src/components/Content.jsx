@@ -6,59 +6,61 @@
  * Unauthorized copying, distribution, or use of this code, in whole or in part, is strictly prohibited.
  */
 
-import React from 'react';
+import React, { useState, useEffect, useCallback, memo, forwardRef } from 'react';
 import { ContentConfig } from '../utils/contentConfig';
 import { colorPalette } from '../utils/colorUtils';
 
-
-
-function ContentElement({ data, Component }) {
-    const [expanded, setExpanded] = React.useState(false);
-    const handleToggle = () => setExpanded((prev) => !prev);
-
+const ContentItem = memo(({ data, Component }) => {
+    const [expanded, setExpanded] = useState(false);
+    const handleToggle = useCallback(() => setExpanded(prev => !prev), []);
     return (
-        <Component data={data} expanded={expanded} onToggle={handleToggle} />
+        <Component
+            data={data}
+            expanded={expanded}
+            onToggle={handleToggle}
+        />
     );
-}
+});
 
-
-function Content({
-    background = '#fff',
-    color = '#000',
-    contentName,
-    contentData,
-    Component,
-    ref
-}) {
+const ContentBlock = forwardRef(({ contentName, contentData, Component }, ref) => {
+    
+    const color = '#000';
+    const background = 'transparent';
 
     return (
-        <div className="content-container" style={{ background, color, borderColor: color }} ref={ref}>
-            <div className="content" ref={ref}>
-                <h2 className="content-title">{contentName}</h2>
-                <div className="content-list">
-                    {contentData.length > 0 ? (
-                        contentData.map((data, index) => (
-                            <ContentElement
-                                key={`${contentName}-${index}`}
+        <div
+            className="content-block"
+            style={{ background, color }}
+            ref={ref}
+        >
+            <div className="content-block__inner">
+                <div className="content-block__title">
+                    {contentName}
+                </div>
+                <div className="content-block__items">
+                    {Array.isArray(contentData) && contentData.length > 0 ? (
+                        contentData.map((data, idx) => (
+                            <ContentItem
+                                key={`${contentName}-${idx}`}
                                 data={data}
                                 Component={Component}
                             />
                         ))
                     ) : (
-                        <div className="no-data">No data available.</div>
+                        <div className="content-block__no-data">No data available.</div>
                     )}
                 </div>
             </div>
         </div>
     );
-}
+});
 
+function Content({ contentSectionRef, getContentBlockRef }) {
+    const [contentList, setContentList] = useState([]);
 
-function Contents({ contentsRef, getContentRef, getCurrentContentKey, scrollToContentKey }) {
-    const [contentList, setContentList] = React.useState([]);
-
-    React.useEffect(() => {
-        async function fetchContentList() {
+    useEffect(() => {
+        let isMounted = true;
+        (async () => {
             const entries = await Promise.all(
                 Object.entries(ContentConfig).map(async ([key, { contentName, contentData, Component }]) => ({
                     key,
@@ -67,28 +69,26 @@ function Contents({ contentsRef, getContentRef, getCurrentContentKey, scrollToCo
                     Component,
                 }))
             );
-            setContentList(entries);
-        }
-        fetchContentList();
+            if (isMounted) setContentList(entries);
+        })();
+        return () => { isMounted = false; };
     }, []);
 
     return (
-        <div className="contents-container">
-            <div className="contents" ref={contentsRef}>
-                {contentList.map(({ key, contentName, contentData, Component }, index) => (
-                    <Content
+        <section className="content-section">
+            <div className="content-section__inner" ref={contentSectionRef}>
+                {contentList.map(({ key, contentName, contentData, Component }) => (
+                    <ContentBlock
                         key={key}
-                        background={colorPalette[index % colorPalette.length].bg}
-                        color={colorPalette[index % colorPalette.length].font}
                         contentName={contentName}
                         contentData={contentData}
                         Component={Component}
-                        ref={getContentRef(key)}
+                        ref={getContentBlockRef(key)}
                     />
                 ))}
             </div>
-        </div>
+        </section>
     );
 }
 
-export default Contents;
+export default Content;

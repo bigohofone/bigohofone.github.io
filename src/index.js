@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom/client'; // 수정: 'react-dom'에서 'react-dom
 import './styles/base.css'
 import './styles/introduction.css';
 import './styles/nav.css';
-import './styles/content_elem.css';
 import './styles/footer.css';
-import './styles/content.css'
-import './styles/layout.css'
-import './styles/contact.css'
+import './styles/content.css';
+import './styles/contentItem.css';
+import './styles/layout.css';
+import './styles/contact.css';
 
 import App from './App';
 

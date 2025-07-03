@@ -1,8 +1,11 @@
 [
   {
     "title": "Learning Strategies of Top Students at Korea University",
-    "organization": "Korea University",
-    "date": [null, 4, 2023],
-    "description": "고려대학교 정보대학 대표학생으로 선정되어, 학생들에게 학습방법론을 강의하였습니다."
+    "client": "Korea University",
+    "start": [null, 4, 2023],
+    "end": null,
+    "details": {
+      "Description": "Selected as the representative student of the College of Informatics at Korea University to teach learning methodologies to fellow students."
+    }
   }
 ]
