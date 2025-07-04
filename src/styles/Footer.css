@@ -2,7 +2,7 @@
     Footer - Meta Style
     ========================= */
 .footer {
-    padding: 9rem 1rem 0;
+    padding: calc(var(--base-height) * 3);
     margin: 0;
 
     display: flex;
@@ -10,8 +10,7 @@
     align-items: space-between;
     justify-content: space-between;
     position: relative;
-    gap: 1rem;
-    border-bottom: 2px solid white;
+    /* border-bottom: 2px solid white; */
     background: transparent;
     color: var(--color-gray-900);
     fill: var(--color-gray-900);
@@ -27,7 +26,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    /* gap: 1rem; */
 }
 
 .footer-container:only-child {

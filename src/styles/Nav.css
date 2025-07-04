@@ -52,6 +52,10 @@
     border-top: 0;
 }
 
+/* .nav-btn:last-of-type {
+    border-bottom: 0;
+} */
+
 .nav-btn--active {
     color: white;
     background: var(--color-gray-900);

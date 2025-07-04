@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import ArrowButton from '../common/ArrowButton';
+import ArrowButton from '../common/Icons';
 // import ReactMarkdown from 'react-markdown';
 function BaseContentItem({
   expanded,

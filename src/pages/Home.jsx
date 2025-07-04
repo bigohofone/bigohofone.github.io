@@ -9,8 +9,6 @@
 import React from 'react';
 import Footer from '../components/Footer';
 import Navigation from '../components/Navigation';
-// import Card from '../components/Section';
-// import useCard from '../hooks/useCard';
 import useNavigation from '../hooks/useNavigation';
 import Content from '../components/Content';
 import Introduction from '../components/Introduction';
@@ -42,37 +40,39 @@ const Home = () => {
   });
 
   return (
-    <div className='app'>
+    <>
       <header className="header">
         <div className="header__inner">
           <h1 className="header__title">WONJUN OH</h1>
+          <Introduction />
+          <News />
         </div>
       </header>
-      <div className="app__inner">
-        <aside className="sidebar">
-          <nav className="sidebar-navigation">
-            <Navigation
-            sectionActive={sectionActive}
-            navContainerRef={navContainerRef}
-            navRefs={navRefs}
-            onNavClick={handleNavClick}
+      <div className='app'>
+        <div className="app__inner">
+          <aside className="sidebar">
+            <nav className="sidebar-navigation">
+              <Navigation
+                sectionActive={sectionActive}
+                navContainerRef={navContainerRef}
+                navRefs={navRefs}
+                onNavClick={handleNavClick}
+              />
+            </nav>
+          <section className="sidebar-extras">
+            {/* 기타 컴포넌트나 정보가 들어갈 수 있는 영역 */}
+          </section>
+        </aside>
+        <main className="main-content">
+          <Content
+            contentSectionRef={contentSectionRef}
+            getContentBlockRef={getContentBlockRef}
           />
-        </nav>
-        <section className="sidebar-extras">
-          {/* 기타 컴포넌트나 정보가 들어갈 수 있는 영역 */}
-        </section>
-      </aside>
-      <main className="main-content">
-        {/* <Introduction /> */}
-        {/* <News /> */}
-        <Content
-          contentSectionRef={contentSectionRef}
-          getContentBlockRef={getContentBlockRef}
-        />
-        <Footer />
-      </main>
+        </main>
+      </div>
     </div>
-  </div>
+    <Footer />
+  </>
   );
 };
 

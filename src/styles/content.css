@@ -21,8 +21,8 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: var(--base-height);
-    margin-bottom: var(--base-height);
+    /* margin-top: var(--base-height); */
+    /* margin-bottom: var(--base-height); */
 }
 
 .content-block__title {
@@ -38,6 +38,11 @@
     border-left: none;
     border-right: none;
     border-bottom: 2px solid;
+
+    background: black;
+    /* background-image: radial-gradient(white 1px, transparent 1px);
+    background-size: calc(var(--base-height) / 6) calc(var(--base-height) / 6); */
+    color: white;
 }
 
 .content-block__items {
