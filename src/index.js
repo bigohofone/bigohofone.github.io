@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client'; // 수정: 'react-dom'에서 'react-dom/client'로 변경
 import './styles/base.css'
-import './styles/introduction.css';
 import './styles/nav.css';
 import './styles/footer.css';
 import './styles/content.css';
