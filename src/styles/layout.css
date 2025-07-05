@@ -12,15 +12,15 @@
 
 .header__inner {
     width: 100%;
-    max-width: 1200px;
+    /* max-width: 1200px; */
     height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    border-left: 2px solid;
+    /* border-left: 2px solid;
     border-right: 2px solid;
     border-top: 2px solid;
-    border-bottom: 2px solid;
+    border-bottom: 2px solid; */
 }
 
 .app {
@@ -28,73 +28,49 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    /* gap: 1rem; */
     justify-content: center;
     align-items: center;
     background-color: var(--color-background);
-    /* padding: 1rem; */
 }
 
 .app__inner {
     width: 100%;
-    max-width: 1200px;
     height: 100%;
     display: flex;
-    flex-direction: row;
-    /* gap: 1rem; */
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    /* align-items: flex-start; */
-    gap: var(--base-height);
 }
 
 .sidebar {
+    width: 100%;
     flex: 1;
     position: sticky;
     top: 0;
-    /* width: 100%; */
-    /* position: fixed; */
-    
-    background: white;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     z-index: 1000;
+    backdrop-filter: blur(4px) saturate(180%);
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.05);
+    /* border-radius: 16px; */
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-navigation {
-    border-left: 2px solid;
-    border-right: 2px solid;
-    border-top: 2px solid;
-    /* border-bottom: 2px solid; */
     position: sticky;
     top: 0;
+    background: transparent;
 }   
 
 .main-content {
-    border-left: 2px solid;
-    border-right: 2px solid;
-    border-top: 2px solid;
-    /* border-bottom: 2px solid; */
     flex: 3;
     width: 100%;
-    /* max-width: 50rem;  */
+    max-width: 800px;
     align-items: center;
-}
-
-@media (max-width: 800px) {
-    .app__inner {
-        flex-direction: column;
-        gap: 0;
-    }
-    .main-content {
-        width: 100%;
-        max-width: none;
-    }
-    .sidebar {
-        border-right: 0;
-    }
-    /* .sidebar-navigation {
-        position: fixed;
-        top: 0;
-    }    */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    
 }

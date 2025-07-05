@@ -9,13 +9,12 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 
 export default function useNavigation({
-	contentsRef,
+	contentRefs,
+	contentSectionRef,
 	getContentRef,
-	getCurrentContentKey,
-	scrollToContentKey
+	getCurrentContentKey
 }) {
-	const navContainerRef = useRef(null);
-	const navRefs = useRef({});
+	const navRef = useRef(null);
 
 	// sectionActive는 getCurrentContentKey가 반환하는 현재 활성화된 콘텐츠의 키를 저장합니다.
 	const [sectionActive, setSectionActive] = useState(getCurrentContentKey());
@@ -33,16 +32,21 @@ export default function useNavigation({
 	}, [getCurrentContentKey]);
 
 	const handleNavClick = useCallback((key) => {
-		scrollToContentKey(key);
-	}, []);
-
-	// You can use contentsRef, contentRefs, getCurrentContentKey, scrollToContentKey as needed here
-	
+		const ref = contentRefs.current[key];
+		if (ref?.current && navRef.current) {
+			const navHeight = navRef.current.offsetHeight || 0;
+			const rect = ref.current.getBoundingClientRect();
+			const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+			const targetY = rect.top + scrollTop - navHeight;
+			window.scrollTo({ top: targetY, behavior: 'smooth' });
+		} else if (ref?.current) {
+			ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}
+	}, [contentRefs, navRef]);
 
 	// Example: expose them if needed
 	return {
-		navContainerRef,
-		navRefs,
+		navRef,
 		sectionActive,
 		handleNavClick
 	};

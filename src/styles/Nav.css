@@ -3,13 +3,11 @@
   Navigation Bar
   ========================= */
 .nav {
-    color: var(--color-gray-900);
-    background: white;
     width: auto;
     height: auto;
 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     overflow-y: scroll;
     overflow-x: scroll;
     white-space: nowrap;
@@ -26,10 +24,11 @@
 }
 
 .nav-btn {
+    color: var(--color-gray-300);
     /* width: calc(var(--base-height) * 6); */
     width: auto;
     height: var(--base-height);
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 500;
     text-align: left;
 
@@ -38,7 +37,7 @@
     border-top: none;
     border-left: none;
     border-right: none;
-    border-bottom: 2px solid;
+    border-bottom: none;
     box-sizing: border-box;
 
     cursor: pointer;
@@ -57,22 +56,11 @@
 } */
 
 .nav-btn--active {
-    color: white;
-    background: var(--color-gray-900);
-    border-color: black;
+    color: black;
+    /* background: var(--color-gray-900); */
+    /* border-color: black; */
 }
 
 .nav-title {
     display: none;
-}
-
-@media (max-width: 800px) {
-    .nav {
-        flex-direction: row;
-        border-bottom: 2px solid;
-    }
-    .nav-btn {
-        width: auto;
-        border-bottom: 0;
-    }
 }

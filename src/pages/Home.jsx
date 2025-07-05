@@ -21,22 +21,21 @@ import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
 const Home = () => {
 
   const {
+    contentRefs,
     contentSectionRef,
     getContentBlockRef,
     getCurrentContentKey,
-    scrollToContentKey
   } = useContent();
 
   const {
-		navContainerRef,
-		navRefs,
+		navRef,
 		sectionActive,
 		handleNavClick
   } = useNavigation({
+    contentRefs,
     contentSectionRef,
     getContentBlockRef,
     getCurrentContentKey,
-    scrollToContentKey
   });
 
   return (
@@ -54,8 +53,7 @@ const Home = () => {
             <nav className="sidebar-navigation">
               <Navigation
                 sectionActive={sectionActive}
-                navContainerRef={navContainerRef}
-                navRefs={navRefs}
+                navRef={navRef}
                 onNavClick={handleNavClick}
               />
             </nav>

@@ -28,17 +28,10 @@ export default function useContent() {
         return closestKey;
     }, []);
 
-    const scrollToContentKey = useCallback((key) => {
-        const ref = contentRefs.current[key];
-        if (ref?.current) {
-            ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }, []);
-
     return {
+        contentRefs,
         contentSectionRef,
         getContentBlockRef,
-        getCurrentContentKey,
-        scrollToContentKey
+        getCurrentContentKey
     };
 }

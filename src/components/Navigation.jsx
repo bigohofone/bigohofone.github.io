@@ -12,7 +12,6 @@ import { ContentConfig } from '../utils/contentConfig';
 function Navigation({
 	sectionActive,
 	navRef,
-	navContainerRef,
 	onNavClick,
 }) {
 

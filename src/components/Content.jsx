@@ -24,12 +24,12 @@ const ContentItem = memo(({ data, Component }) => {
 
 const ContentBlock = forwardRef(({ index, contentName, contentData, Component }, ref) => {
     
-    const { bg: background, font: color } = colorPalette[index % colorPalette.length];
+    // const { bg: background, font: color } = colorPalette[index % colorPalette.length];
 
     return (
         <div
             className="content-block"
-            style={{ background, color }}
+            // style={{ background, color }}
             ref={ref}
         >
             <div className="content-block__inner">
@@ -74,20 +74,16 @@ function Content({ contentSectionRef, getContentBlockRef }) {
     }, []);
 
     return (
-        <section className="content-section">
-            <div className="content-section__inner" ref={contentSectionRef}>
-                {contentList.map(({ key, contentName, contentData, Component }, index) => (
-                    <ContentBlock
-                        key={key}
-                        index={index}
-                        contentName={contentName}
-                        contentData={contentData}
-                        Component={Component}
-                        ref={getContentBlockRef(key)}
-                    />
-                ))}
-            </div>
-        </section>
+        contentList.map(({ key, contentName, contentData, Component }, index) => (
+            <ContentBlock
+                key={key}
+                index={index}
+                contentName={contentName}
+                contentData={contentData}
+                Component={Component}
+                ref={getContentBlockRef(key)}
+            />
+        ))
     );
 }
 
