@@ -44,6 +44,18 @@ export default function useNavigation({
 		}
 	}, [contentRefs, navRef]);
 
+	useEffect(() => {
+		if (!navRef.current) return;
+		const activeNavItem = navRef.current.querySelector(`.nav-btn--active`);
+		if (activeNavItem && navRef.current.scrollTo) {
+			const navRect = navRef.current.getBoundingClientRect();
+			const itemRect = activeNavItem.getBoundingClientRect();
+			const offsetLeft = activeNavItem.offsetLeft - navRef.current.offsetLeft;
+			const scrollTo = offsetLeft - (navRect.width / 2) + (itemRect.width / 2);
+			navRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+		}
+	}, [sectionActive]);
+
 	// Example: expose them if needed
 	return {
 		navRef,
