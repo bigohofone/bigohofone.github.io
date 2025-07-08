@@ -30,7 +30,7 @@ html {
   box-sizing: border-box;
   font-size: 16px;
   font-weight: 400;
-  line-height: 1.5rem;
+  line-height: 1.5em;
   font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   padding: 0;
   margin: 0;
@@ -110,6 +110,6 @@ body {
     --base-height: 4rem;
   }
   html {
-    font-size: 14px;
+    font-size: 12px;
   }
 }

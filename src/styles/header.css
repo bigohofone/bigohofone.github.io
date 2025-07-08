@@ -59,7 +59,7 @@
 
 .header-block__items {
     width: 100%;
-    padding: 0 0 0 max(1rem, calc(1rem + (100% - 800px) / 2));
+    padding: 0 max(1rem, calc(1rem + (100% - 800px) / 2)) 0 max(1rem, calc(1rem + (100% - 800px) / 2));
     height: 100%;
 
     display: flex;
@@ -80,10 +80,11 @@
 
 .header-item {
     aspect-ratio: 16 / 9;
-    flex: 0 0 50%;
+    flex: 0 0 75%;
     padding: 3rem 2rem 3rem 2rem;
     border-radius: 2rem;
-    border: 1px solid var(--color-background-tertiary);
+    /* border: 1px solid var(--color-background-tertiary); */
+    border: none;
     background: 
         linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary-dark) 100%),
         url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="1" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.5"/></svg>');
@@ -125,7 +126,7 @@
     justify-content: flex-start;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 100%;
+    height: 25rem;
     width: 100%;
     position: relative;
     z-index: 1;
@@ -141,10 +142,10 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 3rem;
+    height: 25rem;
     pointer-events: none;
     z-index: 2;
-    background: linear-gradient(to bottom, transparent, var(--color-background-secondary));
+    background: linear-gradient(to bottom, transparent 50%, var(--color-background-secondary) 100%);
 }
 
 .no-data {
@@ -157,8 +158,8 @@
 .news-item {
     width: 100%;
     max-width: 800px;
-    flex: 0 0 3rem;
-    padding: 0;
+    flex: 0 0 5rem;
+    padding: 0 0.25rem;
     margin: 0;
     border-top: 1px solid var(--color-background-tertiary);
     background: transparent;
@@ -174,7 +175,7 @@
 }
 
 .news-item__date {
-    flex: 0 0 9rem;
+    flex: 0 0 8rem;
     color: var(--color-text-secondary);
 }
 

@@ -1,5 +1,14 @@
 [
   {
+    "title": "Dean’s List",
+    "event": "Korea University",
+    "start": [null, "Spring", "2025"],
+    "end": null,
+    "details": {
+      "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for a semester."
+    }
+  },
+  {
     "title": "2nd Place (₩2,000,000)",
     "event": "Korea University College of Informatics NE:XT Software Contest",
     "start": [null, null, 2025],
@@ -31,15 +40,6 @@
     "title": "President’s List",
     "event": "Korea University",
     "start": [null, "Spring", "2024"],
-    "end": null,
-    "details": {
-      "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."
-    }
-  },
-  {
-    "title": "President’s List",
-    "event": "Korea University",
-    "start": [null, "Fall", "2023"],
     "end": null,
     "details": {
       "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."

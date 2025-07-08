@@ -30,7 +30,7 @@
     overflow-y: scroll;
     overflow-x: scroll;
     white-space: nowrap;
-    padding: 1.5rem 0 1.5rem max(1rem, calc(1rem + (100% - 800px) / 2));
+    padding: 1.5rem max(1rem, calc(1rem + (100% - 800px) / 2)) 1.5rem max(1rem, calc(1rem + (100% - 800px) / 2));
     gap: 2rem;
     
     scrollbar-width: none; /* Firefox */
