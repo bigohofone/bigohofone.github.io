@@ -40,7 +40,15 @@ function BaseContentItem({
                 <span>{title ?? ''}</span>
               </div>
               <div className="content-item__details-content">
-                <span>{content !== undefined && content !== null ? String(content) : ''}</span>
+                {Array.isArray(content) ? (
+                  content.map((item, idx) => (
+                    <div key={idx} className="content-item__details-content-list-item">
+                      {item}
+                    </div>
+                  ))
+                ) : (
+                  <span>{content !== undefined && content !== null ? String(content) : ''}</span>
+                )}
               </div>
             </div>
           ))}
