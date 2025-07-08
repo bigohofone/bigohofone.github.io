@@ -23,7 +23,26 @@
     "start": [null, 12, 2023],
     "end": [null, 2, 2024],
     "details": {
-      "Description": "CVPR 2023에 발표된 Outfit Transformer를 구현하여 옷 추천에서 SoTA(State-of-the-Art)를 달성하였습니다. 기존 모델은 옷의 표현과 추천에 대한 정보를 동시에 학습해 적은 데이터 셋으로 학습 하는 것이 어렵다고 판단하였습니다. 이에, 두 기능을 각 모듈로 구분하였고, 옷의 표현부는 CLIP으로 대체하여 Compatibility AUC는 93에서 95로, Fill-in-the-blank 정확도는 65%에서 69%로 개선했습니다. 또한 실사용성을 고려하여 임베딩을 사전 추출하는 방식으로 학습을 최적화하였고, Epoch 당 학습 시간을 기존 2시간에서 20분으로 약 5배 단축하였습니다. (Repository: https://github.com/owj0421/outfit-transformer)"
+      "Situation": "In the fashion AI domain, there was a lack of high-performing open-source outfit recommendation systems as of 2023. Existing models struggled with generalization under limited data and failed to separate the learning of item representations from compatibility prediction. Additionally, most state-of-the-art (SoTA) approaches prioritized accuracy over training efficiency and real-world applicability.",
+      "Task": [
+        "Develop a scalable and high-performance outfit recommendation model that performs well even with limited data.",
+        "Address the limitations of jointly learning item representation and recommendation compatibility.",
+        "Optimize the model for practical use cases by reducing training and inference time without sacrificing performance."
+      ],
+      "Action": [
+        "Modularized Architecture: Refactored the original Outfit Transformer to decouple visual representation learning from compatibility modeling.",
+        "Representation Learning with CLIP: Replaced the visual encoder with CLIP, leveraging its strong generalization capabilities for fashion image embeddings.",
+        "Efficiency Optimization: Pre-computed item embeddings before training, significantly reducing runtime by eliminating redundant computation during each epoch.",
+        "Open-Source Contribution: Released the full implementation as an open-source project to contribute to the community and facilitate reproducibility."
+      ],
+      "Result": [
+        "Compatibility AUC improved from 93 → 95",
+        "Fill-in-the-blank accuracy increased from 65% → 69%",
+        "Training time per epoch reduced from 120 minutes → 20 minutes (5x faster)",
+        "Built a production-friendly architecture using embedding caching and decoupled learning, enabling scalable deployment in real-world systems.",
+        "The project received positive feedback from the community and is now referenced as a practical SoTA approach for outfit recommendation."
+      ],
+      "Repository": "https://github.com/owj0421/outfit-transformer"
     }
   }
 ]
