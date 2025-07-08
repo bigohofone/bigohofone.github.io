@@ -16,19 +16,21 @@ function Navigation({
 }) {
 
 	return (
-		<nav ref={navRef} className='nav'>
-			<p class='nav-title'>Index.</p>
-			{Object.entries(ContentConfig).map(([key, value]) => (
-				<button
-					key={key}
-					className={`nav-btn${sectionActive === key ? ' nav-btn--active' : ''}`}
-					onClick={() => onNavClick(key)}
-					type="button"
-				>
-					{value.contentName}
-				</button>
-			))}
-		</nav>
+		<div className="nav">
+			<nav ref={navRef} className='nav_inner'>
+				{/* <p class='nav-title'>Index.</p> */}
+				{Object.entries(ContentConfig).map(([key, value]) => (
+					<button
+						key={key}
+						className={`nav-btn${sectionActive === key ? ' nav-btn--active' : ''}`}
+						onClick={() => onNavClick(key)}
+						type="button"
+					>
+						{value.contentName}
+					</button>
+				))}
+			</nav>
+		</div>
 	);
 }
 

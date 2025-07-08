@@ -1,5 +1,7 @@
 import React from 'react';
 
+
+
 const buttonStyle = {
     color: 'inherit',
     border: 'none',
@@ -14,24 +16,7 @@ const buttonStyle = {
     padding: 0, // 패딩 제거
 };
 
-const circleStyle = {
-    width: '2rem',
-    height: '2rem',
-    borderRadius: '50%',
-    background: '#f0f0f0', // 원하는 색상으로 변경 가능
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
-};
 
-const iconStyle = {
-    fontSize: '1.5rem',
-    fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24",
-    display: 'inline-block',
-    transition: 'transform 0.4s',
-    margin: 0,
-};
 
 export default function ArrowButton({ expanded, onClick }) {
     return (
@@ -46,15 +31,19 @@ export default function ArrowButton({ expanded, onClick }) {
             tabIndex={-1}
             type="button"
         >
-            <span style={circleStyle}>
+            <span
+                className="btn__circle"
+                style={{}}
+            >
                 <span
                     className="material-symbols-outlined"
                     style={{
-                        ...iconStyle,
-                        transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                        padding: '0 0 0 0.05rem',
+                        transform: expanded ? 'rotate(-90deg)' : 'rotate(90deg)',
+                        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
                     }}
                 >
-                    arrow_forward
+                    chevron_right
                 </span>
             </span>
         </button>

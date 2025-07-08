@@ -4,7 +4,7 @@ import PaperContentItem from '../components/ContentItem/Paper';
 import ProjectContentItem from '../components/ContentItem/Project';
 import HonorAndAwardContentItem from '../components/ContentItem/HonorAndAward';
 import TalkContentItem from '../components/ContentItem/Talk';
-import NewsContentItem from '../components/News';
+import NewsItem from '../components/Header';
 
 // 캐시와 fetch promise를 저장할 객체
 const contentDataCache = {};
@@ -52,4 +52,4 @@ export const ContentConfig = {
   talks: defineContent('talks', 'Talks', TalkContentItem)
 };
 
-export const NewsContent = defineContent('news', 'News.', NewsContentItem);
+export const NewsContent = defineContent('news', 'News.', NewsItem);

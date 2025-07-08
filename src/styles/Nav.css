@@ -3,6 +3,25 @@
   Navigation Bar
   ========================= */
 .nav {
+    width: 100%;
+    flex: 1;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1000;
+    color: var(--color-text);
+    background: var(--color-background-secondary);
+    /* border-top: var(--glass-border);*/
+    border-bottom: var(--color-background-tertiary) 1px solid;
+}
+
+.nav_inner {
+    position: sticky;
+    top: 0;
+    background: transparent;
+
     width: auto;
     height: auto;
 
@@ -11,7 +30,8 @@
     overflow-y: scroll;
     overflow-x: scroll;
     white-space: nowrap;
-    gap: 0;
+    padding: 1.5rem 0 1.5rem max(1rem, calc(1rem + (100% - 800px) / 2));
+    gap: 2rem;
     
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
@@ -24,11 +44,9 @@
 }
 
 .nav-btn {
-    color: var(--color-gray-300);
-    /* width: calc(var(--base-height) * 6); */
     width: auto;
-    height: var(--base-height);
-    font-size: 1.5rem;
+    height: auto;
+    font-size: 1.25rem;
     font-weight: 500;
     text-align: left;
 
@@ -44,7 +62,8 @@
     transition: color 0.2s;
 
     flex-shrink: 0;
-    padding: 0 1rem;
+    /* padding: 0 1rem; */
+    padding: 0;
 }
 
 .nav-btn:first-of-type {
@@ -56,7 +75,8 @@
 } */
 
 .nav-btn--active {
-    color: black;
+    color: var(--color-primary-light);
+    /* border: 1px solid var(--color-primary-light); */
     /* background: var(--color-gray-900); */
     /* border-color: black; */
 }

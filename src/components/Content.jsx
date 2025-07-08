@@ -74,16 +74,18 @@ function Content({ contentSectionRef, getContentBlockRef }) {
     }, []);
 
     return (
-        contentList.map(({ key, contentName, contentData, Component }, index) => (
-            <ContentBlock
-                key={key}
-                index={index}
-                contentName={contentName}
-                contentData={contentData}
-                Component={Component}
-                ref={getContentBlockRef(key)}
-            />
-        ))
+        <main className="content" ref={contentSectionRef}>
+            {contentList.map(({ key, contentName, contentData, Component }, index) => (
+                <ContentBlock
+                    key={key}
+                    index={index}
+                    contentName={contentName}
+                    contentData={contentData}
+                    Component={Component}
+                    ref={getContentBlockRef(key)}
+                />
+            ))}
+        </main>
     );
 }
 

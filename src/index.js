@@ -4,7 +4,7 @@ import './styles/base.css'
 import './styles/nav.css';
 import './styles/footer.css';
 import './styles/content.css';
-import './styles/layout.css';
+import './styles/header.css';
 
 import App from './App';
 
