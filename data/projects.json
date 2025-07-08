@@ -5,7 +5,21 @@
     "start": [null, 12, 2024],
     "end": [null, 2, 2025],
     "details": {
-      "Description": "사고의 보험 약관상 면/부책 여부를 판단하는 ToD 챗봇 개발을 수행하였습니다. 복잡한 보험 서류 참고, 다단계/다양한 사고 패턴을 요구하는 보험 태스크를 범용적인 하나의 CoT 계열 프롬프트로 해결하는 것이 어려운 문제가 있었습니다. 따라서, 실무와 협업하여 태스크를 분류한 후 사고 로직을 디자인, 파이프라인화하였고 실무에서 요구하는 정성적 평가 기준을 만족할 수 있었습니다. 또한 FastAPI 기반의 WebSocket 실시간 대화형 엔드 포인트 개발, 비동기 처리, Singleton 패턴 적용, Docker를 활용한 배포까지 전체 엔지니어링을 경험하고, 인퍼런스 시간을 기존 12초에서 6초로 절반가량 단축했습니다."
+      "Situation": [
+        "작업중인 파일",
+        "GenON의 삼성화재 프로젝트에서 사내 가이드라인 문서를 대상으로 QA를 수행하는 챗봇 개발.",
+        "가이드라인 문서 전처리 및 데이터 정제 부터 챗봇 개발, 프롬프팅, 실시간 대화형 엔드 포인트 개발 및 배포까지 전반적인 엔지니어링을 아우르는 포괄적인 업무 수행."
+      ],
+      "Task": [
+        "-"
+      ],
+      "Action": [
+        "FastAPI 기반의 WebSocket 실시간 대화형 엔드 포인트 개발, 비동기 처리, Singleton 패턴 적용, Docker를 활용한 배포까지 전체 엔지니어링을 경험하고, 인퍼런스 시간을 기존 12초에서 6초로 절반가량 단축."
+      ],
+      "Result": [
+        "현업 실무자 평가 기준 QA 정확도: 50% → 88%로 개선, 실 서비스 배포 기준을 만족하여 실제 고객 대상 배포.",
+        "실무자 평가에서 응답 안정성도 크게 향상."
+      ]
     }
   },
   {
@@ -14,7 +28,25 @@
     "start": [null, 4, 2024],
     "end": [null, 8, 2024],
     "details": {
-      "Description": "제품 문의에 대한 QA를 수행하는 RAG 챗봇 개발을 수행하였습니다. 제품에 따라 봐야 하는 문서가 정해져있지만, 모든 문서의 내용이 대동소이하여 의미를 기반으로 검색하는 기존 검색 시스템으로는 개선하기 어렵다는 문제가 있었습니다. 쿼리에 따라 제품의 종류를 추출하는 모델을 개발하고, 이를 검색 필터링에 적용하여 현업에서 측정한 QA 정확도를 기존 50%에서 85%로 개선하였습니다. 또한 추출되지 않을 경우 대답하지 않도록 하여 답변 안정성을 크게 개선하였습니다. 또한 이를 LangChain을 사용하여 Flask로 실제 고객에게 배포하고, 피드백을 받아 개선하였습니다."
+      "Situation": [
+        "LS Electric의 DX팀에서 제품 문의에 대응하는 챗봇을 개선하는 프로젝트 수행.",
+        "대상 문의는 전기 제품(인버터 등)에 대한 것으로, 수치 오류가 화재 등 큰 문제를 야기할 수 있는 민감한 분야."
+      ],
+      "Task": [
+        "챗봇 오픈을 위한 최소 QA 정확도를 확보.(KPI 70% 이상)",
+        "답변 생성까지의 시간을 단축.(KPI 15초 이내)",
+        "고객 혼동을 방지하기 위해 답변의 안정성을 확보."
+      ],
+      "Action": [
+        "기존 챗봇의 문제를 분석하기 위해 검색 모델과 답변 모델의 성능을 분리 평가하고, 검색 모델이 주요 병목임을 확인.",
+        "레이턴시 개선을 위해 LLM 파이프라이닝 대신 검색 모델 고도화에 집중. 검색 최적화와 동시에 제품명 추출 모델을 통한 Fuzzy Matching 기반 필터링을 선행해 검색 정확도 향상.",
+        "제품명이 추출되지 않는 경우에는 답변을 회피하도록 설계해, 잘못된 응답을 줄이고 안정성 확보."
+      ],
+      "Result": [
+        "현업 실무자 평가 기준 QA 정확도: 50% → 88%로 개선, 실 서비스 배포 기준 만족.",
+        "실무자 평가에서 응답 안정성 배포 기준 만족.",
+        "실제 공식 사이트에 배포."
+      ]
     }
   },
   {
@@ -23,24 +55,23 @@
     "start": [null, 12, 2023],
     "end": [null, 2, 2024],
     "details": {
-      "Situation": "In the fashion AI domain, there was a lack of high-performing open-source outfit recommendation systems as of 2023. Existing models struggled with generalization under limited data and failed to separate the learning of item representations from compatibility prediction. Additionally, most state-of-the-art (SoTA) approaches prioritized accuracy over training efficiency and real-world applicability.",
+      "Situation": [
+        "개인 프로젝트로 패션 추천 시스템 모델을 개발."
+      ],
       "Task": [
-        "Develop a scalable and high-performance outfit recommendation model that performs well even with limited data.",
-        "Address the limitations of jointly learning item representation and recommendation compatibility.",
-        "Optimize the model for practical use cases by reducing training and inference time without sacrificing performance."
+        "패션 추천 분야에는 높은 성능을 가진 오픈소스 모델이 부족함.",
+        "기존 모델들은 표현 학습과 추천 학습을 동시에 진행하여 일반화 성능이 낮아, 실제 데이터에 활용하기 어려움.",
+        "Outfit-Transformer는 SoTA 모델이지만, 학습과 추론 시간이 길어 빠른 응답이 요구되는 실제 추천 서비스에는 적합하지 않음."
       ],
       "Action": [
-        "Modularized Architecture: Refactored the original Outfit Transformer to decouple visual representation learning from compatibility modeling.",
-        "Representation Learning with CLIP: Replaced the visual encoder with CLIP, leveraging its strong generalization capabilities for fashion image embeddings.",
-        "Efficiency Optimization: Pre-computed item embeddings before training, significantly reducing runtime by eliminating redundant computation during each epoch.",
-        "Open-Source Contribution: Released the full implementation as an open-source project to contribute to the community and facilitate reproducibility."
+        "원 논문과 동일한 아키텍처로 Outfit-Transformer를 재구현하고, 벤치마크를 통해 성능 재현 확인.",
+        "표현 모델과 추천 모델을 분리하여, 표현 모델에는 FashionCLIP을 적용해 일반화 성능을 확보하고, 추천 모델은 다양한 사이즈를 실험해 빠른 추론이 가능한 구조로 선택.",
+        "표현 모델의 출력을 사전 계산해 DB에 저장하고, 추천 모델은 이를 불러와 추론함으로써 전체 추론 속도 크게 개선."
       ],
       "Result": [
-        "Compatibility AUC improved from 93 → 95",
-        "Fill-in-the-blank accuracy increased from 65% → 69%",
-        "Training time per epoch reduced from 120 minutes → 20 minutes (5x faster)",
-        "Built a production-friendly architecture using embedding caching and decoupled learning, enabling scalable deployment in real-world systems.",
-        "The project received positive feedback from the community and is now referenced as a practical SoTA approach for outfit recommendation."
+        "Compatibility AUC(93 → 95)와 Fill-in-the-blank Acc(65% → 69%)에서 SoTA 성능 달성 후 오픈소스로 공개. 좋은 평가를 받고 있음.",
+        "후속 프로젝트로, 한국 패션 데이터셋으로 파인튜닝하여 모델의 일반화 가능성 입증.",
+        "학습 시간(에폭당 120분 → 20분; 5배 향상)과 추론 시간 대폭 단축."
       ],
       "Repository": "https://github.com/owj0421/outfit-transformer"
     }
