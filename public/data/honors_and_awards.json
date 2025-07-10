@@ -1,66 +1,24 @@
 [
   {
-    "title": "Dean’s List",
-    "event": "Korea University",
-    "start": [null, "Spring", "2025"],
-    "end": null,
-    "details": {
-      "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for a semester."
-    }
-  },
-  {
-    "title": "2nd Place (₩2,000,000)",
+    "title": "Gold Prize (₩2,000,000)",
     "event": "Korea University College of Informatics NE:XT Software Contest",
     "start": [null, null, 2025],
     "end": null,
-    "details": {
-      "Description": "A contest hosted by the College of Informatics at Korea University. Led the development of AI services for the dating assistant app Rendi."
-    }
+    "details": "(1) Awarded by the College of Informatics at Korea University.\n\n(2) Led the development of AI services for the dating assistant app Rendi."
   },
   {
     "title": "Honourable Mention (₩300,000)",
     "event": "Digital Competition of the Nat’l Program of Excellence in Software",
-    "start": [null, null, 2024],
+    "start": [null, 8, 2024],
     "end": null,
-    "details": {
-      "Description": "A competition hosted by the Ministry of Science&ICT. Developed an OOD classification model for detecting fake audio."
-    }
+    "details": "(1) Awarded by the Ministry of Science&ICT.\n\n(2) Developed an OOD classification model for detecting fake audio."
   },
   {
     "title": "NIA Director's Award (₩3,000,000)",
-    "event": "Korean AI Contest",
-    "start": [null, null, 2023],
+    "event": "2023 Korean AI Contest",
+    "start": [null, 11, 2023],
     "end": null,
     "mainImage": null,
-    "details": {
-      "Description": "A competition hosted by the Ministry of Science&ICT and the National Information Society Agency. Developed a Korean speech recognition model tailored for the elderly and children."
-    }
-  },
-  {
-    "title": "President’s List",
-    "event": "Korea University",
-    "start": [null, "Spring", "2024"],
-    "end": null,
-    "details": {
-      "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."
-    }
-  },
-  {
-    "title": "President’s List",
-    "event": "Korea University",
-    "start": [null, "Fall", "2023"],
-    "end": null,
-    "details": {
-      "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for two consecutive semesters."
-    }
-  },
-  {
-    "title": "Dean’s List",
-    "event": "Korea University",
-    "start": [null, "Spring", "2023"],
-    "end": null,
-    "details": {
-      "Description": "An award given to an undergraduate student with GPA 4.5/4.5 for a semester."
-    }
+    "details": "(1) Awarded by the Ministry of Science&ICT and the National Information Society Agency.\n\n(2) Developed a Korean speech recognition model tailored for the elderly and children."
   }
 ]

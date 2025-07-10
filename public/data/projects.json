@@ -1,84 +1,9 @@
 [
   {
-    "title": "Samsung Fire & Marine Insurance Chatbot",
-    "client": "GenON",
-    "start": [null, 12, 2024],
-    "end": [null, 2, 2025],
-    "details": {
-      "Situation": [
-        "GenON의 삼성화재 프로젝트 일환으로 사내 가이드라인 문서를 검색·질의응답할 수 있는 챗봇 개발 진행",
-        "기존 레거시 코드가 최신 라이브러리와 호환되지 않아 기능 확장 및 안정성 확보에 제약 존재",
-        "사내망 내에서 안정적으로 운영 가능한 구조 필요"
-      ],
-      "Task": [
-        "챗봇 고도화보다는 시스템 안정성과 실시간 응답 환경 확보 필요",
-        "레거시 코드 마이그레이션 및 실시간 API 구현 필요",
-        "경량화 및 컨테이너화를 통한 사내 인프라 환경에서의 운영 효율화 필요"
-      ],
-      "Action": [
-        "레거시 코드 전면 마이그레이션 및 최신 라이브러리와의 호환성 확보",
-        "WebSocket 및 비동기 처리, Singleton 패턴 적용으로 동시 요청 처리 구조 설계",
-        "Docker 기반 컨테이너화 및 자동화된 배포 파이프라인 구축"
-      ],
-      "Result": [
-        "레거시 코드 대비 인퍼런스 시간 12초 → 6초로 약 50% 단축",
-        "마이그레이션 및 아키텍처 개선 내용 공유, 타 프로젝트 레거시 전환 지원",
-        "최종적으로 챗봇을 삼성화재 사내망에 정식 배포, 실제 가이드라인 QA에 실사용 중"
-      ]
-    }
-  },
-  {
-    "title": "Product QA Chatbot",
-    "client": "LS Electric",
-    "start": [null, 4, 2024],
-    "end": [null, 8, 2024],
-    "details": {
-      "Situation": [
-        "LS Electric DX팀에서 제품 문의 대응용 챗봇 개선 프로젝트에 참여",
-        "주요 대상은 인버터 등 전기 제품 관련 문의로, 수치 오류가 화재 등의 중대한 사고로 이어질 수 있는 민감한 분야"
-      ],
-      "Task": [
-        "챗봇 오픈을 위한 QA 정확도 70% 이상 확보 (KPI)",
-        "15초 이내 답변 제공을 위한 응답 속도 개선",
-        "민감 제품군 특성상, 잘못된 답변을 줄이고 안정성 확보"
-      ],
-      "Action": [
-        "기존 챗봇의 성능 저하 원인 파악을 위해 검색 모델과 답변 모델을 분리하여 성능 평가, 검색 모델의 성능이 병목임을 확인",
-        "벡터 검색 최적화와 제품명 기반 Fuzzy Matching 필터링 등 검색 모델 고도화에 집중, 응답 속도 손해 없이 검색 정확도 개선",
-        "제품명이 인식되지 않는 케이스에 대해서는 답변을 회피하도록 설계, 잘못된 답변으로 인한 오답 리스크 최소화"
-      ],
-      "Result": [
-        "QA 정확도 50% → 88%로 개선, 현업 실무자 평가 기준 및 실 서비스 배포 기준 충족",
-        "응답 속도, 안정성 등 KPI 전 항목 만족",
-        "최종적으로 LS Electric 공식 고객 응대 채널에 챗봇 서비스 배포 완료"
-      ]
-    }
-  },
-  {
-    "title": "Outfit Transformer Re-implementation",
+    "title": "Scalable & Efficient Outfit Recommendation",
     "client": "Personal Project",
     "start": [null, 12, 2023],
     "end": [null, 2, 2024],
-    "details": {
-      "Situation": [
-        "개인 프로젝트로 패션 아이템 추천 시스템 개발 진행"
-      ],
-      "Task": [
-        "패션 추천 분야에는 높은 성능을 가진 오픈소스 모델이 부족",
-        "기존 모델들은 표현 학습과 추천 학습을 동시에 진행하여 일반화 성능이 낮아, 실제 데이터에 적용 시 성능 저하",
-        "Outfit-Transformer는 SoTA 모델이지만, 학습과 추론 시간이 길어 실제 서비스화에 부적합"
-      ],
-      "Action": [
-        "원 논문과 동일한 구조로 Outfit-Transformer를 재현 구현, 성능 벤치마크 수행하여 정확한 기준 확보",
-        "표현 모델과 추천 모델을 분리, 표현 모델에는 FashionCLIP을 적용해 일반화 성능 확보, 추천 모델은 사이즈를 다양하게 실험해 추론 속도 최적화",
-        "표현 모델의 출력을 사전 계산하여 DB에 저장, 추천 시에는 이를 호출하여 사용, 추론 속도 크게 개선"
-      ],
-      "Result": [
-        "Compatibility AUC(93 → 95)와 Fill-in-the-blank Acc(65% → 69%)에서 SoTA 성능 달성",
-        "학습 시간(에폭당 120분 → 20분; 5배 향상)과 추론 시간 대폭 단축",
-        "GitHub에 오픈소스로 공개, 커뮤니티로부터 긍정적인 피드백 확보"
-      ],
-      "Repository": "https://github.com/owj0421/outfit-transformer"
-    }
+    "details": "(1) Situation: \n- In the fashion recommendation domain, many state-of-the-art models suffer from severe performance degradation when applied to real-world data. Additionally, issues with training/inference efficiency make them unsuitable for practical deployment. Notably, while the Outfit-Transformer model achieves high accuracy, its slow inference and high resource consumption limit its usability in real-time services.\n\n(2) Task: \n- Reproduce and analyze the performance of existing SoTA models, and develop a recommendation system that improves generalization and inference speed for real-world service deployment.\n\n(3) Action: \n- Reimplemented the Outfit-Transformer based on the original paper and conducted thorough benchmarking.\n- Decoupled the representation and recommendation models. Used FashionCLIP as the representation model to enhance generalization. Optimized the recommendation model by experimenting with different sizes to balance speed and performance.\n- Improved real-time inference by precomputing representation vectors and storing them in a database, significantly reducing latency by loading vectors on demand.\n- Released model code and checkpoints as open-source on GitHub, enabling community feedback and ongoing improvements.\n\n(4) Results: \n- Achieved new SoTA performance: Compatibility AUC improved from 93 to 95, and Fill-in-the-blank Accuracy from 65% to 69%.\n- Reduced training time by over 5x (from 120 to 20 minutes per epoch), with significant inference speed improvements.\n- Open-source release received positive feedback from the ML/fashion community, with dozens of GitHub stars.\n\n(5) Repository: \n- https://github.com/owj0421/outfit-transformer"
   }
 ]

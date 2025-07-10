@@ -5,9 +5,7 @@
     "position": "AI Engineer Intern",
     "start": [null, 12, 2024],
     "end": [null, 2, 2025],
-    "details": {
-      "Program": "Korea University 2024 Winter Internship Program"
-    }
+    "details": "(1) Participated in the Samsung Fire & Marine Insurance project at GenON as part of the Korea University 2024 Winter Internship Program.\n\n(2) Designed and implemented a RAG-based chatbot for internal insurance claim guideline queries, etc. Led end-to-end development—from prompt engineering to backend optimization—for a production-ready service deployed on the company intranet.\n\n(3) Modernized legacy systems by fully refactoring outdated code, introducing batch optimization and asynchronous processing patterns, etc. Improvements were adopted by adjacent teams and contributed to broader internal code migration efforts."
   },
   {
     "company": "LS Electric",
@@ -15,9 +13,7 @@
     "position": "AI Engineer Intern",
     "start": [null, 4, 2024],
     "end": [null, 8, 2024],
-    "details": {
-      "Program": "Korea University 2024 Summer Internship Program"
-    }
+    "details": "(1) Participated in the DX (Digital Exchange) Team at LS Electric as part of the Korea University 2024 Summer Internship Program.\n\n(2) Developed a product inquiry chatbot. Improved chatbot QA accuracy by over 30% and optimized latency and reliability, meeting all KPIs and contributing to the successful launch of the chatbot on LS Electric's official customer support channel."
   },
   {
     "company": "Multimodal Interactive Intelligence Laboratory, Korea University",
@@ -25,9 +21,7 @@
     "position": "Research Intern",
     "start": [null, 3, 2024],
     "end": [null, 10, 2024],
-    "details": {
-      "Advisor": "Prof. Paul Hongsuck Seo"
-    }
+    "details": "(1) Advised by Prof. Paul Hongsuck Seo\n\n(2) Participated in research on Multi-hop QA, RAG, LLMs and Information Retrieval\n\n(3) Participated in the development of a Graph-based IR system for the KT Industry-Academic Cooperation Project"
   },
   {
     "company": "AIKU (Artificial Intelligence Club of Korea University)",
@@ -35,8 +29,6 @@
     "position": "President",
     "start": [null, 6, 2023],
     "end": [null, 12, 2023],
-    "details": {
-      "Role": "Led the club in organizing AI-related events and workshops, fostering a community of AI enthusiasts."
-    }
+    "details": "(1) Elected as the 1st Leader of AIKU\n\n(2) Successfully systematized the club and established its direction, receiving positive feedback.\n\n(3) Successfully hosted the Hanyang-Yonsei-Korea University AI Conference (HAYAKU) for the first time, maximizing networking activities."
   }
 ]

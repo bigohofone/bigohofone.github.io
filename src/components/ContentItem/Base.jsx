@@ -8,6 +8,7 @@
 
 import React from 'react';
 import ArrowButton from '../common/Icons';
+import ReactMarkdown from 'react-markdown';
 // import ReactMarkdown from 'react-markdown';
 function BaseContentItem({
   expanded,
@@ -32,26 +33,9 @@ function BaseContentItem({
         </div>
         <ArrowButton expanded={expanded} onClick={onToggle} />
       </div>
-      <div className={`content-item__details${expanded ? ' content-item__details--expanded' : ''}`}>
-        <div className={`content-item__details-inner${expanded ? ' content-item__details-inner--expanded' : ''}`}>
-          {details && Object.entries(details).map(([title, content]) => (
-            <div key={title} className="content-item__details-section">
-              <div className="content-item__details-title">
-                <span>{title ?? ''}</span>
-              </div>
-              <div className="content-item__details-content">
-                {Array.isArray(content) ? (
-                  content.map((item, idx) => (
-                    <div key={idx} className="content-item__details-content-list-item">
-                      {item}
-                    </div>
-                  ))
-                ) : (
-                  <span>{content !== undefined && content !== null ? String(content) : ''}</span>
-                )}
-              </div>
-            </div>
-          ))}
+      <div className={`content-item__details${expanded ? ' content-item__details--expanded' : ''} markdown-body`}>
+        <div className={`content-item__details-inner${expanded ? ' content-item__details-inner--expanded' : ''} markdown-body`}>
+          {typeof details === 'string' && <ReactMarkdown>{details}</ReactMarkdown>}
         </div>
       </div>
     </div>

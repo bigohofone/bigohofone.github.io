@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
 import { NewsContent } from '../utils/contentConfig';
 import { formatDate } from '../utils/contentUtils';
@@ -63,14 +64,12 @@ function HeaderItem({
   content,
 }) {
   return (
-    <div
-      className={`header-item`}
-    >
-      <div className={`header-item__title`}>
+    <div className="header-item">
+      <div className="header-item__title">
         {title}
       </div>
-      <div className={`header-item__content`}>
-        {content}
+      <div className="header-item__content markdown-body">
+        <ReactMarkdown>{content}</ReactMarkdown>
       </div>
     </div>
   );
@@ -78,35 +77,53 @@ function HeaderItem({
 
 
 const Header = () => (
-    <div className="header">
-        <div className="header__inner">
-            <div className="header-block">
-                <div className="header-block__title">
-                    Who am I?
-                </div>
-                <div className="header-block__items">
-                    <HeaderItem
-                        title="Introduction"
-                        content="Hello! I'm Wonjun Oh, a passionate software developer with a keen interest in creating innovative solutions. I specialize in web development, backend systems, and cloud technologies. My goal is to build applications that not only meet user needs but also provide a seamless and enjoyable experience. I thrive on challenges and continuously seek opportunities to expand my skills and knowledge in the ever-evolving tech landscape."
-                    />
-                    <HeaderItem
-                        title="Background"
-                        content="With a strong foundation in computer science and years of hands-on experience, I have worked on a variety of projects ranging from web applications to backend systems. My expertise lies in building scalable, maintainable, and efficient solutions using modern technologies. I am always eager to learn new things and embrace challenges that push me to grow as a developer. Whether collaborating with a team or working independently, I strive to deliver high-quality results and contribute positively to any project I am involved in."
-                    />
-                    <HeaderItem
-                        title="Background"
-                        content="With a strong foundation in computer science and years of hands-on experience, I have worked on a variety of projects ranging from web applications to backend systems. My expertise lies in building scalable, maintainable, and efficient solutions using modern technologies. I am always eager to learn new things and embrace challenges that push me to grow as a developer. Whether collaborating with a team or working independently, I strive to deliver high-quality results and contribute positively to any project I am involved in."
-                    />
-                </div>
-            </div>
-            <div className="header-block">
-                <div className="header-block__title">
-                    News
-                </div>
-                <News />
-            </div>
+  <div className="header">
+    <div className="header__inner">
+      <div className="header-block">
+        <div className="header-block__title">
+          Who am I?
         </div>
+        <div className="header-block__items">
+          <HeaderItem
+            title="Introduction"
+            content={`
+안녕하세요! 저는 현재 고려대학교에 재학 중인 오원준입니다.
+
+대화와 소통 그 안에서 발생하는 
+            `}
+          />
+          <HeaderItem
+            title="Interests"
+            content={`
+AI와 세상 사이의 상호작용에 깊은 관심을 가지고 있습니다. 특히, 단순히 세상을 암기하는 수준을 넘어, 그 내재된 가변성과 복잡한 스케일을 인지하고, 상호작용하며 지속적으로 소통하고 성장할 수 있는 ‘인지적 존재’로서의 AGI를 구현하는 것이 제 목표입니다.
+
+이를 위해, 세상을 효과적으로 이해하는 데 기반이 되는 Representation Learning과, 이러한 표현을 바탕으로 상호작용을 가능하게 하는 Cognitive Theory에 관심을 가지고 있습니다.
+            `}
+          />
+          <HeaderItem
+            title="Motivation"
+            content={`
+
+            `}
+          />
+          <HeaderItem
+            title="Fun Facts!"
+            content={`
+인공지능뿐만 아니라, 세상을 표현하는 활동에도 관심이 많습니다. 특히 미술, 사진에 흥미를 가지고 있으며, 이를 통해 새로운 시각으로 세상을 바라보는 경험을 좋아합니다.
+
+
+            `}
+          />
+        </div>
+      </div>
+      <div className="header-block">
+        <div className="header-block__title">
+          News
+        </div>
+        <News />
+      </div>
     </div>
+  </div>
 );
 
 export default Header;
