@@ -4,9 +4,6 @@
     "degree": "B.S. in Computer Science and Engineering",
     "start": [null, 1, 2019],
     "end": [null, 7, 2025],
-    "details": {
-      "GPA": "4.44/4.5",
-      "GPA(Major)": "4.5/4.5"
-    }
+    "details": "(1) GPA:\n- 4.43/4.5 (4.5/4.5 for Major)\n\n(2) Honors:\n- Dean's List (Spring 2023, Spring 2025)\n- President's List (Fall 2023, Spring 2024)\n\n(3) Relevant Coursework:\n- Computer Programming I(C lang), Computer Programming II(Python), Data Structure, Discrete Mathematics, Algorithms, Computer Architecture, Operating System, Database, Logic Design, Advanced Engineering Mathematics, Computer Network\n- Artificial Intelligence, Deep Learning, AI Ethics, Introduction to Convex Optimization, Natural Language Processing, Data Science, Data Experiment Design and Analysis\n- Linear Algebra, Probability and Statistics, Probability and Random Processes, Calculus I\n\n(4) Extracurricular Activities:\n\n- AIKU(Artificial Intelligence Club of Korea University)\n- KUCC(Korea University Computer Club)\n- 일상다반사(Photography Club)"
   }
 ]
