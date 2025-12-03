@@ -1,9 +1,0 @@
-[
-  {
-    "title": "Scalable & Efficient Outfit Recommendation",
-    "client": "Personal Project",
-    "start": [null, 12, 2023],
-    "end": [null, 2, 2024],
-    "details": "(1) Situation: \n- In the fashion recommendation domain, many state-of-the-art models suffer from severe performance degradation when applied to real-world data. Additionally, issues with training/inference efficiency make them unsuitable for practical deployment. Notably, while the Outfit-Transformer model achieves high accuracy, its slow inference and high resource consumption limit its usability in real-time services.\n\n(2) Task: \n- Reproduce and analyze the performance of existing SoTA models, and develop a recommendation system that improves generalization and inference speed for real-world service deployment.\n\n(3) Action: \n- Reimplemented the Outfit-Transformer based on the original paper and conducted thorough benchmarking.\n- Decoupled the representation and recommendation models. Used FashionCLIP as the representation model to enhance generalization. Optimized the recommendation model by experimenting with different sizes to balance speed and performance.\n- Improved real-time inference by precomputing representation vectors and storing them in a database, significantly reducing latency by loading vectors on demand.\n- Released model code and checkpoints as open-source on GitHub, enabling community feedback and ongoing improvements.\n\n(4) Results: \n- Achieved new SoTA performance: Compatibility AUC improved from 93 to 95, and Fill-in-the-blank Accuracy from 65% to 69%.\n- Reduced training time by over 5x (from 120 to 20 minutes per epoch), with significant inference speed improvements.\n- Open-source release received positive feedback from the ML/fashion community, with dozens of GitHub stars.\n\n(5) Repository: \n- https://github.com/owj0421/outfit-transformer"
-  }
-]
