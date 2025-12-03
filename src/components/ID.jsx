@@ -1,10 +1,14 @@
 import React, { useState, useMemo } from "react";
+import { useAppContext } from "../contexts/AppContext";
 import { koreaUnivID } from "./IDCards/KoreaUniv.jsx";
+import { BaseID } from "./IDCards/Base.jsx";
 import { shadow } from "pdfjs-dist";
 
-const CARDS = [koreaUnivID, koreaUnivID];
+const CARDS = [koreaUnivID, BaseID];
 
 function ID() {
+  const { width } = useAppContext();
+
   const [selectedIndex, setSelectedIndex] = useState(CARDS.length - 1);
   const [isCarousel, setIsCarousel] = useState(false);
 
@@ -28,7 +32,7 @@ function ID() {
     return CARDS.map((_, i) => {
       if (!isCarousel) {
         // 기본 겹침 모드
-        const offset = (i - selectedIndex) * 4;
+        const offset = (i - selectedIndex) * 10;
         return {
           transform: `translateX(${offset}px)`,
           zIndex: i === selectedIndex ? 100 : i,
@@ -52,7 +56,7 @@ function ID() {
       style={{
         marginTop: "calc(var(--section-padding-with-header) * 1.5)",
         width: "100%",
-        height: "calc(20rem * 1.58)",
+        height: "calc(32rem)",
         position: "relative",
         display: "flex",
         justifyContent: "center",
@@ -64,10 +68,11 @@ function ID() {
           key={i}
           onClick={() => handleCardClick(i)}
           style={{
-            filter: "drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.25))",
+            // filter: "drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.25))",
             position: "absolute",
             transition: "transform 0.4s ease, top 0.2s ease",
             cursor: "pointer",
+            // fontSize: width < 960 ? "0.75rem" : "1rem",
             ...positions[i],
           }}
           onMouseEnter={(e) => {

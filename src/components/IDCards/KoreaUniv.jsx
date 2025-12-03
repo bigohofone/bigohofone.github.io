@@ -3,7 +3,7 @@ import React from 'react';
 const koreaUnivLogo = (
     <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        x="0px" y="0px" width="2rem" height="3rem" 
+        x="0px" y="0px" width="2em" height="3em" 
         viewBox="0 0 200 269" 
     >
         <defs>
@@ -54,12 +54,14 @@ const koreaUnivID = (
     <>
         <style>
             {`
-                    .id-card {
-                                width: 20rem;
-                                aspect-ratio: 1: 1.58;
+                    .ku-id-card {
+                            
+                                width: 20em;
+                                height: 32em;
                             background-color: #7a2e48;
-                            border-radius: 0.75rem;
-                            padding: 2.5rem 2.5rem 2rem 2.5rem;
+                            border-radius: 0.75em;
+                            border: 1px solid rgba(255, 255, 255, 0.5);
+                            padding: 2.5em 2.5em 2em 2.5em;
                             box-sizing: border-box;
                             display: flex;
                             flex-direction: column;
@@ -67,121 +69,136 @@ const koreaUnivID = (
                             text-align: center;
                             position: relative;
                             color: #fff;
-                    }
-
-                    .photo-area {
-                            width: 5rem;
-                                aspect-ratio: 4/5;
-                            background-color: #aaddff;
-                            margin-bottom: 0.625rem;
                             overflow: hidden;
                     }
+
+                    .ku-id-card::after {
+                        content: "";
+                        position: absolute;
+                        top: -100%;
+                        left: -100%;
+                        width: 200%;
+                        height: 200%;
+                        background: radial-gradient(circle at center, rgba(255, 255, 255, 1), transparent 70%);
+                        opacity: 0.5;
+                        pointer-events: none;
+                        filter: blur(2rem);
+                        mix-blend-mode: screen;
+                    }
                     
-                    .photo-area img {
+
+                    .ku-photo-area {
+                        width: 5em;
+                        aspect-ratio: 4/5;
+                        background-color: #aaddff;
+                        margin-bottom: 0.625em;
+                        overflow: hidden;
+                    }
+                    
+                    .ku-photo-area img {
                             width: 100%;
                             height: 100%;
                             object-fit: cover;
                     }
 
-                    .name {
-                            font-size: 1rem;
+                    .ku-name {
+                            font-size: 1em;
                             font-weight: 800;
                             color: #000;
                             text-transform: uppercase;
-                            margin-bottom: 0.75rem;
+                            margin-bottom: 0.75em;
                     }
 
-                    .department-info {
+                    .ku-department-info {
                             color: #000;
                             font-weight: 800;
-                            font-size: 0.75rem;
+                            font-size: 0.75em;
                             line-height: 1.25;
-                            margin-bottom: 1.25rem;
+                            margin-bottom: 1.25em;
                     }
 
-                    .rules {
-                            font-size: 0.625rem;
+                    .ku-rules {
+                            font-size: 0.625em;
                             text-align: left;
                             line-height: 1.25;
                             width: 100%;
                             font-weight: 400;
-                            letter-spacing: -0.025rem;
-                            margin-bottom: 1.25rem;
+                            letter-spacing: -0.025em;
+                            margin-bottom: 1.25em;
                     }
 
-                    .rules ul {
-                            padding-left: 1rem;
+                    .ku-rules ul {
+                            padding-left: 1em;
                             margin: 0;
                             list-style-type: disc;
                     }
 
-                    .rules li {
-                            margin-bottom: 0.25rem;
+                    .ku-rules li {
+                            margin-bottom: 0.25em;
                     }
                     
-                    .contact-row {
+                    .ku-contact-row {
                             display: flex;
                             align-items: flex-start;
-                            gap: 0.2rem;
+                            gap: 0.2em;
                     }
                     
-                    .contact-label {
+                    .ku-contact-label {
                             white-space: nowrap;
-                            margin-right: 0.2rem;
+                            margin-right: 0.2em;
                     }
 
-                    .contact-numbers {
+                    .ku-contact-numbers {
                             display: flex;
                             flex-direction: column;
                     }
 
-                    .footer {
+                    .ku-footer {
                             margin-top: auto;
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            gap: 0.5rem;
+                            gap: 0.5em;
                     }
 
-                    .logo-img {
-                            width: 2rem;
-                            height: 3rem;
+                    .ku-logo-img {
+                            width: 2em;
+                            height: 3em;
                     }
 
-                    .footer-text {
-                            font-size: 1.375rem;
-                            font-weight: 600;
+                    .ku-footer-text {
+                            font-size: 1.375em;
+                            font-weight: 500;
                     }
             `}
         </style>
-
-        <div className="id-card-wrapper">
-            <div className="id-card">
-                <div className="photo-area">
+        <div>
+            <div className="ku-id-card">
+                <div className="ku-photo-area">
                     <img 
-                        src="/data/id_photo.png"
+                        src="/data/ku_id_photo.png"
                         alt="Student Photo" 
                     />
                 </div>
 
-                <div className="name">오원준</div>
+                <div className="ku-name">오원준</div>
 
-                <div className="department-info">
+                <div className="ku-department-info">
                     정보대학<br />
                     학사과정<br />
                     컴퓨터학과
                 </div>
 
-                <div className="rules">
+                <div className="ku-rules">
                     <ul>
                         <li>학생증은 항상 휴대하여야 하며 교직원의 요구가 있을 때에는 제시하여야 합니다.</li>
                         <li>학생증은 타인에게 양도 또는 대여할 수 없습니다.</li>
                         <li>재학생 신분이 아닐 경우에는 학교 내 스마트카드 시스템을 이용할 수 없습니다.</li>
                         <li>학생증을 분실하였을 경우 즉시 고려대학교 One-stop 서비스센터로 신고하여야 합니다.</li>
                         <li>
-                            <div className="contact-row">
+                            <div className="ku-contact-row">
                                     One-stop서비스센터 :
-                                            <div className="contact-numbers">
+                                            <div className="ku-contact-numbers">
                                                     <span>02) 3290-1142~4 (인문사회계)</span>
                                                     <span>02) 3290-4090~2 (자연계)</span>
                                                     <span>044) 860-1088~9 (세종)</span>
@@ -191,9 +208,9 @@ const koreaUnivID = (
                     </ul>
                 </div>
 
-                <div className="footer">
-                    <div className="logo-img">{koreaUnivLogo}</div>
-                    <span className="footer-text">고려대학교</span>
+                <div className="ku-footer">
+                    <div className="ku-logo-img">{koreaUnivLogo}</div>
+                    <span className="ku-footer-text">고려대학교</span>
                 </div>
             </div>
         </div>

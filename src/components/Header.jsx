@@ -1,10 +1,12 @@
 import React from 'react';
 // import '../assets/styles/Header.css';
 import { useAppContext } from '../contexts/AppContext';
+import { Nav } from './Nav.jsx';
+import { Link } from 'react-router-dom';
 
 export function Header({
 }) {
-  const { locale, setLocale, darkMode, toggleDarkMode } = useAppContext();
+  const { locale, setLocale, width } = useAppContext();
 
   return (
     <header 
@@ -32,12 +34,15 @@ export function Header({
         <span
           style={{
             fontSize: 'var(--font-size-xl)',
-            fontWeight: '600',
+            fontWeight: '500',
             color: 'var(--color-on-text-primary)',
           }}
         >
-          OH(1) HOME
+          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            Wonjun Oh
+          </Link>
         </span>
+        <Nav />
       </div>
     </header>
   );

@@ -9,24 +9,38 @@ function Footer() {
       <footer style={{ 
           width: '100%',
           maxWidth: 'var(--section-width-default)', 
-          padding: 'var(--section-padding-with-header) var(--section-padding-default) var(--section-padding-default)', 
+          padding: '0 var(--section-padding-default) var(--section-padding-default)', 
           margin: '0 auto',
-          borderTop: '1px solid rgba(0, 0, 0, 0.1)',
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'flex-start',
         }}
       >
+        <div
+          style={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            gap: '2rem',
+            borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+            width: '100%',
+            paddingTop: '2rem',
+            marginTop: '2rem',
+          }}
+        >
+          <DownloadLinks variant="icon-only" />
           <p
             style={{ 
               fontSize: 'var(--font-size-md)',
-              fontWeight: '600',
+              fontWeight: '500',
               color: 'var(--color-on-text-subtle)',
             }}
           >
-            © {new Date().getFullYear()} Wonjun Oh. All rights reserved.
+            © {new Date().getFullYear()} Wonjun Oh
           </p>
-          <DownloadLinks variant="icon-only" />
+        </div>
       </footer>
     );
 }

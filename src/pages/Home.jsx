@@ -9,7 +9,6 @@ import { AboutMe } from '../components/AboutMe';
 import { DownloadLinks } from '../components/DownloadLinks';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
-import { Contact } from '../components/Contact';
 
 const Home = () => {
 
@@ -17,26 +16,25 @@ const Home = () => {
 
   return (
     <>
-      <Header />
       <ID />
 
       {/* <div style={{ height: '8rem' }}></div> */}
       <AboutMe />
 
-      {/* <div style={{ height: '8rem' }}></div> */}
-      <Title title={locale === 'ko' ? '바로가기' : 'Shortcuts'} />
-      <DownloadLinks />
+      {/* <div style={{ background: 'rgba(0, 0, 0, 0.05)' }}> */}
+        <div style={{ height: '4rem' }}></div>
+        <Title title={locale === 'ko' ? '바로가기' : 'Shortcuts'} />
+        <DownloadLinks />
+        <div style={{ height: '4rem' }}></div>
+      {/* </div> */}
 
-      <div style={{ height: '8rem' }}></div>
+      <div style={{ height: '4rem' }}></div>
       <Title title={locale === 'ko' ? '최근소식'  : 'Recent News'} />
       <News />
 
-      <div style={{ height: '8rem' }}></div>
+      {/* <div style={{ height: '8rem' }}></div>
       <Title title={locale === 'ko' ? '연락처' : 'Contact'} />
-      <Contact />
-      
-      <div style={{ height: '8rem' }}></div>
-      <Footer />
+      <Contact /> */}
     </>
   );
 };

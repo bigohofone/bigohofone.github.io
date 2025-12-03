@@ -110,7 +110,7 @@ function AboutMe() {
                 position: 'relative'
             }}
         >
-            <div 
+            <div // 고정 컨테이너
                 style={{ 
                     position: 'sticky',
                     top: 0,
@@ -145,7 +145,7 @@ function AboutMe() {
                                                     key={`${pIndex}-${sIndex}`}
                                                     style={{
                                                         fontSize: 'var(--font-size-xl)',
-                                                        fontWeight: '600',
+                                                        fontWeight: '500',
                                                         lineHeight: '1.5',
                                                         wordBreak: 'keep-all',
                                                         marginRight: '0',

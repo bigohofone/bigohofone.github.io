@@ -51,7 +51,7 @@
   --font-size-4xl: 2.5rem; /* 36px */
   --font-size-5xl: 3rem; /* 48px */
 
-  --header-height: 4rem;
+  --header-height: 5rem;
   
   --section-width-default: 1200px;
   --section-width-narrow: 720px;
@@ -126,7 +126,7 @@ h1 {
   font-family: var(--font-family-heading);
   box-sizing: border-box;
   font-weight: 400;
-  font-size: var(--font-size-5xl);
+  font-size: var(--font-size-3xl);
   line-height: 1.25em;
   color: var(--color-on-text-primary);
 }
@@ -135,7 +135,7 @@ h2 {
   font-family: var(--font-family-heading);
   box-sizing: border-box;
   font-weight: 500;
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-xl);
   line-height: 1.25em;
   color: var(--color-on-text-primary);
   
@@ -145,7 +145,7 @@ h3 {
   font-family: var(--font-family-heading);
   box-sizing: border-box;
   font-weight: 400;
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   line-height: 1.25em;
   color: var(--color-on-text-primary);
 }

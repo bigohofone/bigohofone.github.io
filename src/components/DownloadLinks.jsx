@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 
-import { ResumeIcon, GoogleScholarIcon, GithubIcon, LinkedInIcon, XIcon } from '../assets/icons/icons.jsx';
+import { MailIcon, ResumeIcon, GoogleScholarIcon, GithubIcon, LinkedInIcon, XIcon } from '../assets/icons/icons.jsx';
 
 function getButtonContainerStyle(width, variant="default") {
     if (variant === "icon-only") {
@@ -30,7 +30,7 @@ function getButtonContainerStyle(width, variant="default") {
         return {
             ...commonStyles,
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, auto)',
+            gridTemplateColumns: 'repeat(1, 1fr)',
             columnGap: '1rem',
             rowGap: '1.5rem',
         }
@@ -38,7 +38,7 @@ function getButtonContainerStyle(width, variant="default") {
         return {
             ...commonStyles,
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, auto)',
+            gridTemplateColumns: 'repeat(2, 1fr)',
             columnGap: '1rem',
             rowGap: '1.5rem',
         };
@@ -46,7 +46,7 @@ function getButtonContainerStyle(width, variant="default") {
         return {
             ...commonStyles,
             display: 'grid',
-            gridTemplateColumns: 'repeat(6, auto)',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             columnGap: '1rem',
             rowGap: '1.5rem',
         }
@@ -109,7 +109,7 @@ function getButton(width, locale, href, icon, koreanLabel, englishLabel, variant
                             alignItems: 'center',
                             gap: '0.125rem',
                             fontSize: 'var(--font-size-xl)',
-                            fontWeight: '600',
+                            fontWeight: '500',
                             color: 'var(--color-on-text-primary)',
                         }}
                     >   
@@ -122,52 +122,65 @@ function getButton(width, locale, href, icon, koreanLabel, englishLabel, variant
     );
 }
 
+
+function getMailButton(width, locale, href, icon, koreanLabel='메일', englishLabel='Mail', variant="default") {
+    const label = locale === 'ko' ? koreanLabel : englishLabel;
+    return (
+        <li>
+            <a
+                className="btn"
+                href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
+                style={getButtonStyle(width, variant)}
+            >
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '3rem', 
+                        height: '3rem', 
+                        background: 'rgba(0, 0, 0, 0.025)',
+                        border: '1px solid rgba(0, 0, 0, 0.1)',
+                        borderRadius: '0.75rem',
+                    }}
+                >
+                    {icon}
+                </div>
+                {variant === "icon-only" ? null :
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.125rem',
+                            fontSize: 'var(--font-size-xl)',
+                            fontWeight: '500',
+                            color: 'var(--color-on-text-primary)',
+                        }}
+                    >   
+                        <span>{label}</span>
+                        <div className="material-symbols-outlined">arrow_outward</div>
+                    </div>
+                }
+            </a>
+        </li>
+    );
+}
+
+
 function DownloadLinks({ variant="default" }) {
     
     const app = useAppContext();
     const locale = app?.locale || 'en';
+    const width = app?.width || 1024;
 
     const containerRef = useRef(null);
-    const [width, setWidth] = useState(
-        typeof window !== 'undefined' ? window.innerWidth : 1024
-    );
-
-    useEffect(() => {
-        if (typeof window === 'undefined') return;
-
-        const handleResize = () => {
-            setWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('orientationchange', handleResize);
-
-        // If container width changes due to layout, observe it
-        let ro;
-        if (containerRef.current && typeof ResizeObserver !== 'undefined') {
-            ro = new ResizeObserver(entries => {
-                for (const entry of entries) {
-                    const w = entry.contentRect?.width;
-                    if (typeof w === 'number') {
-                        setWidth(w);
-                    }
-                }
-            });
-            ro.observe(containerRef.current);
-        }
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            window.removeEventListener('orientationchange', handleResize);
-            if (ro && containerRef.current) ro.unobserve(containerRef.current);
-        };
-    }, []);
 
     return (
         <ul 
             ref={containerRef}
             style={getButtonContainerStyle(width, variant)}
         >
+            {getMailButton(width, locale, "mailto:owj0421@naver.com", MailIcon, "메일", "Mail", variant)}
             {getButton(width, locale, "/data/resume_wonjunoh.pdf", ResumeIcon, "이력서", "Resume", variant)}
             {getButton(width, locale, "https://scholar.google.com/citations?user=owj0421", GoogleScholarIcon, "구글 스칼라", "Google Scholar", variant)}
             {getButton(width, locale, "https://github.com/bigohofone", GithubIcon, "GitHub", "GitHub", variant)}

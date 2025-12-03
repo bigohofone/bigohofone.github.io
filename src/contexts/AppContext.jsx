@@ -3,18 +3,21 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  const [locale, setLocale] = useState('en');
-  const [darkMode, setDarkMode] = useState(false);
+  const [locale, setLocale] = useState('ko');
+  const [width, setWidth] = useState(window.innerWidth);
 
   const toggleLocale = () => setLocale((prev) => (prev === 'ko' ? 'en' : 'ko'));
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-  }, [darkMode]);
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    // ensure initial value is correct
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
-    <AppContext.Provider value={{ locale, setLocale, toggleLocale, darkMode, setDarkMode, toggleDarkMode }}>
+    <AppContext.Provider value={{ locale, setLocale, toggleLocale, width, setWidth }}>
       {children}
     </AppContext.Provider>
   );
