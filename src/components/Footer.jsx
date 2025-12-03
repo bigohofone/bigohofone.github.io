@@ -1,38 +1,35 @@
-/*
- * Copyright (c) 2025 Wonjun Oh (owj0421@naver.com)
- * All rights reserved.
- *
- * This source code is the property of Wonjun Oh.
- * Unauthorized copying, distribution, or use of this code, in whole or in part, is strictly prohibited.
- */
+import React, { useState, useEffect, useRef } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 
-import React from 'react';
-import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
+import { ResumeIcon, GoogleScholarIcon, GithubIcon, LinkedInIcon, XIcon } from '../assets/icons/icons.jsx';
+import { DownloadLinks } from './DownloadLinks.jsx';
 
-
-const Footer = () => (
-  <footer className="footer">
-    <div className="footer__inner">
-      <div className="footer-block">
-        <div className="footer-links">
-          <a href="mailto:owj0421@naver.com" target="_blank" rel="noopener noreferrer">
-            <FaEnvelope className="material-symbols-outlined" />
-          </a>
-          <a href="https://github.com/owj0421" target="_blank" rel="noopener noreferrer">
-            <FaGithub className="material-symbols-outlined" />
-          </a>
-          <a href="https://www.linkedin.com/in/wonjun-oh-8067b5265/" target="_blank" rel="noopener noreferrer">
-            <FaLinkedin className="material-symbols-outlined" />
-          </a>
-        </div>
-        <p className="footer-date"> UPDATED @ 24.5.2025</p>
-      </div>
-
-      <div className="footer-block">
-        <p className="footer-title">WONJUN OH © {new Date().getFullYear()}</p>
-      </div>
-    </div>
-  </footer>
-);
+function Footer() {
+    return (
+      <footer style={{ 
+          width: '100%',
+          maxWidth: 'var(--section-width-default)', 
+          padding: 'var(--section-padding-with-header) var(--section-padding-default) var(--section-padding-default)', 
+          margin: '0 auto',
+          borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+          <p
+            style={{ 
+              fontSize: 'var(--font-size-md)',
+              fontWeight: '600',
+              color: 'var(--color-on-text-subtle)',
+            }}
+          >
+            © {new Date().getFullYear()} Wonjun Oh. All rights reserved.
+          </p>
+          <DownloadLinks variant="icon-only" />
+      </footer>
+    );
+}
 
 export default Footer;
+export { Footer };

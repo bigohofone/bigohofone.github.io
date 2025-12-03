@@ -1,0 +1,45 @@
+:root {
+    --grid-columns: 12;
+    --grid-margin: 4rem;
+    --grid-gap-row: 0.5rem;    /* 세로(gap) */
+    --grid-gap-col: 1rem;  /* 가로(column-gap) */
+}
+
+.grid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  row-gap: var(--grid-gap-row);
+  column-gap: var(--grid-gap-col);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 컬럼 스팬 유틸리티 (1~12) */
+[class^="grid__column--span-"] {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.grid__column--span-1  { grid-column: span 1; }
+.grid__column--span-2  { grid-column: span 2; }
+.grid__column--span-3  { grid-column: span 3; }
+.grid__column--span-4  { grid-column: span 4; }
+.grid__column--span-5  { grid-column: span 5; }
+.grid__column--span-6  { grid-column: span 6; }
+.grid__column--span-7  { grid-column: span 7; }
+.grid__column--span-8  { grid-column: span 8; }
+.grid__column--span-9  { grid-column: span 9; }
+.grid__column--span-10 { grid-column: span 10; }
+.grid__column--span-11 { grid-column: span 11; }
+.grid__column--span-12 { grid-column: span 12; }
+
+/* 반응형: 모바일에서는 1컬럼 */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  [class^="grid__column--span-"] {
+    grid-column: span var(--grid-columns) !important;
+  }
+}

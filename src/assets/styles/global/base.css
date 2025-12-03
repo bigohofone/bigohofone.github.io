@@ -1,0 +1,159 @@
+:root {
+  /* --color-primary: #3b82f6;
+  --color-primary-light: #60a5fa;
+  --color-primary-dark: #2563eb;
+  --color-secondary: #f59e42;
+  --color-secondary-light: #ffb86b;
+  --color-secondary-dark: #c7771e; */
+
+  --font-family-base: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  /* --font-family-heading: 'Orbit', 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; */
+  --font-family-heading: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  /* --heading-text-transform: translateY(-0.1em); */
+  --heading-text-transform: none;
+
+  --indent-default: 3rem;
+
+  --color-gray: rgb(0, 0, 0);
+
+
+  --color-gray-95: color-mix(in srgb, var(--color-gray) 95%, white 5%);
+  --color-gray-90: color-mix(in srgb, var(--color-gray) 90%, white 10%);
+  --color-gray-85: color-mix(in srgb, var(--color-gray) 85%, white 15%);
+  --color-gray-80: color-mix(in srgb, var(--color-gray) 80%, white 20%);
+  --color-gray-75: color-mix(in srgb, var(--color-gray) 75%, white 25%);
+  --color-gray-70: color-mix(in srgb, var(--color-gray) 70%, white 30%);
+  --color-gray-65: color-mix(in srgb, var(--color-gray) 65%, white 35%);
+  --color-gray-60: color-mix(in srgb, var(--color-gray) 60%, white 40%);
+  --color-gray-55: color-mix(in srgb, var(--color-gray) 55%, white 45%);
+  --color-gray-50: color-mix(in srgb, var(--color-gray) 50%, white 50%);
+  --color-gray-45: color-mix(in srgb, var(--color-gray) 45%, white 55%);
+  --color-gray-40: color-mix(in srgb, var(--color-gray) 40%, white 60%);
+  --color-gray-35: color-mix(in srgb, var(--color-gray) 35%, white 65%);
+  --color-gray-30: color-mix(in srgb, var(--color-gray) 30%, white 70%);
+  --color-gray-25: color-mix(in srgb, var(--color-gray) 25%, white 75%);
+  --color-gray-20: color-mix(in srgb, var(--color-gray) 20%, white 80%);
+  --color-gray-15: color-mix(in srgb, var(--color-gray) 15%, white 85%);
+  --color-gray-10: color-mix(in srgb, var(--color-gray) 10%, white 90%);
+  --color-gray-5: color-mix(in srgb, var(--color-gray) 5%, white 95%);
+
+  --color-white: #ffffff;
+
+  --color-on-link: #3b82f6;
+
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-md: 1rem; /* 16px */
+  --font-size-lg: 1.25rem; /* 18px */
+  --font-size-xl: 1.5rem; /* 20px */
+  --font-size-2xl: 1.75rem; /* 24px */
+  --font-size-3xl: 2rem; /* 30px */
+  --font-size-4xl: 2.5rem; /* 36px */
+  --font-size-5xl: 3rem; /* 48px */
+
+  --header-height: 4rem;
+  
+  --section-width-default: 1200px;
+  --section-width-narrow: 720px;
+  --section-padding-default: 2rem;
+  --section-padding-with-header: calc(2rem + var(--header-height));
+
+  --page-width-default: 1200px;
+  --page-width-narrow: 720px;
+  --page-padding-default: 2rem;
+
+  /* base */
+  --color-on-bg: var(--color-white);
+  --color-on-text: var(--color-gray-75);
+  --color-on-text-primary: var(--color-gray);
+  --color-on-text-subtle: var(--color-gray-50);
+  --color-on-text-subsubtle: var(--color-gray-25);
+
+  /* button */
+  --color-on-btn-bg: var(--color-gray-700);
+  --color-on-btn-bg-hover: var(--color-gray-800);
+  --color-on-btn-text: var(--color-gray-200);
+
+  --color-on-btn-outline-border: var(--color-gray-700);
+  --color-on-btn-outline-bg: transparent;
+  --color-on-btn-outline-bg-hover: var(--color-gray-200);
+  --color-on-btn-outline-text: var(--color-gray-700);
+  
+  /* scrollbar */
+  --color-on-scrollbar-bg: var(--color-gray-200);
+  --color-on-scrollbar-thumb: var(--color-gray-300);
+  --color-on-scrollbar-thumb-hover: var(--color-gray-400);
+}
+
+html {
+  box-sizing: border-box;
+
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--color-on-text);
+  line-height: 1.5;
+}
+
+@media (max-width: 960px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+* {
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  word-spacing: inherit;
+  background: transparent;
+  box-sizing: border-box;
+  line-height: inherit;
+}
+
+main {
+  display: block;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  background: var(--color-on-bg);
+  min-height: 100vh;
+}
+
+h1 {
+  font-family: var(--font-family-heading);
+  box-sizing: border-box;
+  font-weight: 400;
+  font-size: var(--font-size-5xl);
+  line-height: 1.25em;
+  color: var(--color-on-text-primary);
+}
+
+h2 {
+  font-family: var(--font-family-heading);
+  box-sizing: border-box;
+  font-weight: 500;
+  font-size: var(--font-size-3xl);
+  line-height: 1.25em;
+  color: var(--color-on-text-primary);
+  
+}
+
+h3 {
+  font-family: var(--font-family-heading);
+  box-sizing: border-box;
+  font-weight: 400;
+  font-size: var(--font-size-xl);
+  line-height: 1.25em;
+  color: var(--color-on-text-primary);
+}
+
+b, strong {
+  font-weight: 400;
+}
+
+a {
+    color: interit;
+}

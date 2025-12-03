@@ -1,60 +1,43 @@
-/*
- * Copyright (c) 2025 Wonjun Oh (owj0421@naver.com)
- * All rights reserved.
- *
- * This source code is the property of Wonjun Oh.
- * Unauthorized copying, distribution, or use of this code, in whole or in part, is strictly prohibited.
- */
-
 import React from 'react';
-import Footer from '../components/Footer';
-import Navigation from '../components/Navigation';
-import useNavigation from '../hooks/useNavigation';
-import Content from '../components/Content';
-import Header from '../components/Header';
 
-import useContent from '../hooks/useContent';
+import { useAppContext } from '../contexts/AppContext';
 
-import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
+import { ID } from '../components/ID';
+import { News } from '../components/News';
+import { Title } from '../components/Title';
+import { AboutMe } from '../components/AboutMe';
+import { DownloadLinks } from '../components/DownloadLinks';
+import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
+import { Contact } from '../components/Contact';
 
 const Home = () => {
 
-  const {
-    contentRefs,
-    contentSectionRef,
-    getContentBlockRef,
-    getCurrentContentKey,
-  } = useContent();
-
-  const {
-		navRef,
-		sectionActive,
-		handleNavClick
-  } = useNavigation({
-    contentRefs,
-    contentSectionRef,
-    getContentBlockRef,
-    getCurrentContentKey,
-  });
+  const { locale } = useAppContext();
 
   return (
     <>
-      <div className='app'>
-        <div className="app__inner">
-          <Navigation
-            sectionActive={sectionActive}
-            navRef={navRef}
-            onNavClick={handleNavClick}
-          />
-          <Header />
-          <Content
-            contentSectionRef={contentSectionRef}
-            getContentBlockRef={getContentBlockRef}
-          />
-      </div>
-    </div>
-    <Footer />
-  </>
+      <Header />
+      <ID />
+
+      {/* <div style={{ height: '8rem' }}></div> */}
+      <AboutMe />
+
+      {/* <div style={{ height: '8rem' }}></div> */}
+      <Title title={locale === 'ko' ? '바로가기' : 'Shortcuts'} />
+      <DownloadLinks />
+
+      <div style={{ height: '8rem' }}></div>
+      <Title title={locale === 'ko' ? '최근소식'  : 'Recent News'} />
+      <News />
+
+      <div style={{ height: '8rem' }}></div>
+      <Title title={locale === 'ko' ? '연락처' : 'Contact'} />
+      <Contact />
+      
+      <div style={{ height: '8rem' }}></div>
+      <Footer />
+    </>
   );
 };
 
