@@ -59,7 +59,7 @@ const koreaUnivID = (
                                 aspect-ratio: 1: 1.58;
                             background-color: #7a2e48;
                             border-radius: 15px;
-                            padding: 40px 40px 30px 40px;
+                            padding: 2.5rem 2.5rem 2rem 2.5rem;
                             box-sizing: border-box;
                             display: flex;
                             flex-direction: column;
