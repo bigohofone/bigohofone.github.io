@@ -3,7 +3,7 @@ import React from 'react';
 const koreaUnivLogo = (
     <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        x="0px" y="0px" width="30px" height="40px" 
+        x="0px" y="0px" width="2rem" height="3rem" 
         viewBox="0 0 200 269" 
     >
         <defs>
@@ -58,7 +58,7 @@ const koreaUnivID = (
                                 width: 20rem;
                                 aspect-ratio: 1: 1.58;
                             background-color: #7a2e48;
-                            border-radius: 15px;
+                            border-radius: 0.75rem;
                             padding: 2.5rem 2.5rem 2rem 2.5rem;
                             box-sizing: border-box;
                             display: flex;
@@ -73,7 +73,7 @@ const koreaUnivID = (
                             width: 5rem;
                                 aspect-ratio: 4/5;
                             background-color: #aaddff;
-                            margin-bottom: 10px;
+                            margin-bottom: 0.625rem;
                             overflow: hidden;
                     }
                     
@@ -105,7 +105,7 @@ const koreaUnivID = (
                             line-height: 1.25;
                             width: 100%;
                             font-weight: 400;
-                            letter-spacing: -0.3px;
+                            letter-spacing: -0.025rem;
                             margin-bottom: 1.25rem;
                     }
 
@@ -144,8 +144,8 @@ const koreaUnivID = (
                     }
 
                     .logo-img {
-                            width: 1.875rem;
-                            height: 2.5rem;
+                            width: 2rem;
+                            height: 3rem;
                     }
 
                     .footer-text {
