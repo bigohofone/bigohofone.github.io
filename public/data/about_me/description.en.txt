@@ -1,7 +1,0 @@
-Hello, I am Wonjun Oh.
-
-My research interests lie in Natural Language Processing (NLP) and Machine Learning (ML), with a particular focus on understanding how Large Language Models (LLMs) reason, learn, and interact across diverse environments.
-
-Currently, I am conducting research aimed at deeply understanding and enhancing the reasoning capabilities of LLMs. My work specifically investigates the mechanisms by how models acquire abilities during Reinforcement Learning and how they leverage prior knowledge.
-
-I will soon graduate from Korea University with a B.S. in Computer Science. Starting in Fall 2027, I will be joining the Computation & Cognition (COCO) Lab at KAIST as a Master’s student, under the supervision of Prof. Hyunwoo Kim.

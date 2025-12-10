@@ -8,6 +8,7 @@ function getTitleStyle(width) {
         padding: '0 var(--page-padding-default) var(--page-padding-default)', 
         margin: '0 auto',
         color: 'var(--color-on-text-primary)',
+        fontSize: 'var(--font-size-2xl)',
     };
 
     if (typeof width !== 'number') {

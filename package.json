@@ -7,10 +7,13 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "framer-motion": "^12.23.25",
+    "pdfjs": "^2.5.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
+    "react-pdf": "^10.2.0",
     "react-router-dom": "^6.30.2",
     "react-scripts": "^0.0.0",
     "web-vitals": "^2.1.4"

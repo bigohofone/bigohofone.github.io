@@ -1,12 +1,12 @@
 import { AppProvider } from './contexts/AppContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Home from './pages/Home';
-import Nav from './components/Nav';
+import AboutMe from './pages/AboutMe';
+import Publications from './pages/Publications';
+import Resume from './pages/Resume';
 import Contact from './pages/Contact';
-import FloatingControls from './components/Functional';
-import { Header } from './components/Header';
-import { Footer } from './components/Footer';
+import Header from './components/header/Header.jsx';
+import Footer from './components/footer/footer.jsx';
 
 const App = () => {
   return (
@@ -14,13 +14,14 @@ const App = () => {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<AboutMe />} />
+          <Route path="/publications" element={<Publications />} />
+          <Route path="/resume" element={<Resume />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
-        <div style={{ height: '8rem' }}></div>
+        <div style={{ height: '4rem' }}></div>
         <Footer />
       </BrowserRouter>
-      {/* <FloatingControls /> */}
     </AppProvider>
   );
 };

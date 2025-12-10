@@ -1,7 +1,0 @@
-안녕하세요, 오원준입니다!
-
-제 연구 분야는 Natural Language Processing (NLP)와 Machine Learning (ML)이며, 그중에서도 Large Lanugage Models (LLMs)이 다양한 환경에서 어떻게 사고하고, 학습하며, 상호작용하는지를 이해하는 데 집중하고 있습니다. 
-
-현재는 LLM의 Reasoning Capability을 심층적으로 이해하고 개선하는 연구를 진행하고 있습니다. 특히 모델이 Reinforcement Learning 과정에서 어떻게 능력을 습득하는지, 그리고 Prior Knowledge을 어떻게 활용하는지를 중점적으로 탐구합니다.
-
-저는 고려대학교 컴퓨터학과를 졸업할 예정이며, 다가오는 2027년 가을학기부터는 KAIST Computation & Cognition (COCO) Lab의 김현우 교수님 지도하에 석사 과정을 밟을 예정입니다.
