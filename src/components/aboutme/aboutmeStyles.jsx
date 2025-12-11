@@ -123,6 +123,7 @@ export function NewsStyles() {
         innerTitle: {
             fontSize: 'var(--font-size-xl)',
             height: 'fit-content',
+            lineHeight: '1',
         },
         innerListContainer: {
         },
@@ -139,6 +140,9 @@ export function NewsStyles() {
         innerListItem_LastChild: {
             display: 'flex', flexDirection: 'row', gap: '0.5rem',
             paddingTop: '1rem',
+        },
+        innerListItem_Alone: {
+            display: 'flex', flexDirection: 'row', gap: '0.5rem',
         },
         innerListItemDate: {
             flex: 1, width: '100%',

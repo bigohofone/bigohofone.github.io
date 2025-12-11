@@ -20,10 +20,12 @@ export default function News() {
             <div style={style.innerListContainer}>
                 {newsList.map((news, index) => (
                     <div key={index} style={
-                        index === 0 
+                        ( newsList.length === 1 )
+                        ? style.innerListItem_Alone
+                        : ( index === newsList.length - 1 )
+                        ? style.innerListItem_LastChild
+                        : ( index === 0 )
                         ? style.innerListItem_FirstChild 
-                        : index === newsList.length - 1 
-                        ? style.innerListItem_LastChild 
                         : style.innerListItem
                     }>
                     <div style={style.innerListItemDate}>

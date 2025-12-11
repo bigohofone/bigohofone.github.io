@@ -35,8 +35,9 @@ function PublicationStyles() {
             marginBottom: (width < desktopBreakpoint) ? '4rem' : '0',
         },
         innerTitle: {
-            fontSize: 'var(--font-size-xl)',
+            fontSize: 'var(--font-size-lg)',
             height: 'fit-content',
+            lineHeight: '1',
         },
         innerListContainer: {
         },
@@ -53,6 +54,9 @@ function PublicationStyles() {
         innerListItem_LastChild: {
             display: 'flex', flexDirection: 'row', gap: '0.5rem',
             paddingTop: '1rem',
+        },
+        innerListItem_Alone: {
+            display: 'flex', flexDirection: 'row', gap: '0.5rem',
         },
         innerListItemDate: {
             flex: 1, width: '100%',
@@ -113,9 +117,11 @@ const Publications = () => {
                 <div style={style.innerListContainer}>
                     {conferenceList.map((news, index) => (
                         <div key={index} style={
-                            index === conferenceList.length - 1 
+                            ( conferenceList.length === 1 )
+                            ? style.innerListItem_Alone
+                            : ( index === conferenceList.length - 1 )
                             ? style.innerListItem_LastChild
-                            : index === 0 
+                            : ( index === 0 )
                             ? style.innerListItem_FirstChild 
                             : style.innerListItem
                         }>
@@ -123,9 +129,24 @@ const Publications = () => {
                             <div style={style.innerListItemContent}>
                                 <div style={{ fontSize: 'var(--font-size-md)', fontWeight: '500' }}>{news.title}</div>
                                 <div style={{ fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-on-text-subtle)' }}>{news.authors}</div>
+                                <div style={{ 
+                                    fontSize: 'var(--font-size-sm)', fontWeight: '500', color: 'var(--color-on-link)',
+                                    display: 'flex', flexDirection: 'row', gap: '0.5rem',
+                                }}>
+                                {Object.keys(news.links).map((key, linkIndex) => (
+                                    <a
+                                        key={linkIndex}
+                                        href={news.links[key]}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{ textDecoration: 'none', }}
+                                    >[ {key.charAt(0).toUpperCase() + key.slice(1)} ]</a>
+                                ))}
+                                </div>
                             </div>
                         </div>
-                    ))}
+                        ))
+                    }
                 </div>
             </div>
             {/* <div style={style.inner}>

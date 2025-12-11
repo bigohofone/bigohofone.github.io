@@ -86,7 +86,7 @@ function Nav() {
                                 role="button"
                             >
                                 <span>{locale === 'ko' ? l.label_ko : l.label_en}</span>
-                                <span className="material-symbols-rounded" style={style.arrow}>arrow_outward</span>
+                                <span className="material-symbols-rounded" style={{ fontSize: 'var(--font-size-md)' }}>arrow_outward</span>
                             </Link>
                         ))}
                     </nav>

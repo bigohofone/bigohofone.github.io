@@ -142,9 +142,5 @@ export function headerPopupStyles() {
         popupItemSelected: {
             background: "rgba(0, 0, 0, 0.1)",
         },
-        arrow: {
-            fontSize: 'var(--font-size-md)',
-            color: 'var(--color-on-text-primary)',
-        },
     };
 }
