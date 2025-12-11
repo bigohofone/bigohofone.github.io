@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  const [locale, setLocale] = useState('ko');
+  const [locale, setLocale] = useState('en');
   const [width, setWidth] = useState(window.innerWidth);
 
   const toggleLocale = () => setLocale((prev) => (prev === 'ko' ? 'en' : 'ko'));

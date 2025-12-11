@@ -6,4 +6,4 @@ npm i gh-pages
 npm start
 
 # 디플로이
-npm run deloy
+npm run deploy

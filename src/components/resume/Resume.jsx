@@ -46,7 +46,13 @@ export function ResumeComponent() {
                         <p style={style.innerContentShortcut} >  
                             <div className="material-symbols-rounded" style={{ fontSize: 'var(--font-size-lg)' }}>download</div> 
                             <div>
-                                <a href={RESUME_FPATH}>다운로드</a>
+                                <a href={RESUME_FPATH}>
+                                    {
+                                    locale === 'ko'
+                                    ? <>다운로드</>
+                                    : <>Download</>
+                                }
+                                </a>
                             </div>
                         </p>
                     </div>
