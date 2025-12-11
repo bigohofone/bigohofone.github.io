@@ -15,26 +15,26 @@ export default function Intro() {
 
     const style = IntroStyles();
 
-    let maskSizeStart = 66;
-    if (app.width >= mobileBreakpoint) {
-        maskSizeStart = 33;
-    };
-
     const [scrollY, setScrollY] = useState(0);
 
     useEffect(() => {
         const handleScroll = () => {
             setScrollY(window.scrollY);
         };
-
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    let maskSize = maskSizeStart + ((300-maskSizeStart) * (scrollY * 2 / INTRO_SCOLL_HEIGHT));
-    maskSize = Math.min(maskSize, 300); // Cap at 1000
-
-
+    let maskSize = 'none';
+    if (app?.width < app?.height) {
+        const start = 25;
+        const end = 500;
+        maskSize = `auto ${Math.min(start + (end-start) * (scrollY * 2 / INTRO_SCOLL_HEIGHT), end)}vh`
+    } else {
+        const start = 50;
+        const end = 500;
+        maskSize = `${Math.min(start + (end-start) * (scrollY * 2 / INTRO_SCOLL_HEIGHT), end)}vw auto`
+    }
 
     return (
         <div style={{
@@ -48,8 +48,8 @@ export default function Intro() {
                         WebkitMaskImage: 'url(/data/cloud-mask.svg)', // For Safari compatibility
                         maskRepeat: 'no-repeat',
                         WebkitMaskRepeat: 'no-repeat',
-                        maskSize: `${maskSize}vw`,
-                        WebkitMaskSize: `${maskSize}vw`,
+                        maskSize: maskSize,
+                        WebkitMaskSize: maskSize,
                         maskPosition: `50% 50%`,
                         WebkitMaskPosition: `50% 50%`,
                     }}
