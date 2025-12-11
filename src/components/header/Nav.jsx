@@ -69,9 +69,7 @@ function Nav() {
                             </button>
                         </div>
                         {links.map(l => (
-                            <Link to={l.to}
-                                key={l.code}
-                                style={style.popupItem}
+                            <Link to={l.to} key={l.code} style={style.popupItem}
                                 onMouseEnter={(e) => {
                                     e.currentTarget.style.background = style.popupItemHover.background;
                                 }}
@@ -82,6 +80,7 @@ function Nav() {
                                 }}
                                 onClick={() => {
                                     setOpen(false);
+                                    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
                                 }}
                                 role="button"
                             >
@@ -105,7 +104,9 @@ function NavExpanded() {
             style={style.containerExpanded}
         >
             {links.map(l => (
-                <Link key={l.to} to={l.to}>
+                <Link key={l.to} to={l.to} onClick={() => {
+                    window.scrollTo({top: 0, left: 0, behavior: 'smooth'})
+                }}>
                     {locale === 'ko' ? l.label_ko : l.label_en}
                 </Link>
             ))}

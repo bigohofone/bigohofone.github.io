@@ -15,9 +15,9 @@ export default function Intro() {
 
     const style = IntroStyles();
 
-    let maskSizeStart = 50;
+    let maskSizeStart = 66;
     if (app.width >= mobileBreakpoint) {
-        maskSizeStart = 25;
+        maskSizeStart = 33;
     };
 
     const [scrollY, setScrollY] = useState(0);
@@ -31,8 +31,8 @@ export default function Intro() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    let maskSize = maskSizeStart + ((500-maskSizeStart) * (scrollY * 2 / INTRO_SCOLL_HEIGHT));
-    maskSize = Math.min(maskSize, 500); // Cap at 1000
+    let maskSize = maskSizeStart + ((300-maskSizeStart) * (scrollY * 2 / INTRO_SCOLL_HEIGHT));
+    maskSize = Math.min(maskSize, 300); // Cap at 1000
 
 
 
@@ -44,8 +44,8 @@ export default function Intro() {
                 <div 
                     style={{
                         ...style.imgContainer,
-                        maskImage: 'url(/data/seal-outline.svg)',
-                        WebkitMaskImage: 'url(/data/seal-outline.svg)', // For Safari compatibility
+                        maskImage: 'url(/data/cloud-mask.svg)',
+                        WebkitMaskImage: 'url(/data/cloud-mask.svg)', // For Safari compatibility
                         maskRepeat: 'no-repeat',
                         WebkitMaskRepeat: 'no-repeat',
                         maskSize: `${maskSize}vw`,
