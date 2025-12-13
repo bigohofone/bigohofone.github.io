@@ -1,14 +1,13 @@
 {
   "files": {
     "main.css": "/static/css/main.42960e01.css",
-    "main.js": "/static/js/main.17576a9d.js",
-    "static/media/seal-svgrepo-com.svg": "/static/media/seal-svgrepo-com.0b5a4f222308875c84066794176a5270.svg",
+    "main.js": "/static/js/main.9f229c72.js",
     "index.html": "/index.html",
     "main.42960e01.css.map": "/static/css/main.42960e01.css.map",
-    "main.17576a9d.js.map": "/static/js/main.17576a9d.js.map"
+    "main.9f229c72.js.map": "/static/js/main.9f229c72.js.map"
   },
   "entrypoints": [
     "static/css/main.42960e01.css",
-    "static/js/main.17576a9d.js"
+    "static/js/main.9f229c72.js"
   ]
 }
