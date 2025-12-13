@@ -21,11 +21,7 @@ export default function Header() {
     <header style={style.container}>
       <div style={style.inner}>
         <Link to="/" style={logoStyle.logoContainer}>
-          <img 
-            src={require('../../assets/icons/seal-svgrepo-com.svg').default} 
-            alt="Logo" 
-            style={logoStyle.logoImg}
-          />
+          <img src="/assets/logo/seal.svg" alt="Logo" style={logoStyle.logoImg}/>
           <div style={logoStyle.logoText}>{locale === 'ko' ? '' : ''}</div>
         </Link>
         <div style={style.functionalContainer}>

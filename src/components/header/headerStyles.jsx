@@ -11,16 +11,14 @@ export function logoStyles() {
             cursor: 'pointer',
         },
         logoImg: {
-            height: '2rem',
+            height: '2.5rem',
             objectFit: 'contain',
-            // transform: 'translateX(-50%)',
         },
         logoText: {
             fontFamily: 'Bitcount Grid Double',
             fontSize: 'var(--font-size-xl)',
-            fontWeight: '600',
+            fontWeight: '500',
             color: 'var(--color-on-text-primary)',
-            // transform: 'translateX(-1.25rem)',
         }
     };
 }

@@ -27,11 +27,11 @@ export default function Intro() {
 
     let maskSize = 'none';
     if (app?.width < app?.height) {
-        const start = 25;
+        const start = 50;
         const end = 500;
         maskSize = `auto ${Math.min(start + (end-start) * (scrollY * 2 / INTRO_SCOLL_HEIGHT), end)}vh`
     } else {
-        const start = 50;
+        const start = 25;
         const end = 500;
         maskSize = `${Math.min(start + (end-start) * (scrollY * 2 / INTRO_SCOLL_HEIGHT), end)}vw auto`
     }
@@ -44,8 +44,8 @@ export default function Intro() {
                 <div 
                     style={{
                         ...style.imgContainer,
-                        maskImage: 'url(/data/cloud-mask.svg)',
-                        WebkitMaskImage: 'url(/data/cloud-mask.svg)', // For Safari compatibility
+                        maskImage: 'url(/assets/logo/cloud-mask.svg)',
+                        WebkitMaskImage: 'url(/assets/logo/cloud-mask.svg)', // For Safari compatibility
                         maskRepeat: 'no-repeat',
                         WebkitMaskRepeat: 'no-repeat',
                         maskSize: maskSize,
