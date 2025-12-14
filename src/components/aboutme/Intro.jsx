@@ -5,7 +5,7 @@ import { IntroStyles } from './aboutmeStyles.jsx';
 
 import { mobileBreakpoint } from '../../assets/styles/breakpoints.jsx';
 
-
+const BACKGROUND_IMG_FPATH = "/assets/img/intro-background.jpeg"
 const INTRO_SCOLL_HEIGHT = window.innerHeight * 2;
 
 
@@ -59,7 +59,7 @@ export default function Intro() {
                         <span style={{...style.Text, color: 'white'}}>Hello, 안녕하세요!</span>
                     </div>
                     <img 
-                        src="/data/IMG_2483.jpeg" 
+                        src={BACKGROUND_IMG_FPATH}
                         alt="intro-background" 
                         style={style.img}
                     />

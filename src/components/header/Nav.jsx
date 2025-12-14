@@ -12,7 +12,7 @@ import { desktopBreakpoint, mobileBreakpoint } from '../../assets/styles/breakpo
 const links = [
   { to: '/', label_en: 'About Me', label_ko: '소개' },
   { to: '/publications', label_en: 'Publications', label_ko: '논문' },
-  { to: '/resume', label_en: 'Resume', label_ko: '이력서' },
+  { to: '/cv', label_en: 'CV', label_ko: 'CV' },
   { to: '/contact', label_en: 'Contact', label_ko: '연락처' },
 ];
 

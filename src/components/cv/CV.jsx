@@ -2,11 +2,11 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 
 import { useAppContext } from '../../contexts/AppContext';
-import { resumeStyles } from './resumeStyles';
+import { cvStyles } from './cvStyles';
 
-const RESUME_FPATH = '/data/resume_wonjunoh.pdf'
+const CV_FPATH = '/data/cv/cv_20251111.pdf'
 
-export function ResumeComponent() {
+export function CVComponent() {
 
     const { locale } = useAppContext();
     const contactRef = useRef(null);
@@ -27,7 +27,7 @@ export function ResumeComponent() {
         return () => window.removeEventListener('resize', updateMapHeight);
     }, []);
 
-    const style = resumeStyles();
+    const style = cvStyles();
 
     return (
         <div style={style.container}>
@@ -36,8 +36,8 @@ export function ResumeComponent() {
                     <div style={style.innerTitle}>
                         {
                             locale === 'ko'
-                            ? <>이력서</>
-                            : <>Resume</>
+                            ? <>CV</>
+                            : <>CV</>
                         }
                     </div>
                 </div>
@@ -46,7 +46,7 @@ export function ResumeComponent() {
                         <p style={style.innerContentShortcut} >  
                             <div className="material-symbols-rounded" style={{ fontSize: 'var(--font-size-lg)' }}>download</div> 
                             <div>
-                                <a href={RESUME_FPATH}>
+                                <a href={CV_FPATH}>
                                     {
                                     locale === 'ko'
                                     ? <>다운로드</>
@@ -59,7 +59,7 @@ export function ResumeComponent() {
                 </div>
             </div>
             <div style={{ width: '100%', height: mapHeight, overflow: 'hidden' }}>
-                <iframe src={RESUME_FPATH} title="example" width="100%" height="100%" frameborder="0"></iframe>
+                <iframe src={CV_FPATH} title="example" width="100%" height="100%" frameborder="0"></iframe>
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import { React } from 'react';
 import { useAppContext } from '../../contexts/AppContext.jsx';
 
-export function resumeStyles() {
+export function cvStyles() {
     const { width } = useAppContext();
 
 
