@@ -1,0 +1,493 @@
+:root {
+    --wr-bg-color: #ffffff;
+    --wr-text-main: #000000;
+    --wr-text-secondary: #666666;
+    --wr-sidebar-bg: #e5e5e5;
+
+    /* New Theme Variables */
+    --wr-font-xs: 12px;
+    --wr-font-s: 12px;
+    --wr-font-m: 15px;
+    --wr-font-l: 18px;
+    --wr-font-xl: 24px;
+
+    --wr-weight-thin: 200;
+    --wr-weight-normal: 400;
+    --wr-weight-bold: 600;
+
+    --wr-color-card-bg: #f9f9f9;
+    --wr-color-card-border: #e0e0e0;
+
+    --wr-border: #e5e5e5;
+    --wr-font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.wonjunoh-resume-layout {
+    display: flex;
+    min-height: 100vh;
+    font-family: var(--wr-font-family);
+    color: var(--wr-text-main);
+    background-color: var(--wr-bg-color);
+    line-height: 1.5;
+    font-size: var(--wr-font-m);
+}
+
+.wonjunoh-resume-main svg {
+    font-size: 14px;
+}
+
+/* Sidebar */
+.wonjunoh-resume-sidebar {
+    width: 420px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 40px 40px;
+    /* background-color: var(--wr-sidebar-bg); */
+    /* border-right: 1px solid var(--wr-border); */
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    -webkit-overflow-scrolling: touch;
+}
+
+.wonjunoh-resume-profile-img {
+    width: 96px;
+    height: 96px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-bottom: 24px;
+    display: block;
+}
+
+.wonjunoh-resume-name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 4px 0;
+}
+
+.wonjunoh-resume-name {
+    font-size: var(--wr-font-xl);
+    font-weight: var(--wr-weight-bold);
+    color: var(--wr-text-main);
+}
+
+.wonjunoh-resume-verified {
+    font-size: var(--wr-font-m);
+    color: #1d9bf0;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.wonjunoh-resume-pronouns {
+    font-size: var(--wr-font-s);
+    font-weight: var(--wr-weight-normal);
+    color: var(--wr-text-secondary);
+    text-transform: uppercase;
+    margin: 0 0 32px 0;
+}
+
+.wonjunoh-resume-sidebar-section {
+    margin-bottom: 40px;
+}
+
+.wonjunoh-resume-sidebar-label {
+    font-size: var(--wr-font-xs);
+    font-weight: var(--wr-weight-normal);
+    text-transform: uppercase;
+    color: var(--wr-text-secondary);
+    margin-bottom: var(--wr-font-s);
+}
+
+.wonjunoh-resume-sidebar-text {
+    font-size: var(--wr-font-m);
+    font-weight: var(--wr-weight-normal);
+    color: var(--wr-text-main);
+    margin: 0;
+}
+
+.wonjunoh-resume-sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.wonjunoh-resume-sidebar-link {
+    font-size: var(--wr-font-m);
+    font-weight: var(--wr-weight-normal);
+    color: var(--wr-text-main);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wonjunoh-resume-sidebar-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--wr-text-secondary);
+}
+
+.wonjunoh-resume-sidebar-link:hover {
+    opacity: 0.7;
+}
+
+.wonjunoh-resume-social-row {
+    display: flex;
+    gap: 24px;
+    margin-top: auto;
+    flex-wrap: wrap;
+}
+
+.wonjunoh-resume-social-icon {
+    color: var(--wr-text-secondary);
+    font-size: 24px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.wonjunoh-resume-social-icon:hover {
+    opacity: 1;
+}
+
+/* Scrollbar specific for sidebar to be subtle */
+.wonjunoh-resume-sidebar::-webkit-scrollbar {
+    width: 0px;
+}
+
+.wonjunoh-resume-sidebar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+/*==============================================================*/
+/* Main Content */
+/*==============================================================*/
+.wonjunoh-resume-main {
+    flex: 1;
+    padding: 40px 40px;
+    margin-left: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Sections */
+.wonjunoh-resume-section {
+    width: 100%;
+    max-width: 540px;
+    margin-bottom: 40px;
+    scroll-margin-top: 40px;
+}
+
+.wonjunoh-resume-section p {
+    font-size: var(--wr-font-m);
+    font-weight: var(--wr-weight-normal);
+    color: var(--wr-text-main);
+}
+
+.wonjunoh-resume-section-title {
+    font-size: var(--wr-font-xs);
+    font-weight: var(--wr-weight-normal);
+    margin-bottom: var(--wr-font-s);
+    color: var(--wr-text-secondary);
+    text-transform: uppercase;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+
+    .wonjunoh-resume-layout {
+        flex-direction: column;
+    }
+
+    .wonjunoh-resume-sidebar {
+        width: 100%;
+        max-width: 588px;
+        /* 540px + 48px padding = 588px for content alignment */
+        margin: 0 auto;
+        height: auto;
+        position: relative;
+        top: auto;
+        left: auto;
+        bottom: auto;
+        /* border-right: none; */
+        padding: 40px 24px;
+        overflow-y: visible;
+    }
+
+    .wonjunoh-resume-sidebar::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 100vw;
+        height: 8px;
+        background-color: var(--wr-sidebar-bg);
+    }
+
+    .wonjunoh-resume-main {
+        padding: 40px 24px;
+        margin-left: 0;
+        max-width: 100%;
+    }
+
+    .wonjunoh-resume-section {
+        margin-bottom: 60px;
+    }
+}
+
+/* Experience Card Design */
+.wonjunoh-resume-experience-card {
+    display: flex;
+    gap: 20px;
+    padding: 16px;
+    background: var(--wr-color-card-bg);
+    border: 1px solid var(--wr-color-card-border);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    margin-bottom: 12px;
+}
+
+.wonjunoh-resume-experience-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-color: #d1d1d1;
+}
+
+.wonjunoh-resume-experience-logo-container {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.wonjunoh-resume-experience-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wonjunoh-resume-experience-content {
+    flex: 1;
+    color: var(--wr-text-secondary);
+}
+
+.wonjunoh-resume-experience-title {
+    margin: 0 0 8px 0;
+    font-size: var(--wr-font-m) !important;
+    font-weight: var(--wr-weight-normal) !important;
+    color: var(--wr-text-main) !important;
+}
+
+.wonjunoh-resume-experience-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-size: var(--wr-font-s) !important;
+    font-weight: var(--wr-weight-normal) !important;
+    color: var(--wr-text-secondary) !important;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.wonjunoh-resume-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--wr-text-secondary) !important;
+}
+
+.wonjunoh-resume-experience-desc {
+    font-size: var(--wr-font-s) !important;
+    font-weight: var(--wr-weight-normal) !important;
+    color: var(--wr-text-secondary) !important;
+}
+
+/* Navigation Dock */
+.wonjunoh-resume-dock-container {
+    position: fixed;
+    bottom: 32px;
+    z-index: 1000;
+    /* Center logic: Sidebar (420px) + (Remaining Width / 2) */
+    left: calc(420px + (100% - 420px) / 2);
+    transform: translateX(-50%);
+    pointer-events: none;
+    /* Allow clicks to pass through wrapper */
+}
+
+.wonjunoh-resume-dock {
+    display: flex;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.85);
+    /* Glass effect */
+    backdrop-filter: blur(12px);
+    padding: 8px;
+    border-radius: 9999px;
+    /* Pill shape */
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    pointer-events: auto;
+    /* Re-enable clicks on dock */
+}
+
+.wonjunoh-resume-dock-item {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--wr-text-secondary);
+    font-size: 20px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wonjunoh-resume-dock-item:hover {
+    color: var(--wr-text-main);
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: scale(1.1);
+}
+
+/* Tooltip */
+.wonjunoh-resume-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: #111;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    margin-bottom: 12px;
+}
+
+.wonjunoh-resume-dock-item:hover .wonjunoh-resume-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Mobile Responsiveness for Dock */
+@media (max-width: 1024px) {
+    .wonjunoh-resume-dock-container {
+        left: 50%;
+        /* Center on screen for mobile */
+        bottom: 24px;
+    }
+}
+
+/* Badge Style for Links */
+.wonjunoh-resume-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    border: 1px solid #e0e0e0;
+    /* background-color: #ffffff; */
+    color: var(--wr-text-secondary);
+    font-size: 10px;
+    font-weight: var(--wr-weight-normal);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+
+/* Minimal List Style (for Awards) */
+.wonjunoh-resume-list-entry {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--wr-color-card-border);
+}
+
+.wonjunoh-resume-list-entry:first-child {
+    padding-top: 0;
+}
+
+.wonjunoh-resume-list-entry:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.wonjunoh-resume-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+
+.wonjunoh-resume-list-title {
+    font-size: var(--wr-font-m) !important;
+    font-weight: var(--wr-weight-normal) !important;
+    color: var(--wr-text-main) !important;
+    flex: 1;
+    margin-right: 16px;
+}
+
+.wonjunoh-resume-list-date {
+    font-size: var(--wr-font-s) !important;
+    font-weight: var(--wr-weight-normal) !important;
+    color: var(--wr-text-secondary);
+    white-space: nowrap;
+    text-align: right;
+}
+
+.wonjunoh-resume-list-sub {
+    font-size: var(--wr-font-s) !important;
+    font-weight: var(--wr-weight-normal) !important;
+    color: var(--wr-text-secondary) !important;
+    margin-bottom: 4px;
+}
+
+.wonjunoh-resume-list-desc {
+    font-size: var(--wr-font-s) !important;
+    font-weight: var(--wr-weight-normal) !important;
+    color: var(--wr-text-secondary) !important;
+    margin-top: 4px;
+}
+
+/* Mobile Experience Card Layout (< 1024px) */
+@media (max-width: 1024px) {
+    .wonjunoh-resume-experience-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px 16px;
+    }
+
+    .wonjunoh-resume-experience-logo-container {
+        width: 40px;
+        height: 40px;
+    }
+
+    .wonjunoh-resume-experience-content {
+        width: 100%;
+    }
+}

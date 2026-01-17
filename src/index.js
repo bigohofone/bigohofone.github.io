@@ -10,6 +10,7 @@ import './assets/styles/global/grid.css'
 import './assets/styles/global/section.css'
 import './assets/styles/global/spacer.css'
 import './assets/styles/global/btn.css';
+import './assets/styles/wonjunoh_resume.css';
 
 import App from './App';
 
