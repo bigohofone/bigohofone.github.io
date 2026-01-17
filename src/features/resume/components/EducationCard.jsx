@@ -42,10 +42,10 @@ const EducationCard = ({
 
                 {/* 3. Degree and GPA (Smaller) */}
                 <p style={{
-                    fontSize: 'var(--wr-font-xs)',
+                    fontSize: 'var(--wr-font-s)',
                     color: 'var(--wr-text-secondary)',
                     margin: 0,
-                    fontWeight: 400
+                    fontWeight: 'var(--wr-weight-normal)'
                 }}>
                     {title}
                 </p>
