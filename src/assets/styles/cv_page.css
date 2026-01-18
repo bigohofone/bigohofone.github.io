@@ -199,6 +199,17 @@
         display: none !important;
     }
 
+    .cv-page-wrapper {
+        transform: none !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    /* Hide LiquidGlass dock in print */
+    .cv-download-dock {
+        display: none !important;
+    }
+
     @page {
         size: A4;
         margin: 25mm 0;
@@ -235,6 +246,7 @@
     html.cv-page-html,
     body.cv-page-body {
         background: #e0e0e0;
+        overflow-x: hidden;
     }
 }
 

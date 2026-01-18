@@ -28,8 +28,12 @@ const getContactIcon = (label) => {
 
 const CVPage = () => {
     const cvRef = React.useRef(null);
+    const wrapperRef = React.useRef(null);
+    const dockRef = React.useRef(null);
+    const [dockTop, setDockTop] = React.useState('0px');
 
     const [pageCount, setPageCount] = React.useState(1);
+    const [scale, setScale] = React.useState(1);
 
     // Add cv-page-body class to body for dark background
     React.useEffect(() => {
@@ -39,6 +43,43 @@ const CVPage = () => {
             document.documentElement.classList.remove('cv-page-html');
             document.body.classList.remove('cv-page-body');
         };
+    }, []);
+
+    // Calculate scale for mobile responsiveness
+    React.useEffect(() => {
+        const calculateScale = () => {
+            const a4WidthMm = 210;
+            const pxPerMm = 3.7795275591;
+            const a4WidthPx = a4WidthMm * pxPerMm;
+            const viewportWidth = window.innerWidth;
+            const padding = 32; // 16px padding on each side
+            const availableWidth = viewportWidth - padding;
+
+            if (availableWidth < a4WidthPx) {
+                setScale(availableWidth / a4WidthPx);
+            } else {
+                setScale(1);
+            }
+        };
+
+        calculateScale();
+        window.addEventListener('resize', calculateScale);
+        return () => window.removeEventListener('resize', calculateScale);
+    }, []);
+
+    // Calculate dock position
+    React.useEffect(() => {
+        const calculateDockPosition = () => {
+            if (dockRef.current) {
+                const navHeight = dockRef.current.offsetHeight;
+                const topPosition = window.innerHeight - navHeight - 8 - 12;
+                setDockTop(`${topPosition}px`);
+            }
+        };
+
+        calculateDockPosition();
+        window.addEventListener('resize', calculateDockPosition);
+        return () => window.removeEventListener('resize', calculateDockPosition);
     }, []);
 
     // Dynamic Pagination for Web View
@@ -166,130 +207,143 @@ const CVPage = () => {
 
     return (
         <>
-            <div className="cv-page" ref={cvRef}>
-                <PageMarkers pages={pageCount} />
-                {/* Header */}
-                <header className="cv-header">
-                    <h1 className="cv-name">{profile.name}</h1>
-                    <div className="cv-contact">
-                        {contact.items.map((item, index) => (
-                            <a key={index} href={item.link} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '4pt' }}>
-                                {getContactIcon(item.label)} {item.value}
-                            </a>
-                        ))}
-                    </div>
-                </header>
-
-                {/* Education */}
-                <section className="cv-section">
-                    <h2 className="cv-section-title">{education.title}</h2>
-                    {education.items.map((item, index) => (
-                        <div key={index} className="cv-entry">
-                            <div className="cv-entry-header">
-                                <span className="cv-entry-title">{item.organization}, {item.location}</span>
-                                <span className="cv-entry-date">{item.date}</span>
-                            </div>
-                            <p className="cv-entry-description">{item.title}</p>
+            <div
+                className="cv-page-wrapper"
+                ref={wrapperRef}
+                style={{
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'top center',
+                    width: scale < 1 ? `${100 / scale}%` : '100%',
+                    marginLeft: scale < 1 ? `${-(100 / scale - 100) / 2}%` : 0,
+                    marginBottom: scale < 1 ? `${-(pageCount * 297 * 3.7795275591 * (1 - scale))}px` : 0,
+                }}
+            >
+                <div className="cv-page" ref={cvRef}>
+                    <PageMarkers pages={pageCount} />
+                    {/* Header */}
+                    <header className="cv-header">
+                        <h1 className="cv-name">{profile.name}</h1>
+                        <div className="cv-contact">
+                            {contact.items.map((item, index) => (
+                                <a key={index} href={item.link} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '4pt' }}>
+                                    {getContactIcon(item.label)} {item.value}
+                                </a>
+                            ))}
                         </div>
-                    ))}
-                </section>
+                    </header>
 
-                {/* Experience */}
-                <section className="cv-section">
-                    <h2 className="cv-section-title">{experience.title}</h2>
-                    {experience.items.map((item, index) => (
-                        <div key={index} className="cv-entry">
-                            <div className="cv-entry-header">
-                                <span className="cv-entry-title">{item.title}</span>
-                                <span className="cv-entry-date">{item.date}</span>
-                            </div>
-                            <div className="cv-entry-organization">{item.organization}, {item.location}</div>
-                            <p className="cv-entry-description">{item.description}</p>
-                        </div>
-                    ))}
-                </section>
-
-                {/* Publications */}
-                <section className="cv-section">
-                    <h2 className="cv-section-title">{publications.title}</h2>
-                    <ul className="cv-list">
-                        {publications.items.map((item, index) => (
-                            <li key={index} className="cv-list-item">
-                                <div className="cv-list-item-title">{item.title}</div>
-                                <div>{item.authors}</div>
-                                <div>
-                                    <em>{item.venue}</em>
-                                    {item.tags && item.tags.length > 0 && ` (${item.tags.join(', ')})`}
+                    {/* Education */}
+                    <section className="cv-section">
+                        <h2 className="cv-section-title">{education.title}</h2>
+                        {education.items.map((item, index) => (
+                            <div key={index} className="cv-entry">
+                                <div className="cv-entry-header">
+                                    <span className="cv-entry-title">{item.organization}, {item.location}</span>
+                                    <span className="cv-entry-date">{item.date}</span>
                                 </div>
-                            </li>
+                                <p className="cv-entry-description">{item.title}</p>
+                            </div>
                         ))}
-                    </ul>
-                </section>
+                    </section>
 
-                {/* Awards */}
-                <section className="cv-section">
-                    <h2 className="cv-section-title">{awards.title}</h2>
-                    <ul className="cv-list">
-                        {awards.items.map((item, index) => (
-                            <li key={index} className="cv-list-item">
-                                <span className="cv-list-item-title">{item.title}</span>
-                                {' - '}{item.organization}
-                                {`; `}{item.date}
-                                {item.description && `; ${item.description}`}
-                            </li>
+                    {/* Experience */}
+                    <section className="cv-section">
+                        <h2 className="cv-section-title">{experience.title}</h2>
+                        {experience.items.map((item, index) => (
+                            <div key={index} className="cv-entry">
+                                <div className="cv-entry-header">
+                                    <span className="cv-entry-title">{item.title}</span>
+                                    <span className="cv-entry-date">{item.date}</span>
+                                </div>
+                                <div className="cv-entry-organization">{item.organization}, {item.location}</div>
+                                <p className="cv-entry-description">{item.description}</p>
+                            </div>
                         ))}
-                    </ul>
-                </section>
+                    </section>
 
-                {/* Advising & Mentoring */}
-                <section className="cv-section">
-                    <h2 className="cv-section-title">{advising.title}</h2>
-                    <ul className="cv-list">
-                        {advising.items.map((item, index) => (
-                            <li key={index} className="cv-list-item">
-                                <span className="cv-list-item-title">{item.title}</span>
-                                {' - '}{item.organization}
-                                {`; `}{item.date}
-                                {item.description && `; ${item.description}`}
-                            </li>
-                        ))}
-                    </ul>
-                </section>
+                    {/* Publications */}
+                    <section className="cv-section">
+                        <h2 className="cv-section-title">{publications.title}</h2>
+                        <ul className="cv-list">
+                            {publications.items.map((item, index) => (
+                                <li key={index} className="cv-list-item">
+                                    <div className="cv-list-item-title">{item.title}</div>
+                                    <div>{item.authors}</div>
+                                    <div>
+                                        <em>{item.venue}</em>
+                                        {item.tags && item.tags.length > 0 && ` (${item.tags.join(', ')})`}
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
 
-                {/* Extracurricular Activities */}
-                <section className="cv-section">
-                    <h2 className="cv-section-title">{extracurricular.title}</h2>
-                    <ul className="cv-list">
-                        {extracurricular.items.map((item, index) => (
-                            <li key={index} className="cv-list-item">
-                                <span className="cv-list-item-title">{item.title}</span>
-                                {' - '}{item.organization}
-                                {`; `}{item.date}
-                                {item.description && `; ${item.description}`}
-                            </li>
-                        ))}
-                    </ul>
-                </section>
+                    {/* Awards */}
+                    <section className="cv-section">
+                        <h2 className="cv-section-title">{awards.title}</h2>
+                        <ul className="cv-list">
+                            {awards.items.map((item, index) => (
+                                <li key={index} className="cv-list-item">
+                                    <span className="cv-list-item-title">{item.title}</span>
+                                    {' - '}{item.organization}
+                                    {`; `}{item.date}
+                                    {item.description && `; ${item.description}`}
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+
+                    {/* Advising & Mentoring */}
+                    <section className="cv-section">
+                        <h2 className="cv-section-title">{advising.title}</h2>
+                        <ul className="cv-list">
+                            {advising.items.map((item, index) => (
+                                <li key={index} className="cv-list-item">
+                                    <span className="cv-list-item-title">{item.title}</span>
+                                    {' - '}{item.organization}
+                                    {`; `}{item.date}
+                                    {item.description && `; ${item.description}`}
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+
+                    {/* Extracurricular Activities */}
+                    <section className="cv-section">
+                        <h2 className="cv-section-title">{extracurricular.title}</h2>
+                        <ul className="cv-list">
+                            {extracurricular.items.map((item, index) => (
+                                <li key={index} className="cv-list-item">
+                                    <span className="cv-list-item-title">{item.title}</span>
+                                    {' - '}{item.organization}
+                                    {`; `}{item.date}
+                                    {item.description && `; ${item.description}`}
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                </div>
             </div>
 
             {/* Download Button - Dock Style */}
             <LiquidGlass
                 displacementScale={64}
                 blurAmount={0.1}
-                saturation={50}
+                saturation={130}
                 aberrationIntensity={2}
                 elasticity={0.15}
                 cornerRadius={9999}
                 padding="8px"
+                // mouseOffset={{ x: 0, y: 0 }}/
                 style={{
                     position: 'fixed',
-                    bottom: '32px',
+                    top: dockTop,
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    zIndex: 1000,
+                    // zIndex: 1000,
                 }}
             >
-                <nav className="cv-download-dock">
+                <nav className="cv-download-dock" ref={dockRef}>
                     <button className="cv-download-btn" onClick={handleDownload}>
                         <span className="cv-download-tooltip">Download PDF</span>
                         <FaDownload />

@@ -6,7 +6,51 @@ import LiquidGlass from 'liquid-glass-react';
 
 const NavigationDock = () => {
     const navigate = useNavigate();
+    const navRef = React.useRef(null);
+    const [maskStyle, setMaskStyle] = useState({});
     const [dockLeft, setDockLeft] = useState('50%');
+    const [dockTop, setDockTop] = useState('0px');
+
+    const checkScrollState = () => {
+        const el = navRef.current;
+        if (!el) return;
+
+        const { scrollLeft, scrollWidth, clientWidth } = el;
+        const isScrollable = scrollWidth > clientWidth;
+
+        if (!isScrollable) {
+            setMaskStyle({});
+            return;
+        }
+
+        const isAtStart = scrollLeft <= 0;
+        // Check if scrolled to end (allow 1px error margin)
+        const isAtEnd = scrollWidth - clientWidth - scrollLeft <= 1;
+
+        let mask = '';
+        if (isAtStart) {
+            // Only right side fade
+            mask = 'linear-gradient(to right, black 50%, transparent 100%)';
+        } else if (isAtEnd) {
+            // Only left side fade
+            mask = 'linear-gradient(to right, transparent 0%, black 50%)';
+        } else {
+            // Both sides fade
+            mask = 'linear-gradient(to right, transparent 0%, black 50%, black 50%, transparent 100%)';
+        }
+
+        setMaskStyle({
+            WebkitMaskImage: mask,
+            maskImage: mask
+        });
+    };
+
+    useEffect(() => {
+        // Initial check and on resize
+        checkScrollState();
+        window.addEventListener('resize', checkScrollState);
+        return () => window.removeEventListener('resize', checkScrollState);
+    }, []);
 
     useEffect(() => {
         const calculateDockPosition = () => {
@@ -18,6 +62,12 @@ const NavigationDock = () => {
             } else {
                 // Fallback to viewport center
                 setDockLeft('50%');
+            }
+
+            if (navRef.current) {
+                const navHeight = navRef.current.offsetHeight;
+                const topPosition = window.innerHeight - navHeight - 8 - 12;
+                setDockTop(`${topPosition}px`);
             }
         };
 
@@ -57,20 +107,21 @@ const NavigationDock = () => {
         <LiquidGlass
             displacementScale={64}
             blurAmount={0.1}
-            saturation={50}
+            saturation={130}
             aberrationIntensity={2}
             elasticity={0.15}
             cornerRadius={9999}
             padding="8px"
-            style={{
-                position: 'fixed',
-                bottom: '0px',
-                left: dockLeft,
-                transform: 'translateX(-50%)',
-                zIndex: 1000,
-            }}
+            globalMousePos={{ x: 0, y: 0 }}
+            mouseOffset={{ x: 0, y: 0 }}
+            style={{ position: 'fixed', top: dockTop, left: dockLeft }}
         >
-            <nav className="wonjunoh-resume-dock">
+            <nav
+                className="wonjunoh-resume-dock"
+                ref={navRef}
+                onScroll={checkScrollState}
+                style={maskStyle}
+            >
                 {navItems.map((item) => (
                     <button
                         key={item.id}

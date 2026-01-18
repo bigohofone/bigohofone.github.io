@@ -370,11 +370,24 @@
 }
 
 /* Mobile Responsiveness for Dock */
-@media (max-width: 1024px) {
-    .wonjunoh-resume-dock-container {
-        left: 50%;
-        /* Center on screen for mobile */
-        bottom: 24px;
+@media (max-width: 768px) {
+    .wonjunoh-resume-dock {
+        max-width: calc(100vw - 32px);
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+
+    }
+
+    .wonjunoh-resume-dock::-webkit-scrollbar {
+        display: none;
+    }
+
+    .wonjunoh-resume-dock-item {
+        flex-shrink: 0;
     }
 }
 
