@@ -1,7 +1,8 @@
 import React from 'react';
 import '../assets/styles/cv_page.css';
-import { FaLinkedin, FaGithub, FaXTwitter, FaEnvelope, FaGlobe } from 'react-icons/fa6';
+import { FaLinkedin, FaGithub, FaXTwitter, FaEnvelope, FaGlobe, FaDownload } from 'react-icons/fa6';
 import { SiGooglescholar } from 'react-icons/si';
+import LiquidGlass from 'liquid-glass-react';
 
 // Import all data
 import { profile } from '../data/profile';
@@ -29,6 +30,16 @@ const CVPage = () => {
     const cvRef = React.useRef(null);
 
     const [pageCount, setPageCount] = React.useState(1);
+
+    // Add cv-page-body class to body for dark background
+    React.useEffect(() => {
+        document.documentElement.classList.add('cv-page-html');
+        document.body.classList.add('cv-page-body');
+        return () => {
+            document.documentElement.classList.remove('cv-page-html');
+            document.body.classList.remove('cv-page-body');
+        };
+    }, []);
 
     // Dynamic Pagination for Web View
     React.useLayoutEffect(() => {
@@ -67,7 +78,7 @@ const CVPage = () => {
                 const elTop = rect.top + window.scrollY - containerTop;
                 const elBottom = rect.bottom + window.scrollY - containerTop;
 
-                const paddingMm = 20; // Matches css padding
+                const paddingMm = 20; // Matches @page margin
                 const paddingPx = paddingMm * pxPerMm;
 
                 // Current page index and boundaries
@@ -111,6 +122,9 @@ const CVPage = () => {
             const totalHeight = container.scrollHeight;
             const computedPages = Math.ceil(totalHeight / pageHeightPx);
             setPageCount(computedPages);
+
+            // Set container height to exact multiple of page height for full A4 display
+            container.style.minHeight = `${computedPages * 297}mm`;
         };
 
         // Run on mount and a bit after to ensure fonts/layout are stable
@@ -132,12 +146,18 @@ const CVPage = () => {
         const markers = [];
         for (let i = 0; i < pages; i++) {
             const top = i * 297;
+            const isLastPage = i === pages - 1;
             markers.push(
                 <React.Fragment key={i}>
                     <div className="cv-page-marker corner-tl" style={{ top: `${top}mm`, left: 0 }} />
                     <div className="cv-page-marker corner-tr" style={{ top: `${top}mm`, right: 0 }} />
-                    <div className="cv-page-marker corner-bl" style={{ top: `${top + 297}mm`, left: 0 }} />
-                    <div className="cv-page-marker corner-br" style={{ top: `${top + 297}mm`, right: 0 }} />
+                    {/* Skip bottom markers on last page to prevent extra blank page in PDF */}
+                    {!isLastPage && (
+                        <>
+                            <div className="cv-page-marker corner-bl" style={{ top: `${top + 297}mm`, left: 0 }} />
+                            <div className="cv-page-marker corner-br" style={{ top: `${top + 297}mm`, right: 0 }} />
+                        </>
+                    )}
                 </React.Fragment>
             );
         }
@@ -166,10 +186,9 @@ const CVPage = () => {
                     {education.items.map((item, index) => (
                         <div key={index} className="cv-entry">
                             <div className="cv-entry-header">
-                                <span className="cv-entry-title">{item.organization}</span>
+                                <span className="cv-entry-title">{item.organization}, {item.location}</span>
                                 <span className="cv-entry-date">{item.date}</span>
                             </div>
-                            <div className="cv-entry-organization">{item.location}</div>
                             <p className="cv-entry-description">{item.title}</p>
                         </div>
                     ))}
@@ -253,10 +272,30 @@ const CVPage = () => {
                 </section>
             </div>
 
-            {/* Download Button */}
-            <button className="cv-download-btn" onClick={handleDownload}>
-                Download PDF
-            </button>
+            {/* Download Button - Dock Style */}
+            <LiquidGlass
+                displacementScale={64}
+                blurAmount={0.1}
+                saturation={50}
+                aberrationIntensity={2}
+                elasticity={0.15}
+                cornerRadius={9999}
+                padding="8px"
+                style={{
+                    position: 'fixed',
+                    bottom: '32px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 1000,
+                }}
+            >
+                <nav className="cv-download-dock">
+                    <button className="cv-download-btn" onClick={handleDownload}>
+                        <span className="cv-download-tooltip">Download PDF</span>
+                        <FaDownload />
+                    </button>
+                </nav>
+            </LiquidGlass>
         </>
     );
 };

@@ -89,7 +89,7 @@ const ResumePage = () => {
                 fontWeight: 'var(--wr-weight-normal)',
                 textAlign: 'left',
                 width: '100%',
-                maxWidth: '540px'
+                maxWidth: '720px'
             }}>
                 <p>{footer.copyright}</p>
             </footer>

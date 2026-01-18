@@ -8,6 +8,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "framer-motion": "^12.23.25",
+    "liquid-glass-react": "^1.1.1",
     "pdfjs": "^2.5.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
