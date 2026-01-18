@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { FaRegUser, FaRegFileAlt, FaRegBuilding, FaRegStar } from 'react-icons/fa';
+import { FaRegUser, FaRegFileAlt, FaRegFile, FaRegBuilding, FaRegStar } from 'react-icons/fa';
 import { FaDownload } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import LiquidGlass from 'liquid-glass-react';
+import { pdf } from '@react-pdf/renderer';
+import CVPdfDocument from '../../../components/CVPdfDocument';
 
 const NavigationDock = () => {
     const navigate = useNavigate();
@@ -93,27 +95,88 @@ const NavigationDock = () => {
 
     const navItems = [
         { id: 'intro', icon: <FaRegUser />, label: 'Intro' },
-        { id: 'education', icon: <FaRegFileAlt />, label: 'Education' },
+        { id: 'education', icon: <FaRegFile />, label: 'Education' },
         { id: 'experience', icon: <FaRegBuilding />, label: 'Experience' },
         { id: 'publications', icon: <FaRegFileAlt />, label: 'Publications' },
         { id: 'awards', icon: <FaRegStar />, label: 'Awards' },
     ];
 
-    const handleCVClick = () => {
-        navigate('/cv');
+    const handleCVClick = async () => {
+        try {
+            const blob = await pdf(<CVPdfDocument />).toBlob();
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            // Fallback to navigation if PDF generation fails? 
+            // The prompt says "CVPage를 PDF로 바꿔서 출력해", so maybe fallback is not desired if explicitly asked to replace.
+            // But good to have error handling.
+            navigate('/cv');
+        }
     };
+
+    const [activeSection, setActiveSection] = useState('');
+
+    // Active Section Detection (Scroll Spy)
+    useEffect(() => {
+        const observerOptions = {
+            root: null,
+            threshold: 0,
+            rootMargin: '-10% 0px -90% 0px', // Trigger when section is near top of viewport
+        };
+
+        const observerCallback = (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        navItems.forEach((item) => {
+            const element = document.getElementById(item.id);
+            if (element) observer.observe(element);
+        });
+
+        // Also observe footer to clear active section or set to last item if needed
+        // For now, sticking to the defined items.
+
+        return () => observer.disconnect();
+    }, []);
+
+    // Auto-scroll Dock for Mobile
+    useEffect(() => {
+        if (!activeSection || !navRef.current) return;
+
+        const activeBtn = navRef.current.querySelector(`button[data-id="${activeSection}"]`);
+        if (activeBtn) {
+            const dock = navRef.current;
+            const btnRect = activeBtn.getBoundingClientRect();
+            const dockRect = dock.getBoundingClientRect();
+
+            // Check if button is out of view (horizontal)
+            const isOutOfViewLeft = btnRect.left < dockRect.left;
+            const isOutOfViewRight = btnRect.right > dockRect.right;
+
+            if (isOutOfViewLeft || isOutOfViewRight) {
+                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+    }, [activeSection]);
+
+
 
     return (
         <LiquidGlass
             displacementScale={64}
-            blurAmount={0.1}
+            blurAmount={0.05}
             saturation={130}
-            aberrationIntensity={2}
-            elasticity={0.15}
+            aberrationIntensity={5}
+            elasticity={0.1}
             cornerRadius={9999}
             padding="8px"
-            globalMousePos={{ x: 0, y: 0 }}
-            mouseOffset={{ x: 0, y: 0 }}
             style={{ position: 'fixed', top: dockTop, left: dockLeft }}
         >
             <nav
@@ -122,17 +185,28 @@ const NavigationDock = () => {
                 onScroll={checkScrollState}
                 style={maskStyle}
             >
-                {navItems.map((item) => (
-                    <button
-                        key={item.id}
-                        onClick={() => scrollToSection(item.id)}
-                        className="wonjunoh-resume-dock-item"
-                        aria-label={item.label}
-                    >
-                        {item.icon}
-                        <span className="wonjunoh-resume-dock-label">{item.label}</span>
-                    </button>
-                ))}
+                {navItems.map((item) => {
+                    const isActive = activeSection === item.id;
+                    return (
+                        <button
+                            key={item.id}
+                            data-id={item.id}
+                            onClick={() => scrollToSection(item.id)}
+                            className={`wonjunoh-resume-dock-item ${isActive ? 'active' : ''}`}
+                            aria-label={item.label}
+                            style={isActive ? { color: '#FF2D55' } : {}}
+                        >
+                            {/* Clamp icon color change manually or via CSS if prefers */}
+                            {React.cloneElement(item.icon, { style: isActive ? { color: '#FF2D55' } : {} })}
+                            <span
+                                className="wonjunoh-resume-dock-label"
+                                style={isActive ? { color: '#FF2D55' } : {}}
+                            >
+                                {item.label}
+                            </span>
+                        </button>
+                    );
+                })}
                 <button
                     onClick={handleCVClick}
                     className="wonjunoh-resume-dock-item wonjunoh-resume-dock-item-cv"

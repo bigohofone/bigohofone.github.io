@@ -211,11 +211,11 @@ const CVPage = () => {
                 className="cv-page-wrapper"
                 ref={wrapperRef}
                 style={{
-                    transform: `scale(${scale})`,
-                    transformOrigin: 'top center',
-                    width: scale < 1 ? `${100 / scale}%` : '100%',
-                    marginLeft: scale < 1 ? `${-(100 / scale - 100) / 2}%` : 0,
-                    marginBottom: scale < 1 ? `${-(pageCount * 297 * 3.7795275591 * (1 - scale))}px` : 0,
+                    // transform: `scale(${scale})`,
+                    // transformOrigin: 'top center',
+                    // width: scale < 1 ? `${100 / scale}%` : '100%',
+                    // marginLeft: scale < 1 ? `${-(100 / scale - 100) / 2}%` : 0,
+                    // marginBottom: scale < 1 ? `${-(pageCount * 297 * 3.7795275591 * (1 - scale))}px` : 0,
                 }}
             >
                 <div className="cv-page" ref={cvRef}>
@@ -326,7 +326,7 @@ const CVPage = () => {
             </div>
 
             {/* Download Button - Dock Style */}
-            <LiquidGlass
+            {/* <LiquidGlass
                 displacementScale={64}
                 blurAmount={0.1}
                 saturation={130}
@@ -349,7 +349,7 @@ const CVPage = () => {
                         <FaDownload />
                     </button>
                 </nav>
-            </LiquidGlass>
+            </LiquidGlass> */}
         </>
     );
 };

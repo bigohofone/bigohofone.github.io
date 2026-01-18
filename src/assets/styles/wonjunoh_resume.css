@@ -226,17 +226,6 @@
         overflow-y: visible;
     }
 
-    .wonjunoh-resume-sidebar::after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        transform: translateX(-50%);
-        width: 100vw;
-        height: 8px;
-        background-color: var(--wr-sidebar-bg);
-    }
-
     .wonjunoh-resume-main {
         padding: 40px 24px;
         margin-left: 0;
@@ -251,7 +240,7 @@
 /* Experience Card Design */
 .wonjunoh-resume-experience-card {
     display: flex;
-    gap: 20px;
+    gap: 16px;
     padding: 16px;
     background: var(--wr-color-card-bg);
     border: 1px solid var(--wr-color-card-border);
@@ -281,7 +270,7 @@
 .wonjunoh-resume-experience-logo {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .wonjunoh-resume-experience-content {
