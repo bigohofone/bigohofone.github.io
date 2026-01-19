@@ -68,7 +68,7 @@ const NavigationDock = () => {
 
             if (navRef.current) {
                 const navHeight = navRef.current.offsetHeight;
-                const topPosition = window.innerHeight - navHeight - 8 - 12;
+                const topPosition = window.innerHeight - navHeight - 4;
                 setDockTop(`${topPosition}px`);
             }
         };
@@ -171,12 +171,12 @@ const NavigationDock = () => {
     return (
         <LiquidGlass
             displacementScale={64}
-            blurAmount={0.05}
+            blurAmount={0.1}
             saturation={130}
             aberrationIntensity={5}
             elasticity={0.1}
-            cornerRadius={9999}
-            padding="8px"
+            cornerRadius={32}
+            padding="16px 16px"
             style={{ position: 'fixed', top: dockTop, left: dockLeft }}
         >
             <nav
