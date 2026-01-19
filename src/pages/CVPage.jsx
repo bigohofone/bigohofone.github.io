@@ -1,5 +1,7 @@
 import React from 'react';
 import '../assets/styles/cv_page.css';
+import CoreLayout from '../layouts/CoreLayout';
+import Sidebar from '../features/resume/components/Sidebar';
 import { FaLinkedin, FaGithub, FaXTwitter, FaEnvelope, FaGlobe, FaDownload } from 'react-icons/fa6';
 import { SiGooglescholar } from 'react-icons/si';
 import LiquidGlass from 'liquid-glass-react';
@@ -53,7 +55,8 @@ const CVPage = () => {
             const a4WidthPx = a4WidthMm * pxPerMm;
             const viewportWidth = window.innerWidth;
             const padding = 32; // 16px padding on each side
-            const availableWidth = viewportWidth - padding;
+            const sidebarWidth = window.innerWidth > 1024 ? 420 : 0;
+            const availableWidth = viewportWidth - sidebarWidth - padding;
 
             if (availableWidth < a4WidthPx) {
                 setScale(availableWidth / a4WidthPx);
@@ -206,7 +209,7 @@ const CVPage = () => {
     };
 
     return (
-        <>
+        <CoreLayout sidebar={<Sidebar />}>
             <div
                 className="cv-page-wrapper"
                 ref={wrapperRef}
@@ -350,7 +353,7 @@ const CVPage = () => {
                     </button>
                 </nav>
             </LiquidGlass> */}
-        </>
+        </CoreLayout>
     );
 };
 

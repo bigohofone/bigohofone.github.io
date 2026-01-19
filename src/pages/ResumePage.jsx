@@ -1,5 +1,8 @@
 import React from 'react';
-import ResumeLayout from '../layouts/ResumeLayout';
+import CoreLayout from '../layouts/CoreLayout';
+import Sidebar from '../features/resume/components/Sidebar';
+import NavigationDock from '../features/resume/components/NavigationDock';
+import '../assets/styles/wonjunoh_resume.css';
 import Section from '../features/resume/components/Section';
 import ResumeCard from '../features/resume/components/ResumeCard';
 import AwardCard from '../features/resume/components/AwardCard';
@@ -11,7 +14,7 @@ const ResumePage = () => {
     const { intro, news, education, experience, publications, awards, footer } = content;
 
     return (
-        <ResumeLayout>
+        <CoreLayout sidebar={<Sidebar />} dock={<NavigationDock />}>
             <Section id="intro" title={intro.title}>
                 {intro.paragraphs.map((text, index) => (
                     <p
@@ -93,7 +96,7 @@ const ResumePage = () => {
             }}>
                 <p>{footer.copyright}</p>
             </footer>
-        </ResumeLayout>
+        </CoreLayout>
     );
 };
 

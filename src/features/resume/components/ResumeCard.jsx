@@ -11,35 +11,35 @@ const ResumeCard = ({
     logo
 }) => {
     return (
-        <div className="wonjunoh-resume-experience-card">
-            <div className="wonjunoh-resume-experience-logo-container">
+        <div className="card">
+            <div className="card-logo-container">
                 {logo ? (
                     <img
                         src={logo.startsWith('http') ? logo : process.env.PUBLIC_URL + logo}
                         alt={`${organization} logo`}
-                        className="wonjunoh-resume-experience-logo"
+                        className="card-logo"
                     />
                 ) : (
                     <FiBookmark />
                 )}
             </div>
 
-            <div className="wonjunoh-resume-experience-content">
-                <h3 className="wonjunoh-resume-experience-title">{title}</h3>
+            <div className="card-content">
+                <h3 className="card-title">{title}</h3>
 
-                <div className="wonjunoh-resume-experience-meta">
-                    <span className="wonjunoh-resume-meta-item">
+                <div className="card-meta">
+                    <span className="meta-item">
                         <FiBookmark /> {organization}
                     </span>
-                    <span className="wonjunoh-resume-meta-item">
+                    <span className="meta-item">
                         <FiCalendar /> {date}
                     </span>
-                    <span className="wonjunoh-resume-meta-item">
+                    <span className="meta-item">
                         <FiMapPin /> {location}
                     </span>
                 </div>
 
-                <p className="wonjunoh-resume-experience-desc">
+                <p className="card-desc">
                     {description}
                 </p>
             </div>

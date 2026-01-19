@@ -2,19 +2,19 @@ import React from 'react';
 
 const PublicationCard = ({ _index, title, authors, venue, tags = [], links }) => {
     return (
-        <div className="wonjunoh-resume-list-entry">
+        <div className="list-entry">
             {/* Header: Title */}
-            <div className="wonjunoh-resume-list-header">
-                <div className="wonjunoh-resume-list-title">{title}</div>
+            <div className="list-header">
+                <div className="list-title">{title}</div>
             </div>
 
             {/* Authors */}
-            <div className="wonjunoh-resume-list-desc" style={{ marginBottom: '4px' }}>
+            <div className="list-desc" style={{ marginBottom: '4px' }}>
                 {authors}
             </div>
 
             {/* Venue, Tags, & Links */}
-            <div className="wonjunoh-resume-list-sub" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
+            <div className="list-desc" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
 
                 {/* Venue Name */}
                 <span style={{ fontWeight: 'var(--wr-weight-normal)', fontSize: 'var(--wr-font-s)' }}>
@@ -34,7 +34,7 @@ const PublicationCard = ({ _index, title, authors, venue, tags = [], links }) =>
                     }
                     // Default badge style for Oral, Spotlight, Awards
                     return (
-                        <span key={i} className="wonjunoh-resume-badge" style={{ color: '#000', borderColor: '#000', fontWeight: 500 }}>
+                        <span key={i} className="badge" style={{ color: '#000', borderColor: '#000', fontWeight: 500 }}>
                             {tag}
                         </span>
                     );
@@ -45,7 +45,7 @@ const PublicationCard = ({ _index, title, authors, venue, tags = [], links }) =>
                     <a
                         key={`link-${i}`}
                         href={link.url}
-                        className="wonjunoh-resume-badge"
+                        className="badge"
                         target="_blank"
                         rel="noreferrer"
                     >

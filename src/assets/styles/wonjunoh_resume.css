@@ -22,39 +22,21 @@
     --wr-font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-.wonjunoh-resume-layout {
-    display: flex;
-    min-height: 100vh;
-    font-family: var(--wr-font-family);
-    color: var(--wr-text-main);
-    background-color: var(--wr-bg-color);
-    line-height: 1.5;
-    font-size: var(--wr-font-m);
-}
-
-.wonjunoh-resume-main svg {
-    font-size: 14px;
-}
+/* .layout removed - see layout.css */
 
 /* Sidebar */
-.wonjunoh-resume-sidebar {
-    width: 420px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    overflow-y: auto;
-    padding: 48px 48px 24px;
-    /* background-color: var(--wr-sidebar-bg); */
-    /* border-right: 1px solid var(--wr-border); */
+/* Sidebar internal styling - Layout is now handled by core-layout */
+.sidebar {
     display: flex;
     flex-direction: column;
-    z-index: 100;
-    -webkit-overflow-scrolling: touch;
+    height: calc(100vh - 64px);
+    /* No positioning or dimensions here, handled by container */
+    max-width: 720px;
+    width: 100%;
+    margin: auto;
 }
 
-.wonjunoh-resume-profile-img {
+.profile-img {
     width: 84px;
     height: 84px;
     border-radius: 32px;
@@ -63,27 +45,20 @@
     display: block;
 }
 
-.wonjunoh-resume-name-wrapper {
+.name-wrapper {
     display: flex;
     align-items: center;
     gap: 8px;
     margin: 0 0 4px 0;
 }
 
-.wonjunoh-resume-name {
+.name {
     font-size: var(--wr-font-xl);
     font-weight: var(--wr-weight-bold);
     color: var(--wr-text-main);
 }
 
-.wonjunoh-resume-verified {
-    font-size: var(--wr-font-m);
-    color: #1d9bf0;
-    margin: 0;
-    flex-shrink: 0;
-}
-
-.wonjunoh-resume-pronouns {
+.pronouns {
     font-size: var(--wr-font-s);
     font-weight: var(--wr-weight-normal);
     color: var(--wr-text-secondary);
@@ -91,11 +66,11 @@
     margin: 0 0 48px 0;
 }
 
-.wonjunoh-resume-sidebar-section {
+.sidebar-section {
     margin-bottom: 48px;
 }
 
-.wonjunoh-resume-sidebar-label {
+.sidebar-label {
     font-size: var(--wr-font-xs);
     font-weight: var(--wr-weight-normal);
     text-transform: uppercase;
@@ -103,14 +78,14 @@
     margin-bottom: var(--wr-font-s);
 }
 
-.wonjunoh-resume-sidebar-text {
+.sidebar-text {
     font-size: var(--wr-font-m);
     font-weight: var(--wr-weight-normal);
     color: var(--wr-text-main);
     margin: 0;
 }
 
-.wonjunoh-resume-sidebar-list {
+.sidebar-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -119,7 +94,7 @@
     gap: 16px;
 }
 
-.wonjunoh-resume-sidebar-link {
+.sidebar-link {
     font-size: var(--wr-font-m);
     font-weight: var(--wr-weight-normal);
     color: var(--wr-text-main);
@@ -130,25 +105,25 @@
     gap: 12px;
 }
 
-.wonjunoh-resume-sidebar-icon-wrapper {
+.sidebar-icon-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--wr-text-secondary);
 }
 
-.wonjunoh-resume-sidebar-link:hover {
+.sidebar-link:hover {
     opacity: 0.7;
 }
 
-.wonjunoh-resume-social-row {
+.social-row {
     display: flex;
     gap: 16px;
     margin-top: auto;
     flex-wrap: wrap;
 }
 
-.wonjunoh-resume-social-icon {
+.social-icon {
     color: var(--wr-text-secondary);
     /* width: 52px; */
     height: 52px;
@@ -160,46 +135,46 @@
     align-items: center;
 }
 
-.wonjunoh-resume-social-icon:hover {
+.social-icon:hover {
     opacity: 1;
 }
 
 /* Scrollbar specific for sidebar to be subtle */
-.wonjunoh-resume-sidebar::-webkit-scrollbar {
+.sidebar::-webkit-scrollbar {
     width: 0px;
 }
 
-.wonjunoh-resume-sidebar::-webkit-scrollbar-thumb {
+.sidebar::-webkit-scrollbar-thumb {
     background-color: transparent;
 }
 
 /*==============================================================*/
 /* Main Content */
 /*==============================================================*/
-.wonjunoh-resume-main {
-    flex: 1;
+.main {
+    width: 100%;
     padding: 48px 48px 24px;
-    margin-left: 420px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 /* Sections */
-.wonjunoh-resume-section {
+.section {
     width: 100%;
     max-width: 720px;
+    margin: auto;
     margin-bottom: 48px;
     scroll-margin-top: 48px;
 }
 
-.wonjunoh-resume-section p {
+.section p {
     font-size: var(--wr-font-m);
     font-weight: var(--wr-weight-normal);
     color: var(--wr-text-main);
 }
 
-.wonjunoh-resume-section-title {
+.section-title {
     font-size: var(--wr-font-xs);
     font-weight: var(--wr-weight-normal);
     margin-bottom: var(--wr-font-s);
@@ -208,40 +183,23 @@
 }
 
 /* Mobile Responsiveness */
+/* Mobile Responsiveness for Content Internal Styling */
 @media (max-width: 1024px) {
+    /* Layout overrides handled in layout.css */
 
-    .wonjunoh-resume-layout {
-        flex-direction: column;
-    }
-
-    .wonjunoh-resume-sidebar {
-        width: 100%;
-        max-width: calc(720px + 48px);
-        /* 540px + 48px padding = 588px for content alignment */
-        margin: 0 auto;
-        height: auto;
-        position: relative;
-        top: auto;
-        left: auto;
-        bottom: auto;
-        /* border-right: none; */
-        padding: 48px 24px;
+    .sidebar {
+        /* Reset padding if needed for mobile, but layout width is handled by container */
+        max-width: 720px;
         overflow-y: visible;
     }
 
-    .wonjunoh-resume-main {
-        padding: 48px 24px;
-        margin-left: 0;
-        max-width: 100%;
-    }
-
-    .wonjunoh-resume-section {
+    .section {
         margin-bottom: 60px;
     }
 }
 
 /* Experience Card Design */
-.wonjunoh-resume-experience-card {
+.card {
     display: flex;
     gap: 16px;
     padding: 16px;
@@ -252,12 +210,7 @@
     margin-bottom: 16px;
 }
 
-.wonjunoh-resume-experience-card:hover {
-    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border-color: #d1d1d1; */
-}
-
-.wonjunoh-resume-experience-logo-container {
+.card-logo-container {
     flex-shrink: 0;
     width: 48px;
     height: 48px;
@@ -270,25 +223,25 @@
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.wonjunoh-resume-experience-logo {
+.card-logo {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
-.wonjunoh-resume-experience-content {
+.card-content {
     flex: 1;
     color: var(--wr-text-secondary);
 }
 
-.wonjunoh-resume-experience-title {
+.card-title {
     margin: 0 0 8px 0;
     font-size: var(--wr-font-m) !important;
     font-weight: var(--wr-weight-normal) !important;
     color: var(--wr-text-main) !important;
 }
 
-.wonjunoh-resume-experience-meta {
+.card-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 4px 16px;
@@ -299,28 +252,28 @@
     align-items: center;
 }
 
-.wonjunoh-resume-meta-item {
+.meta-item {
     display: flex;
     align-items: center;
     gap: 8px;
     color: var(--wr-text-secondary) !important;
 }
 
-.wonjunoh-resume-experience-desc {
+.card-desc {
     font-size: var(--wr-font-s) !important;
     font-weight: var(--wr-weight-normal) !important;
     color: var(--wr-text-secondary) !important;
 }
 
 
-.wonjunoh-resume-dock {
+.dock {
     display: flex;
     gap: 16px;
     padding: 0;
     /* border-radius: 8px; */
 }
 
-.wonjunoh-resume-dock-item {
+.dock-item {
     position: relative;
     width: 52px;
     aspect-ratio: 1;
@@ -340,13 +293,13 @@
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.wonjunoh-resume-dock-item:hover {
+.dock-item:hover {
     color: var(--wr-text-main);
     background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Label below icon */
-.wonjunoh-resume-dock-label {
+.dock-label {
     font-size: 8px;
     font-weight: 500;
     white-space: nowrap;
@@ -354,17 +307,17 @@
 }
 
 /* CV Download Button - Distinguished styling */
-.wonjunoh-resume-dock-item-cv {
+.dock-item-cv {
     background-color: rgba(0, 0, 0, 0.06);
 }
 
-.wonjunoh-resume-dock-item-cv:hover {
+.dock-item-cv:hover {
     background-color: rgba(0, 0, 0, 0.12);
 }
 
 /* Mobile Responsiveness for Dock */
 @media (max-width: 768px) {
-    .wonjunoh-resume-dock {
+    .dock {
         max-width: calc(100vw - 16px - 48px);
         overflow-x: auto;
         overflow-y: hidden;
@@ -375,17 +328,17 @@
 
     }
 
-    .wonjunoh-resume-dock::-webkit-scrollbar {
+    .dock::-webkit-scrollbar {
         display: none;
     }
 
-    .wonjunoh-resume-dock-item {
+    .dock-item {
         flex-shrink: 0;
     }
 }
 
 /* Badge Style for Links */
-.wonjunoh-resume-badge {
+.badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -403,28 +356,28 @@
 
 
 /* Minimal List Style (for Awards) */
-.wonjunoh-resume-list-entry {
+.list-entry {
     padding: 16px 0;
     border-bottom: 1px solid var(--wr-color-card-border);
 }
 
-.wonjunoh-resume-list-entry:first-child {
+.list-entry:first-child {
     padding-top: 0;
 }
 
-.wonjunoh-resume-list-entry:last-child {
+.list-entry:last-child {
     border-bottom: none;
     padding-bottom: 0;
 }
 
-.wonjunoh-resume-list-title {
+.list-title {
     margin: 0 0 8px 0;
     font-size: var(--wr-font-m) !important;
     font-weight: var(--wr-weight-normal) !important;
     color: var(--wr-text-main) !important;
 }
 
-.wonjunoh-resume-list-date {
+.list-date {
     font-size: var(--wr-font-s) !important;
     font-weight: var(--wr-weight-normal) !important;
     color: var(--wr-text-secondary);
@@ -432,14 +385,14 @@
     text-align: right;
 }
 
-.wonjunoh-resume-list-sub {
+.list-meta {
     font-size: var(--wr-font-s) !important;
     font-weight: var(--wr-weight-normal) !important;
     color: var(--wr-text-secondary) !important;
     margin-bottom: 4px;
 }
 
-.wonjunoh-resume-list-desc {
+.list-desc {
     font-size: var(--wr-font-s) !important;
     font-weight: var(--wr-weight-normal) !important;
     color: var(--wr-text-secondary) !important;
@@ -447,18 +400,30 @@
 
 /* Mobile Experience Card Layout (< 1024px) */
 @media (max-width: 1024px) {
-    .wonjunoh-resume-experience-card {
+    .card {
         flex-direction: column;
         align-items: flex-start;
         gap: 16px;
     }
 
-    .wonjunoh-resume-experience-logo-container {
+    .card-logo-container {
         width: 48px;
         height: 48px;
     }
 
-    .wonjunoh-resume-experience-content {
+    .card-content {
         width: 100%;
+    }
+
+    .card-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .list-meta {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 2px !important;
     }
 }

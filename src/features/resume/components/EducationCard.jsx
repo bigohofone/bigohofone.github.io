@@ -11,31 +11,31 @@ const EducationCard = ({
     logo
 }) => {
     return (
-        <div className="wonjunoh-resume-experience-card" style={{ alignItems: 'flex-start' }}>
-            <div className="wonjunoh-resume-experience-logo-container">
+        <div className="card" style={{ alignItems: 'flex-start' }}>
+            <div className="card-logo-container">
                 {logo ? (
                     <img
                         src={logo.startsWith('http') ? logo : process.env.PUBLIC_URL + logo}
                         alt={`${organization} logo`}
-                        className="wonjunoh-resume-experience-logo"
+                        className="card-logo"
                     />
                 ) : (
                     <FaGraduationCap />
                 )}
             </div>
 
-            <div className="wonjunoh-resume-experience-content">
+            <div className="card-content">
                 {/* 1. School Name on Top */}
-                <h3 className="wonjunoh-resume-experience-title">
+                <h3 className="card-title">
                     {organization}
                 </h3>
 
                 {/* 2. Date and Location with Icons */}
-                <div className="wonjunoh-resume-experience-meta">
-                    <span className="wonjunoh-resume-meta-item">
+                <div className="card-meta">
+                    <span className="meta-item">
                         <FiCalendar /> {date}
                     </span>
-                    <span className="wonjunoh-resume-meta-item">
+                    <span className="meta-item">
                         <FiMapPin /> {location}
                     </span>
                 </div>

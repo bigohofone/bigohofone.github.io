@@ -11,16 +11,16 @@ const AwardCard = ({ title, organization, date, type, description }) => {
     };
 
     return (
-        <div className="wonjunoh-resume-list-entry">
+        <div className="list-entry">
             {/* Header: Title */}
-            <div className="wonjunoh-resume-list-header">
-                <div className="wonjunoh-resume-list-title">
+            <div className="list-header">
+                <div className="list-title">
                     {getEmoji(type)} {title}
                 </div>
             </div>
 
             {/* Sub: Organization & Date */}
-            <div className="wonjunoh-resume-list-sub" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div className="list-meta" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <FiBookmark />
                     {organization}
@@ -33,7 +33,7 @@ const AwardCard = ({ title, organization, date, type, description }) => {
 
             {/* Description */}
             {description && (
-                <p className="wonjunoh-resume-list-desc">
+                <p className="list-desc">
                     {description}
                 </p>
             )}

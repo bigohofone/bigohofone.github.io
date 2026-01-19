@@ -39,38 +39,38 @@ const Sidebar = () => {
     );
 
     return (
-        <aside className="wonjunoh-resume-sidebar">
+        <aside className="sidebar">
             <img
                 src={process.env.PUBLIC_URL + profile.image}
                 alt={profile.name}
-                className="wonjunoh-resume-profile-img"
+                className="profile-img"
             />
 
-            <div className="wonjunoh-resume-name-wrapper">
-                <h1 className="wonjunoh-resume-name">{profile.name}</h1>
-                {/* <MdVerified className="wonjunoh-resume-verified" /> */}
+            <div className="name-wrapper">
+                <h1 className="name">{profile.name}</h1>
+                {/* <MdVerified className="verified" /> */}
             </div>
 
-            <p className="wonjunoh-resume-pronouns">
+            <p className="pronouns">
                 {profile.pronouns}
             </p>
 
             {/* About Section */}
-            <div className="wonjunoh-resume-sidebar-section">
-                <h3 className="wonjunoh-resume-sidebar-label">About</h3>
-                <p className="wonjunoh-resume-sidebar-text">
+            <div className="sidebar-section">
+                <h3 className="sidebar-label">About</h3>
+                <p className="sidebar-text">
                     {profile.shortBio}
                 </p>
             </div>
 
             {/* Contact Section */}
-            <div className="wonjunoh-resume-sidebar-section">
-                <h3 className="wonjunoh-resume-sidebar-label">Contact</h3>
-                <ul className="wonjunoh-resume-sidebar-list">
+            <div className="sidebar-section">
+                <h3 className="sidebar-label">Contact</h3>
+                <ul className="sidebar-list">
                     {contactDisplayItems.map((item, i) => (
                         <li key={i}>
-                            <a href={item.link} className="wonjunoh-resume-sidebar-link" title={item.label}>
-                                <span className="wonjunoh-resume-sidebar-icon-wrapper">
+                            <a href={item.link} className="sidebar-link" title={item.label}>
+                                <span className="sidebar-icon-wrapper">
                                     {getContactIcon(item.label)}
                                 </span>
                                 {item.value}
@@ -81,7 +81,7 @@ const Sidebar = () => {
             </div>
 
             {/* Social Icons Footer */}
-            <div className="wonjunoh-resume-social-row">
+            <div className="social-row">
                 {socialFooterItems.map((item, i) => (
                     <a
                         key={i}
@@ -89,7 +89,7 @@ const Sidebar = () => {
                         target="_blank"
                         rel="noreferrer"
                         title={item.label}
-                        className="wonjunoh-resume-social-icon"
+                        className="social-icon"
                     >
                         {getSocialIcon(item.label)}
                     </a>

@@ -10,6 +10,7 @@ const NavigationDock = () => {
     const navigate = useNavigate();
     const navRef = React.useRef(null);
     const [maskStyle, setMaskStyle] = useState({});
+    const [isVisible, setIsVisible] = useState(false);
     const [dockLeft, setDockLeft] = useState('50%');
     const [dockTop, setDockTop] = useState('0px');
 
@@ -56,13 +57,13 @@ const NavigationDock = () => {
 
     useEffect(() => {
         const calculateDockPosition = () => {
-            const mainElement = document.querySelector('.wonjunoh-resume-main');
+            const isDesktop = window.innerWidth > 1024;
+            const mainElement = document.querySelector('.core-layout-main');
             if (mainElement) {
                 const mainRect = mainElement.getBoundingClientRect();
                 const centerX = mainRect.left + mainRect.width / 2;
                 setDockLeft(`${centerX}px`);
             } else {
-                // Fallback to viewport center
                 setDockLeft('50%');
             }
 
@@ -70,13 +71,36 @@ const NavigationDock = () => {
                 const navHeight = navRef.current.offsetHeight;
                 const topPosition = window.innerHeight - navHeight - 4;
                 setDockTop(`${topPosition}px`);
+
+                if (isDesktop) {
+                    setIsVisible(true);
+                } else {
+                    setIsVisible(window.scrollY > navHeight);
+                }
+            }
+        };
+
+        const handleScroll = () => {
+            const isDesktop = window.innerWidth > 1024;
+            if (isDesktop) {
+                setIsVisible(true);
+                return;
+            }
+
+            if (navRef.current) {
+                const navHeight = navRef.current.offsetHeight;
+                setIsVisible(window.scrollY > navHeight);
             }
         };
 
         calculateDockPosition();
         window.addEventListener('resize', calculateDockPosition);
+        window.addEventListener('scroll', handleScroll);
 
-        return () => window.removeEventListener('resize', calculateDockPosition);
+        return () => {
+            window.removeEventListener('resize', calculateDockPosition);
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, []);
 
     const scrollToSection = (id) => {
@@ -177,10 +201,18 @@ const NavigationDock = () => {
             elasticity={0.1}
             cornerRadius={32}
             padding="16px 16px"
-            style={{ position: 'fixed', top: dockTop, left: dockLeft }}
+            style={{
+                position: 'fixed',
+                top: dockTop,
+                left: dockLeft,
+                opacity: isVisible ? 1 : 0,
+                pointerEvents: isVisible ? 'auto' : 'none',
+                transition: 'opacity 0.3s ease-in-out',
+                // zIndex: 1000
+            }}
         >
             <nav
-                className="wonjunoh-resume-dock"
+                className="dock"
                 ref={navRef}
                 onScroll={checkScrollState}
                 style={maskStyle}
@@ -192,14 +224,14 @@ const NavigationDock = () => {
                             key={item.id}
                             data-id={item.id}
                             onClick={() => scrollToSection(item.id)}
-                            className={`wonjunoh-resume-dock-item ${isActive ? 'active' : ''}`}
+                            className={`dock-item ${isActive ? 'active' : ''}`}
                             aria-label={item.label}
                             style={isActive ? { color: '#FF2D55' } : {}}
                         >
                             {/* Clamp icon color change manually or via CSS if prefers */}
                             {React.cloneElement(item.icon, { style: isActive ? { color: '#FF2D55' } : {} })}
                             <span
-                                className="wonjunoh-resume-dock-label"
+                                className="dock-label"
                                 style={isActive ? { color: '#FF2D55' } : {}}
                             >
                                 {item.label}
@@ -209,11 +241,11 @@ const NavigationDock = () => {
                 })}
                 <button
                     onClick={handleCVClick}
-                    className="wonjunoh-resume-dock-item wonjunoh-resume-dock-item-cv"
+                    className="dock-item dock-item-cv"
                     aria-label="Download CV"
                 >
                     <FaDownload />
-                    <span className="wonjunoh-resume-dock-label">CV</span>
+                    <span className="dock-label">CV</span>
                 </button>
             </nav>
         </LiquidGlass>
