@@ -1,4 +1,5 @@
 import React from 'react';
+import LiquidGlass from 'liquid-glass-react';
 import '../assets/styles/layout.css';
 
 const CoreLayout = ({ children, sidebar, dock }) => {
