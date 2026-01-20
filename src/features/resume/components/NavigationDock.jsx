@@ -194,10 +194,10 @@ const NavigationDock = () => {
 
     return (
         <LiquidGlass
-            displacementScale={64}
-            blurAmount={0.1}
-            saturation={130}
-            aberrationIntensity={5}
+            displacementScale={100}
+            blurAmount={0.125}
+            saturation={128}
+            aberrationIntensity={2}
             elasticity={0.1}
             cornerRadius={32}
             padding="16px 16px"
