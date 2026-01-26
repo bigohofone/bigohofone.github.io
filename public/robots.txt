@@ -1,53 +1,55 @@
 # robots.txt
-# Block all crawlers by default
+# Allow search engines to index the site
 User-agent: *
-Disallow: /
+Allow: /
 
 # Specifically block AI scrapers and training bots
+# OpenAI
 User-agent: GPTBot
 Disallow: /
-
 User-agent: ChatGPT-User
 Disallow: /
 
+# Google AI training (this doesn't block Google Search)
 User-agent: Google-Extended
 Disallow: /
 
+# Common Common Crawl (used by many AI models)
 User-agent: CCBot
 Disallow: /
 
+# Other AI/LLM bots
+User-agent: Anthropic-ai
+Disallow: /
+User-agent: Claude-Web
+Disallow: /
+User-agent: ClaudeBot
+Disallow: /
+User-agent: cohere-ai
+Disallow: /
+User-agent: PerplexityBot
+Disallow: /
+User-agent: YouBot
+Disallow: /
+User-agent: PiplBot
+Disallow: /
+User-agent: Bytespider
+Disallow: /
+User-agent: Diffbot
+Disallow: /
+User-agent: Amazonbot
+Disallow: /
+User-agent: facebookexternalhit
+Disallow: /
+User-agent: ImagesiftBot
+Disallow: /
 User-agent: OAI-SearchBot
 Disallow: /
 
-User-agent: FacebookBot
-Disallow: /
+# Security: Block sensitive paths (if any)
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: .env
+Disallow: .git
 
-User-agent: Anthropic-ai
-Disallow: /
-
-User-agent: Claude-Web
-Disallow: /
-
-User-agent: ClaudeBot
-Disallow: /
-
-User-agent: cohere-ai
-Disallow: /
-
-User-agent: PerplexityBot
-Disallow: /
-
-User-agent: YouBot
-Disallow: /
-
-User-agent: PiplBot
-Disallow: /
-
-User-agent: Bytespider
-Disallow: /
-
-User-agent: Diffbot
-Disallow: /
-
-User-agent: ia_archiver
-Disallow: /
+Sitemap: https://wonjunoh.com/sitemap.xml
