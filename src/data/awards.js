@@ -16,7 +16,7 @@ export const awards = {
             type: "honor"
         },
         {
-            title: "Gold Prize (₩2,000,000)",
+            title: "Gold Prize (KRW 2,000,000)",
             organization: "Korea University",
             date: "2025",
             description: "Korea University Software Contest; Collaborated with 3 teammates to build a real-time LLM-based dating advisor.",
@@ -30,14 +30,14 @@ export const awards = {
             type: "honor"
         },
         {
-            title: "Honourable Mention (₩300,000)",
+            title: "Honourable Mention (KRW 300,000)",
             organization: "Ministry of Science and ICT",
             date: "2024",
             description: "National Excellence in SW Digital Competition; Collaborated with 2 teammates to train a fake audio classifier.",
             type: "award"
         },
         {
-            title: "NIA Director’s Award (₩3,000,000)",
+            title: "NIA Director’s Award (KRW 3,000,000)",
             organization: "Ministry of Science and ICT",
             date: "2024",
             description: "Korean AI Contest; Collaborated with 4 teammates to train a AST model for dialects, elderly, and children.",
@@ -56,6 +56,6 @@ export const awards = {
             date: "Spring 2023, Spring 2025",
             description: "Merit based honor list.",
             type: "honor"
-        }
+        },
     ]
 };

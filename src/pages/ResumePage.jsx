@@ -1,13 +1,13 @@
 import React from 'react';
 import CoreLayout from '../layouts/CoreLayout';
-import Sidebar from '../features/resume/components/Sidebar';
-import NavigationDock from '../features/resume/components/NavigationDock';
-import '../assets/styles/wonjunoh_resume.css';
-import Section from '../features/resume/components/Section';
-import ResumeCard from '../features/resume/components/ResumeCard';
-import AwardCard from '../features/resume/components/AwardCard';
-import EducationCard from '../features/resume/components/EducationCard';
-import PublicationCard from '../features/resume/components/PublicationCard';
+import Sidebar from '../components/resume/Sidebar';
+import NavigationDock from '../components/resume/NavigationDock';
+import '../assets/styles/resume.css';
+import Section from '../components/resume/Section';
+import ResumeCard from '../components/resume/ResumeCard';
+import AwardCard from '../components/resume/AwardCard';
+import EducationCard from '../components/resume/EducationCard';
+import PublicationCard from '../components/resume/PublicationCard';
 import content from '../data/content';
 
 const ResumePage = () => {

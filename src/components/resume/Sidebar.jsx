@@ -3,8 +3,8 @@ import { FiMail, FiGlobe } from "react-icons/fi";
 import { FaLinkedin, FaGithub, FaThreads, FaXTwitter, FaRegEnvelope, FaGlobe } from 'react-icons/fa6';
 import { SiGooglescholar } from 'react-icons/si';
 import { MdVerified } from 'react-icons/md';
-// Adjusted import path: src/features/resume/components -> src/data
-import content from '../../../data/content';
+// Adjusted import path: src/components/resume -> src/data
+import content from '../../data/content';
 import LiquidGlass from 'liquid-glass-react';
 
 const Sidebar = () => {

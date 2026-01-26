@@ -4,7 +4,7 @@ import { FaDownload } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import LiquidGlass from 'liquid-glass-react';
 import { pdf } from '@react-pdf/renderer';
-import CVPdfDocument from '../../../components/cv/cvPDF';
+import CVPdfDocument from '../cv/cvPDF';
 
 const NavigationDock = () => {
     const navigate = useNavigate();
@@ -135,7 +135,7 @@ const NavigationDock = () => {
             // Fallback to navigation if PDF generation fails? 
             // The prompt says "CVPage를 PDF로 바꿔서 출력해", so maybe fallback is not desired if explicitly asked to replace.
             // But good to have error handling.
-            navigate('/cv');
+            // navigate('/cv');
         }
     };
 
