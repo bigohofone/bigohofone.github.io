@@ -10,7 +10,7 @@ import { education } from '../../data/education';
 import { experience } from '../../data/experience';
 import { publications } from '../../data/publications';
 import { awards } from '../../data/awards';
-import { advising } from '../../data/advising';
+import { talks } from '../../data/talks';
 import { extracurricular } from '../../data/extracurricular';
 import { contact } from '../../data/contact';
 import styles from './cvStyles';
@@ -135,11 +135,11 @@ const CVPdfDocument = () => {
                     ))}
                 </View>
 
-                {/* Advising */}
+                {/* Talks */}
                 <View style={styles.section}>
-                    {advising.items.map((item, index) => (
+                    {talks.items.map((item, index) => (
                         <View key={index} wrap={false}>
-                            {index === 0 && <Text style={styles.sectionTitle}>{advising.title}</Text>}
+                            {index === 0 && <Text style={styles.sectionTitle}>{talks.title}</Text>}
                             <View style={styles.listItem}>
                                 <Text style={styles.listItemBullet}>•</Text>
                                 <View style={styles.listItemContent}>
