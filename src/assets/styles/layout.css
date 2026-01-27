@@ -55,6 +55,31 @@
     min-height: 100vh;
 }
 
+.core-layout-bottom-fade {
+    position: fixed;
+    bottom: 0;
+    left: var(--layout-sidebar-width);
+    right: 0;
+    height: 33vh;
+    background: linear-gradient(to bottom, transparent 0%, var(--layout-bg-color) 100%);
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    visibility: hidden;
+}
+
+.core-layout-bottom-fade.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (max-width: 1024px) {
+    .core-layout-bottom-fade {
+        left: 0;
+    }
+}
+
 /* Dock Container */
 .core-layout-dock-container {
     position: fixed;
