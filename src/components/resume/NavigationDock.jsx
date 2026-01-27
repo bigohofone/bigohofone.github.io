@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FaRegUser, FaRegFileAlt, FaRegFile, FaRegBuilding, FaRegStar } from 'react-icons/fa';
 import { FaDownload } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
-import LiquidGlass from 'liquid-glass-react';
 import { pdf } from '@react-pdf/renderer';
 import CVPdfDocument from '../cv/cvPDF';
 
@@ -12,7 +11,6 @@ const NavigationDock = () => {
     const [maskStyle, setMaskStyle] = useState({});
     const [isVisible, setIsVisible] = useState(false);
     const [dockLeft, setDockLeft] = useState('50%');
-    const [dockTop, setDockTop] = useState('0px');
 
     const checkScrollState = () => {
         const el = navRef.current;
@@ -69,9 +67,6 @@ const NavigationDock = () => {
 
             if (navRef.current) {
                 const navHeight = navRef.current.offsetHeight;
-                const topPosition = window.innerHeight - navHeight - 4;
-                setDockTop(`${topPosition}px`);
-
                 if (isDesktop) {
                     setIsVisible(true);
                 } else {
@@ -187,22 +182,17 @@ const NavigationDock = () => {
 
 
     return (
-        <LiquidGlass
-            displacementScale={64}
-            blurAmount={0.25}
-            saturation={128}
-            aberrationIntensity={2}
-            elasticity={0.125}
-            cornerRadius={32}
-            padding="16px 16px"
+        <div
+            className="dock-container"
             style={{
                 position: 'fixed',
-                top: dockTop,
+                bottom: '16px',
                 left: dockLeft,
                 opacity: isVisible ? 1 : 0,
                 pointerEvents: isVisible ? 'auto' : 'none',
                 transition: 'opacity 0.3s ease-in-out',
-                // zIndex: 1000
+                zIndex: 1000,
+                transform: 'translateX(-50%)'
             }}
         >
             <nav
@@ -242,7 +232,7 @@ const NavigationDock = () => {
                     <span className="dock-label">CV</span>
                 </button>
             </nav>
-        </LiquidGlass>
+        </div>
     );
 };
 

@@ -1,4 +1,4 @@
 
 export const footer = {
-    copyright: "© 2023 Wonjun Oh. All rights reserved."
+    copyright: "© 2026 Wonjun Oh. All rights reserved."
 };

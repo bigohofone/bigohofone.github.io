@@ -5,7 +5,6 @@ import { SiGooglescholar } from 'react-icons/si';
 import { MdVerified } from 'react-icons/md';
 // Adjusted import path: src/components/resume -> src/data
 import content from '../../data/content';
-import LiquidGlass from 'liquid-glass-react';
 
 const Sidebar = () => {
     const { profile, contact } = content;
