@@ -320,6 +320,7 @@
     .dock {
         max-width: calc(100vw - 16px - 48px);
         overflow-x: auto;
+        padding: 0 calc(50% - 32px); /* Allow first/last items to center (32px is half of 64px item width) */
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;

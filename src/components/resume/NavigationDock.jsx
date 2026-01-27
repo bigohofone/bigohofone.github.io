@@ -170,23 +170,17 @@ const NavigationDock = () => {
         return () => observer.disconnect();
     }, []);
 
-    // Auto-scroll Dock for Mobile
+    // Auto-scroll Dock to Center Active Section
     useEffect(() => {
         if (!activeSection || !navRef.current) return;
 
         const activeBtn = navRef.current.querySelector(`button[data-id="${activeSection}"]`);
         if (activeBtn) {
-            const dock = navRef.current;
-            const btnRect = activeBtn.getBoundingClientRect();
-            const dockRect = dock.getBoundingClientRect();
-
-            // Check if button is out of view (horizontal)
-            const isOutOfViewLeft = btnRect.left < dockRect.left;
-            const isOutOfViewRight = btnRect.right > dockRect.right;
-
-            if (isOutOfViewLeft || isOutOfViewRight) {
-                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-            }
+            activeBtn.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
+            });
         }
     }, [activeSection]);
 
