@@ -379,10 +379,10 @@
 }
 
 .dock-item:hover {
-    border: var(--glass-border-hover);
+    /* border: var(--glass-border-hover); */
     color: var(--wr-text-main);
     background-color: rgba(0, 0, 0, 0.05);
-    transform: var(--hover-scale);
+    /* transform: var(--hover-scale); */
     cursor: pointer;
 }
 
