@@ -12,6 +12,36 @@
     margin-bottom: 72px;
 }
 
+.resume-section__toggle-container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.resume-section__toggle-btn {
+    background: transparent;
+    border: 1px solid var(--sys-color-gray-10);
+    border-radius: 9999px;
+    padding: 4px 12px;
+    font-size: var(--sys-font-s);
+    color: var(--sys-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.resume-section__toggle-btn:hover {
+    background-color: var(--sys-color-gray-5);
+    color: var(--sys-text-main);
+    border-color: var(--sys-color-gray-10);
+}
+
+.resume-section__toggle-btn.is-active {
+    background-color: var(--sys-color-gray-10);
+    color: var(--sys-text-main);
+    border-color: var(--sys-color-gray-20);
+}
+
 .resume-section__content {
     display: flex;
     flex-direction: column;
@@ -126,7 +156,7 @@
     font-weight: 400;
     color: var(--sys-text-secondary);
     line-height: 1.5;
-    margin-top: 24px;
+    margin-top: 16px;
 }
 
 /* Award Section Specific Click Effects */
@@ -162,7 +192,7 @@
 /* --- List Entry Pattern (Simpler than Card) --- */
 .resume-section__list-item {
     padding: 16px 0;
-    border-bottom: 1px solid var(--sys-color-gray-10);
+    border-bottom: 1px solid var(--sys-color-gray-20);
 
     display: flex;
     flex-direction: column;
@@ -171,7 +201,7 @@
 }
 
 .resume-section__list-item:first-child {
-    border-top: 1px solid var(--sys-color-gray-10);
+    border-top: 1px solid var(--sys-color-gray-20);
 }
 
 .resume-section__list-item-title {
@@ -196,7 +226,6 @@
 .resume-section__list-item-description-link {
     background-color: transparent;
     transition: all var(--ui-transition);
-    /* text-decoration: underline; */
 
     font-size: var(--sys-font-s);
     font-weight: 400;
@@ -211,7 +240,6 @@
 .resume-section__list-item-description-link:hover {
     background-color: var(--sys-color-link);
     color: white;
-    /* transform: var(--ui-hover-scale); */
 }
 
 
@@ -251,4 +279,25 @@
     font-weight: 400;
     font-style: italic;
     color: var(--sys-text-main);
+}
+
+
+.download-cv-button {
+    height: 48px;
+    background-color: transparent;
+    color: var(--sys-text-secondary);
+    border: 1px solid var(--sys-color-gray-20);
+    padding: 0 16px;
+    border-radius: 4px;
+    font-size: var(--sys-font-m);
+    font-weight: 400;
+    cursor: pointer;
+    transition: all var(--ui-transition);
+
+}
+
+.download-cv-button:hover {
+    background-color: var(--sys-color-gray-5);
+    color: var(--sys-text-main);
+    border-color: var(--sys-color-gray-20);
 }

@@ -27,9 +27,8 @@
 
 .contact__list-item-line {
     flex-grow: 1;
-    height: 0.5px;
-    background-color: var(--sys-text-main);
-    opacity: 0.5;
+    height: 1px;
+    background-color: var(--sys-color-gray-20);
     align-self: flex-end;
     margin-bottom: 6px;
 }

@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { FaDownload } from 'react-icons/fa6';
-import { pdf } from '@react-pdf/renderer';
-import CVPdfDocument from './cv/cvPDF';
+
 
 // ── Hooks ──────────────────────────────────────────────────────────────────────
 
@@ -82,45 +80,6 @@ function useActiveSection(navItems) {
     return activeSection;
 }
 
-/** 독 위치(left) 및 표시 여부(isVisible)를 계산 */
-function useDockLayout(navRef) {
-    const [dockLeft, setDockLeft] = useState('50%');
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const updatePosition = () => {
-            const main = document.querySelector('.core-layout-main');
-            if (main) {
-                const { left, width } = main.getBoundingClientRect();
-                setDockLeft(`${left + width / 2}px`);
-            } else {
-                setDockLeft('50%');
-            }
-        };
-
-        const updateVisibility = () => {
-            const isDesktop = window.innerWidth > 1024;
-            if (isDesktop) { setIsVisible(true); return; }
-            const navHeight = navRef.current?.offsetHeight ?? 0;
-            setIsVisible(window.scrollY > navHeight);
-        };
-
-        const handleResize = () => { updatePosition(); updateVisibility(); };
-
-        updatePosition();
-        updateVisibility();
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('scroll', updateVisibility);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            window.removeEventListener('scroll', updateVisibility);
-        };
-    }, [navRef]);
-
-    return { dockLeft, isVisible };
-}
-
-/** 가로 스크롤 시 양쪽 가장자리 페이드 마스크 스타일을 계산 */
 function useScrollMask(navRef) {
     const [maskStyle, setMaskStyle] = useState({});
 
@@ -161,15 +120,6 @@ function scrollToSection(id) {
         top: el.getBoundingClientRect().top + window.pageYOffset - 40,
         behavior: 'smooth',
     });
-}
-
-async function downloadCV() {
-    try {
-        const blob = await pdf(<CVPdfDocument />).toBlob();
-        window.open(URL.createObjectURL(blob), '_blank');
-    } catch (err) {
-        console.error('Error generating PDF:', err);
-    }
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -213,10 +163,6 @@ const HeaderShortcutDock = () => {
                     })}
                 </nav>
             </div>
-
-            {/* <button className="dock__item-special" aria-label="Download CV" onClick={downloadCV}>
-                <FaDownload />
-            </button> */}
         </div >
     );
 };

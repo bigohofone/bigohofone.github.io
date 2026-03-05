@@ -51,17 +51,37 @@ const AwardItem = ({ title, organization, date, type, description, isActive, isA
 
 const AwardSection = ({ title, items }) => {
     const [activeIndex, setActiveIndex] = useState(null);
+    const [showSelectedOnly, setShowSelectedOnly] = useState(true);
 
     const handleItemClick = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
 
+    const selectedCount = items.filter(item => item.selected).length;
+    const totalCount = items.length;
+
     return (
         <section id="awards" className="resume-section">
             <h2 className="resume-section__title">{title}</h2>
+
+            <div className="resume-section__toggle-container">
+                <button
+                    className={`resume-section__toggle-btn ${showSelectedOnly ? 'is-active' : ''}`}
+                    onClick={() => setShowSelectedOnly(true)}
+                >
+                    Selected ({selectedCount})
+                </button>
+                <button
+                    className={`resume-section__toggle-btn ${!showSelectedOnly ? 'is-active' : ''}`}
+                    onClick={() => setShowSelectedOnly(false)}
+                >
+                    All ({totalCount})
+                </button>
+            </div>
+
             <div className={`resume-section__list ${activeIndex !== null ? 'has-active' : ''}`}>
                 {items.map((item, index) => (
-                    <AwardItem
+                    (!showSelectedOnly || item.selected) && <AwardItem
                         key={index}
                         {...item}
                         isActive={activeIndex === index}
@@ -70,7 +90,7 @@ const AwardSection = ({ title, items }) => {
                     />
                 ))}
             </div>
-        </section>
+        </section >
     );
 };
 

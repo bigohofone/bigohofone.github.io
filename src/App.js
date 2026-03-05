@@ -1,6 +1,5 @@
 import { AppProvider } from './contexts/AppContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Nav from './components/nav';
 import Footer from './components/footer'
 
 import { routeConfig } from './routes';
