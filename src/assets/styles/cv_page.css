@@ -1,0 +1,293 @@
+/*==============================================================*/
+/* CV Page Styles - LaTeX-like A4 Format                        */
+/*==============================================================*/
+
+/* A4 Page Setup */
+.cv-page {
+    font-size: var(--sys-font-s);
+    font-weight: var(--sys-weight-normal);
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    background: white;
+    line-height: 1.25;
+    color: #000;
+    box-sizing: border-box;
+}
+
+/* Header / Name */
+.cv-header {
+    text-align: left;
+    margin-bottom: 16pt;
+    padding-bottom: 12pt;
+}
+
+.cv-name {
+    font-size: 32px;
+    font-weight: var(--sys-weight-bold);
+    margin: 0 0 12pt 0;
+    letter-spacing: 0.5pt;
+}
+
+.cv-contact {
+    color: #333;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6pt 16pt;
+}
+
+.cv-contact a {
+    color: #000;
+    text-decoration: none;
+}
+
+.cv-contact a:hover {
+    text-decoration: underline;
+}
+
+/* Section */
+.cv-section {
+    margin-bottom: 14pt;
+    break-inside: auto;
+}
+
+.cv-section-title {
+    font-size: var(--sys-font-m);
+    font-weight: var(--sys-weight-bold);
+    text-transform: uppercase;
+    border-bottom: 1px solid #000;
+    padding-bottom: 2pt;
+    margin-bottom: 8pt;
+    letter-spacing: 0.5pt;
+    break-after: avoid;
+    /* Prevent title from being left alone at page bottom */
+}
+
+/* Entry (for experience, education, etc.) */
+.cv-entry {
+    margin-bottom: 10pt;
+    break-inside: avoid;
+    /* Prevent entry from splitting across pages */
+    page-break-inside: avoid;
+}
+
+.cv-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2pt;
+}
+
+.cv-entry-title {
+    font-weight: var(--sys-weight-bold);
+    font-size: var(--sys-font-s);
+}
+
+.cv-entry-date {
+    font-style: italic;
+}
+
+.cv-entry-organization {
+    font-style: italic;
+    margin-bottom: 2pt;
+}
+
+.cv-entry-description {
+    margin: 0;
+    padding-left: 0;
+    white-space: pre-wrap;
+}
+
+/* List Items (for awards, publications) */
+.cv-list {
+    list-style-type: disc;
+    padding-left: 12pt;
+    margin: 0;
+}
+
+.cv-list-item {
+    margin-bottom: 4pt;
+    break-inside: avoid;
+    /* Prevent list items from splitting */
+    page-break-inside: avoid;
+}
+
+.cv-list-item-title {
+    font-weight: var(--sys-weight-bold);
+}
+
+/* Download Button - Dock Style */
+.cv-download-dock-container {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.cv-download-dock {
+    display: flex;
+    gap: 8px;
+}
+
+.cv-download-btn {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #666666;
+    font-size: 20px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cv-download-btn:hover {
+    color: #000000;
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: scale(1.1);
+}
+
+/* Tooltip */
+.cv-download-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: #111;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    margin-bottom: 12px;
+}
+
+.cv-download-btn:hover .cv-download-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Print Styles */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        background: white !important;
+    }
+
+    .cv-page {
+        width: 100%;
+        min-height: auto !important;
+        margin: 0;
+        padding: 0 25mm;
+        /* 상하 padding은 @page margin에서 처리, 좌우만 설정 */
+        box-shadow: none;
+        background: none !important;
+    }
+
+    .cv-download-btn {
+        display: none !important;
+    }
+
+    .cv-page-wrapper {
+        transform: none !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    /* Hide LiquidGlass dock in print */
+    .cv-download-dock {
+        display: none !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 25mm 0;
+        /* 모든 페이지에 동일한 상하 여백 적용 */
+    }
+}
+
+/* Screen preview shadow */
+@media screen {
+    .cv-page {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        margin-top: 40px;
+        margin-bottom: 120px;
+        padding: 25mm 25mm;
+        /* Consistent 25mm margin */
+
+        /* Visualize page boundaries every 297mm */
+        background-image: linear-gradient(to bottom, #fff 296.5mm, #eee 296.5mm, #eee 297mm, #fff 297mm);
+        background-size: 100% 297mm;
+        position: relative;
+    }
+
+    /* Page number indicator for web */
+    .cv-page::after {
+        content: "Page 1 Content | Continues Below";
+        position: absolute;
+        top: 297.5mm;
+        right: 10px;
+        font-size: 8pt;
+        color: #ccc;
+        pointer-events: none;
+    }
+
+    html.cv-page-html,
+    body.cv-page-body {
+        background: #e0e0e0;
+        overflow-x: hidden;
+    }
+}
+
+/* Page Corner Markers for PDF conversion preservation */
+.cv-page-markers-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cv-page-marker {
+    position: absolute;
+    width: 2pt;
+    height: 2pt;
+    background: rgba(0, 0, 0, 0.05);
+    /* Extremely subtle */
+}
+
+.cv-page-marker.corner-tl {
+    transform: translate(0, 0);
+}
+
+.cv-page-marker.corner-tr {
+    transform: translate(-100%, 0);
+}
+
+.cv-page-marker.corner-bl {
+    transform: translate(0, -100%);
+}
+
+.cv-page-marker.corner-br {
+    transform: translate(-100%, -100%);
+}
+
+@media print {
+    .cv-page-marker {
+        background: rgba(0, 0, 0, 0.02);
+        /* Even more subtle in print */
+    }
+}

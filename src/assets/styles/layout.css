@@ -1,0 +1,133 @@
+:root {
+    --x-padding: 24px;
+    --y-padding: calc(24px * 4);
+}
+
+@media (min-width: 768px) {
+    :root {
+        --x-padding: 48px;
+        --y-padding: calc(24px * 4);
+    }
+}
+
+.base-layout {
+    width: 100%;
+    padding: var(--y-padding) var(--x-padding);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: var(--y-padding);
+    background-color: white;
+}
+
+.footer {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 var(--x-padding);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.dock-container {
+    width: fit-content;
+    max-width: calc(100% - 16px * 2);
+
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    padding: 8px;
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: space-between;
+    background: rgba(200, 200, 200, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.dock-wrapper {
+    overflow-y: hidden;
+}
+
+.dock-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.dock {
+    width: max-content;
+    display: flex;
+    gap: 8px;
+}
+
+.dock__item-special {
+    position: sticky;
+    padding: 12px;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    font-size: auto;
+    font-weight: 400;
+    color: white;
+    line-height: 1;
+    margin-left: 16px;
+}
+
+.dock__item-special:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.dock__item {
+    display: flex;
+    align-items: center;
+    gap: 0;
+
+    width: max-content;
+    padding: 12px;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    font-size: var(--sys-font-s);
+    font-weight: 400;
+    color: var(--sys-text-main);
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.dock__number {
+    /* font-family: monospace; */
+    flex-shrink: 0;
+}
+
+.dock__label {
+    font-family: var(--sys-font-family-emphasis);
+    font-style: italic;
+    font-size: 1.1em;
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-left: 0;
+    pointer-events: none;
+    /* transition: all 1s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+/* .dock__item:hover .dock__label */
+.dock__item.active .dock__label {
+    min-width: 128px;
+    opacity: 1;
+    padding-left: 8px;
+    pointer-events: auto;
+}
+
+.dock__item.active {
+    background: rgba(255, 255, 255, 0.50);
+}

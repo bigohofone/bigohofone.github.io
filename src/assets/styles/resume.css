@@ -1,0 +1,254 @@
+.resume-section {
+    width: 100%;
+    max-width: 640px;
+}
+
+.resume-section__title {
+    font-family: var(--sys-font-family-emphasis);
+    font-style: italic;
+    font-size: var(--sys-font-2xl);
+    font-weight: 400;
+    color: var(--sys-text-main);
+    margin-bottom: 72px;
+}
+
+.resume-section__content {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+
+.resume-section__list {
+    display: flex;
+    flex-direction: column;
+    /* gap: 24px; */
+}
+
+
+.resume-section__content-item {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+}
+
+.resume-section__content-item-logo-container {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    padding: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--sys-color-gray-10);
+    background-color: var(--sys-color-gray-5);
+    color: var(--sys-color-gray-20);
+    font-size: var(--sys-font-xl);
+
+}
+
+.resume-section__content-item-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.resume-section__content-item-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.resume-section__content-item-title {
+    font-size: var(--sys-font-m);
+    font-weight: 400;
+    color: var(--sys-text-main);
+    line-height: 1.5;
+}
+
+.resume-section__content-item-meta {
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media (min-width: 768px) {
+    .resume-section__content-item-meta {
+        flex-direction: row;
+        gap: 24px;
+    }
+}
+
+.resume-section__content-item-meta-subtitle {
+    font-size: var(--sys-font-m);
+    font-weight: 400;
+    color: var(--sys-text-main);
+    line-height: 1.5;
+}
+
+.resume-section__content-item-meta-item {
+    font-size: var(--sys-font-s);
+    font-weight: 400;
+    color: var(--sys-text-secondary);
+    line-height: 1.5;
+
+    border: 1px solid var(--sys-color-gray-10);
+    padding: 0 8px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.resume-section__content-item-meta-icon {
+    background-color: var(--sys-color-gray-30);
+    color: white;
+    font-size: var(--sys-font-m);
+    font-weight: 400;
+    padding: 2px;
+    border-radius: 1px;
+}
+
+.resume-section__content-item-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--sys-font-s);
+    font-weight: 400;
+    color: var(--sys-text-secondary);
+    line-height: 1.5;
+}
+
+.resume-section__content-item-description {
+    font-size: var(--sys-font-m);
+    font-weight: 400;
+    color: var(--sys-text-secondary);
+    line-height: 1.5;
+    margin-top: 24px;
+}
+
+/* Award Section Specific Click Effects */
+#awards .resume-section__list-item .resume-section__list-item-content {
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+#awards .resume-section__list-item.is-dimmed .resume-section__list-item-content {
+    opacity: 0.3;
+}
+
+#awards .resume-section__list-item.is-active .resume-section__list-item-content {
+    opacity: 1;
+}
+
+#awards .resume-section__list-item .resume-section__content-item-description {
+    margin-top: 0;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#awards .resume-section__list-item.is-active .resume-section__content-item-description {
+    margin-top: 16px;
+    max-height: 400px;
+    opacity: 1;
+}
+
+/* --- List Entry Pattern (Simpler than Card) --- */
+.resume-section__list-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--sys-color-gray-10);
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.resume-section__list-item:first-child {
+    border-top: 1px solid var(--sys-color-gray-10);
+}
+
+.resume-section__list-item-title {
+    font-size: var(--sys-font-m);
+    font-weight: 400;
+    color: var(--sys-text-main);
+    line-height: 1.5;
+}
+
+.resume-section__list-item-description {
+    font-size: var(--sys-font-m);
+    font-weight: 400;
+    color: var(--sys-text-secondary);
+    line-height: 1.5;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.resume-section__list-item-description-link {
+    background-color: transparent;
+    transition: all var(--ui-transition);
+    /* text-decoration: underline; */
+
+    font-size: var(--sys-font-s);
+    font-weight: 400;
+    color: var(--sys-color-link);
+    line-height: 1.5;
+
+    border: 1px solid var(--sys-color-link);
+    padding: 0 8px;
+    border-radius: 4px;
+}
+
+.resume-section__list-item-description-link:hover {
+    background-color: var(--sys-color-link);
+    color: white;
+    /* transform: var(--ui-hover-scale); */
+}
+
+
+
+
+.contact-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.resume-section__content-bio {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.resume-section__content-bio p {
+    font-size: var(--sys-font-m);
+    font-weight: 400;
+    color: var(--sys-text-secondary);
+    line-height: 1.5;
+}
+
+.resume-section__content-bio em {
+    font-family: var(--sys-font-family-emphasis);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.1em;
+    color: var(--sys-text-main);
+}
+
+.resume-section__content-bio-greeting {
+    font-size: var(--sys-font-2xl) !important;
+    color: var(--sys-text-main) !important;
+    font-family: var(--sys-font-family-emphasis);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--sys-text-main);
+}

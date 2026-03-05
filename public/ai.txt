@@ -1,0 +1,8 @@
+# ai.txt
+# This file signals that the content on this site is NOT to be used for AI training.
+# See spawning.ai for more information.
+
+User-agent: *
+Disallow: /
+Disallow-AI: /
+Allow-AI: none
