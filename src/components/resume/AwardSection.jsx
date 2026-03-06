@@ -18,33 +18,23 @@ const AwardItem = ({ title, organization, date, type, description, isActive, isA
 
     return (
         <div
-            className={`resume-section__list-item ${isActive ? 'is-active' : ''} ${isAnyActive && !isActive ? 'is-dimmed' : ''}`}
+            className={`resume-list-content__wrapper ${isActive ? 'is-active' : ''} ${isAnyActive && !isActive ? 'is-dimmed' : ''}`}
             onClick={onClick}
             style={{ cursor: 'pointer' }}
         >
-            <div className="resume-section__list-item-content">
-                <div className="resume-section__list-item-title">
-                    {title}
+            <div className="resume-content__title">{title}</div>
+            <div className="resume-content__meta-box">
+                <span className="resume-content__subtitle">{organization}</span>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                    <span className="resume-content__meta">{date}</span>
+                    <span className="resume-content__meta" style={{ backgroundColor: getColor(type), borderColor: getColor(type) }}>{type}</span>
                 </div>
-                <div className="resume-section__content-item-meta">
-                    <span className="resume-section__content-item-meta-subtitle">
-                        {organization}
-                    </span>
-                    <div style={{ display: 'flex', gap: '12px' }}>
-                        <span className="resume-section__content-item-meta-item">
-                            {date}
-                        </span>
-                        <span className="resume-section__content-item-meta-item" style={{ backgroundColor: getColor(type), borderColor: getColor(type) }}>
-                            {type}
-                        </span>
-                    </div>
-                </div>
-                {description && (
-                    <p className="resume-section__content-item-description">
-                        {description}
-                    </p>
-                )}
             </div>
+            {description && (
+                <p className="resume-content__description">
+                    {description}
+                </p>
+            )}
         </div>
     );
 };
@@ -79,7 +69,7 @@ const AwardSection = ({ title, items }) => {
                 </button>
             </div>
 
-            <div className={`resume-section__list ${activeIndex !== null ? 'has-active' : ''}`}>
+            <div className={`resume-section__list-content ${activeIndex !== null ? 'has-active' : ''}`}>
                 {items.map((item, index) => (
                     (!showSelectedOnly || item.selected) && <AwardItem
                         key={index}

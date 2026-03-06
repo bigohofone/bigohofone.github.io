@@ -12,8 +12,8 @@ const BioSection = () => {
         <>
             <div className="resume-section">
                 <h2 style={{ visibility: 'hidden' }}>Bio</h2>
-                <div className="resume-section__content-bio">
-                    <p className="resume-section__content-bio-greeting">
+                <div className="resume-content__bio">
+                    <p className="greeting">
                         ✋🏼 Hello World!
                     </p>
                     <p>

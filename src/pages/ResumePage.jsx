@@ -8,7 +8,6 @@ import PublicationSection from '../components/resume/PublicationSection';
 import AwardSection from '../components/resume/AwardSection';
 import content from '../data/content';
 
-import { FaDownload } from 'react-icons/fa6';
 import { pdf } from '@react-pdf/renderer';
 import CVPdfDocument from '../components/cv/cvPDF';
 

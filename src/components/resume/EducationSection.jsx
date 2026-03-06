@@ -11,11 +11,10 @@ const EducationItem = ({
     logo
 }) => {
     return (
-        <div className="resume-section__content-item">
-            <div className="resume-section__content-item-logo-container">
+        <div className="resume-content__wrapper">
+            <div className="resume-content__logo-box">
                 {logo ? (
                     <img
-                        className="resume-section__content-item-logo"
                         src={logo.startsWith('http') ? logo : process.env.PUBLIC_URL + logo}
                         alt={`${organization} logo`}
                     />
@@ -23,23 +22,13 @@ const EducationItem = ({
                     <FaGraduationCap />
                 )}
             </div>
-            <div className="resume-section__content-item-container">
-                <h3 className="resume-section__content-item-title">{organization}</h3>
-                <div className="resume-section__content-item-meta">
-                    <span className="resume-section__content-item-meta-subtitle">
-                        {major}
-                    </span>
-                    <span className="resume-section__content-item-meta-item">
-                        {date}
-                        {/* <FiCalendar className="resume-section__content-item-meta-icon" /> {date} */}
-                    </span>
-                    {/* <span className="resume-section__content-item-meta-item">
-                        <FiMapPin className="resume-section__content-item-meta-icon" /> {location}
-                    </span> */}
+            <div className="resume-content__box">
+                <div className="resume-content__title">{organization}</div>
+                <div className="resume-content__meta-box">
+                    <span className="resume-content__subtitle">{major}</span>
+                    <span className="resume-content__meta">{date}</span>
                 </div>
-                <div className="resume-section__content-item-description">
-                    {description}
-                </div>
+                <div className="resume-content__description">{description}</div>
             </div>
         </div>
     );

@@ -9,6 +9,8 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 24px;
     font-size: var(--sys-font-s);
 }
@@ -16,19 +18,19 @@
 .footer__title {
     font-family: var(--sys-font-family-emphasis);
     font-style: italic;
-    font-weight: 400;
-    color: var(--sys-text-main);
+    font-weight: var(--sys-font-weight-normal);
+    color: var(--sys-color-text-main);
     line-height: 1.5;
-    font-size: 1.1em;
+    font-size: var(--sys-font-2xl);
     margin-top: 48px;
 }
 
 .footer__copyright {
-    font-family: var(--sys-font-family-emphasis);
-    font-style: italic;
-    font-weight: 400;
-    color: var(--sys-text-main);
+    /* font-family: var(--sys-font-family-emphasis); */
+    /* font-style: italic; */
+    font-weight: var(--sys-font-weight-normal);
+    font-size: var(--sys-font-s);
+    color: var(--sys-color-text-main);
     line-height: 1.5;
-    font-size: 1.1em;
     margin-top: 48px;
 }

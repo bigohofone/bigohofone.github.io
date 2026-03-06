@@ -1,8 +1,22 @@
 import { AppProvider } from './contexts/AppContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import { routeConfig } from './Routes';
+
 import Footer from './components/footer'
 
-import { routeConfig } from './routes';
+import './assets/styles/fonts.css';
+import './assets/styles/material-symbols.css';
+
+import './assets/styles/base/global.css';
+import './assets/styles/base/layout.css';
+import './assets/styles/base/menu.css';
+import './assets/styles/base/dock.css';
+import './assets/styles/base/contact.css';
+
+import './assets/styles/components/footer.css';
+import './assets/styles/components/resume.css';
+import './assets/styles/components/cv.css';
 
 const App = () => {
   return (

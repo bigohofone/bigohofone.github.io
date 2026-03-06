@@ -1,36 +1,3 @@
-:root {
-    --x-padding: 24px;
-    --y-padding: calc(24px * 4);
-}
-
-@media (min-width: 768px) {
-    :root {
-        --x-padding: 48px;
-        --y-padding: calc(24px * 4);
-    }
-}
-
-.base-layout {
-    width: 100%;
-    padding: var(--y-padding) var(--x-padding);
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-    gap: var(--y-padding);
-    background-color: white;
-}
-
-.footer {
-    width: 100%;
-    max-width: 640px;
-    margin: 0 var(--x-padding);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
-}
-
 .dock-container {
     width: fit-content;
     max-width: calc(100% - 16px * 2);
@@ -78,13 +45,12 @@
 
     font-size: var(--sys-font-s);
     font-weight: 400;
-    color: var(--sys-text-main);
+    color: var(--sys-color-text-main);
     line-height: 1;
     white-space: nowrap;
 }
 
 .dock__number {
-    /* font-family: monospace; */
     flex-shrink: 0;
 }
 
@@ -97,10 +63,8 @@
     overflow: hidden;
     padding-left: 0;
     pointer-events: none;
-    /* transition: all 1s cubic-bezier(0.4, 0, 0.2, 1); */
 }
 
-/* .dock__item:hover .dock__label */
 .dock__item.active .dock__label {
     min-width: 128px;
     opacity: 1;

@@ -1,0 +1,22 @@
+:root {
+    --x-padding: 24px;
+    --y-padding: calc(24px * 4);
+}
+
+@media (min-width: 768px) {
+    :root {
+        --x-padding: 48px;
+        --y-padding: calc(24px * 4);
+    }
+}
+
+.base-layout {
+    width: 100%;
+    padding: var(--y-padding) var(--x-padding);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: var(--y-padding);
+    background-color: white;
+}

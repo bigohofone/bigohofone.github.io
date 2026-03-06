@@ -1,0 +1,77 @@
+/* ==========================================================================
+   Design Tokens - System & UI Styles
+   ========================================================================== */
+:root {
+    --sys-color-primary: #3b82f6;
+    --sys-color-primary-hover: #2e64bc;
+
+    --sys-color-bw-100: #000000;
+    --sys-color-bw-95: color-mix(in srgb, var(--sys-color-bw-100) 95%, var(--sys-color-bw-0) 5%);
+    --sys-color-bw-90: color-mix(in srgb, var(--sys-color-bw-100) 90%, var(--sys-color-bw-0) 10%);
+    --sys-color-bw-80: color-mix(in srgb, var(--sys-color-bw-100) 80%, var(--sys-color-bw-0) 20%);
+    --sys-color-bw-75: color-mix(in srgb, var(--sys-color-bw-100) 75%, var(--sys-color-bw-0) 25%);
+    --sys-color-bw-70: color-mix(in srgb, var(--sys-color-bw-100) 70%, var(--sys-color-bw-0) 30%);
+    --sys-color-bw-60: color-mix(in srgb, var(--sys-color-bw-100) 60%, var(--sys-color-bw-0) 40%);
+    --sys-color-bw-50: color-mix(in srgb, var(--sys-color-bw-100) 50%, var(--sys-color-bw-0) 50%);
+    --sys-color-bw-40: color-mix(in srgb, var(--sys-color-bw-100) 40%, var(--sys-color-bw-0) 60%);
+    --sys-color-bw-30: color-mix(in srgb, var(--sys-color-bw-100) 30%, var(--sys-color-bw-0) 70%);
+    --sys-color-bw-20: color-mix(in srgb, var(--sys-color-bw-100) 20%, var(--sys-color-bw-0) 80%);
+    --sys-color-bw-10: color-mix(in srgb, var(--sys-color-bw-100) 10%, var(--sys-color-bw-0) 90%);
+    --sys-color-bw-5: color-mix(in srgb, var(--sys-color-bw-100) 5%, var(--sys-color-bw-0) 95%);
+    --sys-color-bw-0: #ffffff;
+
+    --sys-font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    --sys-font-family-emphasis: "Times New Roman", Times, serif;
+
+    --sys-font-xs: 0.75rem;
+    --sys-font-s: 0.875rem;
+    --sys-font-m: 1rem;
+    --sys-font-l: 1.25rem;
+    --sys-font-xl: 1.5rem;
+    --sys-font-2xl: 1.75rem;
+    --sys-font-3xl: 2rem;
+
+    --sys-font-weight-normal: 400;
+    --sys-font-weight-bold: 500;
+
+    --sys-color-text-main: var(--sys-color-bw-100);
+    --sys-color-text-secondary: var(--sys-color-bw-50);
+
+    --sys-color-background: var(--sys-color-bw-5);
+
+    --sys-color-btn-border: var(--sys-color-bw-10);
+    --sys-color-btn-border-hover: var(--sys-color-bw-20);
+    --sys-color-btn-border-active: var(--sys-color-bw-20);
+    --sys-color-btn-background: transparent;
+    --sys-color-btn-background-hover: var(--sys-color-bw-5);
+    --sys-color-btn-background-active: var(--sys-color-bw-10);
+}
+
+* {
+    font-family: var(--sys-font-family);
+    font-weight: var(--sys-font-weight-normal);
+    line-height: 1;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    color: var(--sys-color-text-main);
+    background-color: var(--sys-color-background);
+    min-height: 100vh;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
