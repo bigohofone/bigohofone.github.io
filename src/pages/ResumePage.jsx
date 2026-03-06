@@ -27,9 +27,8 @@ const ResumePage = () => {
         <main className="base-layout">
 
             <HeaderShortcutDock />
+
             <BioSection />
-
-
 
             <EducationSection
                 title={education.title}

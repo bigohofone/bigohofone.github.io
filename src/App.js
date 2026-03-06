@@ -1,9 +1,10 @@
 import { AppProvider } from './contexts/AppContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { routeConfig } from './Routes';
+import { routeConfig } from './route';
 
 import Footer from './components/footer'
+import Menu from './components/menu';
 
 import './assets/styles/fonts.css';
 import './assets/styles/material-symbols.css';
@@ -22,7 +23,7 @@ const App = () => {
   return (
     <AppProvider>
       <BrowserRouter>
-        {/* <Nav /> */}
+        <Menu />
         <Routes>
           {routeConfig.map(route => (
             <Route
