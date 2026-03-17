@@ -52,12 +52,8 @@ const Menu = () => {
         <>
             <header className={`top-menu-container ${isVisible ? 'visible' : 'hidden'}`}>
                 <div className="top-menu-inner">
-                    {/* <NavLink to="/" className="top-menu-left" style={{ textDecoration: 'none' }}>
-                        <div className="top-menu-logo">✋🏼</div>
-                        <span className="top-menu-name">Wonjun Oh</span>
-                    </NavLink> */}
 
-                    <div className="top-menu-right desktop-menu">
+                    <div className="desktop-menu">
                         {routeConfig.filter(route => route.isMenu).map(route => (
                             <NavLink
                                 key={route.path}
@@ -69,20 +65,30 @@ const Menu = () => {
                         ))}
                     </div>
 
-                    <div className="top-menu-right mobile-menu-toggle">
+                    <div className="mobile-menu-toggle">
                         <button className="hamburger-btn" onClick={toggleMobileMenu} aria-label="Open Menu">
-                            <span className="material-symbols-outlined">menu</span>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                style={{ color: 'var(--sys-color-text-tertiary)' }}
+                            >
+                                <line x1="5" y1="7" x2="19" y2="7" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <line x1="5" y1="17" x2="19" y2="17" />
+                            </svg>
                         </button>
                     </div>
                 </div>
             </header>
 
-            {/* Mobile Full Screen Menu */}
             <div className={`mobile-full-menu ${isMobileMenuOpen ? 'open' : ''}`}>
                 <div className="mobile-menu-header">
                     <span className="mobile-menu-title">Menu</span>
                     <button className="close-btn" onClick={closeMobileMenu} aria-label="Close Menu">
-                        <span className="material-symbols-outlined">close</span>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                            style={{ color: 'var(--sys-color-text-tertiary)' }}
+                        >
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
                     </button>
                 </div>
                 <div className="mobile-menu-links">

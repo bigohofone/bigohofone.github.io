@@ -20,7 +20,7 @@
     --sys-color-bw-5: color-mix(in srgb, var(--sys-color-bw-100) 5%, var(--sys-color-bw-0) 95%);
     --sys-color-bw-0: #ffffff;
 
-    --sys-font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    --sys-font-family: "Roboto", sans-serif;
     --sys-font-family-emphasis: "Times New Roman", Times, serif;
 
     --sys-font-xs: 0.75rem;

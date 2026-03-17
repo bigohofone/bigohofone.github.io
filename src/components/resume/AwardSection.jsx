@@ -17,25 +17,35 @@ const AwardItem = ({ title, organization, date, type, description, isActive, isA
     };
 
     return (
-        <div
-            className={`resume-list-content__wrapper ${isActive ? 'is-active' : ''} ${isAnyActive && !isActive ? 'is-dimmed' : ''}`}
-            onClick={onClick}
-            style={{ cursor: 'pointer' }}
-        >
-            <div className="resume-content__title">{title}</div>
-            <div className="resume-content__meta-box">
-                <span className="resume-content__subtitle">{organization}</span>
-                <div style={{ display: 'flex', gap: '12px' }}>
-                    <span className="resume-content__meta">{date}</span>
-                    <span className="resume-content__meta" style={{ backgroundColor: getColor(type), borderColor: getColor(type) }}>{type}</span>
+        <>
+            <div
+                className={`resume-list-content__wrapper ${isActive ? 'is-active' : ''} ${isAnyActive && !isActive ? 'is-dimmed' : ''}`}
+                onClick={onClick}
+                style={{ cursor: 'pointer' }}
+            >
+                <div className="resume-content__box">
+                    <div className="resume-content__title">{title}</div>
+                    <div className="resume-content__subtitle">{organization}</div>
+                    <div className="resume-content__meta-box">
+                        <span className="resume-content__meta">{date}</span>
+                    </div>
+                </div>
+                <div style={{ margin: 'auto 0 auto 0.25rem', display: 'flex', alignItems: 'center' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                        style={{
+                            transform: isActive ? 'rotate(-90deg)' : 'rotate(90deg)',
+                            transition: 'transform 0.3s ease',
+                            color: 'var(--sys-color-text-tertiary)'
+                        }}
+                    >
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
                 </div>
             </div>
-            {description && (
-                <p className="resume-content__description">
-                    {description}
-                </p>
-            )}
-        </div>
+            <div className={`resume-list-content__description-box ${isActive ? 'is-active' : ''}`}>
+                <p className="resume-list-content__description">{description}</p>
+            </div>
+        </>
     );
 };
 

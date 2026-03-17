@@ -24,11 +24,11 @@ const EducationItem = ({
             </div>
             <div className="resume-content__box">
                 <div className="resume-content__title">{organization}</div>
+                <div className="resume-content__subtitle">{major}</div>
                 <div className="resume-content__meta-box">
-                    <span className="resume-content__subtitle">{major}</span>
                     <span className="resume-content__meta">{date}</span>
                 </div>
-                <div className="resume-content__description">{description}</div>
+                {/* <div className="resume-content__description">{description}</div> */}
             </div>
         </div>
     );

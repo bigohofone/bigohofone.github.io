@@ -10,7 +10,7 @@ export const awards = {
             type: "Honor"
         },
         {
-            selected: true,
+            selected: false,
             title: "2nd Prize ($3,000)",
             organization: "Qwen Base Hackathon",
             date: "2025",
@@ -18,7 +18,7 @@ export const awards = {
             type: "Award"
         },
         {
-            selected: true,
+            selected: false,
             title: "Gold Prize (KRW 2,000,000)",
             organization: "Korea University Software Contest",
             date: "2025",
@@ -27,10 +27,10 @@ export const awards = {
         },
         {
             selected: true,
-            title: "IPESK Next-generation Engineers",
+            title: "IPESK Next-generation Enigineers",
             organization: "Institute for Promotion of Engineering and Science of Korea",
             date: "2025",
-            description: "Merit based honor list.",
+            description: "Honored as a nationally recognized top-tier engineer, receiving a formal Dean’s Recommendation for exceptional academic and research performance. Recognized for the potential to drive industry-academic innovation and lead competitive advancements in the global technological landscape.",
             type: "Honor"
         },
         {
@@ -42,7 +42,7 @@ export const awards = {
             type: "Award"
         },
         {
-            selected: true,
+            selected: false,
             title: "NIA Director’s Award (KRW 3,000,000)",
             organization: "Korean AI Contest",
             date: "2024",

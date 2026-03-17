@@ -5,15 +5,16 @@ import { routeConfig } from './route';
 
 import Footer from './components/footer'
 import Menu from './components/menu';
+import HeaderShortcutDock from './components/headerShortcutDock';
 
 import './assets/styles/fonts.css';
 import './assets/styles/material-symbols.css';
 
-import './assets/styles/base/global.css';
-import './assets/styles/base/layout.css';
-import './assets/styles/base/menu.css';
-import './assets/styles/base/dock.css';
-import './assets/styles/base/contact.css';
+import './assets/styles/global.css';
+import './assets/styles/layout.css';
+import './assets/styles/menu.css';
+import './assets/styles/dock.css';
+import './assets/styles/contact.css';
 
 import './assets/styles/components/footer.css';
 import './assets/styles/components/resume.css';

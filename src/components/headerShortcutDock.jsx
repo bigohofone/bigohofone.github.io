@@ -3,73 +3,68 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 // ── Hooks ──────────────────────────────────────────────────────────────────────
 
-/** DOM의 h2 태그를 스캔해 { id, label } 목록을 반환 */
+/** Scans DOM for h1, h2, h3 tags and returns an array of { index, el, id, label, tagName } */
 function useNavItems() {
     const [navItems, setNavItems] = useState([]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            const items = [...document.querySelectorAll('h2')]
-                .map((h2) => ({
-                    id: h2.closest('[id]')?.id ?? null,
-                    label: h2.textContent.trim(),
-                }))
-                .filter(({ id, label }) => id && label);
+            const elements = Array.from(document.querySelectorAll('h1, h2, h3'));
+            const items = elements
+                .map((el, index) => {
+                    const id = el.closest('[id]')?.id || null;
+                    const label = el.textContent.trim();
+                    return { index, el, id, label, tagName: el.tagName.toLowerCase() };
+                })
+                .filter(item => item.id && item.label);
+
             setNavItems(items);
         }, 100);
+
         return () => clearTimeout(timer);
     }, []);
 
     return navItems;
 }
 
-/** 스크롤 위치에 따라 현재 뷰포트에 가장 가까운 섹션 id를 추적 */
+/** Tracks the index of the header closest to the top of the viewport */
 function useActiveSection(navItems) {
-    const [activeSection, setActiveSection] = useState('');
+    const [activeIndex, setActiveIndex] = useState(-1);
 
     useEffect(() => {
-        if (!navItems || navItems.length === 0) return;
+        if (!navItems?.length) return;
 
         const handleScroll = () => {
-            let closestSection = '';
+            let closestIndex = -1;
             let minDistance = Infinity;
 
-            navItems.forEach(({ id }) => {
-                const el = document.getElementById(id);
-                if (!el) return;
+            for (const { el, index } of navItems) {
+                if (!el) continue;
 
-                // 뷰포트 상단으로부터의 거리 (절대값 아님, top 기준)
-                const rect = el.getBoundingClientRect();
-
-                /**
-                 * '최상단에 가장 가까운' 기준:
-                 * rect.top이 0에 가까울수록 현재 활성화된 섹션일 확률이 높음.
-                 * 단, 이미 지나간 섹션(음수)도 고려해야 하므로 절대값을 사용하거나, 
-                 * 특정 오차 범위(예: 상단 100px 이내)를 우선순위로 둡니다.
-                 */
-                const distance = Math.abs(rect.top);
+                const { top } = el.getBoundingClientRect();
+                const distance = Math.abs(top);
 
                 if (distance < minDistance) {
                     minDistance = distance;
-                    closestSection = id;
+                    closestIndex = index;
                 }
-            });
+            }
 
-            setActiveSection(closestSection);
+            setActiveIndex(closestIndex);
         };
 
-        // 초기 실행 (첫 로드 시 위치 파악)
+        // Initial check
         handleScroll();
 
-        // 성능 최적화를 위한 틱 처리
-        let ticking = false;
+        // Throttled scroll listener using requestAnimationFrame
+        let isTicking = false;
         const onScroll = () => {
-            if (!ticking) {
+            if (!isTicking) {
                 window.requestAnimationFrame(() => {
                     handleScroll();
-                    ticking = false;
+                    isTicking = false;
                 });
-                ticking = true;
+                isTicking = true;
             }
         };
 
@@ -77,38 +72,42 @@ function useActiveSection(navItems) {
         return () => window.removeEventListener('scroll', onScroll);
     }, [navItems]);
 
-    return activeSection;
+    return activeIndex;
 }
 
+/** Controls left/right gradient mask for scrolling dock items overflow */
 function useScrollMask(navRef) {
     const [maskStyle, setMaskStyle] = useState({});
 
-    const update = useCallback(() => {
+    const updateMask = useCallback(() => {
         const el = navRef.current;
         if (!el) return;
 
         const { scrollLeft, scrollWidth, clientWidth } = el;
-        if (scrollWidth <= clientWidth) { setMaskStyle({}); return; }
 
-        const atStart = scrollLeft <= 0;
-        const atEnd = scrollWidth - clientWidth - scrollLeft <= 1;
+        // No overflow means no mask needed
+        if (scrollWidth <= clientWidth) {
+            setMaskStyle({});
+            return;
+        }
 
-        const mask = atStart
-            ? 'linear-gradient(to right, black 50%, transparent 100%)'
-            : atEnd
-                ? 'linear-gradient(to right, transparent 0%, black 50%)'
-                : 'linear-gradient(to right, transparent 0%, black 50%, black 50%, transparent 100%)';
+        const isAtStart = scrollLeft <= 0;
+        const isAtEnd = scrollWidth - clientWidth - scrollLeft <= 1;
+
+        let mask = 'linear-gradient(to right, transparent 0%, black 50%, black 50%, transparent 100%)';
+        if (isAtStart) mask = 'linear-gradient(to right, black 50%, transparent 100%)';
+        else if (isAtEnd) mask = 'linear-gradient(to right, transparent 0%, black 50%)';
 
         setMaskStyle({ WebkitMaskImage: mask, maskImage: mask });
     }, [navRef]);
 
     useEffect(() => {
-        update();
-        window.addEventListener('resize', update);
-        return () => window.removeEventListener('resize', update);
-    }, [update]);
+        updateMask();
+        window.addEventListener('resize', updateMask);
+        return () => window.removeEventListener('resize', updateMask);
+    }, [updateMask]);
 
-    return { maskStyle, onScroll: update };
+    return { maskStyle, onScroll: updateMask };
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -122,41 +121,60 @@ function scrollToSection(id) {
     });
 }
 
-// ── Component ──────────────────────────────────────────────────────────────────
+// ── Main Component ─────────────────────────────────────────────────────────────
 
 const HeaderShortcutDock = () => {
     const navRef = useRef(null);
+    const [isHovered, setIsHovered] = useState(false);
 
     const navItems = useNavItems();
-    const activeSection = useActiveSection(navItems);
+    const activeIndex = useActiveSection(navItems);
     const { maskStyle, onScroll } = useScrollMask(navRef);
 
-    // 활성 버튼을 독 가운데로 자동 스크롤
+    // Auto-scroll the dock container to center the active dot
     useEffect(() => {
-        if (!activeSection || !navRef.current) return;
-        navRef.current
-            .querySelector(`button[data-id="${activeSection}"]`)
-            ?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }, [activeSection]);
+        if (activeIndex === -1 || !navRef.current) return;
+
+        const activeButton = navRef.current.querySelector(`button[data-index="${activeIndex}"]`);
+        activeButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }, [activeIndex]);
+
+    const minLevel = navItems.length > 0
+        ? Math.min(...navItems.map(item => parseInt(item.tagName.replace('h', ''), 10)))
+        : 1;
 
     return (
         <div
-            className="dock-container"
+            className={`dock-container ${isHovered ? 'hovered' : ''}`}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
             <div className="dock-wrapper" ref={navRef} onScroll={onScroll} style={maskStyle}>
                 <nav className="dock" >
-                    {/* enumerate items */}
-                    {navItems.map(({ id, label }, i) => {
-                        const isActive = activeSection === id;
+                    {navItems.map(({ id, label, tagName, index }) => {
+                        const isActive = activeIndex === index;
+
+                        // Hierarchy mappings: h1 -> 1, h2 -> 2, h3 -> 3
+                        const level = parseInt(tagName.replace('h', ''), 10);
+                        const relativeLevel = level - minLevel;
+
+                        // Root (relativeLevel 0) uses 's' exactly as requested
+                        const fontSize = 'var(--sys-font-s)';
+
                         return (
                             <button
-                                key={id}
+                                key={`dock-item-${index}`}
                                 data-id={id}
-                                className={`dock__item${isActive ? ' active' : ''}`}
+                                data-index={index}
+                                className={`dock__item ${isActive ? 'active' : ''}`}
                                 aria-label={label}
                                 onClick={() => scrollToSection(id)}
+                                style={{
+                                    '--level': level,
+                                    '--relative-level': relativeLevel,
+                                    '--hover-font-size': fontSize
+                                }}
                             >
-                                <span className="dock__number">{String(i + 1).padStart(2, '0')}</span>
                                 <span className="dock__label">{label}</span>
                             </button>
                         );

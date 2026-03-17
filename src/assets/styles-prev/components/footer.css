@@ -16,7 +16,9 @@
 }
 
 .footer__title {
-    font-weight: var(--sys-font-weight-bold);
+    font-family: var(--sys-font-family-emphasis);
+    font-style: italic;
+    font-weight: var(--sys-font-weight-normal);
     color: var(--sys-color-text-main);
     line-height: 1.5;
     font-size: var(--sys-font-2xl);

@@ -1,0 +1,140 @@
+/** 
+ * Dock Container Styles 
+ */
+.dock-container {
+    opacity: 1;
+    position: fixed;
+    top: 50%;
+    right: 2rem;
+    transform: translate(0, -50%);
+    padding: 0.5rem;
+    border-radius: 8px;
+    display: flex;
+    background: transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+}
+
+.dock-container:hover,
+.dock-container.hovered {
+    background: var(--sys-color-bw-5);
+}
+
+@media (max-width: 768px) {
+    .dock-container {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+/** 
+ * Wrapper and Hide Scrollbars 
+ */
+.dock-wrapper {
+    overflow-y: hidden;
+}
+
+.dock-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.dock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: gap 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dock-container:hover .dock,
+.dock-container.hovered .dock {
+    gap: 0.5rem;
+}
+
+/** 
+ * Base Item Styles (Collapsed/Dot Mode) 
+ */
+.dock__item {
+    /* Base dot sizing relative to hierarchy level */
+    --base-dot-size: 0.75rem;
+    --dot-size-reduction: calc(var(--relative-level, 0) * 0.25rem);
+    --size: calc(var(--base-dot-size) - var(--dot-size-reduction));
+
+    height: var(--size);
+    width: var(--size);
+    padding: 0;
+    margin: 0 auto;
+    border-radius: 50%;
+    border: none;
+    background: var(--sys-color-bw-5);
+    cursor: pointer;
+
+    color: var(--sys-color-text-secondary);
+    font-size: var(--hover-font-size, var(--sys-font-s));
+    font-weight: var(--sys-font-weight-normal);
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dock__item.active {
+    background: var(--sys-color-primary);
+}
+
+/** 
+ * Expanded Item Styles (Label Mode) 
+ */
+.dock-container:hover .dock__item,
+.dock-container.hovered .dock__item {
+    height: 2rem;
+    width: 12rem;
+    border-radius: 4px;
+    background: var(--sys-color-bw-5);
+    --dynamic-indent: calc(var(--relative-level, 0) * 1rem);
+    padding: 0 1rem 0 calc(1rem + var(--dynamic-indent));
+}
+
+.dock-container:hover .dock__item:hover,
+.dock-container.hovered .dock__item:hover {
+    background: var(--sys-color-bw-10);
+    color: var(--sys-color-text-main);
+}
+
+.dock-container:hover .dock__item.active,
+.dock-container.hovered .dock__item.active,
+.dock-container:hover .dock__item.active:hover,
+.dock-container.hovered .dock__item.active:hover {
+    background: var(--sys-color-primary-light);
+    color: var(--sys-color-primary);
+}
+
+.dock__item.active .dock__label {
+    pointer-events: auto;
+}
+
+/* Text elements are hidden by default */
+.dock__label {
+    font-weight: inherit;
+    width: 100%;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    display: block;
+    /* Switch to block to make basic text constraints work */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+    /* Ensure left-alignment for long texts */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reveal text when expanded */
+.dock-container:hover .dock__label,
+.dock-container.hovered .dock__label {
+    opacity: 1;
+}

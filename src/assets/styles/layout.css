@@ -1,0 +1,22 @@
+:root {
+    --x-padding: 1.5rem;
+    --y-padding: 8rem;
+}
+
+@media (min-width: 768px) {
+    :root {
+        --x-padding: 2rem;
+        --y-padding: 8rem;
+    }
+}
+
+.base-layout {
+    width: 100%;
+    padding: 6rem var(--x-padding);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: var(--y-padding);
+    background-color: white;
+}

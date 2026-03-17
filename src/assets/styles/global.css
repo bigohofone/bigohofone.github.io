@@ -1,0 +1,113 @@
+/* ==========================================================================
+   Design Tokens - System & UI Styles
+   ========================================================================== */
+:root {
+    --sys-color-primary-pale: #e9f2f9;
+    --sys-color-primary-light: #94c2e5;
+    --sys-color-primary: #2986cc;
+    --sys-color-primary-dark: #144366;
+
+
+    --sys-color-bw-100: #040d14;
+    --sys-color-bw-95: color-mix(in srgb, var(--sys-color-bw-100) 95%, var(--sys-color-bw-0) 5%);
+    --sys-color-bw-90: color-mix(in srgb, var(--sys-color-bw-100) 90%, var(--sys-color-bw-0) 10%);
+    --sys-color-bw-80: color-mix(in srgb, var(--sys-color-bw-100) 80%, var(--sys-color-bw-0) 20%);
+    --sys-color-bw-75: color-mix(in srgb, var(--sys-color-bw-100) 75%, var(--sys-color-bw-0) 25%);
+    --sys-color-bw-70: color-mix(in srgb, var(--sys-color-bw-100) 70%, var(--sys-color-bw-0) 30%);
+    --sys-color-bw-60: color-mix(in srgb, var(--sys-color-bw-100) 60%, var(--sys-color-bw-0) 40%);
+    --sys-color-bw-50: color-mix(in srgb, var(--sys-color-bw-100) 50%, var(--sys-color-bw-0) 50%);
+    --sys-color-bw-40: color-mix(in srgb, var(--sys-color-bw-100) 40%, var(--sys-color-bw-0) 60%);
+    --sys-color-bw-30: color-mix(in srgb, var(--sys-color-bw-100) 30%, var(--sys-color-bw-0) 70%);
+    --sys-color-bw-20: color-mix(in srgb, var(--sys-color-bw-100) 20%, var(--sys-color-bw-0) 80%);
+    --sys-color-bw-10: color-mix(in srgb, var(--sys-color-bw-100) 10%, var(--sys-color-bw-0) 90%);
+    --sys-color-bw-5: color-mix(in srgb, var(--sys-color-bw-100) 5%, var(--sys-color-bw-0) 95%);
+    --sys-color-bw-0: #ffffff;
+
+
+    --sys-color-text-main: var(--sys-color-bw-100);
+    --sys-color-text-secondary: var(--sys-color-bw-70);
+    --sys-color-text-tertiary: var(--sys-color-bw-40);
+
+
+    --sys-color-background: var(--sys-color-bw-0);
+    --sys-color-background-secondary: var(--sys-color-bw-5);
+
+
+    --sys-color-btn-border: var(--sys-color-bw-5);
+    --sys-color-btn-border-hover: var(--sys-color-bw-10);
+    --sys-color-btn-border-active: var(--sys-color-primary);
+    --sys-color-btn-background: var(--sys-color-bw-5);
+    --sys-color-btn-background-hover: var(--sys-color-bw-10);
+    --sys-color-btn-background-active: var(--sys-color-primary-pale);
+
+
+    --sys-font-sans: "Open Sans", sans-serif;
+    --sys-font-serif: "Instrument Serif", serif;
+    --sys-font-weight-normal: 400;
+    --sys-font-weight-bold: 600;
+
+    /* 14px */
+    --sys-font-s: 0.875rem;
+    /* 16px */
+    --sys-font-m: 1rem;
+    /* 18px */
+    --sys-font-l: 1.125rem;
+    /* 20px */
+    --sys-font-xl: 1.25rem;
+    /* 24px */
+    --sys-font-2xl: 1.5rem;
+    /* 32px */
+    --sys-font-3xl: 2rem;
+    /* 48px */
+    --sys-font-4xl: 3rem;
+}
+
+* {
+    font-family: var(--sys-font-sans);
+    font-weight: var(--sys-font-weight-normal);
+    letter-spacing: -0.0125em;
+    line-height: 1;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    color: var(--sys-color-text-main);
+    background-color: var(--sys-color-background);
+    min-height: 100vh;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+em {
+    font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--sys-font-serif);
+    letter-spacing: 0em;
+    line-height: 1.25;
+    font-weight: var(--sys-font-weight-bold);
+}

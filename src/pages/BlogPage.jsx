@@ -3,9 +3,9 @@ import HeaderShortcutDock from '../components/headerShortcutDock';
 
 const BlogPage = () => {
     return (
-        <main style={{ position: 'fixed', width: '100vw', minHeight: '100vh', margin: 0, padding: 0 }}>
+        <main style={{ position: 'fixed', width: '100vw', minHeight: '100vh', margin: 0, padding: 0, display: 'flex', justifyContent: 'center', background: 'white' }}>
             {/* <HeaderShortcutDock /> */}
-            <div style={{ width: '100%', height: 'calc(100vh - 4rem)' }}>
+            <div style={{ width: '100%', maxWidth: '768px', height: 'calc(100vh - 4rem)' }}>
                 <iframe
                     title="Notion Blog"
                     src="https://bigohofone.notion.site/ebd//2eb3a2cf091b804f9abaff7c1c33c88c?v=2eb3a2cf091b80d18221000ca27137e5"

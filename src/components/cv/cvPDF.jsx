@@ -3,6 +3,7 @@ import React from 'react';
 import { Page, Text, View, Document, StyleSheet, Link, Font, Svg, Path, Circle, Polyline, Line } from '@react-pdf/renderer';
 import { FiMail as FiMailWeb, FiGlobe as FiGlobeWeb } from 'react-icons/fi';
 import { FaGithub as FaGithubWeb } from 'react-icons/fa';
+import { pdf } from '@react-pdf/renderer';
 
 // Import data
 import { profile } from '../../data/profile';
@@ -179,4 +180,13 @@ const CVPdfDocument = () => {
     );
 };
 
-export default CVPdfDocument;
+async function downloadCV() {
+    try {
+        const blob = await pdf(<CVPdfDocument />).toBlob();
+        window.open(URL.createObjectURL(blob), '_blank');
+    } catch (err) {
+        console.error('Error generating PDF:', err);
+    }
+}
+
+export { downloadCV };
