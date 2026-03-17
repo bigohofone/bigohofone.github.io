@@ -24,7 +24,7 @@ const App = () => {
   return (
     <AppProvider>
       <BrowserRouter>
-        <Menu />
+        {/* <Menu /> */}
         <Routes>
           {routeConfig.map(route => (
             <Route

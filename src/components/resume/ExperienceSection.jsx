@@ -19,22 +19,24 @@ const ExperienceItem = ({
                 className={`resume-content__wrapper is-interactive ${isActive ? 'is-active' : ''} ${isAnyActive && !isActive ? 'is-dimmed' : ''}`}
                 onClick={onClick}
             >
-                <div className="resume-content__logo-box">
-                    {logo ? (
-                        <img
-                            src={logo.startsWith('http') ? logo : process.env.PUBLIC_URL + logo}
-                            alt={`${organization} logo`}
-                        />
-                    ) : (
-                        <FiBookmark />
-                    )}
-                </div>
+                <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', width: '100%' }}>
+                    <div className="resume-content__logo-box">
+                        {logo ? (
+                            <img
+                                src={logo.startsWith('http') ? logo : process.env.PUBLIC_URL + logo}
+                                alt={`${organization} logo`}
+                            />
+                        ) : (
+                            <FiBookmark />
+                        )}
+                    </div>
 
-                <div className="resume-content__box">
-                    <div className="resume-content__title">{organization}</div>
-                    <div className="resume-content__subtitle">{role}</div>
-                    <div className="resume-content__meta-box">
-                        <span className="resume-content__meta">{date}</span>
+                    <div className="resume-content__box">
+                        <div className="resume-content__meta-box">
+                            <span className="resume-content__meta">{date}</span>
+                        </div>
+                        <div className="resume-content__title">{organization}</div>
+                        <div className="resume-content__subtitle">{role}</div>
                     </div>
                 </div>
 

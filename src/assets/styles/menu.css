@@ -195,9 +195,9 @@ body {
     transition: all 0.5s ease-in-out;
 }
 
-body.menu-visible {
+/* body.menu-visible {
     padding-top: 4rem;
-}
+} */
 
 body.menu-hidden {
     padding-top: 0;

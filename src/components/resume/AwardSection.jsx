@@ -24,11 +24,11 @@ const AwardItem = ({ title, organization, date, type, description, isActive, isA
                 style={{ cursor: 'pointer' }}
             >
                 <div className="resume-content__box">
-                    <div className="resume-content__title">{title}</div>
-                    <div className="resume-content__subtitle">{organization}</div>
                     <div className="resume-content__meta-box">
                         <span className="resume-content__meta">{date}</span>
                     </div>
+                    <div className="resume-content__title">{title}</div>
+                    <div className="resume-content__subtitle">{organization}</div>
                 </div>
                 <div style={{ margin: 'auto 0 auto 0.25rem', display: 'flex', alignItems: 'center' }}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"

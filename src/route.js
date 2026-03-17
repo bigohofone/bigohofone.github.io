@@ -15,12 +15,12 @@ export const routeConfig = [
     //     element: <ProjectsPage />,
     //     isMenu: true,
     // },
-    {
-        path: "/blog",
-        label: "Blog",
-        element: <BlogPage />,
-        isMenu: true,
-    },
+    // {
+    //     path: "/blog",
+    //     label: "Blog",
+    //     element: <BlogPage />,
+    //     isMenu: true,
+    // },
     // // 메뉴에는 안 보이지만 페이지는 존재하는 경우
     // {
     //     path: "/secret",

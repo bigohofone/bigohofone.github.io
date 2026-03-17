@@ -25,7 +25,7 @@
 
 
     --sys-color-text-main: var(--sys-color-bw-100);
-    --sys-color-text-secondary: var(--sys-color-bw-70);
+    --sys-color-text-secondary: var(--sys-color-bw-60);
     --sys-color-text-tertiary: var(--sys-color-bw-40);
 
 
@@ -35,29 +35,30 @@
 
     --sys-color-btn-border: var(--sys-color-bw-5);
     --sys-color-btn-border-hover: var(--sys-color-bw-10);
-    --sys-color-btn-border-active: var(--sys-color-primary);
+    --sys-color-btn-border-active: var(--sys-color-pale);
     --sys-color-btn-background: var(--sys-color-bw-5);
     --sys-color-btn-background-hover: var(--sys-color-bw-10);
     --sys-color-btn-background-active: var(--sys-color-primary-pale);
 
 
-    --sys-font-sans: "Open Sans", sans-serif;
+    --sys-font-sans: "Inter", sans-serif;
     --sys-font-serif: "Instrument Serif", serif;
     --sys-font-weight-normal: 400;
-    --sys-font-weight-bold: 600;
+    --sys-font-weight-bold: 400;
 
+    --sys-font-xs: 0.75rem;
     /* 14px */
     --sys-font-s: 0.875rem;
     /* 16px */
     --sys-font-m: 1rem;
     /* 18px */
-    --sys-font-l: 1.125rem;
+    --sys-font-l: 1.25rem;
     /* 20px */
-    --sys-font-xl: 1.25rem;
+    --sys-font-xl: 1.5rem;
     /* 24px */
-    --sys-font-2xl: 1.5rem;
+    --sys-font-2xl: 2rem;
     /* 32px */
-    --sys-font-3xl: 2rem;
+    --sys-font-3xl: 2.5rem;
     /* 48px */
     --sys-font-4xl: 3rem;
 }
@@ -79,6 +80,12 @@
 
 html {
     font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
 }
 
 body {
@@ -109,5 +116,5 @@ h6 {
     font-family: var(--sys-font-serif);
     letter-spacing: 0em;
     line-height: 1.25;
-    font-weight: var(--sys-font-weight-bold);
+    font-weight: var(--sys-font-weight-normal);
 }
