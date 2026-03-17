@@ -65,7 +65,7 @@
 * {
     font-family: var(--sys-font-sans);
     font-weight: var(--sys-font-weight-normal);
-    letter-spacing: -0.0125em;
+    letter-spacing: -0.025em;
     line-height: 1;
     box-sizing: border-box;
     padding: 0;

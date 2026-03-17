@@ -35,14 +35,15 @@ const Contact = () => {
                 {displayItems.map((item, i) => {
                     if (item.label === 'Email') {
                         return (
-                            <li key={i} className="contact__item contact__item--email">
+                            /* contact__item--email */
+                            <li key={i} className="contact__item">
                                 <button
                                     className="contact__email-box"
                                     onClick={(e) => handleEmailClick(e, item.value)}
                                     title="Copy Email"
                                 >
                                     <p className="contact__icon">{copied ? <MdCheck /> : iconMap[item.label]}</p>
-                                    <p className="contact__text">Contact Me</p>
+                                    {/* <p className="contact__text">Contact Me</p> */}
                                 </button>
                             </li>
                         );

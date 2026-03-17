@@ -7,12 +7,11 @@
     height: 6rem;
     z-index: 1000;
     transition: all 0.5s ease-in-out;
-    /* border-bottom: 1px solid var(--sys-color-bw-5); */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    padding: 0 1rem;
+    padding: 2rem 1rem 0;
 }
 
 .top-menu-container.hidden {
@@ -24,7 +23,9 @@
 }
 
 .top-menu-inner {
-    background: var(--sys-color-bw-5);
+    height: 4rem;
+    background: var(--sys-color-bw-0);
+    border: 1px solid var(--sys-color-bw-10);
     border-radius: 8px;
     width: 100%;
     max-width: 740px;
@@ -32,37 +33,49 @@
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    padding: 0.75rem;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.025);
+    /* backdrop-filter: blur(10px); */
+    /* background-color: rgba(255, 255, 255, 0.5); */
+}
+
+@media (min-width: 768px) {
+    .top-menu-inner {
+        padding: 0.5rem 1.5rem;
+    }
 }
 
 .desktop-menu {
     display: flex;
+    gap: 1.5rem;
 }
 
 .menu-link {
-    height: 2.5rem;
+    height: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 0 0;
 
-    border-radius: 8px;
+    /* border-radius: 4px; */
 
     text-decoration: none;
-    color: var(--color-text-secondary);
-    font-size: 0 1rem;
+    font-family: var(--sys-font-serif);
+    color: var(--sys-color-text-secondary);
+    font-size: var(--sys-font-xl);
     font-weight: var(--sys-font-weight-normal);
     transition: all 0.5s ease-in-out;
-    color: var(--sys-color-text-secondary);
+    /* background: var(--sys-color-bw-0); */
+    /* border: 1px solid var(--sys-color-bw-10); */
 }
 
 .menu-link:hover {
     color: var(--sys-color-text-main);
-    background: var(--sys-color-btn-background-hover);
+    /* background: var(--sys-color-btn-background-hover); */
 }
 
 .menu-link.active {
-    color: var(--sys-color-main);
+    color: var(--sys-color-primary);
     /* background: var(--sys-color-primary-light); */
 }
 
@@ -71,7 +84,7 @@
 }
 
 .hamburger-btn {
-    height: 2.5rem;
+    height: 100%;
     background: none;
     border: none;
     cursor: pointer;
@@ -110,7 +123,7 @@
     align-items: center;
     justify-content: space-between;
     /* margin-bottom: 2rem; */
-    padding: 2.75rem 2rem 0.75rem;
+    padding: 2rem 2rem 0;
     /* border-bottom: 1px solid var(--sys-color-bw-5); */
 }
 

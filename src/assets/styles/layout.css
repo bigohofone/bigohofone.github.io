@@ -1,22 +1,26 @@
 :root {
     --x-padding: 1.5rem;
-    --y-padding: 8rem;
+    --y-padding: 6rem;
+    --y-gap: 8rem;
 }
 
 @media (min-width: 768px) {
     :root {
         --x-padding: 2rem;
-        --y-padding: 8rem;
+        --y-padding: 6rem;
+        --y-gap: 8rem;
     }
 }
 
 .base-layout {
     width: 100%;
-    padding: 6rem var(--x-padding);
+    max-width: 740px;
+    margin: 0 auto;
+    padding: var(--y-padding) var(--x-padding);
     display: flex;
     flex-direction: column;
     justify-content: start;
-    align-items: center;
-    gap: var(--y-padding);
+    align-items: flex-start;
+    gap: var(--y-gap);
     background-color: white;
 }

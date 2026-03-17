@@ -17,7 +17,7 @@ const PublicationItem = ({ _index, title, authors, venue, tags = [], links }) =>
                 </div>
             </div>
             <div style={{ margin: 'auto 0 auto 0.25rem', display: 'flex', alignItems: 'center' }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
                     style={{ transition: 'transform 0.3s ease', color: 'var(--sys-color-text-tertiary)' }}>
                     <line x1="8" y1="16" x2="16" y2="8" />
                     <polyline points="8 8 16 8 16 16" />

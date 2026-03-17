@@ -163,6 +163,7 @@
     height: 1.5rem;
     padding: 0 0.75rem;
     margin-bottom: 4px;
+    /* font-family: var(--sys-font-serif); */
 }
 
 .resume-content__prepint {
@@ -174,18 +175,21 @@
     font-weight: var(--sys-font-weight-normal);
     width: fit-content;
     background-color: transparent;
-    border: 1px solid var(--sys-color-text-tertiary);
+    border: 1px solid var(--sys-color-bw-10);
     border-radius: 9999px;
     height: 1.5rem;
     padding: 0 0.75rem;
     margin-bottom: 4px;
+    /* font-family: var(--sys-font-serif); */
 }
 
 .resume-content__title {
-    font-size: var(--sys-font-m);
-    font-weight: var(--sys-font-weight-bold);
+    font-family: var(--sys-font-serif);
+    font-size: var(--sys-font-xl);
+    font-weight: var(--sys-font-weight-normal);
     color: var(--sys-color-text-main);
     line-height: 1.25;
+    letter-spacing: 0;
 }
 
 /* @media (min-width: 768px) {
@@ -195,14 +199,14 @@
 } */
 
 .resume-content__subtitle {
-    font-size: var(--sys-font-s);
+    font-size: var(--sys-font-m);
     font-weight: var(--sys-font-weight-normal);
     color: var(--sys-color-text-secondary);
     line-height: 1.25;
 }
 
 .resume-content__meta {
-    font-size: var(--sys-font-s);
+    font-size: var(--sys-font-m);
     line-height: 1.25;
     font-weight: var(--sys-font-weight-normal);
     color: var(--sys-color-text-tertiary);
@@ -282,7 +286,7 @@
 .resume-bio__profile {
     height: 8rem;
     width: 8rem;
-    border-radius: 16px;
+    border-radius: 8px;
     object-fit: cover;
 }
 

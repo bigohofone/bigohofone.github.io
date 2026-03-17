@@ -4,6 +4,9 @@
     --contact-box-radius: 4px;
     --contact-transition: all 0.5s ease;
 
+    --mobile-contact-box-size: 3rem;
+    --mobile-contact-box-gap: 0.5rem;
+
     width: 100%;
     padding-top: 1rem;
 }
@@ -84,14 +87,23 @@
 
 /* Mobile Layout */
 @media (max-width: 768px) {
+
+    .contact__icon-box,
+    .contact__email-box {
+        height: var(--mobile-contact-box-size);
+        width: var(--mobile-contact-box-size);
+        gap: var(--mobile-contact-box-gap);
+    }
+
     .contact {
         display: flex;
-        justify-content: center;
+        justify-content: left;
     }
 
     .contact__list {
-        grid-template-columns: repeat(4, var(--contact-box-size));
+        grid-template-columns: repeat(5, var(--mobile-contact-box-size));
         width: fit-content;
+        gap: var(--mobile-contact-box-gap);
     }
 
     .contact__item--email {
