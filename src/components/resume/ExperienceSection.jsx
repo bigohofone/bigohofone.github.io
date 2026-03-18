@@ -69,7 +69,7 @@ const ExperienceSection = ({ title, items }) => {
 
     return (
         <section id="experience" className="resume-section">
-            <h2 className="resume-section__title">{title}</h2>
+            <h2 className="resume-section__title">{title}.</h2>
             <div className={`resume-section__content ${activeIndex !== null ? 'has-active' : ''}`}>
                 {items.map((item, index) => (
                     <ExperienceItem

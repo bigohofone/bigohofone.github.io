@@ -7,6 +7,7 @@ import ExperienceSection from '../components/resume/ExperienceSection';
 import PublicationSection from '../components/resume/PublicationSection';
 import AwardSection from '../components/resume/AwardSection';
 import content from '../data/content';
+import { downloadCV } from '../components/cv/cvPDF';
 
 const ResumePage = () => {
     const { education, experience, publications, awards } = content;
@@ -17,14 +18,15 @@ const ResumePage = () => {
 
             <BioSection />
 
-            {/* <EducationSection
-                title={education.title}
-                items={education.items}
-            /> */}
 
             <PublicationSection
                 title={publications.title}
                 items={publications.items}
+            />
+
+            <AwardSection
+                title={awards.title}
+                items={awards.items}
             />
 
             <ExperienceSection
@@ -32,9 +34,9 @@ const ResumePage = () => {
                 items={experience.items}
             />
 
-            <AwardSection
-                title={awards.title}
-                items={awards.items}
+            <EducationSection
+                title={education.title}
+                items={education.items}
             />
         </main>
     );

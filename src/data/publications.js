@@ -1,16 +1,16 @@
 export const publications = {
     title: "Publications",
     items: [
-        {
-            title: "Coming soon...",
-            authors: "Wonjun Oh*, Hyunwoo Kim†",
-            venue: null,
-            tags: [], // 'Main', 'Findings', 'Oral', 'Spotlight', 'Best Paper Award'
-            links: [
-                { label: "Paper", url: "" },
-                { label: "GitHub", url: "" }
-            ]
-        },
+        // {
+        //     title: "Coming soon...",
+        //     authors: "Wonjun Oh*, Hyunwoo Kim†",
+        //     venue: null,
+        //     tags: [], // 'Main', 'Findings', 'Oral', 'Spotlight', 'Best Paper Award'
+        //     links: [
+        //         { label: "Paper", url: "" },
+        //         { label: "GitHub", url: "" }
+        //     ]
+        // },
         {
             title: "ReSCORE: Label-free Iterative Retriever Training for Multi-hop Question Answering with Relevance-Consistency Supervision",
             authors: "{Dosung Lee, Wonjun Oh}*, Boyoung Kim, Minyoung Kim, {Joonsuk Park, Paul Hongsuck Seo}†",

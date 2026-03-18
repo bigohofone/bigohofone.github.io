@@ -14,7 +14,7 @@ import './assets/styles/global.css';
 import './assets/styles/layout.css';
 import './assets/styles/menu.css';
 import './assets/styles/dock.css';
-import './assets/styles/contact.css';
+import './assets/styles/links.css';
 
 import './assets/styles/components/footer.css';
 import './assets/styles/components/resume.css';

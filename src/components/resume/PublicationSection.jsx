@@ -30,7 +30,7 @@ const PublicationItem = ({ _index, title, authors, venue, tags = [], links }) =>
 const PublicationSection = ({ title, items }) => {
     return (
         <section id="publications" className="resume-section">
-            <h2 className="resume-section__title">{title}</h2>
+            <h2 className="resume-section__title">{title}.</h2>
             <div className="resume-section__list-content">
                 {items.map((item, index) => (
                     <PublicationItem

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FiBookmark, FiCalendar } from 'react-icons/fi';
-import Section from './SectionBase';
 
 const AwardItem = ({ title, organization, date, type, description, isActive, isAnyActive, onClick }) => {
     const getColor = (type) => {
@@ -62,7 +61,7 @@ const AwardSection = ({ title, items }) => {
 
     return (
         <section id="awards" className="resume-section">
-            <h2 className="resume-section__title">{title}</h2>
+            <h2 className="resume-section__title">{title}.</h2>
 
             <div className="resume-section__toggle-container">
                 <button

@@ -1,8 +1,16 @@
 export const experience = {
     title: "Experience",
     items: [
+        // {
+        //     role: "AI Research Engineer",
+        //     organization: "Upstage",
+        //     date: "Apr. 2026 – Jul. 2026",
+        //     location: "Seoul, Korea",
+        //     description: "LLM Post-training Internship",
+        //     logo: "https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/upstage-color.png"
+        // },
         {
-            role: "Undergraduate Research Assistant",
+            role: "Undergraduate Researcher",
             organization: "COCO Lab @ KAIST",
             date: "Dec. 2025 – Now",
             location: "Seoul, Korea",
@@ -10,7 +18,7 @@ export const experience = {
             logo: "https://download.logo.wine/logo/KAIST/KAIST-Logo.wine.png"
         },
         {
-            role: "Undergraduate Research Assistant",
+            role: "Undergraduate Researcher",
             organization: "MIIL @ Korea University",
             date: "Mar. 2024 – Oct. 2024",
             location: "Seoul, Korea",

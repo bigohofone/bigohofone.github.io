@@ -43,7 +43,7 @@
 
     --sys-font-sans: "Inter", sans-serif;
     --sys-font-serif: "Instrument Serif", serif;
-    --sys-font-weight-normal: 400;
+    --sys-font-weight-normal: 300;
     --sys-font-weight-bold: 400;
 
     --sys-font-xs: 0.75rem;
@@ -52,13 +52,13 @@
     /* 16px */
     --sys-font-m: 1rem;
     /* 18px */
-    --sys-font-l: 1.25rem;
+    --sys-font-l: 1.125rem;
     /* 20px */
-    --sys-font-xl: 1.5rem;
+    --sys-font-xl: 1.25rem;
     /* 24px */
-    --sys-font-2xl: 2rem;
+    --sys-font-2xl: 1.5rem;
     /* 32px */
-    --sys-font-3xl: 2.5rem;
+    --sys-font-3xl: 2rem;
     /* 48px */
     --sys-font-4xl: 3rem;
 }
@@ -66,26 +66,16 @@
 * {
     font-family: var(--sys-font-sans);
     font-weight: var(--sys-font-weight-normal);
-    letter-spacing: -0.025em;
+    /* letter-spacing: -0.0125em; */
     line-height: 1;
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-tap-highlight-color: transparent;
+    transition: all 0.3s ease;
 }
 
 html {
     font-size: 16px;
-}
-
-@media (max-width: 768px) {
-    html {
-        font-size: 14px;
-    }
 }
 
 body {

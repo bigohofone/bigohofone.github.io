@@ -10,14 +10,14 @@ const { contact } = content;
 const displayItems = contact.items.filter(item => item.label !== 'Website');
 
 const iconMap = {
-    'Email': <MdEmail />,
+    // 'Email': <MdEmail />,
     'X (Twitter)': <FaXTwitter />,
     'LinkedIn': <FaLinkedin />,
     'GitHub': <FaGithub />,
     'Google Scholar': <SiGooglescholar />
 };
 
-const Contact = () => {
+const Links = () => {
     const [copied, setCopied] = useState(false);
 
     const handleEmailClick = (e, value) => {
@@ -30,34 +30,35 @@ const Contact = () => {
     };
 
     return (
-        <div className="contact">
-            <ul className="contact__list">
+        <div className="links">
+            <ul className="links__list">
                 {displayItems.map((item, i) => {
                     if (item.label === 'Email') {
                         return (
-                            /* contact__item--email */
-                            <li key={i} className="contact__item">
-                                <button
-                                    className="contact__email-box"
-                                    onClick={(e) => handleEmailClick(e, item.value)}
-                                    title="Copy Email"
-                                >
-                                    <p className="contact__icon">{copied ? <MdCheck /> : iconMap[item.label]}</p>
-                                    {/* <p className="contact__text">Contact Me</p> */}
-                                </button>
-                            </li>
+                            /* links__item--email */
+                            // <li key={i} className="links__item">
+                            //     <button
+                            //         className="links__email-box"
+                            //         onClick={(e) => handleEmailClick(e, item.value)}
+                            //         title="Copy Email"
+                            //     >
+                            //         <p className="links__icon">{copied ? <MdCheck /> : iconMap[item.label]}</p>
+                            //         {/* <p className="links__text">Contact Me</p> */}
+                            //     </button>
+                            // </li>
+                            <></>
                         );
                     }
                     return (
-                        <li key={i} className="contact__item">
+                        <li key={i} className="links__item">
                             <a
                                 href={item.link}
-                                className="contact__icon-box"
+                                className="links__icon-box"
                                 title={item.label}
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                <p className="contact__icon">{iconMap[item.label]}</p>
+                                <p className="links__icon">{iconMap[item.label]}</p>
                             </a>
                         </li>
                     );
@@ -67,4 +68,4 @@ const Contact = () => {
     );
 };
 
-export default Contact;
+export default Links;

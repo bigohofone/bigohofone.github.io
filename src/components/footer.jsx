@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Contact from './contact'
+import Links from './links'
 
 const Footer = () => {
     return (

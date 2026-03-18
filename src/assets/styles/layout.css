@@ -1,13 +1,13 @@
 :root {
     --x-padding: 1rem;
-    --y-padding: 6rem;
+    --y-padding: 4rem;
     --y-gap: 8rem;
 }
 
 @media (min-width: 768px) {
     :root {
         --x-padding: 2rem;
-        --y-padding: 6rem;
+        --y-padding: 4rem;
         --y-gap: 8rem;
     }
 }
