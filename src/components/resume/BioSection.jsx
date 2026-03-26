@@ -21,11 +21,11 @@ const BioSection = () => {
                                 Incoming Student, KAIST <br />
                                 <a href="mailto:bigohofone@gmail.com" className="resume-bio__mail">bigohofone [AT] gmail.com</a>
                             </div>
-                            <div style={{ marginTop: '1rem' }}>
-                                <Links />
-                            </div>
                         </div>
                     </div>
+                </div>
+                <div style={{ marginTop: '2rem' }}>
+                    <Links />
                 </div>
             </section>
             <section className="resume-section-narrow">

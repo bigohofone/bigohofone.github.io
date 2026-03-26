@@ -1,14 +1,14 @@
 export const experience = {
     title: "Experience",
     items: [
-        // {
-        //     role: "AI Research Engineer",
-        //     organization: "Upstage",
-        //     date: "Apr. 2026 – Jul. 2026",
-        //     location: "Seoul, Korea",
-        //     description: "LLM Post-training Internship",
-        //     logo: "https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/upstage-color.png"
-        // },
+        {
+            role: "AI Research Engineer Intern",
+            organization: "Upstage",
+            date: "Apr. 2026 – Now",
+            location: "Seoul, Korea",
+            description: "LLM Post-training Internship (Agentic Capability)",
+            logo: "https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/upstage-color.png"
+        },
         {
             role: "Undergraduate Researcher",
             organization: "COCO Lab @ KAIST",

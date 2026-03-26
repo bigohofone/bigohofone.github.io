@@ -54,7 +54,7 @@ const ExperienceItem = ({
             </div>
 
             <div className={`resume-list-content__description-box ${isActive ? 'is-active' : ''}`}>
-                <div className="resume-list-content__description" style={{ paddingTop: '0' }}>{description}</div>
+                <div className="resume-list-content__description">{description}</div>
             </div>
         </>
     );

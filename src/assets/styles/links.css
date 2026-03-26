@@ -1,10 +1,10 @@
 .links {
-    --links-box-size: 2rem;
+    --links-box-size: 3rem;
     --links-box-gap: 0.5rem;
-    --links-box-radius: 4px;
+    --links-box-radius: 8px;
     --links-transition: all 0.5s ease;
 
-    --mobile-links-box-size: 2rem;
+    --mobile-links-box-size: 3rem;
     --mobile-links-box-gap: 0.5rem;
 
     width: 100%;
