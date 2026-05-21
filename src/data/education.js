@@ -1,14 +1,14 @@
 export const education = {
     title: "Education",
     items: [
-        // {
-        //     major: "M.S / Ph.D. in Computer Science",
-        //     description: "Trying to get in...",
-        //     organization: "Unknown",
-        //     date: "Unknown",
-        //     location: "Unknown",
-        //     logo: ""
-        // },
+        {
+            major: "M.S./Ph.D. Integrated Program in Computer Science",
+            description: "Integrated master's and doctoral program.",
+            organization: "KAIST",
+            date: "Sep. 2026 – Present",
+            location: "Seoul, Korea",
+            logo: "https://download.logo.wine/logo/KAIST/KAIST-Logo.wine.png"
+        },
         {
             major: "B.S. in Computer Science",
             description: "GPA: 4.43 / 4.5 (Major GPA: 4.5 / 4.5); Summa Cum Laude",

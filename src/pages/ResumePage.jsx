@@ -1,45 +1,77 @@
-import React from 'react';
-import BioSection from '../components/resume/BioSection';
-import HeaderShortcutDock from '../components/headerShortcutDock';
+import { Hero } from "@/components/resume/Hero"
+import { EducationList } from "@/components/resume/EducationList"
+import { ExperienceList } from "@/components/resume/ExperienceList"
+import { PublicationList } from "@/components/resume/PublicationList"
+import { AwardList } from "@/components/resume/AwardList"
+import { TalkList } from "@/components/resume/TalkList"
+import { ExtracurricularList } from "@/components/resume/ExtracurricularList"
+import { Section } from "@/components/resume/Section"
+import { SectionIndex } from "@/components/layout/SectionIndex"
 
-import EducationSection from '../components/resume/EducationSection';
-import ExperienceSection from '../components/resume/ExperienceSection';
-import PublicationSection from '../components/resume/PublicationSection';
-import AwardSection from '../components/resume/AwardSection';
-import content from '../data/content';
-import { downloadCV } from '../components/cv/cvPDF';
+const snapSection =
+  "flex min-h-screen snap-start flex-col px-4 pt-24 pb-10 md:px-8"
 
-const ResumePage = () => {
-    const { education, experience, publications, awards } = content;
+const SECTIONS = [
+  { id: "intro", label: "Intro" },
+  { id: "background", label: "Background" },
+  { id: "publications", label: "Publications" },
+  { id: "awards", label: "Awards" },
+  { id: "activities", label: "Activities" },
+  { id: "contact", label: "Contact" },
+]
 
-    return (
-        <main className="base-layout">
-            <HeaderShortcutDock />
-
-            <BioSection />
-
-
-            <PublicationSection
-                title={publications.title}
-                items={publications.items}
-            />
-
-            <AwardSection
-                title={awards.title}
-                items={awards.items}
-            />
-
-            <ExperienceSection
-                title={experience.title}
-                items={experience.items}
-            />
-
-            <EducationSection
-                title={education.title}
-                items={education.items}
-            />
-        </main>
-    );
-};
-
-export default ResumePage;
+export default function ResumePage() {
+  return (
+    <>
+      <SectionIndex items={SECTIONS} />
+      <main className="mx-auto w-full max-w-6xl">
+        <section
+          id="intro"
+          className={`${snapSection} md:justify-center md:!pt-0 md:!pb-0`}
+        >
+          <Hero />
+        </section>
+        <section id="background" className={snapSection}>
+          <Section title="Background">
+            <div className="flex flex-1 flex-col gap-16">
+              <div className="space-y-3">
+                <h3 className="text-sm text-muted-foreground">
+                  Experience
+                </h3>
+                <ExperienceList />
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-sm text-muted-foreground">
+                  Education
+                </h3>
+                <EducationList />
+              </div>
+            </div>
+          </Section>
+        </section>
+        <section id="publications" className={snapSection}>
+          <PublicationList />
+        </section>
+        <section id="awards" className={snapSection}>
+          <AwardList />
+        </section>
+        <section id="activities" className={snapSection}>
+          <Section title="Activities">
+            <div className="flex flex-1 flex-col gap-16">
+              <div className="space-y-3">
+                <h3 className="text-sm text-muted-foreground">Talks</h3>
+                <TalkList />
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-sm text-muted-foreground">
+                  Extracurricular
+                </h3>
+                <ExtracurricularList />
+              </div>
+            </div>
+          </Section>
+        </section>
+      </main>
+    </>
+  )
+}

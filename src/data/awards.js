@@ -53,7 +53,15 @@ export const awards = {
             selected: false,
             title: "President’s Honor List",
             organization: "Korea University",
-            date: "Fall 2023, Spring 2024",
+            date: "Fall 2023",
+            description: "Merit based honor list.",
+            type: "Honor"
+        },
+        {
+            selected: false,
+            title: "President’s Honor List",
+            organization: "Korea University",
+            date: "Spring 2024",
             description: "Merit based honor list.",
             type: "Honor"
         },
@@ -61,7 +69,15 @@ export const awards = {
             selected: false,
             title: "Dean’s Honor List",
             organization: "Korea University",
-            date: "Spring 2023, Spring 2025",
+            date: "Spring 2023",
+            description: "Merit based honor list.",
+            type: "Honor"
+        },
+        {
+            selected: false,
+            title: "Dean’s Honor List",
+            organization: "Korea University",
+            date: "Spring 2025",
             description: "Merit based honor list.",
             type: "Honor"
         },

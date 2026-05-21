@@ -21,5 +21,12 @@ export const publications = {
                 { label: "GitHub", url: "https://github.com/leeds1219/ReSCORE" }
             ]
         },
+        {
+            title: "Coming soon...",
+            authors: "Wonjun Oh*, Hyunwoo Kim†",
+            venue: null,
+            tags: [],
+            links: []
+        },
     ]
 };
