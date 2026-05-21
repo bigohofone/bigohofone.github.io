@@ -22,15 +22,31 @@ function renderAuthors(authors) {
   const parts = authors.split(/({[^}]+}[*†]?)/g).filter(Boolean)
   return parts.map((part, i) => {
     const match = part.match(/^{([^}]+)}([*†]?)$/)
-    if (match) {
+    if (!match) return <span key={i}>{part}</span>
+
+    const names = match[1]
+    const marker = match[2]
+    if (!marker) {
       return (
         <span key={i} className="text-foreground">
-          {match[1]}
-          {match[2] && <sup>{match[2]}</sup>}
+          {names}
         </span>
       )
     }
-    return <span key={i}>{part}</span>
+    // Keep only the last name (between the final ", " and the marker) on the
+    // same line as the marker, so the rest can wrap naturally.
+    const splitAt = names.lastIndexOf(", ")
+    const head = splitAt >= 0 ? names.slice(0, splitAt + 2) : ""
+    const tail = splitAt >= 0 ? names.slice(splitAt + 2) : names
+    return (
+      <span key={i} className="text-foreground">
+        {head}
+        <span className="whitespace-nowrap">
+          {tail}
+          <sup className="ml-0.5 leading-none">{marker}</sup>
+        </span>
+      </span>
+    )
   })
 }
 
@@ -57,7 +73,7 @@ function PublicationCard({ pub }) {
           <h3 className="line-clamp-3 min-h-[3.75em] text-lg font-medium leading-tight">
             {pub.title}
           </h3>
-          <p className="line-clamp-2 min-h-[2.8em] text-sm text-muted-foreground leading-tight">
+          <p className="line-clamp-2 h-[2.5em] text-sm leading-tight text-muted-foreground">
             {renderAuthors(pub.authors)}
           </p>
         </div>
