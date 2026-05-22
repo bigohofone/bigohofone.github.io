@@ -52,8 +52,8 @@ function renderAuthors(authors) {
 
 function PublicationCard({ pub }) {
   return (
-    <Card className="h-full bg-muted transition-colors hover:bg-muted/80 dark:bg-[oklch(0.17_0_0)] dark:hover:bg-[oklch(0.22_0_0)]">
-      <CardContent className="flex flex-col gap-4 text-left">
+    <Card className="h-full bg-muted py-3 transition-colors hover:bg-muted/80 dark:bg-[oklch(0.17_0_0)] dark:hover:bg-[oklch(0.22_0_0)]">
+      <CardContent className="flex flex-col gap-4 px-3 text-left">
         <div className="flex min-h-[1.5rem] flex-wrap gap-2">
           {pub.venue && (
             <Badge
@@ -70,7 +70,7 @@ function PublicationCard({ pub }) {
           ))}
         </div>
         <div className="space-y-1">
-          <h3 className="line-clamp-3 min-h-[3.75em] text-lg font-medium leading-tight">
+          <h3 className="line-clamp-2 min-h-[2.5em] text-base font-medium leading-tight">
             {pub.title}
           </h3>
           <p className="line-clamp-2 h-[2.5em] text-sm leading-tight text-muted-foreground">
@@ -144,7 +144,7 @@ export function PublicationList() {
                 <SelectItem
                   key={y}
                   value={y}
-                  className="px-2 [&>span:first-child]:hidden"
+                  className="px-2 font-mono [&>span:first-child]:hidden"
                 >
                   {y}
                 </SelectItem>
@@ -156,7 +156,7 @@ export function PublicationList() {
           </span>
         </div>
 
-        <div className="grid gap-3 md:auto-rows-fr md:grid-cols-2">
+        <div className="grid gap-3 md:auto-rows-fr md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence initial={false} mode="popLayout">
             {filtered.map((pub, i) => (
               <motion.div

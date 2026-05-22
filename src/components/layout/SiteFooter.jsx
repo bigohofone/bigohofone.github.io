@@ -35,7 +35,7 @@ export function SiteFooter() {
               conversations.
             </p>
           </header>
-          <Card asChild className="gap-0 overflow-hidden p-0 dark:bg-[oklch(0.17_0_0)]">
+          <Card asChild className="gap-0 overflow-hidden border bg-background/80 p-0 shadow-xs backdrop-blur dark:bg-[oklch(0.17_0_0)]/80">
             <motion.ul
               variants={stagger}
               initial="hidden"
@@ -68,8 +68,8 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-auto flex flex-col gap-2 pt-12 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between">
-          <p>© {year} Wonjun Oh · wonjunoh.com</p>
-          <p className="tabular-nums">Last updated {year}</p>
+          <p>© <span className="font-mono">{year}</span> Wonjun Oh · wonjunoh.com</p>
+          <p className="tabular-nums">Last updated <span className="font-mono">{year}</span></p>
         </div>
       </div>
     </footer>

@@ -1,31 +1,15 @@
-import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { ThemeToggle } from "./ThemeToggle"
-import { cn } from "@/lib/utils"
 
 export function TopNav() {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
-
   return (
     <motion.header
       initial={{ y: -16, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className={cn(
-        "sticky top-0 z-40 w-full transition-colors",
-        scrolled
-          ? "border-b bg-background/80 backdrop-blur"
-          : "border-b border-transparent"
-      )}
+      className="fixed left-1/2 top-[calc(1.5rem+env(safe-area-inset-top))] z-40 -translate-x-1/2"
     >
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 md:px-8">
+      <div className="flex h-12 items-center gap-6 rounded-full border bg-background/80 px-5 shadow-xs backdrop-blur">
         <a
           href="/"
           className="text-sm font-medium transition-colors hover:text-primary"

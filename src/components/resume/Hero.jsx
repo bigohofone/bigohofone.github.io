@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import { ArrowRight, Download } from "lucide-react"
+import { ArrowDownCircle, ArrowRightCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { profile } from "@/data/profile"
 import { experience } from "@/data/experience"
@@ -32,14 +32,14 @@ export function Hero() {
       <motion.div
         variants={enter}
         custom={0}
-        className="flex w-full flex-col items-start gap-10 md:flex-row md:items-center md:gap-5"
+        className="flex w-full flex-row items-center gap-5"
       >
         <img
           src={profile.image}
           alt={profile.name}
-          className="size-36 shrink-0 rounded-xl object-cover md:order-2"
+          className="size-36 shrink-0 rounded-xl object-cover"
         />
-        <div className="space-y-2 md:order-1 md:flex-1">
+        <div className="space-y-2 md:flex-1">
           <h1 className="text-2xl font-medium tracking-tight md:text-4xl">
             {profile.name}
           </h1>
@@ -54,7 +54,7 @@ export function Hero() {
       <motion.div
         variants={enter}
         custom={1}
-        className="space-y-4 text-base leading-relaxed text-foreground/90 md:text-lg"
+        className="space-y-4 text-base leading-relaxed text-foreground/90"
       >
         <p>
           I am an incoming graduate student at KAIST, where I am a member of
@@ -78,11 +78,11 @@ export function Hero() {
         <Button
           asChild
           size="lg"
-          className="h-10 rounded-full px-16 text-base"
+          className="h-auto rounded-full p-4 text-base"
         >
           <a href="#contact" onClick={scrollToContact}>
             Contact
-            <ArrowRight className="size-4" />
+            <ArrowRightCircle className="size-4" />
           </a>
         </Button>
         <Button
@@ -93,7 +93,7 @@ export function Hero() {
         >
           <a href="/assets/cv.pdf" download>
             Download CV
-            <Download className="size-4" />
+            <ArrowDownCircle className="size-4" />
           </a>
         </Button>
       </motion.div>

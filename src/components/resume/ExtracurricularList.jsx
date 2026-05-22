@@ -8,6 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { extracurricular } from "@/data/extracurricular"
+import { DateText } from "./DateText"
 
 const rowTransition = {
   duration: 0.45,
@@ -21,12 +22,12 @@ function ExtraRow({ item }) {
       className="group flex w-full cursor-pointer appearance-none items-center h-16 gap-4 border-0 bg-transparent px-1 text-left outline-none transition-colors hover:bg-accent/30 focus-visible:bg-accent/30 disabled:cursor-default"
       disabled={!item.description}
     >
-      <h3 className="flex-1 truncate text-base font-medium">{item.title}</h3>
-      <p className="hidden w-56 shrink-0 text-right text-sm text-muted-foreground md:block">
+      <h3 className="flex-1 min-w-0 truncate text-base font-medium md:flex-[4]">{item.title}</h3>
+      <p className="hidden text-right text-sm text-muted-foreground md:block md:flex-[4] md:min-w-0 md:truncate">
         {item.organization}
       </p>
-      <span className="w-40 shrink-0 text-right text-sm tabular-nums text-muted-foreground">
-        {item.date}
+      <span className="w-40 shrink-0 text-right font-mono text-sm leading-tight tabular-nums text-muted-foreground md:w-auto md:shrink md:flex-[2]">
+        <DateText value={item.date} />
       </span>
     </button>
   )
@@ -36,13 +37,13 @@ function ExtraRow({ item }) {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="aspect-video sm:max-w-2xl">
         <DialogHeader className="gap-4">
           <div className="space-y-1">
             <DialogTitle className="text-xl">{item.title}</DialogTitle>
             <DialogDescription>{item.organization}</DialogDescription>
             {item.date && (
-              <p className="text-sm tabular-nums text-muted-foreground">
+              <p className="font-mono text-sm tabular-nums text-muted-foreground">
                 {item.date}
               </p>
             )}

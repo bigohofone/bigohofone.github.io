@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
+import { DateText } from "./DateText"
 
 export function TimelineItem({
   logo,
@@ -47,7 +48,9 @@ export function TimelineItem({
             </p>
           )}
           {date && (
-            <p className="text-sm tabular-nums text-muted-foreground">{date}</p>
+            <p className="font-mono text-sm tabular-nums text-muted-foreground">
+              <DateText value={date} />
+            </p>
           )}
         </div>
       </CardContent>
@@ -65,7 +68,7 @@ export function TimelineItem({
             {body}
           </button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent className="aspect-video sm:max-w-2xl">
           <DialogHeader className="gap-4">
             {logo && (
               <div className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted p-2">
@@ -84,7 +87,7 @@ export function TimelineItem({
                 {location && <span>{location}</span>}
               </DialogDescription>
               {date && (
-                <p className="text-sm tabular-nums text-muted-foreground">
+                <p className="font-mono text-sm tabular-nums text-muted-foreground">
                   {date}
                 </p>
               )}

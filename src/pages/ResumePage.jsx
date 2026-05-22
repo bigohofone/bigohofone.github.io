@@ -9,7 +9,7 @@ import { Section } from "@/components/resume/Section"
 import { SectionIndex } from "@/components/layout/SectionIndex"
 
 const snapSection =
-  "flex min-h-screen snap-start flex-col px-4 pt-24 pb-10 md:px-8"
+  "flex min-h-[100dvh] snap-start flex-col px-4 pt-[calc(6rem+env(safe-area-inset-top))] pb-[calc(2.5rem+env(safe-area-inset-bottom))] md:px-8"
 
 const SECTIONS = [
   { id: "intro", label: "Intro" },

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import { education } from "@/data/education"
 import { cn } from "@/lib/utils"
+import { DateText } from "./DateText"
 
 const rowTransition = {
   duration: 0.45,
@@ -38,14 +39,14 @@ function EducationRow({ item }) {
               />
             ) : null}
           </div>
-          <h3 className="flex-1 truncate text-base font-medium">
+          <h3 className="flex-1 min-w-0 truncate text-base font-medium md:flex-[4]">
             {item.organization}
           </h3>
-          <p className="hidden w-56 shrink-0 text-right text-sm text-muted-foreground md:block">
+          <p className="hidden text-right text-sm text-muted-foreground md:block md:flex-[4] md:min-w-0 md:truncate">
             {item.major}
           </p>
-          <span className="w-40 shrink-0 text-right text-sm tabular-nums text-muted-foreground">
-            {item.date}
+          <span className="w-40 shrink-0 text-right font-mono text-sm leading-tight tabular-nums text-muted-foreground md:w-auto md:shrink md:flex-[2]">
+            <DateText value={item.date} />
           </span>
           <span
             className={cn(
@@ -56,30 +57,28 @@ function EducationRow({ item }) {
           />
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="aspect-video sm:max-w-2xl">
         <DialogHeader className="gap-4">
-          <div className="flex items-center gap-3">
-            {item.logo && (
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted p-2">
-                <img
-                  src={item.logo}
-                  alt=""
-                  className="size-full object-contain"
-                />
-              </div>
-            )}
-            <div className="flex-1 space-y-1">
-              <DialogTitle className="text-xl">{item.organization}</DialogTitle>
-              <DialogDescription>
-                {item.major}
-                {item.location && <span> · {item.location}</span>}
-              </DialogDescription>
-              {item.date && (
-                <p className="text-sm tabular-nums text-muted-foreground">
-                  {item.date}
-                </p>
-              )}
+          {item.logo && (
+            <div className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted p-0.5">
+              <img
+                src={item.logo}
+                alt=""
+                className="size-full object-contain"
+              />
             </div>
+          )}
+          <div className="space-y-1">
+            <DialogTitle className="text-xl">{item.organization}</DialogTitle>
+            <DialogDescription>
+              {item.major}
+              {item.location && <span> · {item.location}</span>}
+            </DialogDescription>
+            {item.date && (
+              <p className="font-mono text-sm tabular-nums text-muted-foreground">
+                {item.date}
+              </p>
+            )}
           </div>
         </DialogHeader>
         {item.description && (

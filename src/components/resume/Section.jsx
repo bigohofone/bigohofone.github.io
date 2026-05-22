@@ -8,7 +8,7 @@ export function Section({ title, description, children, className }) {
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: false, margin: "-80px" }}
       transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-      className={cn("flex flex-1 flex-col gap-12 py-4", className)}
+      className={cn("flex flex-1 flex-col gap-12", className)}
     >
       <header className="space-y-3">
         <h2 className="text-2xl font-medium tracking-[-0.03em] md:text-4xl">
