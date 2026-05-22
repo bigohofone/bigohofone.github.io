@@ -27,7 +27,7 @@ export function Hero() {
     <motion.section
       initial="hidden"
       animate="show"
-      className="mx-auto flex w-full max-w-2xl flex-col items-start gap-10 py-4"
+      className="mx-auto flex w-full max-w-2xl flex-col items-start gap-5 py-4 md:gap-10"
     >
       <motion.div
         variants={enter}
@@ -37,7 +37,7 @@ export function Hero() {
         <img
           src={profile.image}
           alt={profile.name}
-          className="size-36 shrink-0 rounded-xl object-cover"
+          className="size-30 shrink-0 rounded-xl object-cover md:size-36"
         />
         <div className="space-y-2 md:flex-1">
           <h1 className="text-2xl font-medium tracking-tight md:text-4xl">
