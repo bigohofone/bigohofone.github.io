@@ -80,11 +80,6 @@
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-@keyframes twinkle {
-  0%, 100% { opacity: var(--star-opacity, 1); }
-  50% { opacity: 0; }
-}
-
 @layer base {
   * {
     border-color: var(--border);

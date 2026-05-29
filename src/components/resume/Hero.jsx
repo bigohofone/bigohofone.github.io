@@ -1,22 +1,10 @@
-import { motion } from "framer-motion"
 import { ArrowDownCircle, ArrowRightCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { profile } from "@/data/profile"
 import { experience } from "@/data/experience"
-import { education } from "@/data/education"
-
-const enter = {
-  hidden: { opacity: 0, y: 18 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 },
-  }),
-}
 
 export function Hero() {
   const current = experience.items[0]
-  const school = education.items[0]
 
   const scrollToContact = (e) => {
     e.preventDefault()
@@ -24,38 +12,24 @@ export function Hero() {
   }
 
   return (
-    <motion.section
-      initial="hidden"
-      animate="show"
-      className="mx-auto flex w-full max-w-2xl flex-col items-start gap-5 py-4 md:gap-10"
-    >
-      <motion.div
-        variants={enter}
-        custom={0}
-        className="flex w-full flex-row items-center gap-5"
-      >
+    <div className="flex flex-col gap-8">
+      <div className="flex items-center gap-5">
         <img
           src={profile.image}
           alt={profile.name}
-          className="size-30 shrink-0 rounded-xl object-cover md:size-36"
+          className="size-24 shrink-0 rounded-xl object-cover"
         />
-        <div className="space-y-2 md:flex-1">
-          <h1 className="text-2xl font-medium tracking-tight md:text-4xl">
-            {profile.name}
-          </h1>
+        <div className="space-y-1">
+          <h1 className="text-2xl font-semibold tracking-tight">{profile.name}</h1>
           {current && (
             <p className="text-sm text-muted-foreground">
               {current.role} · {current.organization}
             </p>
           )}
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        variants={enter}
-        custom={1}
-        className="space-y-4 text-base leading-relaxed text-foreground/90"
-      >
+      <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
         <p>
           I am an incoming graduate student at KAIST, where I am a member of
           the COCOLab under the supervision of Prof. Hyonwoo Kim. I earned my
@@ -68,35 +42,22 @@ export function Hero() {
           am working on data selection and filtering methods to enhance LLM
           reasoning capabilities.
         </p>
-      </motion.div>
+      </div>
 
-      <motion.div
-        variants={enter}
-        custom={3}
-        className="flex flex-wrap items-center gap-3"
-      >
-        <Button
-          asChild
-          size="lg"
-          className="h-auto rounded-full p-4 text-base"
-        >
+      <div className="flex flex-wrap gap-3">
+        <Button asChild>
           <a href="#contact" onClick={scrollToContact}>
             Contact
             <ArrowRightCircle className="size-4" />
           </a>
         </Button>
-        <Button
-          asChild
-          variant="ghost"
-          size="lg"
-          className="h-10 rounded-full px-6 text-base"
-        >
+        <Button asChild variant="outline">
           <a href="/assets/cv.pdf" download>
             Download CV
             <ArrowDownCircle className="size-4" />
           </a>
         </Button>
-      </motion.div>
-    </motion.section>
+      </div>
+    </div>
   )
 }

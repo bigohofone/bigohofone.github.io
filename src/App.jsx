@@ -5,7 +5,7 @@ import ResumePage from "@/pages/ResumePage"
 
 export default function App() {
   return (
-    <div className="relative min-h-screen text-foreground">
+    <div className="min-h-screen">
       <TopNav />
       <Routes>
         <Route path="/" element={<ResumePage />} />

@@ -1,75 +1,48 @@
 import { Fragment } from "react"
-import { motion } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { contact } from "@/data/contact"
-
-const stagger = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
-}
-
-const item = {
-  hidden: { opacity: 0, y: 40, filter: "blur(8px)" },
-  show: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
-  },
-}
 
 export function SiteFooter() {
   const year = new Date().getFullYear()
   return (
-    <footer id="contact" className="snap-start">
-      <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 pb-12 pt-24 md:px-8">
-        <div className="flex flex-col gap-8 rounded-2xl bg-[oklch(0.97_0_0)] p-6 dark:bg-[oklch(0.17_0_0)] md:p-10">
-          <header className="space-y-3">
-            <h2 className="text-2xl font-medium tracking-[-0.03em] md:text-4xl">
-              {contact.title}
-            </h2>
-            <p className="max-w-2xl text-lg text-muted-foreground">
-              Open to research collaborations, internship offers, or thoughtful
-              conversations.
+    <footer id="contact" className="snap-start h-dvh flex flex-col border-t">
+      <div className="mx-auto flex h-full w-full max-w-4xl flex-col px-4 pt-20 pb-6">
+        <div className="flex flex-col gap-8">
+          <header className="space-y-1">
+            <h2 className="text-2xl font-semibold tracking-tight">{contact.title}</h2>
+            <p className="text-sm text-muted-foreground">
+              Open to research collaborations, internship offers, or thoughtful conversations.
             </p>
           </header>
-          <Card asChild className="gap-0 overflow-hidden border bg-background/80 p-0 shadow-xs backdrop-blur dark:bg-[oklch(0.17_0_0)]/80">
-            <motion.ul
-              variants={stagger}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-60px" }}
-            >
-              {contact.items.map((c, i) => (
-                <Fragment key={c.label}>
-                  {i > 0 && <Separator />}
-                  <motion.li variants={item}>
-                    <a
-                      href={c.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="group flex h-16 items-center justify-between gap-4 px-4 transition-colors hover:bg-accent/30"
-                    >
-                      <span className="text-xs uppercase tracking-wider text-muted-foreground">
-                        {c.label}
-                      </span>
-                      <span className="flex items-center gap-2 text-sm transition-colors group-hover:text-primary">
-                        {c.value}
-                        <ArrowUpRight className="size-4 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
-                      </span>
-                    </a>
-                  </motion.li>
-                </Fragment>
-              ))}
-            </motion.ul>
+          <Card className="gap-0 overflow-hidden p-0">
+            {contact.items.map((c, i) => (
+              <Fragment key={c.label}>
+                {i > 0 && <Separator />}
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="group h-16 w-full justify-between rounded-none px-4 hover:bg-accent/30"
+                >
+                  <a href={c.link} target="_blank" rel="noreferrer">
+                    <span className="text-xs uppercase tracking-wider text-muted-foreground">
+                      {c.label}
+                    </span>
+                    <span className="flex items-center gap-2 text-sm group-hover:text-primary">
+                      {c.value}
+                      <ArrowUpRight className="size-4 text-muted-foreground group-hover:text-primary" />
+                    </span>
+                  </a>
+                </Button>
+              </Fragment>
+            ))}
           </Card>
         </div>
-
-        <div className="mt-auto flex flex-col gap-2 pt-12 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between">
-          <p>© <span className="font-mono">{year}</span> Wonjun Oh · wonjunoh.com</p>
-          <p className="tabular-nums">Last updated <span className="font-mono">{year}</span></p>
+        <div className="mt-auto flex flex-col gap-1 pt-6 text-xs text-muted-foreground md:flex-row md:justify-between">
+          <p>© {year} Wonjun Oh · wonjunoh.com</p>
+          <p>Last updated {year}</p>
         </div>
       </div>
     </footer>

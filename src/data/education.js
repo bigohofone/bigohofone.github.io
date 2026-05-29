@@ -16,6 +16,6 @@ export const education = {
             date: "Feb. 2019 – Feb. 2026",
             location: "Seoul, Korea",
             logo: "https://www.korea.ac.kr/Web-home/_UI/images/Global_Symbol.jpg"
-        }
+        },
     ]
 };
