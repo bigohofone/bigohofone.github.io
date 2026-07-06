@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&family=Inter:wght@400;500&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
@@ -13,8 +13,8 @@
   --heading: #212121;
   --body: #616161;
   --faint: #9e9e9e;
-  --accent: #43a047;
-  --accent-fg: #43a047;
+  --accent: #ff4d00;
+  --accent-fg: #ff4d00;
 }
 
 .dark {
@@ -23,18 +23,16 @@
   --heading: #e0e0e0;
   --body: #9e9e9e;
   --faint: #9e9e9e;
-  /* Same hue as the light theme's Green 600 (#43a047), luminance raised
-     for a neon feel on dark surfaces (Material A-series greens shift
-     toward mint, which reads as a different color family). */
-  --accent: #4eda53;
-  --accent-fg: #4eda53;
+  /* Same orange, nudged lighter for contrast on the dark canvas. */
+  --accent: #ff6b2b;
+  --accent-fg: #ff6b2b;
 }
 
 @theme inline {
-  /* One global line grid: every text size renders on 24px lines. */
-  --text-xs--line-height: 1.5rem;
-  --text-sm--line-height: 1.5rem;
-  --text-base--line-height: 1.5rem;
+  /* One global line grid: every text size renders on 22px lines. */
+  --text-xs--line-height: 22px;
+  --text-sm--line-height: 22px;
+  --text-base--line-height: 22px;
 
   --color-background: var(--background);
   --color-box: var(--box);
@@ -44,6 +42,7 @@
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 @layer base {
@@ -58,7 +57,7 @@
     color: var(--body);
     font-family: "Inter", system-ui, -apple-system, sans-serif;
     font-size: 14px;
-    line-height: 24px;
+    line-height: 22px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -79,7 +78,7 @@
   color: var(--heading);
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
+  text-underline-offset: 2px;
 }
 .link-all:hover {
   color: var(--heading);

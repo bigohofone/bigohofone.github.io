@@ -1,5 +1,5 @@
 import { Download } from "lucide-react"
-import { Box, BoxTitle, Row, RowTitle, LinkAll, LogoTile, Details, PresentPill } from "@/components/bento/Bento"
+import { Box, Row, RowTitle, LinkAll, Details } from "@/components/bento/Bento"
 import { downloadCV } from "@/components/cv/cvPDF"
 import { profile } from "@/data/profile"
 import { experience } from "@/data/experience"
@@ -12,19 +12,7 @@ import { contact } from "@/data/contact"
 
 const isOngoing = (date) => /now|present/i.test(String(date ?? ""))
 const startYear = (date) => String(date ?? "").match(/\d{4}/)?.[0] ?? date
-
-// Renders "Apr. 2026 – Present" with the trailing "Present" as an outline
-// badge so ongoing entries stand out inside plain date text.
-function DateText({ date }) {
-  if (!isOngoing(date)) return date
-  const prefix = String(date).replace(/(now|present)\s*$/i, "").trimEnd()
-  return (
-    <>
-      {prefix}{" "}
-      <PresentPill />
-    </>
-  )
-}
+const endYear = (date) => String(date ?? "").match(/\d{4}/g)?.at(-1) ?? date
 
 // Authors come as "{Name, Name}* , Name, {Name}†" — a braced group shares one
 // marker, rendered once as a superscript after the group. All names stay in
@@ -55,27 +43,31 @@ function ProfileBox() {
   return (
     <Box delay={0.15}>
       <div className="flex items-center">
-        <div className="mr-6 size-[92px] min-w-[92px] overflow-hidden rounded-full">
+        <div className="mr-6 size-[92px] min-w-[92px] overflow-hidden">
           <img src={profile.image} alt={profile.name} className="size-full object-cover" />
         </div>
         <div>
-          <h1 className="text-sm font-normal leading-6 text-heading">{profile.name}</h1>
-          <p className="text-sm leading-6">Incoming M.S./Ph.D. Student at KAIST</p>
+          <h1 className="text-sm font-normal leading-[22px] text-heading">{profile.name}</h1>
+          <p className="text-sm leading-[22px]">M.S./Ph.D. Student at KAIST</p>
         </div>
       </div>
-      <div className="mt-8">
-        <h2 className="mb-2 text-sm font-normal leading-6 text-heading">About</h2>
-        <p className="text-sm leading-6">
-          Hey, I'm Wonjun, an incoming M.S./Ph.D. student at COCO Lab, KAIST, currently
-          interning at Upstage on LLM post-training. My research focuses on data-centric
-          methods for LLM reasoning, fine-tuning, and inference — scalable and efficient
-          learning through data synthesis, selection, and curriculum.
+      <div className="mt-5">
+        {/* Same header-strip treatment as titled boxes; -mx-5 runs the rules
+            edge to edge across the box padding. */}
+        <h2 className="-mx-5 border-y border-faint/40 px-5 py-3 font-mono text-sm font-normal uppercase leading-[22px] tracking-wide text-heading">
+          About
+        </h2>
+        <p className="mt-5 text-sm leading-[22px]">
+          Hey, I'm Wonjun, an M.S./Ph.D. student at KAIST, advised by Hyunwoo Kim.
+          I'm interested in non-verifiable RL and pluralism / human alignment.
+          Previously, I worked at Upstage on a sovereign AI project, improving LLM
+          aesthetic capabilities such as frontend coding and SVG generation.
         </p>
         <p className="mt-6">
           <button
             type="button"
             onClick={downloadCV}
-            className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-full bg-accent px-5 text-sm text-white transition-opacity hover:opacity-80 dark:text-[#121212]"
+            className="inline-flex h-10 cursor-pointer items-center gap-2 bg-accent px-5 font-mono text-sm uppercase tracking-wide text-white transition-opacity hover:opacity-80 dark:text-[#121212]"
           >
             Download CV
             <Download className="size-4" />
@@ -88,17 +80,16 @@ function ProfileBox() {
 
 function ExperienceBox() {
   return (
-    <Box delay={0.15}>
-      <BoxTitle>{experience.title}</BoxTitle>
+    <Box delay={0.15} title={experience.title}>
       {experience.items.map((it) => (
         <Row
           key={`${it.role}-${it.organization}`}
-          left={<LogoTile src={it.logo} alt={it.organization} />}
+          year={isOngoing(it.date) ? undefined : endYear(it.date)}
+          present={isOngoing(it.date)}
         >
           <LinkAll href={it.link}>{it.organization}</LinkAll>
-          <p className="text-sm leading-6">{it.role}</p>
-          <p className="text-sm leading-6">
-            <DateText date={it.date} /> · {it.location}
+          <p className="text-sm leading-[22px]">
+            {it.role}
             {it.description && (
               <>
                 {" "}
@@ -121,15 +112,16 @@ function ExperienceBox() {
 
 function EducationBox() {
   return (
-    <Box delay={0.4}>
-      <BoxTitle>{education.title}</BoxTitle>
+    <Box delay={0.4} title={education.title}>
       {education.items.map((it) => (
-        <Row key={it.major} left={<LogoTile src={it.logo} alt={it.organization} />}>
+        <Row
+          key={it.major}
+          year={isOngoing(it.date) ? undefined : endYear(it.date)}
+          present={isOngoing(it.date)}
+        >
           <LinkAll href={it.link}>{it.organization}</LinkAll>
-          <p className="text-sm leading-6">
+          <p className="text-sm leading-[22px]">
             {it.major}
-            <br />
-            <DateText date={it.date} />
             {it.description && (
               <>
                 {" "}
@@ -147,24 +139,13 @@ function EducationBox() {
 
 function PublicationsBox() {
   return (
-    <Box delay={0.4}>
-      <BoxTitle>{publications.title}</BoxTitle>
+    <Box delay={0.4} title={publications.title}>
       {publications.items.map((pub) => (
-        <Row
-          key={pub.title}
-          year={pub.venue ? startYear(pub.venue) : "Soon"}
-          present={!pub.venue}
-        >
+        <Row key={pub.title} year={pub.venue ?? "Soon"} present={!pub.venue}>
           <LinkAll href={pub.links?.find((l) => l.label === "Paper")?.url}>
             {pub.title}
           </LinkAll>
-          <p className="text-sm leading-6">{renderAuthors(pub.authors)}</p>
-          {pub.venue && (
-            <p className="text-sm leading-6">
-              {pub.venue}
-              {pub.tags?.length ? ` · ${pub.tags.join(" · ")}` : ""}
-            </p>
-          )}
+          <p className="text-sm leading-[22px]">{renderAuthors(pub.authors)}</p>
         </Row>
       ))}
     </Box>
@@ -176,12 +157,11 @@ function AwardsBox() {
     .filter((it) => !it.hidden)
     .sort((a, b) => Number(startYear(b.date)) - Number(startYear(a.date)))
   return (
-    <Box delay={0.4}>
-      <BoxTitle>{awards.title} (Selected)</BoxTitle>
+    <Box delay={0.4} title={`${awards.title} (Selected)`}>
       {items.map((it, i) => (
         <Row key={`${it.title}-${i}`} year={startYear(it.date)}>
           <RowTitle>{it.title}</RowTitle>
-          <p className="text-sm leading-6">
+          <p className="text-sm leading-[22px]">
             {it.organization}
             {it.description && (
               <>
@@ -200,13 +180,12 @@ function AwardsBox() {
 
 function ContactBox() {
   return (
-    <Box delay={0.65}>
-      <BoxTitle>{contact.title}</BoxTitle>
-      <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-4 lg:grid-cols-3">
+    <Box delay={0.65} title={contact.title}>
+      <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4 lg:grid-cols-3">
         {contact.items.map((it) => (
-          <div key={it.label} className="mt-6">
+          <div key={it.label}>
             <LinkAll href={it.link} download={it.download}>{it.label}</LinkAll>
-            <p className="text-sm leading-6">{it.value}</p>
+            <p className="text-sm leading-[22px]">{it.value}</p>
           </div>
         ))}
       </div>
@@ -219,12 +198,11 @@ function ActivitiesBox() {
     (a, b) => Number(startYear(b.date)) - Number(startYear(a.date))
   )
   return (
-    <Box delay={0.65}>
-      <BoxTitle>Activities</BoxTitle>
+    <Box delay={0.65} title="Activities (Selected)">
       {items.map((it) => (
         <Row key={it.title} year={startYear(it.date)}>
           <RowTitle>{it.title}</RowTitle>
-          <p className="text-sm leading-6">
+          <p className="text-sm leading-[22px]">
             {it.organization}
             {it.description && (
               <>
@@ -247,12 +225,12 @@ export default function ResumePage() {
       <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[53fr_47fr]">
         <div className="flex flex-col gap-4">
           <ProfileBox />
-          <AwardsBox />
+          <EducationBox />
+          <ExperienceBox />
         </div>
         <div className="flex flex-col gap-4">
-          <ExperienceBox />
-          <EducationBox />
           <PublicationsBox />
+          <AwardsBox />
           <ActivitiesBox />
         </div>
       </div>

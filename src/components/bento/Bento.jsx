@@ -3,31 +3,44 @@ import { createPortal } from "react-dom"
 import { AnimatePresence, motion } from "framer-motion"
 import { X } from "lucide-react"
 
-// Every text line inside a box sits on a shared 24px line grid so the year
-// column and the content column stay aligned across font sizes (14px/15px),
-// and all spacing lands on multiples of 4px.
-export const LINE = "leading-6"
+// Every text line inside a box sits on a shared 22px line grid so the year
+// column and the content column stay aligned across font sizes.
+export const LINE = "leading-[22px]"
 
-export function Box({ delay = 0, className = "", children }) {
+// Editorial look: sharp corners, hairline border, hard offset shadow toward
+// the bottom-right, fill matching the page background. When `title` is given
+// it renders as a separate header strip with its own even padding, divided
+// from the body by a full-width rule.
+export function Box({ delay = 0, className = "", title, children }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.9, delay, ease: "easeOut" }}
-      className={`rounded-3xl bg-box p-5 ${LINE} ${className}`}
+      className={`border border-black bg-background shadow-[4px_4px_0_0_rgba(158,158,158,0.15)] dark:border-white ${LINE} ${className}`}
     >
-      {children}
+      {title && (
+        <div className="border-b border-faint/40 px-5 py-3">
+          <h3 className={`font-mono text-sm font-normal uppercase tracking-wide ${LINE} text-heading`}>
+            {title}
+          </h3>
+        </div>
+      )}
+      {/* Titled body: 20px padding all around; the first child drops its own
+          mt so the rule-to-content gap is exactly the 20px padding. */}
+      <div className={title ? "p-5 [&>:first-child]:mt-0" : "p-5"}>{children}</div>
     </motion.div>
   )
 }
 
-export function BoxTitle({ children }) {
-  return <h3 className={`text-sm font-normal ${LINE} text-heading`}>{children}</h3>
-}
-
-// Ongoing-state marker: plain text emphasized only by the accent color.
+// Ongoing-state marker: sharp-cornered outline badge in the accent color,
+// no fill.
 export function PresentPill({ children = "Present" }) {
-  return <span className="text-accent-fg">{children}</span>
+  return (
+    <span className="inline-flex h-[18px] items-center border border-accent px-1 font-mono text-xs uppercase leading-none text-accent-fg">
+      {children}
+    </span>
+  )
 }
 
 // Shared left-column width so every box (years, pills, logos, …) starts its
@@ -36,8 +49,9 @@ export const LEFT_COL = "mr-1 w-22 min-w-22 lg:w-25 lg:min-w-25"
 
 export function LogoTile({ src, alt }) {
   return (
-    <span className="flex size-14 items-center justify-center overflow-hidden rounded-lg bg-white p-1">
-      <img src={src} alt={alt} className="max-h-full max-w-full object-contain" />
+    // Same tint as the boxes' offset shadow.
+    <span className="flex size-14 items-center justify-center overflow-hidden bg-[rgba(158,158,158,0.15)] p-2.5">
+      <img src={src} alt={alt} className="max-h-full max-w-full object-contain grayscale" />
     </span>
   )
 }
@@ -45,12 +59,12 @@ export function LogoTile({ src, alt }) {
 export function Row({ year, present = false, left, children }) {
   return (
     <div className={`mt-6 flex ${LINE}`}>
-      <div className={`${LEFT_COL} text-sm ${LINE} text-faint`}>
+      <div className={`${LEFT_COL} font-mono text-sm uppercase ${LINE} text-faint`}>
         {left ??
           (present ? (
-            // Center the 20px pill inside one 24px line so the first line of
+            // Center the pill inside one 22px line so the first line of
             // the content column stays level with it.
-            <span className="flex h-6 items-center">
+            <span className="flex h-[22px] items-center">
               <PresentPill>{year}</PresentPill>
             </span>
           ) : (
@@ -113,7 +127,7 @@ export function Details({ title, subtitle, meta, logo, children }) {
                 aria-modal="true"
                 aria-label={title}
                 onClick={(e) => e.stopPropagation()}
-                className={`w-full max-w-md rounded-3xl bg-box p-5 ${LINE}`}
+                className={`w-full max-w-md border border-black bg-background p-5 shadow-[4px_4px_0_0_rgba(158,158,158,0.15)] dark:border-white ${LINE}`}
               >
                 <div className="flex items-start gap-4">
                   {logo && <LogoTile src={logo} alt={title} />}

@@ -7,7 +7,7 @@ export const experience = {
             link: "https://www.upstage.ai/",
             date: "Apr. 2026 – Present",
             location: "Seoul, Korea",
-            description: "Participated in the Sovereign AI project as part of the SWE Agent team; worked on synthetic data generation and LLM-as-a-judge for frontend coding, SVG generation, and related agentic coding capabilities.",
+            description: "Participated in the Sovereign AI project as part of the SWE Agent team; worked on frontend coding, SVG generation, and related agentic coding capabilities.",
             logo: "/assets/logo/upstage_logo.png"
         },
         {

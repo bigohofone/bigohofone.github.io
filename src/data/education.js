@@ -2,7 +2,7 @@ export const education = {
     title: "Education",
     items: [
         {
-            major: "M.S./Ph.D. Integrated Program, Kim Jaechul Graduate School of AI",
+            major: "M.S./Ph.D., Kim Jaechul Graduate School of AI",
             description: "Integrated master's and doctoral program at the Kim Jaechul Graduate School of AI (KAIST AI).",
             organization: "KAIST",
             date: "Sep. 2026 – Present",
