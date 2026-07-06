@@ -3,7 +3,7 @@ export const publications = {
     items: [
         // {
         //     title: "Coming soon...",
-        //     authors: "Wonjun Oh*, Hyunwoo Kim†",
+        //     authors: "{Wonjun Oh}*, {Hyunwoo Kim}†",  // wrap marked authors in braces
         //     venue: null,
         //     tags: [], // 'Main', 'Findings', 'Oral', 'Spotlight', 'Best Paper Award'
         //     links: [
@@ -20,13 +20,6 @@ export const publications = {
                 { label: "Paper", url: "https://arxiv.org/abs/2505.21250" },
                 { label: "GitHub", url: "https://github.com/leeds1219/ReSCORE" }
             ]
-        },
-        {
-            title: "Coming soon...",
-            authors: "Wonjun Oh*, Hyunwoo Kim†",
-            venue: null,
-            tags: [],
-            links: []
         },
     ]
 };

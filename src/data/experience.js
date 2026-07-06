@@ -4,26 +4,20 @@ export const experience = {
         {
             role: "AI Research Engineer Intern",
             organization: "Upstage",
-            date: "Apr. 2026 – Now",
+            link: "https://www.upstage.ai/",
+            date: "Apr. 2026 – Present",
             location: "Seoul, Korea",
-            description: "LLM Post-training Internship (Agentic Capability)",
-            logo: "https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/upstage-color.png"
-        },
-        {
-            role: "Undergraduate Researcher",
-            organization: "COCO Lab @ KAIST",
-            date: "Dec. 2025 – Now",
-            location: "Seoul, Korea",
-            description: "Advised by Prof. Hyunwoo Kim; Research topic: Reasoning and inference for various contexts / Scalable and efficient learning through data synthesis, selection, and curriculum.",
-            logo: "https://download.logo.wine/logo/KAIST/KAIST-Logo.wine.png"
+            description: "Participated in the Sovereign AI project as part of the SWE Agent team; worked on synthetic data generation and LLM-as-a-judge for frontend coding, SVG generation, and related agentic coding capabilities.",
+            logo: "/assets/logo/upstage_logo.png"
         },
         {
             role: "Undergraduate Researcher",
             organization: "MIIL @ Korea University",
+            link: "https://miil.korea.ac.kr/",
             date: "Mar. 2024 – Oct. 2024",
             location: "Seoul, Korea",
             description: "Advised by Prof. Paul Hongsuck Seo; Research topic: Efficient representation learning through data synthesis, selection, distillation",
-            logo: "https://www.korea.ac.kr/Web-home/_UI/images/Global_Symbol.jpg"
+            logo: "/assets/logo/korea_univ_logo.png"
         }
     ]
 };

@@ -2,12 +2,13 @@ export const education = {
     title: "Education",
     items: [
         {
-            major: "M.S./Ph.D. Integrated Program in Computer Science",
-            description: "Integrated master's and doctoral program.",
+            major: "M.S./Ph.D. Integrated Program, Kim Jaechul Graduate School of AI",
+            description: "Integrated master's and doctoral program at the Kim Jaechul Graduate School of AI (KAIST AI).",
             organization: "KAIST",
             date: "Sep. 2026 – Present",
             location: "Seoul, Korea",
-            logo: "https://download.logo.wine/logo/KAIST/KAIST-Logo.wine.png"
+            link: "https://gsai.kaist.ac.kr/",
+            logo: "/assets/logo/kaist_logo.png"
         },
         {
             major: "B.S. in Computer Science",
@@ -15,7 +16,8 @@ export const education = {
             organization: "Korea University",
             date: "Feb. 2019 – Feb. 2026",
             location: "Seoul, Korea",
-            logo: "https://www.korea.ac.kr/Web-home/_UI/images/Global_Symbol.jpg"
+            link: "https://www.korea.ac.kr/",
+            logo: "/assets/logo/korea_univ_logo.png"
         },
     ]
 };

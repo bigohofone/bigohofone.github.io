@@ -36,6 +36,7 @@ export const awards = {
         {
             selected: false,
             title: "Honourable Mention (KRW 300,000)",
+            hidden: true,
             organization: "National Excellence in SW Digital Competition",
             date: "2024",
             description: "Hosted by Ministry of Science and ICT. Collaborated with 2 teammates to train a fake audio classifier.",
@@ -52,6 +53,7 @@ export const awards = {
         {
             selected: false,
             title: "President’s Honor List",
+            hidden: true,
             organization: "Korea University",
             date: "Fall 2023",
             description: "Merit based honor list.",
@@ -60,6 +62,7 @@ export const awards = {
         {
             selected: false,
             title: "President’s Honor List",
+            hidden: true,
             organization: "Korea University",
             date: "Spring 2024",
             description: "Merit based honor list.",
@@ -68,6 +71,7 @@ export const awards = {
         {
             selected: false,
             title: "Dean’s Honor List",
+            hidden: true,
             organization: "Korea University",
             date: "Spring 2023",
             description: "Merit based honor list.",
@@ -76,6 +80,7 @@ export const awards = {
         {
             selected: false,
             title: "Dean’s Honor List",
+            hidden: true,
             organization: "Korea University",
             date: "Spring 2025",
             description: "Merit based honor list.",

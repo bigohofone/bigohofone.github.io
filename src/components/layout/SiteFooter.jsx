@@ -1,50 +1,56 @@
-import { Fragment } from "react"
-import { ArrowUpRight } from "lucide-react"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { contact } from "@/data/contact"
+import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
+import { Moon, Sun } from "lucide-react"
+
+const STORAGE_KEY = "theme"
+
+function readInitialTheme() {
+  if (typeof window === "undefined") return "light"
+  const stored = window.localStorage.getItem(STORAGE_KEY)
+  if (stored === "light" || stored === "dark") return stored
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+}
 
 export function SiteFooter() {
-  const year = new Date().getFullYear()
+  const [now, setNow] = useState(() => new Date())
+  const [theme, setTheme] = useState(readInitialTheme)
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark")
+  }, [theme])
+
+  function toggleTheme() {
+    const next = theme === "dark" ? "light" : "dark"
+    // Persist only on explicit choice so the site keeps following the OS
+    // preference for users who never touch the toggle.
+    window.localStorage.setItem(STORAGE_KEY, next)
+    setTheme(next)
+  }
+
   return (
-    <footer id="contact" className="snap-start h-dvh flex flex-col border-t">
-      <div className="mx-auto flex h-full w-full max-w-4xl flex-col px-4 pt-20 pb-6">
-        <div className="flex flex-col gap-8">
-          <header className="space-y-1">
-            <h2 className="text-2xl font-semibold tracking-tight">{contact.title}</h2>
-            <p className="text-sm text-muted-foreground">
-              Open to research collaborations, internship offers, or thoughtful conversations.
-            </p>
-          </header>
-          <Card className="gap-0 overflow-hidden p-0">
-            {contact.items.map((c, i) => (
-              <Fragment key={c.label}>
-                {i > 0 && <Separator />}
-                <Button
-                  asChild
-                  variant="ghost"
-                  className="group h-16 w-full justify-between rounded-none px-4 hover:bg-accent/30"
-                >
-                  <a href={c.link} target="_blank" rel="noreferrer">
-                    <span className="text-xs uppercase tracking-wider text-muted-foreground">
-                      {c.label}
-                    </span>
-                    <span className="flex items-center gap-2 text-sm group-hover:text-primary">
-                      {c.value}
-                      <ArrowUpRight className="size-4 text-muted-foreground group-hover:text-primary" />
-                    </span>
-                  </a>
-                </Button>
-              </Fragment>
-            ))}
-          </Card>
-        </div>
-        <div className="mt-auto flex flex-col gap-1 pt-6 text-xs text-muted-foreground md:flex-row md:justify-between">
-          <p>© {year} Wonjun Oh · wonjunoh.com</p>
-          <p>Last updated {year}</p>
-        </div>
+    <motion.footer
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.9, delay: 0.9, ease: "easeOut" }}
+      className="py-8"
+    >
+      <div className="mx-auto flex w-full max-w-[1080px] items-center justify-between px-5 text-sm text-heading">
+        <p>© Wonjun Oh</p>
+        <p className="tabular-nums">{now.toLocaleTimeString("en-US")}</p>
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+          className="-m-2 cursor-pointer p-2"
+        >
+          {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
+        </button>
       </div>
-    </footer>
+    </motion.footer>
   )
 }
