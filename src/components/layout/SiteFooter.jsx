@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
-import { Moon, Sun } from "lucide-react"
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
 
 const STORAGE_KEY = "theme"
 
@@ -32,12 +31,7 @@ export function SiteFooter() {
   }
 
   return (
-    <motion.footer
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.9, delay: 0.9, ease: "easeOut" }}
-      className="py-8"
-    >
+    <footer className="py-8">
       <div className="mx-auto flex w-full max-w-[1080px] items-center justify-between px-5 text-sm text-heading">
         <p>© Wonjun Oh</p>
         <p className="tabular-nums">{now.toLocaleTimeString("en-US")}</p>
@@ -47,9 +41,9 @@ export function SiteFooter() {
           aria-label="Toggle theme"
           className="-m-2 cursor-pointer p-2"
         >
-          {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
+          {theme === "dark" ? <SunIcon className="size-4" /> : <MoonIcon className="size-4" />}
         </button>
       </div>
-    </motion.footer>
+    </footer>
   )
 }

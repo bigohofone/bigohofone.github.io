@@ -13,8 +13,8 @@
   --heading: #212121;
   --body: #616161;
   --faint: #9e9e9e;
-  --accent: #ff4d00;
-  --accent-fg: #ff4d00;
+  --accent: #212121;
+  --accent-fg: #212121;
 }
 
 .dark {
@@ -23,9 +23,9 @@
   --heading: #e0e0e0;
   --body: #9e9e9e;
   --faint: #9e9e9e;
-  /* Same orange, nudged lighter for contrast on the dark canvas. */
-  --accent: #ff6b2b;
-  --accent-fg: #ff6b2b;
+  /* Monotone accent: flips to light grey for contrast on the dark canvas. */
+  --accent: #e0e0e0;
+  --accent-fg: #e0e0e0;
 }
 
 @theme inline {
@@ -70,35 +70,32 @@
   }
 }
 
-/* Underlined link with a trailing arrow that nudges up on hover.
-   Real text-decoration + an inline ::after keep it correct across line wraps. */
+/* Underlined link with a trailing arrow; the whole link (text + arrow)
+   nudges up 2px on hover. inline-block makes the transform take effect —
+   fine here since every LinkAll sits on its own line, and long titles
+   still wrap inside the box. */
 .link-all {
+  display: inline-block;
   font-size: 14px;
   font-weight: 400;
   color: var(--heading);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
+  transition: transform 0.15s ease-in;
 }
 .link-all:hover {
   color: var(--heading);
+  transform: translateY(-2px);
 }
-.link-all::after {
-  content: "";
+/* Radix ArrowTopRightIcon rendered inline. At its native 15px the glyph
+   inside the viewBox has ~4px top padding, so a small baseline nudge puts
+   the visible arrow's top level with the 14px caps. currentColor handles
+   dark mode. */
+.link-all .link-arrow {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-left: 4px;
-  vertical-align: text-bottom;
-  background-image: url("/assets/arrow-black.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px;
-  transition: transform 0.15s ease-in;
-}
-.link-all:hover::after {
-  transform: translateY(-3px);
-}
-.dark .link-all::after {
-  background-image: url("/assets/arrow-white.svg");
+  width: 15px;
+  height: 15px;
+  margin-left: 2px;
+  vertical-align: -2px;
 }

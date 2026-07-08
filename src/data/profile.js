@@ -1,5 +1,5 @@
 
 export const profile = {
     name: "Wonjun Oh",
-    image: "/assets/img/profile.jpeg",
+    image: "/assets/img/profile.jpg",
 };

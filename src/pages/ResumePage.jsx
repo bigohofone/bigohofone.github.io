@@ -1,4 +1,4 @@
-import { Download } from "lucide-react"
+import { DownloadIcon } from "@radix-ui/react-icons"
 import { Box, Row, RowTitle, LinkAll, Details } from "@/components/bento/Bento"
 import { downloadCV } from "@/components/cv/cvPDF"
 import { profile } from "@/data/profile"
@@ -41,9 +41,9 @@ function renderAuthors(authors) {
 
 function ProfileBox() {
   return (
-    <Box delay={0.15}>
+    <Box>
       <div className="flex items-center">
-        <div className="mr-6 size-[92px] min-w-[92px] overflow-hidden">
+        <div className="mr-6 size-[92px] min-w-[92px] overflow-hidden rounded-[4px] border border-black dark:border-white">
           <img src={profile.image} alt={profile.name} className="size-full object-cover" />
         </div>
         <div>
@@ -55,9 +55,9 @@ function ProfileBox() {
         {/* Same header-strip treatment as titled boxes; -mx-5 runs the rules
             edge to edge across the box padding. */}
         <h2 className="-mx-5 border-y border-faint/40 px-5 py-3 font-mono text-sm font-normal uppercase leading-[22px] tracking-wide text-heading">
-          About
+          Bio
         </h2>
-        <p className="mt-5 text-sm leading-[22px]">
+        <p className="mt-5 text-sm leading-[22px] text-heading">
           Hey, I'm Wonjun, an M.S./Ph.D. student at KAIST, advised by Hyunwoo Kim.
           I'm interested in non-verifiable RL and pluralism / human alignment.
           Previously, I worked at Upstage on a sovereign AI project, improving LLM
@@ -67,10 +67,10 @@ function ProfileBox() {
           <button
             type="button"
             onClick={downloadCV}
-            className="inline-flex h-10 cursor-pointer items-center gap-2 bg-accent px-5 font-mono text-sm uppercase tracking-wide text-white transition-opacity hover:opacity-80 dark:text-[#121212]"
+            className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-[4px] bg-accent px-5 font-mono text-sm uppercase tracking-wide text-white transition-opacity hover:opacity-80 dark:text-[#121212]"
           >
             Download CV
-            <Download className="size-4" />
+            <DownloadIcon className="size-4" />
           </button>
         </p>
       </div>
@@ -80,7 +80,7 @@ function ProfileBox() {
 
 function ExperienceBox() {
   return (
-    <Box delay={0.15} title={experience.title}>
+    <Box title={experience.title}>
       {experience.items.map((it) => (
         <Row
           key={`${it.role}-${it.organization}`}
@@ -112,7 +112,7 @@ function ExperienceBox() {
 
 function EducationBox() {
   return (
-    <Box delay={0.4} title={education.title}>
+    <Box title={education.title}>
       {education.items.map((it) => (
         <Row
           key={it.major}
@@ -139,7 +139,7 @@ function EducationBox() {
 
 function PublicationsBox() {
   return (
-    <Box delay={0.4} title={publications.title}>
+    <Box title={publications.title}>
       {publications.items.map((pub) => (
         <Row key={pub.title} year={pub.venue ?? "Soon"} present={!pub.venue}>
           <LinkAll href={pub.links?.find((l) => l.label === "Paper")?.url}>
@@ -157,7 +157,7 @@ function AwardsBox() {
     .filter((it) => !it.hidden)
     .sort((a, b) => Number(startYear(b.date)) - Number(startYear(a.date)))
   return (
-    <Box delay={0.4} title={`${awards.title} (Selected)`}>
+    <Box title={`${awards.title} (Selected)`}>
       {items.map((it, i) => (
         <Row key={`${it.title}-${i}`} year={startYear(it.date)}>
           <RowTitle>{it.title}</RowTitle>
@@ -180,7 +180,7 @@ function AwardsBox() {
 
 function ContactBox() {
   return (
-    <Box delay={0.65} title={contact.title}>
+    <Box title={contact.title}>
       <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4 lg:grid-cols-3">
         {contact.items.map((it) => (
           <div key={it.label}>
@@ -198,7 +198,7 @@ function ActivitiesBox() {
     (a, b) => Number(startYear(b.date)) - Number(startYear(a.date))
   )
   return (
-    <Box delay={0.65} title="Activities (Selected)">
+    <Box title="Activities (Selected)">
       {items.map((it) => (
         <Row key={it.title} year={startYear(it.date)}>
           <RowTitle>{it.title}</RowTitle>
@@ -222,7 +222,7 @@ function ActivitiesBox() {
 export default function ResumePage() {
   return (
     <div className="mx-auto w-full max-w-[1080px] px-5 pt-6">
-      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[53fr_47fr]">
+      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
         <div className="flex flex-col gap-4">
           <ProfileBox />
           <EducationBox />

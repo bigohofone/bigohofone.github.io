@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { AnimatePresence, motion } from "framer-motion"
-import { X } from "lucide-react"
+import { ArrowTopRightIcon, Cross2Icon } from "@radix-ui/react-icons"
 
 // Every text line inside a box sits on a shared 22px line grid so the year
 // column and the content column stay aligned across font sizes.
@@ -11,13 +11,10 @@ export const LINE = "leading-[22px]"
 // the bottom-right, fill matching the page background. When `title` is given
 // it renders as a separate header strip with its own even padding, divided
 // from the body by a full-width rule.
-export function Box({ delay = 0, className = "", title, children }) {
+export function Box({ className = "", title, children }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.9, delay, ease: "easeOut" }}
-      className={`border border-black bg-background shadow-[4px_4px_0_0_rgba(158,158,158,0.15)] dark:border-white ${LINE} ${className}`}
+    <div
+      className={`rounded-[4px] border border-black bg-background shadow-[4px_4px_2px_0_rgba(158,158,158,0.15)] dark:border-white ${LINE} ${className}`}
     >
       {title && (
         <div className="border-b border-faint/40 px-5 py-3">
@@ -29,15 +26,14 @@ export function Box({ delay = 0, className = "", title, children }) {
       {/* Titled body: 20px padding all around; the first child drops its own
           mt so the rule-to-content gap is exactly the 20px padding. */}
       <div className={title ? "p-5 [&>:first-child]:mt-0" : "p-5"}>{children}</div>
-    </motion.div>
+    </div>
   )
 }
 
-// Ongoing-state marker: sharp-cornered outline badge in the accent color,
-// no fill.
+// Ongoing-state marker: outline badge in the accent color, no fill.
 export function PresentPill({ children = "Present" }) {
   return (
-    <span className="inline-flex h-[18px] items-center border border-accent px-1 font-mono text-xs uppercase leading-none text-accent-fg">
+    <span className="inline-flex h-[18px] items-center rounded-[4px] border border-accent px-1 font-mono text-xs uppercase leading-none text-accent-fg">
       {children}
     </span>
   )
@@ -127,7 +123,7 @@ export function Details({ title, subtitle, meta, logo, children }) {
                 aria-modal="true"
                 aria-label={title}
                 onClick={(e) => e.stopPropagation()}
-                className={`w-full max-w-md border border-black bg-background p-5 shadow-[4px_4px_0_0_rgba(158,158,158,0.15)] dark:border-white ${LINE}`}
+                className={`w-full max-w-md rounded-[4px] border border-black bg-background p-5 shadow-[4px_4px_2px_0_rgba(158,158,158,0.15)] dark:border-white ${LINE}`}
               >
                 <div className="flex items-start gap-4">
                   {logo && <LogoTile src={logo} alt={title} />}
@@ -142,7 +138,7 @@ export function Details({ title, subtitle, meta, logo, children }) {
                     aria-label="Close"
                     className="-m-2 cursor-pointer p-2 text-faint transition-colors hover:text-heading"
                   >
-                    <X className="size-4" />
+                    <Cross2Icon className="size-4" />
                   </button>
                 </div>
                 <p className={`mt-6 text-sm ${LINE}`}>{children}</p>
@@ -167,6 +163,12 @@ export function LinkAll({ href, download = false, children }) {
       {...(download ? { download: true } : {})}
     >
       {children}
+      {/* Word joiner + nowrap glue the arrow to the last word so it never
+          wraps onto a line of its own. */}
+      <span className="whitespace-nowrap">
+        {"⁠"}
+        <ArrowTopRightIcon className="link-arrow" aria-hidden />
+      </span>
     </a>
   )
 }
