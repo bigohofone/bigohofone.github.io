@@ -23,7 +23,7 @@ function SelectionToggle({ showSelected, onToggle }) {
       type="button"
       aria-pressed={showSelected}
       onClick={onToggle}
-      className="mt-6 block cursor-pointer rounded-[12px] px-4 py-2.5 text-sm font-bold leading-6 transition-colors"
+      className="mt-6 block cursor-pointer rounded-[12px] px-4 py-2.5 text-sm font-bold leading-6 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       style={{
         backgroundColor: colors.grey100,
         color: colors.grey700,
@@ -59,12 +59,21 @@ function YearSelect({ years, selectedYears, onToggleYear, onToggleAll }) {
   const allSelected = selectedYears.length === years.length
 
   return (
-    <div className="relative mt-6">
+    <div
+      className="relative mt-6"
+      onKeyDown={(e) => {
+        if (e.key === "Escape" && open) {
+          e.stopPropagation()
+          setOpen(false)
+        }
+      }}
+    >
       <button
         type="button"
         aria-expanded={open}
+        aria-haspopup="menu"
         onClick={() => setOpen((value) => !value)}
-        className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 text-sm font-bold leading-6"
+        className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 text-sm font-bold leading-6 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         style={{ backgroundColor: colors.grey100, color: colors.grey700 }}
         onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey200 }}
         onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
@@ -80,10 +89,10 @@ function YearSelect({ years, selectedYears, onToggleYear, onToggleAll }) {
         <div className="absolute left-0 top-full z-10 mt-3 min-w-32 rounded-[12px] p-2 shadow-[0_4px_16px_rgba(0,0,0,0.12)]" style={{ backgroundColor: colors.white }}>
           <button
             type="button"
-            role="radio"
+            role="checkbox"
             aria-checked={allSelected}
             onClick={onToggleAll}
-            className="flex w-full cursor-pointer items-center gap-2 rounded-[8px] px-4 py-2.5 text-left text-sm"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-[8px] px-4 py-2.5 text-left text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             style={{ backgroundColor: colors.white, color: colors.grey700 }}
             onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
             onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.white }}
@@ -97,10 +106,10 @@ function YearSelect({ years, selectedYears, onToggleYear, onToggleAll }) {
               <button
                 key={year}
                 type="button"
-                role="radio"
+                role="checkbox"
                 aria-checked={checked}
                 onClick={() => onToggleYear(year)}
-                className="flex w-full cursor-pointer items-center gap-2 rounded-[8px] px-4 py-2.5 text-left text-sm"
+                className="flex w-full cursor-pointer items-center gap-2 rounded-[8px] px-4 py-2.5 text-left text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 style={{ backgroundColor: colors.white, color: colors.grey700 }}
                 onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
                 onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.white }}
@@ -185,7 +194,7 @@ function ProfileBox() {
         <button
           type="button"
           onClick={handleCopyEmail}
-          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
+          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold tracking-wide transition-opacity hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           style={{ backgroundColor: colors.grey100, color: colors.grey700 }}
         >
           Mail 
@@ -196,12 +205,12 @@ function ProfileBox() {
         <button
           type="button"
           onClick={downloadCV}
-          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
+          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold tracking-wide transition-opacity hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           style={{ backgroundColor: colors.blue500, color: colors.white }}
         >
           Curriculum Vitae
           <span className="flex size-6 shrink-0 items-center justify-center">
-            <svg className="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <svg className="size-4" viewBox="0 24 24" fill="none" aria-hidden="true">
               <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>

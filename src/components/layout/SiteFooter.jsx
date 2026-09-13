@@ -27,13 +27,13 @@ export function SiteFooter() {
     <footer className="py-[72px]" style={{ backgroundColor: colors.grey100 }}>
       <div className="mx-auto flex w-full max-w-3xl flex-col items-start gap-12 px-8 text-sm" style={{ color: colors.grey700 }}>
         <nav className="flex flex-col items-start gap-2 text-sm" aria-label="Site map">
-          <Link to="/" className="font-bold" style={{ color: colors.grey700 }}>About</Link>
+          <Link to="/" className="font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>About</Link>
           <div className="flex flex-col items-start gap-2">
             {resumeSections.map(([label, id]) => (
-              <a key={id} href={`/#${id}`} className="font-normal" style={{ color: colors.grey700 }}>{label}</a>
+              <a key={id} href={`/#${id}`} className="font-normal outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>{label}</a>
             ))}
           </div>
-          <Link to="/blog" className="mt-6 font-bold" style={{ color: colors.grey700 }}>Blog</Link>
+          <Link to="/blog" className="mt-6 font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>Blog</Link>
         </nav>
         <div className="text-sm">
           <p className="font-bold" style={{ color: colors.grey700 }}>Wonjun Oh&apos;s Website</p>
@@ -49,7 +49,7 @@ export function SiteFooter() {
                 target={item.link.startsWith("http") ? "_blank" : undefined}
                 rel={item.link.startsWith("http") ? "noreferrer" : undefined}
                 aria-label={`${item.label}: ${item.value}`}
-                className="flex size-9 items-center justify-center rounded-full transition-colors"
+                className="flex size-9 items-center justify-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                 style={{ backgroundColor: colors.grey400, color: colors.grey100 }}
                 onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey500 }}
                 onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.grey400 }}

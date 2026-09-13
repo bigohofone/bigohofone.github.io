@@ -8,7 +8,7 @@ function HeaderLink({ to, children }) {
   return (
     <NavLink
       to={to}
-      className="rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold transition-colors"
+      className="rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
       style={{ color: colors.grey700, backgroundColor: "transparent" }}
       onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
       onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = "transparent" }}
@@ -43,12 +43,20 @@ export function SiteHeader() {
       style={{ backgroundColor: colors.white, borderBottom: scrolled ? `1px solid ${colors.grey100}` : "none" }}
     >
       <nav className="mx-auto flex w-full max-w-[768px] items-center px-4">
-        <div className="relative inline-flex">
+        <div
+          className="relative inline-flex"
+          onKeyDown={(e) => {
+            if (e.key === "Escape" && open) {
+              e.stopPropagation()
+              setOpen(false)
+            }
+          }}
+        >
           <NavLink
             to="/"
             aria-expanded={open}
             onClick={() => setOpen((value) => !value)}
-            className="inline-flex items-center rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold transition-colors"
+            className="inline-flex items-center rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             style={{ color: colors.grey700, backgroundColor: "transparent" }}
             onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
             onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = "transparent" }}
@@ -63,7 +71,7 @@ export function SiteHeader() {
                     key={id}
                     href={`/#${id}`}
                     onClick={() => setOpen(false)}
-                    className="rounded-[8px] px-4 py-2.5 text-sm font-bold leading-6 transition-colors"
+                    className="rounded-[8px] px-4 py-2.5 text-sm font-bold leading-6 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                     style={{ backgroundColor: colors.white, color: colors.grey700 }}
                     onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
                     onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.white }}

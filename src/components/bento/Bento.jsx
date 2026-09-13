@@ -32,10 +32,11 @@ export function Box({ className = "", id, title, count, controls, children }) {
   )
 }
 
-export function Row({ year, present = false, description, onClick, children }) {
+export function Row({ year, present = false, description, onClick, hasDetails = false, children }) {
   const clickHandlerRef = useRef(onClick)
-  const rowRef = useRef(null)
-  const [interactive, setInteractive] = useState(Boolean(onClick))
+  const [interactive, setInteractive] = useState(Boolean(onClick) || hasDetails)
+  const [shaking, setShaking] = useState(false)
+  const shakeTimeoutRef = useRef(null)
 
   const registerClickHandler = useCallback((handler) => {
     clickHandlerRef.current = handler
@@ -46,29 +47,52 @@ export function Row({ year, present = false, description, onClick, children }) {
     }
   }, [onClick])
 
-  const handleClick = (event) => {
-    if (event.defaultPrevented) return
-    clickHandlerRef.current?.(event)
-  }
-
-  const resetHover = useCallback(() => {
-    if (rowRef.current) rowRef.current.style.backgroundColor = colors.white
+  const triggerShake = useCallback(() => {
+    if (shakeTimeoutRef.current) clearTimeout(shakeTimeoutRef.current)
+    setShaking(false)
+    // small timeout to re-trigger animation if clicked repeatedly
+    setTimeout(() => {
+      setShaking(true)
+      shakeTimeoutRef.current = setTimeout(() => {
+        setShaking(false)
+      }, 500)
+    }, 10)
   }, [])
 
+  const handleClick = (event) => {
+    if (event.defaultPrevented) return
+    if (clickHandlerRef.current) {
+      clickHandlerRef.current(event)
+    } else {
+      triggerShake()
+    }
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      handleClick(event)
+    }
+  }
+
   const rowContextValue = useMemo(
-    () => ({ registerClickHandler, resetHover }),
-    [registerClickHandler, resetHover]
+    () => ({ registerClickHandler }),
+    [registerClickHandler]
   )
 
   return (
     <RowClickContext.Provider value={rowContextValue}>
-      <div
-        ref={rowRef}
-        className={`${interactive ? "cursor-pointer transition-colors" : ""} rounded-[12px] px-2 py-3 ${LINE}`}
-        style={{ backgroundColor: colors.white }}
+      <motion.div
+        animate={shaking ? { x: [-6, 6, -5, 5, -3, 3, 0] } : { x: 0 }}
+        transition={{ duration: 0.4 }}
+        role="button"
+        tabIndex={0}
         onClick={handleClick}
-        onMouseEnter={interactive ? (event) => { event.currentTarget.style.backgroundColor = colors.grey100 } : undefined}
-        onMouseLeave={interactive ? resetHover : undefined}
+        onKeyDown={handleKeyDown}
+        className={`group relative rounded-[12px] px-2 py-3 cursor-pointer transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${LINE}`}
+        style={{ backgroundColor: colors.white }}
+        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = colors.grey100 }}
+        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = colors.white }}
       >
         <div className={`min-w-0 flex-1 flex flex-col gap-1 ${LINE}`}>
           {children}
@@ -82,14 +106,14 @@ export function Row({ year, present = false, description, onClick, children }) {
             </p>
           )}
         </div>
-      </div>
+      </motion.div>
     </RowClickContext.Provider>
   )
 }
 
-export function RowTitle({ children }) {
+export function RowTitle({ children, className = "" }) {
   return (
-      <span className="inline-block text-base font-semibold" style={{ color: colors.grey800 }}>
+    <span className={`inline-block text-base font-semibold ${className}`} style={{ color: colors.grey800 }}>
       {children}
     </span>
   )
@@ -104,8 +128,7 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
 
   const closeDetails = useCallback(() => {
     setOpen(false)
-    rowContext?.resetHover()
-  }, [rowContext])
+  }, [])
 
   useEffect(() => {
     if (!registerClickHandler) return undefined
@@ -114,16 +137,19 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
 
   useEffect(() => {
     if (!open) return
-    const onKey = (e) => e.key === "Escape" && closeDetails()
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        e.stopPropagation()
+        closeDetails()
+      }
+    }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
   }, [closeDetails, open])
 
   return (
     <>
-      <span className="text-base font-semibold" style={{ color: colors.grey800 }}>
-        {trigger}
-      </span>
+      <RowTitle>{trigger || title}</RowTitle>
       {createPortal(
         <AnimatePresence>
           {open && (
@@ -145,7 +171,7 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
                 aria-modal="true"
                 aria-label={title}
                 onClick={(e) => e.stopPropagation()}
-                className={`w-full max-w-3xl h-full rounded-[12px] px-6 py-6 ${LINE}`}
+                className={`w-full max-w-3xl h-full rounded-[12px] px-6 py-6 overflow-y-auto ${LINE}`}
                 style={{ backgroundColor: colors.white, boxShadow: `4px 4px 2px 0 ${colors.greyOpacity200}` }}
               >
                 <div className="mb-2 flex w-full items-start justify-end gap-2">
@@ -153,7 +179,7 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
                     type="button"
                     onClick={closeDetails}
                     aria-label="Close"
-                    className="flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors"
+                    className="flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 outline-none"
                     style={{ backgroundColor: colors.grey100, color: colors.grey700 }}
                     onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey200 }}
                     onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
@@ -162,13 +188,17 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
                   </button>
                 </div>
                 <div className="mb-2 flex w-full flex-col items-start">
-                  <h4 className="text-base font-semibold" style={{ color: colors.grey800 }}>{title}</h4>
-                  {subtitle && <p className={`mt-2 text-sm ${LINE}`} style={{ color: colors.grey500}}>{subtitle}</p>}
+                  <div
+                    className="w-full"
+                  >
+                    <RowTitle>{title}</RowTitle>
+                  </div>
+                  {subtitle && <p className={`mt-2 text-sm ${LINE}`} style={{ color: colors.grey500 }}>{subtitle}</p>}
                   {meta && <p className={`text-sm ${LINE}`} style={{ color: colors.grey500 }}>{meta}</p>}
                 </div>
                 <div className="mt-6 flex w-full flex-col items-start">
                   {/* TODO: Markdown for children */}
-                  <p className={`text-sm ${LINE}`} style={{ color: colors.grey500}}>{children}</p>
+                  <p className={`text-sm ${LINE}`} style={{ color: colors.grey500 }}>{children}</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -179,4 +209,5 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
     </>
   )
 }
+
 
