@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter"
 import { colors } from "@toss/tds-colors"
 import ResumePage from "@/pages/ResumePage"
 import BlogPage from "@/pages/BlogPage"
+import UiShowcase from "@/pages/UiShowcase"
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<ResumePage />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/ui" element={<UiShowcase />} />
         </Routes>
       </main>
       <SiteFooter />

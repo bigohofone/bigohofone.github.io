@@ -3,6 +3,7 @@ import { FaGoogleScholar } from "react-icons/fa6";
 import { FiMail, FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi"
 import { colors } from "@toss/tds-colors"
 import { Link } from "react-router-dom"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown"
 import { contact } from "@/data/contact"
 
 const contactIcons = {
@@ -27,13 +28,24 @@ export function SiteFooter() {
     <footer className="py-[72px]" style={{ backgroundColor: colors.grey100 }}>
       <div className="mx-auto flex w-full max-w-3xl flex-col items-start gap-12 px-8 text-sm" style={{ color: colors.grey700 }}>
         <nav className="flex flex-col items-start gap-2 text-sm" aria-label="Site map">
-          <Link to="/" className="font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>About</Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Link to="/" className="font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>Shortcut</Link>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-fit">
+              {resumeSections.map(([label, id]) => (
+                <DropdownMenuItem key={id}>
+                  <a href={`/#${id}`} className="text-sm" style={{ color: colors.grey700 }}>{label}</a>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           <div className="flex flex-col items-start gap-2">
             {resumeSections.map(([label, id]) => (
               <a key={id} href={`/#${id}`} className="font-normal outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>{label}</a>
             ))}
           </div>
-          <Link to="/blog" className="mt-6 font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>Blog</Link>
+          {/* <Link to="/blog" className="mt-6 font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>Blog</Link> */}
         </nav>
         <div className="text-sm">
           <p className="font-bold" style={{ color: colors.grey700 }}>Wonjun Oh&apos;s Website</p>

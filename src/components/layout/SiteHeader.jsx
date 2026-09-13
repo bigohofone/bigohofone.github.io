@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { colors } from "@toss/tds-colors"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown"
+import { Button } from "@/components/ui/button"
+import { ChevronDownIcon } from "@heroicons/react/24/outline"
 
 // Same mono-uppercase voice as the box header strips; the active page is
 // underlined, inactive links sit in the faint grey until hovered.
@@ -42,48 +45,23 @@ export function SiteHeader() {
       className="sticky top-0 z-40 py-3 transition-colors"
       style={{ backgroundColor: colors.white, borderBottom: scrolled ? `1px solid ${colors.grey100}` : "none" }}
     >
-      <nav className="mx-auto flex w-full max-w-[768px] items-center px-4">
-        <div
-          className="relative inline-flex"
-          onKeyDown={(e) => {
-            if (e.key === "Escape" && open) {
-              e.stopPropagation()
-              setOpen(false)
-            }
-          }}
-        >
-          <NavLink
-            to="/"
-            aria-expanded={open}
-            onClick={() => setOpen((value) => !value)}
-            className="inline-flex items-center rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-            style={{ color: colors.grey700, backgroundColor: "transparent" }}
-            onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
-            onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = "transparent" }}
-          >
-            About
-          </NavLink>
-          {open && (
-            <div className="absolute left-0 top-[calc(100%+12px)] z-10">
-              <div className="flex w-fit flex-col gap-1 rounded-[12px] p-2 shadow-[0_4px_16px_rgba(0,0,0,0.12)]" style={{ backgroundColor: colors.white }}>
-                {sections.map(([label, id]) => (
-                  <a
-                    key={id}
-                    href={`/#${id}`}
-                    onClick={() => setOpen(false)}
-                    className="rounded-[8px] px-4 py-2.5 text-sm font-bold leading-6 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                    style={{ backgroundColor: colors.white, color: colors.grey700 }}
-                    onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
-                    onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.white }}
-                  >
-                    {label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-        <HeaderLink to="/blog">Blog</HeaderLink>
+      <nav className="mx-auto flex w-full max-w-[768px] items-center justify-between px-4">
+        <div></div>
+        <DropdownMenu open={open} onOpenChange={setOpen}>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="md" className="inline-flex items-center gap-2 rounded-xl">
+              Shortcut <ChevronDownIcon className="!size-4 text-[#374151]" strokeWidth={2.5} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-fit">
+            {sections.map(([label, id]) => (
+              <DropdownMenuItem key={id}>
+                <a href={`/#${id}`} onClick={() => setOpen(false)} className="text-sm font-bold" style={{ color: colors.grey700 }}>{label}</a>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        {/* <HeaderLink to="/blog">Blog</HeaderLink> */}
       </nav>
     </header>
   )

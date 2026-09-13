@@ -10,28 +10,28 @@ import { publications } from "@/data/publications"
 import { awards } from "@/data/awards"
 import { talks } from "@/data/talks"
 import { extracurricular } from "@/data/extracurricular"
+import { Button } from "@/components/ui/button"
+import { SegmentedControl } from "@/components/ui/segmented-control"
+
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown"
 import { FiMail, FiDownload } from "react-icons/fi";
 import { getYearsInRange, compareItemsByDateThenAlphabetical, startYear, endYear, parseDateRange } from "@/utils/date"
+import { Checkbox } from "@/components/ui/checkbox"
+import { ChevronDownIcon } from "@heroicons/react/24/outline"
 
 const isOngoing = (date) => parseDateRange(date).isPresent
 
 
 function SelectionToggle({ showSelected, onToggle }) {
   return (
-    <button
-      type="button"
-      aria-pressed={showSelected}
-      onClick={onToggle}
-      className="mt-6 block cursor-pointer rounded-[12px] px-4 py-2.5 text-sm font-bold leading-6 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-      style={{
-        backgroundColor: colors.grey100,
-        color: colors.grey700,
-      }}
-      onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey200 }}
-      onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
-    >
-      {showSelected ? "Selected" : "All"}
-    </button>
+    <SegmentedControl
+      options={[
+        { value: "all", label: "All" },
+        { value: "selected", label: "Selected" },
+      ]}
+      value={showSelected ? "selected" : "all"}
+      onChange={(v) => onToggle(v === "selected")}
+    />
   )
 }
 
@@ -58,77 +58,44 @@ function YearSelect({ years, selectedYears, onToggleYear, onToggleAll }) {
   const allSelected = selectedYears.length === years.length
 
   return (
-    <div
-      className="relative mt-6"
-      onKeyDown={(e) => {
-        if (e.key === "Escape" && open) {
-          e.stopPropagation()
-          setOpen(false)
-        }
-      }}
-    >
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-haspopup="menu"
-        onClick={() => setOpen((value) => !value)}
-        className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 text-sm font-bold leading-6 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-        style={{ backgroundColor: colors.grey100, color: colors.grey700 }}
-        onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey200 }}
-        onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
-      >
-        Years
-        <span className="flex size-6 shrink-0 items-center justify-center">
-          <svg className="size-4 shrink-0" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M3 5.5 8 10.5 13 5.5" stroke={colors.grey300} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </span>
-      </button>
-      {open && (
-        <div className="absolute left-0 top-full z-10 mt-3 min-w-32 rounded-[12px] p-2 shadow-[0_4px_16px_rgba(0,0,0,0.12)]" style={{ backgroundColor: colors.white }}>
-          <button
-            type="button"
-            role="checkbox"
-            aria-checked={allSelected}
-            onClick={onToggleAll}
-            className="flex w-full cursor-pointer items-center gap-2 rounded-[8px] px-4 py-2.5 text-left text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-            style={{ backgroundColor: colors.white, color: colors.grey700 }}
-            onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
-            onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.white }}
-          >
-            <YearIndicator checked={allSelected} />
-            All
-          </button>
-          {years.map((year) => {
-            const checked = selectedYears.includes(year)
-            return (
-              <button
-                key={year}
-                type="button"
-                role="checkbox"
-                aria-checked={checked}
-                onClick={() => onToggleYear(year)}
-                className="flex w-full cursor-pointer items-center gap-2 rounded-[8px] px-4 py-2.5 text-left text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                style={{ backgroundColor: colors.white, color: colors.grey700 }}
-                onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
-                onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.white }}
-              >
-                <YearIndicator checked={checked} />
-                {year}
-              </button>
-            )
-          })}
-        </div>
-      )}
-    </div>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="md" className="inline-flex items-center gap-2 rounded-xl">
+          Years <ChevronDownIcon className="h-4 w-4 text-[#374151]" strokeWidth={2} />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-fit">
+        <DropdownMenuItem onClick={onToggleAll}>
+            <label className="flex items-center gap-2 cursor-pointer" onClick={(e) => e.stopPropagation()}>
+            <Checkbox id="year-all" checked={allSelected} onCheckedChange={onToggleAll} />
+            <span className="text-sm">All</span>
+          </label>
+        </DropdownMenuItem>
+        {years.map((year) => (
+          <DropdownMenuItem key={year} onClick={() => onToggleYear(year)}>
+            <label className="flex items-center gap-2 cursor-pointer" onClick={(e) => e.stopPropagation()}>
+              <Checkbox id={`year-${year}`} checked={selectedYears.includes(year)} onCheckedChange={() => onToggleYear(year)} />
+              <span className="text-sm">{year}</span>
+            </label>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
 function SectionControls({ showSelected, onToggle, years, selectedYears, onToggleYear, onToggleAll }) {
   return (
-    <div className="flex items-start justify-start gap-2">
-      <SelectionToggle showSelected={showSelected} onToggle={onToggle} />
+    <div className="flex items-start justify-start gap-2 mt-6">
       <YearSelect years={years} selectedYears={selectedYears} onToggleYear={onToggleYear} onToggleAll={onToggleAll} />
+      <SegmentedControl
+        options={[
+          { value: "all", label: "All" },
+          { value: "selected", label: "Selected" },
+        ]}
+        value={showSelected ? "selected" : "all"}
+        onChange={(v) => onToggle(v === "selected")}
+      />
     </div>
   )
 }
@@ -183,37 +150,27 @@ function ProfileBox() {
         About Me
       </h2>
       <p className={`mt-3 text-sm ${LINE}`}>
-        Hi, I'm Wonjun Oh!
+        Hi, I'm Wonjun Oh! I am an Integrated M.S./Ph.D. Student at <a href="https://gsai.kaist.ac.kr/?lang=en">KAIST AI</a>, advised by <a href="https://hyunw.kim/">Hyunwoo Kim</a>. 
       </p>
       <p className={`mt-3 text-sm ${LINE}`}>
-        I am an M.S./Ph.D. Student at <a href="https://gsai.kaist.ac.kr/?lang=en">KAIST AI</a> advised by <a href="https://hyunw.kim/">Hyunwoo Kim</a>. My research focuses on evaluating and enhancing the general reasoning capabilities of LLMs. Specifically, I investigate data-centric methodologies leveraging LLMs to synthesize and filter high-quality datasets to push model reasoning beyond existing capabilities. Beyond data curation, I am deeply interested in extending LLM reasoning to non-verifiable tasks where deterministic verification signals are absent.
+        My research focuses on evaluating and enhancing the general reasoning capabilities of LLMs. Specifically, I investigate data-centric methodologies leveraging LLMs to synthesize and filter high-quality datasets to push model reasoning beyond existing capabilities. Beyond data curation, I am deeply interested in extending LLM reasoning to non-verifiable tasks where deterministic verification signals are absent.
       </p>
       <p className={`mt-3 text-sm ${LINE}`}>
         Previously, I was a Research Intern at <a href="https://www.upstage.ai/">Upstage</a>, where I contributed to their Sovereign AI project. Working within the Coding Agent team, I helped develop the Solar Open2 and Solar Pro4 models.
       </p>
-      <p className="mt-7 gap-2 flex flex-wrap">
-        <button
-          type="button"
-          onClick={handleCopyEmail}
-          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 text-sm font-bold transition-opacity hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-          style={{ backgroundColor: colors.grey100, color: colors.grey700 }}
-        >
-          Mail 
+      <p className="mt-9 gap-2 flex flex-wrap">
+        <Button variant="secondary" size="md" onClick={handleCopyEmail}>
           <span className="flex size-6 shrink-0 items-center justify-center">
-            <FiMail className="size-4 stroke-2" aria-hidden="true" />
+            <FiMail className="size-5 stroke-2" aria-hidden="true" />
           </span>
-        </button>
-        <button
-          type="button"
-          onClick={downloadCV}
-          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 text-sm font-bold transition-opacity hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-          style={{ backgroundColor: colors.blue500, color: colors.white }}
-        >
+          Mail
+        </Button>
+        <Button variant="default" size="md" onClick={downloadCV}>
+          <span className="flex size-6 shrink-0 items-center justify-center">
+            <FiDownload className="size-5 stroke-2" aria-hidden="true" />
+          </span>
           Curriculum Vitae
-          <span className="flex size-6 shrink-0 items-center justify-center">
-            <FiDownload className="size-4 stroke-2" aria-hidden="true" />
-          </span>
-        </button>
+        </Button>
       </p>
     </Box>
   )
@@ -222,7 +179,7 @@ function ProfileBox() {
 function BentoSeparator() {
   return (
     <div
-      className="relative left-1/2 h-2 w-screen -translate-x-1/2"
+      className="relative left-1/2 h-4 w-screen -translate-x-1/2"
       style={{ backgroundColor: colors.grey100 }}
       aria-hidden="true"
     />
