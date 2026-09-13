@@ -7,8 +7,6 @@ export const education = {
             organization: "KAIST",
             date: "Sep. 2026 – Present",
             location: "Seoul, Korea",
-            link: "https://gsai.kaist.ac.kr/",
-            logo: "/assets/logo/kaist_logo.png"
         },
         {
             major: "B.S. in Computer Science",
@@ -16,8 +14,6 @@ export const education = {
             organization: "Korea University",
             date: "Feb. 2019 – Feb. 2026",
             location: "Seoul, Korea",
-            link: "https://www.korea.ac.kr/",
-            logo: "/assets/logo/korea_univ_logo.png"
         },
     ]
 };

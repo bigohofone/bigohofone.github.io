@@ -2,12 +2,6 @@ export const extracurricular = {
     title: "Extracurricular Activities",
     items: [
         {
-            title: "Silicon Valley Training Program",
-            organization: "Korea University",
-            date: "2025",
-            description: "Competitively selected as a departmental representative (Scholarship recipient) to network with industry professionals in Silicon Valley."
-        },
-        {
             title: "Club President",
             organization: "AIKU (Korea University AI Club)",
             date: "Jun. 2023 - Dec. 2023"

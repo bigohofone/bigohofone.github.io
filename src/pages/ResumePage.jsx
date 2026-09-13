@@ -214,7 +214,7 @@ function ProfileBox() {
 function BentoSeparator() {
   return (
     <div
-      className="relative left-1/2 h-3 w-screen -translate-x-1/2"
+      className="relative left-1/2 h-2 w-screen -translate-x-1/2"
       style={{ backgroundColor: colors.grey100 }}
       aria-hidden="true"
     />
@@ -370,7 +370,7 @@ function ActivitiesBox() {
 
 export default function ResumePage() {
   return (
-    <div className="mx-auto w-full max-w-[768px] px-6">
+    <div className="mx-auto w-full max-w-3xl px-6">
       <div className="flex flex-col">
         <ProfileBox />
         <BentoSeparator />

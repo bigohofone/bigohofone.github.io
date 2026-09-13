@@ -32,15 +32,6 @@ export function Box({ className = "", id, title, count, controls, children }) {
   )
 }
 
-export function LogoTile({ src, alt }) {
-  return (
-    // Same tint as the boxes' offset shadow.
-    <span className="flex size-14 items-center justify-center overflow-hidden p-2.5" style={{ backgroundColor: colors.greyOpacity200 }}>
-      <img src={src} alt={alt} className="max-h-full max-w-full object-contain grayscale" />
-    </span>
-  )
-}
-
 export function Row({ year, present = false, description, onClick, children }) {
   const clickHandlerRef = useRef(onClick)
   const rowRef = useRef(null)
@@ -154,16 +145,10 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
                 aria-modal="true"
                 aria-label={title}
                 onClick={(e) => e.stopPropagation()}
-                className={`w-full max-w-md rounded-[4px] border p-5 ${LINE}`}
-                style={{ backgroundColor: colors.white, borderColor: colors.grey900, boxShadow: `4px 4px 2px 0 ${colors.greyOpacity200}` }}
+                className={`w-full max-w-3xl h-full rounded-[12px] px-6 py-6 ${LINE}`}
+                style={{ backgroundColor: colors.white, boxShadow: `4px 4px 2px 0 ${colors.greyOpacity200}` }}
               >
-                <div className="flex items-start gap-4">
-                  {logo && <LogoTile src={logo} alt={title} />}
-                  <div className="min-w-0 flex-1">
-                    <h4 className="text-base font-bold" style={{ color: colors.grey900 }}>{title}</h4>
-                    {subtitle && <p className={`text-sm ${LINE}`}>{subtitle}</p>}
-                    {meta && <p className={`text-sm ${LINE}`} style={{ color: colors.grey600 }}>{meta}</p>}
-                  </div>
+                <div className="mb-2 flex w-full items-start justify-end gap-2">
                   <button
                     type="button"
                     onClick={closeDetails}
@@ -176,7 +161,15 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
                     <Cross2Icon className="size-4" />
                   </button>
                 </div>
-                <p className={`mt-6 text-sm ${LINE}`}>{children}</p>
+                <div className="mb-2 flex w-full flex-col items-start">
+                  <h4 className="text-base font-semibold" style={{ color: colors.grey800 }}>{title}</h4>
+                  {subtitle && <p className={`mt-2 text-sm ${LINE}`} style={{ color: colors.grey500}}>{subtitle}</p>}
+                  {meta && <p className={`text-sm ${LINE}`} style={{ color: colors.grey500 }}>{meta}</p>}
+                </div>
+                <div className="mt-6 flex w-full flex-col items-start">
+                  {/* TODO: Markdown for children */}
+                  <p className={`text-sm ${LINE}`} style={{ color: colors.grey500}}>{children}</p>
+                </div>
               </motion.div>
             </motion.div>
           )}

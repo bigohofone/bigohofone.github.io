@@ -18,6 +18,14 @@ export const awards = {
             type: "Award"
         },
         {
+            selected: true,
+            title: "Silicon Valley Tour Grant",
+            organization: "Korea University",
+            date: "2025",
+            description: "Competitively selected as a departmental representative to network with industry professionals in Silicon Valley.",
+            type: "Honor"
+        },
+        {
             selected: false,
             title: "Gold Prize (KRW 2,000,000)",
             organization: "Korea University Software Contest",
@@ -26,7 +34,7 @@ export const awards = {
             type: "Award"
         },
         {
-            selected: true,
+            selected: false,
             title: "IPESK Next-generation Enigineers",
             organization: "Institute for Promotion of Engineering and Science of Korea",
             date: "2025",
@@ -49,42 +57,6 @@ export const awards = {
             date: "2024",
             description: "Hosted by Ministry of Science and ICT. Collaborated with 4 teammates to train a AST model for dialects, elderly, and children.",
             type: "Award"
-        },
-        {
-            selected: false,
-            title: "President’s Honor List",
-            hidden: true,
-            organization: "Korea University",
-            date: "Fall 2023",
-            description: "Merit based honor list.",
-            type: "Honor"
-        },
-        {
-            selected: false,
-            title: "President’s Honor List",
-            hidden: true,
-            organization: "Korea University",
-            date: "Spring 2024",
-            description: "Merit based honor list.",
-            type: "Honor"
-        },
-        {
-            selected: false,
-            title: "Dean’s Honor List",
-            hidden: true,
-            organization: "Korea University",
-            date: "Spring 2023",
-            description: "Merit based honor list.",
-            type: "Honor"
-        },
-        {
-            selected: false,
-            title: "Dean’s Honor List",
-            hidden: true,
-            organization: "Korea University",
-            date: "Spring 2025",
-            description: "Merit based honor list.",
-            type: "Honor"
         },
     ]
 };
