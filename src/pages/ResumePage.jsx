@@ -10,12 +10,11 @@ import { publications } from "@/data/publications"
 import { awards } from "@/data/awards"
 import { talks } from "@/data/talks"
 import { extracurricular } from "@/data/extracurricular"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons"
+import { FiMail, FiDownload } from "react-icons/fi";
+import { getYearsInRange, compareItemsByDateThenAlphabetical, startYear, endYear, parseDateRange } from "@/utils/date"
 
-const isOngoing = (date) => /now|present/i.test(String(date ?? ""))
-const startYear = (date) => String(date ?? "").match(/\d{4}/)?.[0] ?? date
-const endYear = (date) => String(date ?? "").match(/\d{4}/g)?.at(-1) ?? date
+const isOngoing = (date) => parseDateRange(date).isPresent
+
 
 function SelectionToggle({ showSelected, onToggle }) {
   return (
@@ -177,42 +176,42 @@ function ProfileBox() {
         <img src={profile.image} alt={profile.name} className="size-full object-cover" />
       </div>
       <h1 className={`mt-9 text-xl font-bold ${LINE}`} style={{ color: colors.grey800 }}>{profile.name}</h1>
-      {/* <p className={`text-sm ${LINE}`}>M.S./Ph.D. Student at KAIST</p> */}
-      <h2 className={`mt-5 font-mono text-base font-semibold ${LINE} tracking-wide`} style={{ color: colors.grey800 }}>
-        Bio
+      <p className={`mt-3 text-sm ${LINE}`}>
+        M.S./Ph.D. Student, KAIST AI
+      </p>
+      <h2 className={`mt-5 text-base font-semibold ${LINE} tracking-wide`} style={{ color: colors.grey800 }}>
+        About Me
       </h2>
-      <p className={`mt-3 text-sm ${LINE}`} style={{ color: colors.grey500 }}>
+      <p className={`mt-3 text-sm ${LINE}`}>
         Hi, I'm Wonjun Oh!
       </p>
-      <p className={`mt-3 text-sm ${LINE}`} style={{ color: colors.grey500 }}>
-        I am an M.S./Ph.D. student at KAIST. My research focuses on evaluating and enhancing the general reasoning capabilities of LLMs. Specifically, I investigate data-centric methodologies leveraging LLMs to synthesize and filter high-quality datasets to push model reasoning beyond existing capabilities. Beyond data curation, I am deeply interested in extending LLM reasoning to non-verifiable tasks where deterministic verification signals are absent.
+      <p className={`mt-3 text-sm ${LINE}`}>
+        I am an M.S./Ph.D. Student at <a href="https://gsai.kaist.ac.kr/?lang=en">KAIST AI</a> advised by <a href="https://hyunw.kim/">Hyunwoo Kim</a>. My research focuses on evaluating and enhancing the general reasoning capabilities of LLMs. Specifically, I investigate data-centric methodologies leveraging LLMs to synthesize and filter high-quality datasets to push model reasoning beyond existing capabilities. Beyond data curation, I am deeply interested in extending LLM reasoning to non-verifiable tasks where deterministic verification signals are absent.
       </p>
-      <p className={`mt-3 text-sm ${LINE}`} style={{ color: colors.grey500 }}>
-        Previously, I was a Research Intern at Upstage, where I contributed to their Sovereign AI project. Working within the Coding Agent team, I helped develop the Solar Open2 and Solar Pro4 models.
+      <p className={`mt-3 text-sm ${LINE}`}>
+        Previously, I was a Research Intern at <a href="https://www.upstage.ai/">Upstage</a>, where I contributed to their Sovereign AI project. Working within the Coding Agent team, I helped develop the Solar Open2 and Solar Pro4 models.
       </p>
       <p className="mt-7 gap-2 flex flex-wrap">
         <button
           type="button"
           onClick={handleCopyEmail}
-          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold tracking-wide transition-opacity hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 text-sm font-bold transition-opacity hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           style={{ backgroundColor: colors.grey100, color: colors.grey700 }}
         >
           Mail 
           <span className="flex size-6 shrink-0 items-center justify-center">
-            <FontAwesomeIcon icon={faEnvelope} className="size-6" aria-hidden="true" />
+            <FiMail className="size-4 stroke-2" aria-hidden="true" />
           </span>
         </button>
         <button
           type="button"
           onClick={downloadCV}
-          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold tracking-wide transition-opacity hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 text-sm font-bold transition-opacity hover:opacity-80 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           style={{ backgroundColor: colors.blue500, color: colors.white }}
         >
           Curriculum Vitae
           <span className="flex size-6 shrink-0 items-center justify-center">
-            <svg className="size-4" viewBox="0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <FiDownload className="size-4 stroke-2" aria-hidden="true" />
           </span>
         </button>
       </p>
@@ -240,7 +239,7 @@ function ExperienceBox() {
           present={isOngoing(it.date)}
           description={it.role}
         >
-          {it.description ? (
+          {it.markdownContent || it.description ? (
             <Details
               logo={it.logo}
               title={it.organization}
@@ -248,7 +247,7 @@ function ExperienceBox() {
               meta={`${it.date} · ${it.location}`}
               trigger={it.organization}
             >
-              {it.description}
+              {it.markdownContent || it.description}
             </Details>
           ) : (
             <RowTitle>{it.organization}</RowTitle>
@@ -269,9 +268,9 @@ function EducationBox() {
           present={isOngoing(it.date)}
           description={it.major}
         >
-          {it.description ? (
+          {it.markdownContent || it.description ? (
             <Details logo={it.logo} title={it.organization} subtitle={it.major} meta={it.date} trigger={it.organization}>
-              {it.description}
+              {it.markdownContent || it.description}
             </Details>
           ) : (
             <RowTitle>{it.organization}</RowTitle>
@@ -283,27 +282,31 @@ function EducationBox() {
 }
 
 function PublicationsBox() {
+
   const [showSelected, setShowSelected] = useState(true)
-  const years = [...new Set(publications.items.map((item) => startYear(item.venue)))].filter((item) => /^\d{4}$/.test(item)).sort().reverse()
+
+  // Year filter is based on `date` field, not `venue`
+  const years = [...new Set(publications.items.map((item) => startYear(item.date)))].filter((y) => /^\d{4}$/.test(y)).sort().reverse()
   const [selectedYears, setSelectedYears] = useState(years)
-  const items = publications.items.filter(
-    (item) => (!showSelected || item.selected !== false) && selectedYears.includes(startYear(item.venue))
-  )
+
+  const items = publications.items
+    .filter((item) => (!showSelected || item.selected !== false) && selectedYears.includes(startYear(item.date)))
+    .sort(compareItemsByDateThenAlphabetical)
 
   return (
     <Box
       id="publications"
       title={publications.title}
       count={publications.items.length}
-      controls={<SectionControls showSelected={showSelected} onToggle={() => setShowSelected((value) => !value)} years={years} selectedYears={selectedYears} onToggleYear={(year) => setSelectedYears((value) => value.includes(year) ? value.filter((item) => item !== year) : [...value, year])} onToggleAll={() => setSelectedYears((value) => value.length === years.length ? [] : years)} />}
+      controls={<SectionControls showSelected={showSelected} onToggle={() => setShowSelected((v) => !v)} years={years} selectedYears={selectedYears} onToggleYear={(year) => setSelectedYears((v) => v.includes(year) ? v.filter((y) => y !== year) : [...v, year])} onToggleAll={() => setSelectedYears((v) => v.length === years.length ? [] : years)} />}
     >
       {items.map((pub) => {
-        const arxivUrl = pub.links?.find((link) => link.url.includes("arxiv.org"))?.url
+        const arxivUrl = pub.links?.find((l) => l.url.includes("arxiv.org"))?.url
         return (
           <Row
             key={pub.title}
-            year={pub.venue ?? "Soon"}
-            present={!pub.venue}
+            year={pub.venue ?? startYear(pub.date) ?? "Soon"}
+            present={!pub.venue && !pub.date}
             description={renderAuthors(pub.authors)}
             onClick={arxivUrl ? () => window.open(arxivUrl, "_blank", "noopener,noreferrer") : undefined}
           >
@@ -315,26 +318,64 @@ function PublicationsBox() {
   )
 }
 
+
 function AwardsBox() {
   const [showSelected, setShowSelected] = useState(true)
-  const visibleItems = awards.items.filter((it) => !it.hidden)
-  const years = [...new Set(visibleItems.map((item) => startYear(item.date)))].filter((item) => /^\d{4}$/.test(item)).sort().reverse()
+
+  const itemsWithYears = awards.items.map((item) => ({
+    ...item,
+    years: getYearsInRange(item.date),
+  }))
+
+  const years = [...new Set(itemsWithYears.flatMap((item) => item.years))]
+    .sort()
+    .reverse()
+
   const [selectedYears, setSelectedYears] = useState(years)
-  const items = visibleItems
-    .filter((it) => (!showSelected || it.selected) && selectedYears.includes(startYear(it.date)))
-    .sort((a, b) => Number(startYear(b.date)) - Number(startYear(a.date)))
+
+  const filteredItems = itemsWithYears
+    .filter((item) =>
+      (!showSelected || item.selected !== false) &&
+      item.years.some((year) => selectedYears.includes(year))
+    )
+    .sort(compareItemsByDateThenAlphabetical)
+
   return (
     <Box
       id="awards"
       title={awards.title}
-      count={visibleItems.length}
-      controls={<SectionControls showSelected={showSelected} onToggle={() => setShowSelected((value) => !value)} years={years} selectedYears={selectedYears} onToggleYear={(year) => setSelectedYears((value) => value.includes(year) ? value.filter((item) => item !== year) : [...value, year])} onToggleAll={() => setSelectedYears((value) => value.length === years.length ? [] : years)} />}
+      count={filteredItems.length}
+      controls={
+        <SectionControls
+          showSelected={showSelected}
+          onToggle={() => setShowSelected((v) => !v)}
+          years={years}
+          selectedYears={selectedYears}
+          onToggleYear={(year) =>
+            setSelectedYears((v) =>
+              v.includes(year) ? v.filter((y) => y !== year) : [...v, year]
+            )
+          }
+          onToggleAll={() =>
+            setSelectedYears((v) => (v.length === years.length ? [] : years))
+          }
+        />
+      }
     >
-      {items.map((it, i) => (
-        <Row key={`${it.title}-${i}`} year={startYear(it.date)} description={it.organization}>
-          {it.description ? (
-            <Details title={it.title} subtitle={it.organization} meta={it.date} trigger={it.title}>
-              {it.description}
+      {filteredItems.map((it, i) => (
+        <Row
+          key={`${it.title}-${i}`}
+          year={it.years[it.years.length - 1] ?? ""}
+          description={it.organization}
+        >
+          {it.markdownContent || it.description ? (
+            <Details
+              title={it.title}
+              subtitle={it.organization}
+              meta={it.date}
+              trigger={it.title}
+            >
+              {it.markdownContent || it.description}
             </Details>
           ) : (
             <RowTitle>{it.title}</RowTitle>
@@ -345,16 +386,16 @@ function AwardsBox() {
   )
 }
 
+
 function ActivitiesBox() {
   const [showSelected, setShowSelected] = useState(true)
-  const items = [...extracurricular.items, ...talks.items].sort(
-    (a, b) => Number(startYear(b.date)) - Number(startYear(a.date))
-  )
+  const items = [...extracurricular.items, ...talks.items]
   const years = [...new Set(items.map((item) => startYear(item.date)))].filter((item) => /^\d{4}$/.test(item)).sort().reverse()
   const [selectedYears, setSelectedYears] = useState(years)
-  const visibleItems = items.filter(
-    (item) => (!showSelected || item.selected !== false) && selectedYears.includes(startYear(item.date))
-  )
+  const visibleItems = items
+    .filter((item) => (!showSelected || item.selected !== false) && selectedYears.includes(startYear(item.date)))
+    .sort(compareItemsByDateThenAlphabetical)
+
   return (
     <Box
       id="activities"
@@ -364,9 +405,9 @@ function ActivitiesBox() {
     >
       {visibleItems.map((it) => (
         <Row key={it.title} year={startYear(it.date)} description={it.organization}>
-          {it.description ? (
+          {it.markdownContent || it.description ? (
             <Details title={it.title} subtitle={it.organization} meta={it.date} trigger={it.title}>
-              {it.description}
+              {it.markdownContent || it.description}
             </Details>
           ) : (
             <RowTitle>{it.title}</RowTitle>
@@ -388,7 +429,7 @@ export default function ResumePage() {
         <ExperienceBox />
         <BentoSeparator />
         <PublicationsBox />
-        <BentoSeparator />
+        <BentoSeparator /> 
         <AwardsBox />
         <BentoSeparator />
         <ActivitiesBox />

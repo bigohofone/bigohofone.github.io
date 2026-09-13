@@ -1,16 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGithub, faGoogleScholar, faLinkedinIn, faXTwitter } from "@fortawesome/free-brands-svg-icons"
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons"
+import { FaGoogleScholar } from "react-icons/fa6";
+import { FiMail, FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi"
 import { colors } from "@toss/tds-colors"
 import { Link } from "react-router-dom"
 import { contact } from "@/data/contact"
 
 const contactIcons = {
-  Email: faEnvelope,
-  GitHub: faGithub,
-  "Google Scholar": faGoogleScholar,
-  "X (Twitter)": faXTwitter,
-  LinkedIn: faLinkedinIn,
+  Email: FiMail,
+  GitHub: FiGithub,
+  "Google Scholar": FaGoogleScholar,
+  "X (Twitter)": FiTwitter,
+  LinkedIn: FiLinkedin,
 }
 
 const resumeSections = [
@@ -49,12 +49,12 @@ export function SiteFooter() {
                 target={item.link.startsWith("http") ? "_blank" : undefined}
                 rel={item.link.startsWith("http") ? "noreferrer" : undefined}
                 aria-label={`${item.label}: ${item.value}`}
-                className="flex size-9 items-center justify-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="flex size-11 items-center justify-center rounded-[12px] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                 style={{ backgroundColor: colors.grey400, color: colors.grey100 }}
                 onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey500 }}
                 onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.grey400 }}
               >
-                <FontAwesomeIcon icon={Icon} className="size-6" aria-hidden="true" />
+                <Icon className="size-5 stroke-2" aria-hidden="true" />
               </a>
             )
           })}

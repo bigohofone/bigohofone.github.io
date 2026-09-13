@@ -3,6 +3,7 @@ import { createPortal } from "react-dom"
 import { AnimatePresence, motion } from "framer-motion"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { colors } from "@toss/tds-colors"
+import { MarkdownRenderer } from "@/components/common/MarkdownRenderer"
 
 // Text line-height comes from the active text-size token.
 export const LINE = ""
@@ -20,7 +21,7 @@ export function Box({ className = "", id, title, count, controls, children }) {
     >
       {title && (
         <div className="mb-6">
-          <h3 className={`font-mono text-xl font-bold tracking-wide ${LINE}`} style={{ color: colors.grey800 }}>
+          <h3 className={`font-mono text-xl font-bold ${LINE}`} style={{ color: colors.grey800 }}>
           {title}
           {count !== undefined && <span className="ml-2 font-bold" style={{ color: colors.blue500 }}>{count}</span>}
           </h3>
@@ -36,7 +37,12 @@ export function Row({ year, present = false, description, onClick, hasDetails = 
   const clickHandlerRef = useRef(onClick)
   const [interactive, setInteractive] = useState(Boolean(onClick) || hasDetails)
   const [shaking, setShaking] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
   const shakeTimeoutRef = useRef(null)
+
+  const resetHover = useCallback(() => {
+    setIsHovered(false)
+  }, [])
 
   const registerClickHandler = useCallback((handler) => {
     clickHandlerRef.current = handler
@@ -50,7 +56,6 @@ export function Row({ year, present = false, description, onClick, hasDetails = 
   const triggerShake = useCallback(() => {
     if (shakeTimeoutRef.current) clearTimeout(shakeTimeoutRef.current)
     setShaking(false)
-    // small timeout to re-trigger animation if clicked repeatedly
     setTimeout(() => {
       setShaking(true)
       shakeTimeoutRef.current = setTimeout(() => {
@@ -76,8 +81,8 @@ export function Row({ year, present = false, description, onClick, hasDetails = 
   }
 
   const rowContextValue = useMemo(
-    () => ({ registerClickHandler }),
-    [registerClickHandler]
+    () => ({ registerClickHandler, resetHover }),
+    [registerClickHandler, resetHover]
   )
 
   return (
@@ -90,9 +95,9 @@ export function Row({ year, present = false, description, onClick, hasDetails = 
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={`group relative rounded-[12px] px-2 py-3 cursor-pointer transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${LINE}`}
-        style={{ backgroundColor: colors.white }}
-        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = colors.grey100 }}
-        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = colors.white }}
+        style={{ backgroundColor: isHovered ? colors.grey100 : colors.white }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <div className={`min-w-0 flex-1 flex flex-col gap-1 ${LINE}`}>
           {children}
@@ -111,6 +116,7 @@ export function Row({ year, present = false, description, onClick, hasDetails = 
   )
 }
 
+
 export function RowTitle({ children, className = "" }) {
   return (
     <span className={`inline-block text-base font-semibold ${className}`} style={{ color: colors.grey800 }}>
@@ -125,6 +131,7 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
   const [open, setOpen] = useState(false)
   const rowContext = useContext(RowClickContext)
   const registerClickHandler = rowContext?.registerClickHandler
+  const resetHover = rowContext?.resetHover
 
   const closeDetails = useCallback(() => {
     setOpen(false)
@@ -132,8 +139,11 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
 
   useEffect(() => {
     if (!registerClickHandler) return undefined
-    return registerClickHandler(() => setOpen(true))
-  }, [registerClickHandler])
+    return registerClickHandler(() => {
+      resetHover?.()
+      setOpen(true)
+    })
+  }, [registerClickHandler, resetHover])
 
   useEffect(() => {
     if (!open) return
@@ -146,6 +156,7 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
   }, [closeDetails, open])
+
 
   return (
     <>
@@ -188,17 +199,12 @@ export function Details({ title, subtitle, meta, logo, trigger, children }) {
                   </button>
                 </div>
                 <div className="mb-2 flex w-full flex-col items-start">
-                  <div
-                    className="w-full"
-                  >
-                    <RowTitle>{title}</RowTitle>
-                  </div>
+                  <RowTitle>{title}</RowTitle>
                   {subtitle && <p className={`mt-2 text-sm ${LINE}`} style={{ color: colors.grey500 }}>{subtitle}</p>}
                   {meta && <p className={`text-sm ${LINE}`} style={{ color: colors.grey500 }}>{meta}</p>}
                 </div>
                 <div className="mt-6 flex w-full flex-col items-start">
-                  {/* TODO: Markdown for children */}
-                  <p className={`text-sm ${LINE}`} style={{ color: colors.grey500 }}>{children}</p>
+                  <MarkdownRenderer>{children}</MarkdownRenderer>
                 </div>
               </motion.div>
             </motion.div>

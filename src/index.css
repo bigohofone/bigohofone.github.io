@@ -3,6 +3,7 @@
 @import "https://static.toss.im/tossface-font/v1.7.0/tossface.css";
 @import "tailwindcss";
 
+
 @theme inline {
   --text-xs: 13px;
   --text-xs--line-height: 19.5px;
@@ -33,6 +34,7 @@
   body {
     font-family: var(--font-sans);
     font-size: var(--text-sm);
+    color: #8b95a1;
     font-weight: 500;
     line-height: 22.5px;
     -webkit-font-smoothing: antialiased;
@@ -58,6 +60,15 @@
     vertical-align: baseline;
     line-height: 0;
   }
+}
+
+a {
+  color: #3182f6;
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: 0.8;
 }
 
 .link-all {
