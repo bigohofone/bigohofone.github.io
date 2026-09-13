@@ -16,13 +16,13 @@ export function Box({ className = "", id, title, count, controls, children }) {
   return (
     <div
       id={id}
-      className={`pt-12 pb-[72px] ${LINE} ${className}`}
+      className={`py-12 ${LINE} ${className}`}
     >
       {title && (
-        <div className="mb-8">
-            <h3 className={`font-mono text-xl font-bold tracking-wide ${LINE}`} style={{ color: colors.grey800 }}>
-            {title}
-            {count !== undefined && <span className="ml-2 font-bold" style={{ color: colors.blue500 }}>{count}</span>}
+        <div className="mb-6">
+          <h3 className={`font-mono text-xl font-bold tracking-wide ${LINE}`} style={{ color: colors.grey800 }}>
+          {title}
+          {count !== undefined && <span className="ml-2 font-bold" style={{ color: colors.blue500 }}>{count}</span>}
           </h3>
           {controls}
         </div>

@@ -3,12 +3,15 @@ import { colors } from "@toss/tds-colors"
 import { Box, Row, RowTitle, Details, LINE } from "@/components/bento/Bento"
 import { downloadCV } from "@/components/cv/cvPDF"
 import { profile } from "@/data/profile"
+import { contact } from "@/data/contact"
 import { experience } from "@/data/experience"
 import { education } from "@/data/education"
 import { publications } from "@/data/publications"
 import { awards } from "@/data/awards"
 import { talks } from "@/data/talks"
 import { extracurricular } from "@/data/extracurricular"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons"
 
 const isOngoing = (date) => /now|present/i.test(String(date ?? ""))
 const startYear = (date) => String(date ?? "").match(/\d{4}/)?.[0] ?? date
@@ -147,21 +150,49 @@ function renderAuthors(authors) {
   })
 }
 
+const EMAIL = contact.items.find((item) => item.label === "Email")?.value ?? ""
+
+const handleCopyEmail = async () => {
+  try {
+    await navigator.clipboard.writeText(EMAIL);
+    alert(`Copied "${EMAIL}" to clipboard!`);
+  } catch (err) {
+    console.error('Failed to copy email:', err);
+  }
+};
+
 function ProfileBox() {
   return (
     <Box id="bio">
-      <div className="mt-9 size-[96px] min-w-[96px] overflow-hidden rounded-[12px]">
+      <div className="size-32 overflow-hidden rounded-[12px]">
         <img src={profile.image} alt={profile.name} className="size-full object-cover" />
       </div>
-      <h1 className={`mt-7 text-xl font-bold ${LINE}`} style={{ color: colors.grey800 }}>{profile.name}</h1>
+      <h1 className={`mt-9 text-xl font-bold ${LINE}`} style={{ color: colors.grey800 }}>{profile.name}</h1>
       {/* <p className={`text-sm ${LINE}`}>M.S./Ph.D. Student at KAIST</p> */}
-      <h2 className={`mt-5 font-mono text-lg font-semibold ${LINE} tracking-wide`} style={{ color: colors.grey800 }}>
+      <h2 className={`mt-5 font-mono text-base font-semibold ${LINE} tracking-wide`} style={{ color: colors.grey800 }}>
         Bio
       </h2>
       <p className={`mt-3 text-sm ${LINE}`} style={{ color: colors.grey500 }}>
-        TBU.
+        Hi, I'm Wonjun Oh!
       </p>
-      <p className="mt-7">
+      <p className={`mt-3 text-sm ${LINE}`} style={{ color: colors.grey500 }}>
+        I am an M.S./Ph.D. student at KAIST. My research focuses on evaluating and enhancing the general reasoning capabilities of LLMs. Specifically, I investigate data-centric methodologies leveraging LLMs to synthesize and filter high-quality datasets to push model reasoning beyond existing capabilities. Beyond data curation, I am deeply interested in extending LLM reasoning to non-verifiable tasks where deterministic verification signals are absent.
+      </p>
+      <p className={`mt-3 text-sm ${LINE}`} style={{ color: colors.grey500 }}>
+        Previously, I was a Research Intern at Upstage, where I contributed to their Sovereign AI project. Working within the Coding Agent team, I helped develop the Solar Open2 and Solar Pro4 models.
+      </p>
+      <p className="mt-7 gap-2 flex flex-wrap">
+        <button
+          type="button"
+          onClick={handleCopyEmail}
+          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
+          style={{ backgroundColor: colors.grey100, color: colors.grey700 }}
+        >
+          Mail 
+          <span className="flex size-6 shrink-0 items-center justify-center">
+            <FontAwesomeIcon icon={faEnvelope} className="size-6" aria-hidden="true" />
+          </span>
+        </button>
         <button
           type="button"
           onClick={downloadCV}
