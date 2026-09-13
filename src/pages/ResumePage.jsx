@@ -1,5 +1,6 @@
-import { DownloadIcon } from "@radix-ui/react-icons"
-import { Box, Row, RowTitle, LinkAll, Details } from "@/components/bento/Bento"
+import { useState } from "react"
+import { colors } from "@toss/tds-colors"
+import { Box, Row, RowTitle, Details, LINE } from "@/components/bento/Bento"
 import { downloadCV } from "@/components/cv/cvPDF"
 import { profile } from "@/data/profile"
 import { experience } from "@/data/experience"
@@ -8,11 +9,118 @@ import { publications } from "@/data/publications"
 import { awards } from "@/data/awards"
 import { talks } from "@/data/talks"
 import { extracurricular } from "@/data/extracurricular"
-import { contact } from "@/data/contact"
 
 const isOngoing = (date) => /now|present/i.test(String(date ?? ""))
 const startYear = (date) => String(date ?? "").match(/\d{4}/)?.[0] ?? date
 const endYear = (date) => String(date ?? "").match(/\d{4}/g)?.at(-1) ?? date
+
+function SelectionToggle({ showSelected, onToggle }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={showSelected}
+      onClick={onToggle}
+      className="mt-6 block cursor-pointer rounded-[12px] px-4 py-2.5 text-sm font-bold leading-6 transition-colors"
+      style={{
+        backgroundColor: colors.grey100,
+        color: colors.grey700,
+      }}
+      onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey200 }}
+      onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
+    >
+      {showSelected ? "Selected" : "All"}
+    </button>
+  )
+}
+
+function YearIndicator({ checked }) {
+  return (
+    <span
+      className="flex size-6 shrink-0 items-center justify-center rounded-[4px] border-2"
+      style={{
+        borderColor: checked ? colors.blue500 : colors.grey300,
+        backgroundColor: checked ? colors.blue500 : colors.white,
+      }}
+    >
+      {checked && (
+        <svg className="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8 6.5 11.5 13 4.5" stroke={colors.white} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      )}
+    </span>
+  )
+}
+
+function YearSelect({ years, selectedYears, onToggleYear, onToggleAll }) {
+  const [open, setOpen] = useState(false)
+  const allSelected = selectedYears.length === years.length
+
+  return (
+    <div className="relative mt-6">
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+        className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 text-sm font-bold leading-6"
+        style={{ backgroundColor: colors.grey100, color: colors.grey700 }}
+        onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey200 }}
+        onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
+      >
+        Years
+        <span className="flex size-6 shrink-0 items-center justify-center">
+          <svg className="size-4 shrink-0" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 5.5 8 10.5 13 5.5" stroke={colors.grey300} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+      </button>
+      {open && (
+        <div className="absolute left-0 top-full z-10 mt-3 min-w-32 rounded-[12px] p-2 shadow-[0_4px_16px_rgba(0,0,0,0.12)]" style={{ backgroundColor: colors.white }}>
+          <button
+            type="button"
+            role="radio"
+            aria-checked={allSelected}
+            onClick={onToggleAll}
+            className="flex w-full cursor-pointer items-center gap-2 rounded-[8px] px-4 py-2.5 text-left text-sm"
+            style={{ backgroundColor: colors.white, color: colors.grey700 }}
+            onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
+            onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.white }}
+          >
+            <YearIndicator checked={allSelected} />
+            All
+          </button>
+          {years.map((year) => {
+            const checked = selectedYears.includes(year)
+            return (
+              <button
+                key={year}
+                type="button"
+                role="radio"
+                aria-checked={checked}
+                onClick={() => onToggleYear(year)}
+                className="flex w-full cursor-pointer items-center gap-2 rounded-[8px] px-4 py-2.5 text-left text-sm"
+                style={{ backgroundColor: colors.white, color: colors.grey700 }}
+                onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
+                onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.white }}
+              >
+                <YearIndicator checked={checked} />
+                {year}
+              </button>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function SectionControls({ showSelected, onToggle, years, selectedYears, onToggleYear, onToggleAll }) {
+  return (
+    <div className="flex items-start justify-start gap-2">
+      <SelectionToggle showSelected={showSelected} onToggle={onToggle} />
+      <YearSelect years={years} selectedYears={selectedYears} onToggleYear={onToggleYear} onToggleAll={onToggleAll} />
+    </div>
+  )
+}
 
 // Authors come as "{Name, Name}* , Name, {Name}†" — a braced group shares one
 // marker, rendered once as a superscript after the group. All names stay in
@@ -41,69 +149,70 @@ function renderAuthors(authors) {
 
 function ProfileBox() {
   return (
-    <Box>
-      <div className="flex items-center">
-        <div className="mr-6 size-[92px] min-w-[92px] overflow-hidden rounded-[4px] border border-black dark:border-white">
-          <img src={profile.image} alt={profile.name} className="size-full object-cover" />
-        </div>
-        <div>
-          <h1 className="text-sm font-normal leading-[22px] text-heading">{profile.name}</h1>
-          <p className="text-sm leading-[22px]">M.S./Ph.D. Student at KAIST</p>
-        </div>
+    <Box id="bio">
+      <div className="mt-9 size-[96px] min-w-[96px] overflow-hidden rounded-[12px]">
+        <img src={profile.image} alt={profile.name} className="size-full object-cover" />
       </div>
-      <div className="mt-5">
-        {/* Same header-strip treatment as titled boxes; -mx-5 runs the rules
-            edge to edge across the box padding. */}
-        <h2 className="-mx-5 border-y border-faint/40 px-5 py-3 font-mono text-sm font-normal uppercase leading-[22px] tracking-wide text-heading">
-          Bio
-        </h2>
-        <p className="mt-5 text-sm leading-[22px] text-heading">
-          Hey, I'm Wonjun, an M.S./Ph.D. student at KAIST, advised by Hyunwoo Kim.
-          I'm interested in non-verifiable RL and pluralism / human alignment.
-          Previously, I worked at Upstage on a sovereign AI project, improving LLM
-          aesthetic capabilities such as frontend coding and SVG generation.
-        </p>
-        <p className="mt-6">
-          <button
-            type="button"
-            onClick={downloadCV}
-            className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-[4px] bg-accent px-5 font-mono text-sm uppercase tracking-wide text-white transition-opacity hover:opacity-80 dark:text-[#121212]"
-          >
-            Download CV
-            <DownloadIcon className="size-4" />
-          </button>
-        </p>
-      </div>
+      <h1 className={`mt-7 text-xl font-bold ${LINE}`} style={{ color: colors.grey800 }}>{profile.name}</h1>
+      {/* <p className={`text-sm ${LINE}`}>M.S./Ph.D. Student at KAIST</p> */}
+      <h2 className={`mt-5 font-mono text-lg font-semibold ${LINE} tracking-wide`} style={{ color: colors.grey800 }}>
+        Bio
+      </h2>
+      <p className={`mt-3 text-sm ${LINE}`} style={{ color: colors.grey500 }}>
+        TBU.
+      </p>
+      <p className="mt-7">
+        <button
+          type="button"
+          onClick={downloadCV}
+          className="inline-flex cursor-pointer items-center gap-1 rounded-[12px] px-4 py-2.5 font-mono text-sm font-bold tracking-wide transition-opacity hover:opacity-80"
+          style={{ backgroundColor: colors.blue500, color: colors.white }}
+        >
+          Curriculum Vitae
+          <span className="flex size-6 shrink-0 items-center justify-center">
+            <svg className="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+        </button>
+      </p>
     </Box>
+  )
+}
+
+function BentoSeparator() {
+  return (
+    <div
+      className="relative left-1/2 h-3 w-screen -translate-x-1/2"
+      style={{ backgroundColor: colors.grey100 }}
+      aria-hidden="true"
+    />
   )
 }
 
 function ExperienceBox() {
   return (
-    <Box title={experience.title}>
+    <Box id="experience" title={experience.title}>
       {experience.items.map((it) => (
         <Row
           key={`${it.role}-${it.organization}`}
           year={isOngoing(it.date) ? undefined : endYear(it.date)}
           present={isOngoing(it.date)}
+          description={it.role}
         >
-          <LinkAll href={it.link}>{it.organization}</LinkAll>
-          <p className="text-sm leading-[22px]">
-            {it.role}
-            {it.description && (
-              <>
-                {" "}
-                <Details
-                  logo={it.logo}
-                  title={it.organization}
-                  subtitle={it.role}
-                  meta={`${it.date} · ${it.location}`}
-                >
-                  {it.description}
-                </Details>
-              </>
-            )}
-          </p>
+          {it.description ? (
+            <Details
+              logo={it.logo}
+              title={it.organization}
+              subtitle={it.role}
+              meta={`${it.date} · ${it.location}`}
+              trigger={it.organization}
+            >
+              {it.description}
+            </Details>
+          ) : (
+            <RowTitle>{it.organization}</RowTitle>
+          )}
         </Row>
       ))}
     </Box>
@@ -112,25 +221,21 @@ function ExperienceBox() {
 
 function EducationBox() {
   return (
-    <Box title={education.title}>
+    <Box id="education" title={education.title}>
       {education.items.map((it) => (
         <Row
           key={it.major}
           year={isOngoing(it.date) ? undefined : endYear(it.date)}
           present={isOngoing(it.date)}
+          description={it.major}
         >
-          <LinkAll href={it.link}>{it.organization}</LinkAll>
-          <p className="text-sm leading-[22px]">
-            {it.major}
-            {it.description && (
-              <>
-                {" "}
-                <Details logo={it.logo} title={it.organization} subtitle={it.major} meta={it.date}>
-                  {it.description}
-                </Details>
-              </>
-            )}
-          </p>
+          {it.description ? (
+            <Details logo={it.logo} title={it.organization} subtitle={it.major} meta={it.date} trigger={it.organization}>
+              {it.description}
+            </Details>
+          ) : (
+            <RowTitle>{it.organization}</RowTitle>
+          )}
         </Row>
       ))}
     </Box>
@@ -138,81 +243,94 @@ function EducationBox() {
 }
 
 function PublicationsBox() {
+  const [showSelected, setShowSelected] = useState(true)
+  const years = [...new Set(publications.items.map((item) => startYear(item.venue)))].filter((item) => /^\d{4}$/.test(item)).sort().reverse()
+  const [selectedYears, setSelectedYears] = useState(years)
+  const items = publications.items.filter(
+    (item) => (!showSelected || item.selected !== false) && selectedYears.includes(startYear(item.venue))
+  )
+
   return (
-    <Box title={publications.title}>
-      {publications.items.map((pub) => (
-        <Row key={pub.title} year={pub.venue ?? "Soon"} present={!pub.venue}>
-          <LinkAll href={pub.links?.find((l) => l.label === "Paper")?.url}>
-            {pub.title}
-          </LinkAll>
-          <p className="text-sm leading-[22px]">{renderAuthors(pub.authors)}</p>
-        </Row>
-      ))}
+    <Box
+      id="publications"
+      title={publications.title}
+      count={publications.items.length}
+      controls={<SectionControls showSelected={showSelected} onToggle={() => setShowSelected((value) => !value)} years={years} selectedYears={selectedYears} onToggleYear={(year) => setSelectedYears((value) => value.includes(year) ? value.filter((item) => item !== year) : [...value, year])} onToggleAll={() => setSelectedYears((value) => value.length === years.length ? [] : years)} />}
+    >
+      {items.map((pub) => {
+        const arxivUrl = pub.links?.find((link) => link.url.includes("arxiv.org"))?.url
+        return (
+          <Row
+            key={pub.title}
+            year={pub.venue ?? "Soon"}
+            present={!pub.venue}
+            description={renderAuthors(pub.authors)}
+            onClick={arxivUrl ? () => window.open(arxivUrl, "_blank", "noopener,noreferrer") : undefined}
+          >
+            <RowTitle>{pub.title}</RowTitle>
+          </Row>
+        )
+      })}
     </Box>
   )
 }
 
 function AwardsBox() {
-  const items = awards.items
-    .filter((it) => !it.hidden)
+  const [showSelected, setShowSelected] = useState(true)
+  const visibleItems = awards.items.filter((it) => !it.hidden)
+  const years = [...new Set(visibleItems.map((item) => startYear(item.date)))].filter((item) => /^\d{4}$/.test(item)).sort().reverse()
+  const [selectedYears, setSelectedYears] = useState(years)
+  const items = visibleItems
+    .filter((it) => (!showSelected || it.selected) && selectedYears.includes(startYear(it.date)))
     .sort((a, b) => Number(startYear(b.date)) - Number(startYear(a.date)))
   return (
-    <Box title={`${awards.title} (Selected)`}>
+    <Box
+      id="awards"
+      title={awards.title}
+      count={visibleItems.length}
+      controls={<SectionControls showSelected={showSelected} onToggle={() => setShowSelected((value) => !value)} years={years} selectedYears={selectedYears} onToggleYear={(year) => setSelectedYears((value) => value.includes(year) ? value.filter((item) => item !== year) : [...value, year])} onToggleAll={() => setSelectedYears((value) => value.length === years.length ? [] : years)} />}
+    >
       {items.map((it, i) => (
-        <Row key={`${it.title}-${i}`} year={startYear(it.date)}>
-          <RowTitle>{it.title}</RowTitle>
-          <p className="text-sm leading-[22px]">
-            {it.organization}
-            {it.description && (
-              <>
-                {" "}
-                <Details title={it.title} subtitle={it.organization} meta={it.date}>
-                  {it.description}
-                </Details>
-              </>
-            )}
-          </p>
+        <Row key={`${it.title}-${i}`} year={startYear(it.date)} description={it.organization}>
+          {it.description ? (
+            <Details title={it.title} subtitle={it.organization} meta={it.date} trigger={it.title}>
+              {it.description}
+            </Details>
+          ) : (
+            <RowTitle>{it.title}</RowTitle>
+          )}
         </Row>
       ))}
     </Box>
   )
 }
 
-function ContactBox() {
-  return (
-    <Box title={contact.title}>
-      <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4 lg:grid-cols-3">
-        {contact.items.map((it) => (
-          <div key={it.label}>
-            <LinkAll href={it.link} download={it.download}>{it.label}</LinkAll>
-            <p className="text-sm leading-[22px]">{it.value}</p>
-          </div>
-        ))}
-      </div>
-    </Box>
-  )
-}
-
 function ActivitiesBox() {
+  const [showSelected, setShowSelected] = useState(true)
   const items = [...extracurricular.items, ...talks.items].sort(
     (a, b) => Number(startYear(b.date)) - Number(startYear(a.date))
   )
+  const years = [...new Set(items.map((item) => startYear(item.date)))].filter((item) => /^\d{4}$/.test(item)).sort().reverse()
+  const [selectedYears, setSelectedYears] = useState(years)
+  const visibleItems = items.filter(
+    (item) => (!showSelected || item.selected !== false) && selectedYears.includes(startYear(item.date))
+  )
   return (
-    <Box title="Activities (Selected)">
-      {items.map((it) => (
-        <Row key={it.title} year={startYear(it.date)}>
-          <RowTitle>{it.title}</RowTitle>
-          <p className="text-sm leading-[22px]">
-            {it.organization}
-            {it.description && (
-              <>
-                {" "}
-                <Details title={it.title} subtitle={it.organization} meta={it.date}>
-                  {it.description}
-                </Details>
-              </>
-            )}
-          </p>
+    <Box
+      id="activities"
+      title="Activities"
+      count={items.length}
+      controls={<SectionControls showSelected={showSelected} onToggle={() => setShowSelected((value) => !value)} years={years} selectedYears={selectedYears} onToggleYear={(year) => setSelectedYears((value) => value.includes(year) ? value.filter((item) => item !== year) : [...value, year])} onToggleAll={() => setSelectedYears((value) => value.length === years.length ? [] : years)} />}
+    >
+      {visibleItems.map((it) => (
+        <Row key={it.title} year={startYear(it.date)} description={it.organization}>
+          {it.description ? (
+            <Details title={it.title} subtitle={it.organization} meta={it.date} trigger={it.title}>
+              {it.description}
+            </Details>
+          ) : (
+            <RowTitle>{it.title}</RowTitle>
+          )}
         </Row>
       ))}
     </Box>
@@ -221,21 +339,19 @@ function ActivitiesBox() {
 
 export default function ResumePage() {
   return (
-    <div className="mx-auto w-full max-w-[1080px] px-5 pt-6">
-      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
-        <div className="flex flex-col gap-4">
-          <ProfileBox />
-          <EducationBox />
-          <ExperienceBox />
-        </div>
-        <div className="flex flex-col gap-4">
-          <PublicationsBox />
-          <AwardsBox />
-          <ActivitiesBox />
-        </div>
-      </div>
-      <div className="mt-4">
-        <ContactBox />
+    <div className="mx-auto w-full max-w-[768px] px-6">
+      <div className="flex flex-col">
+        <ProfileBox />
+        <BentoSeparator />
+        <EducationBox />
+        <BentoSeparator />
+        <ExperienceBox />
+        <BentoSeparator />
+        <PublicationsBox />
+        <BentoSeparator />
+        <AwardsBox />
+        <BentoSeparator />
+        <ActivitiesBox />
       </div>
     </div>
   )

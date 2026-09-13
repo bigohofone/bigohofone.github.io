@@ -5,7 +5,7 @@ export const experience = {
             role: "AI Research Engineer Intern",
             organization: "Upstage",
             link: "https://www.upstage.ai/",
-            date: "Apr. 2026 – Present",
+            date: "Apr. 2026 – Aug. 2026",
             location: "Seoul, Korea",
             description: "Participated in the Sovereign AI project as part of the SWE Agent team; worked on frontend coding, SVG generation, and related agentic coding capabilities.",
             logo: "/assets/logo/upstage_logo.png"

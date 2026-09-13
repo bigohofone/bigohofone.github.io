@@ -12,6 +12,15 @@ export const publications = {
         //     ]
         // },
         {
+            title: "Solar Open 2 Technical Report",
+            authors: "Upstage Solar Team",
+            venue: "2026",
+            tags: [],
+            links: [
+                { label: "Paper", url: "https://arxiv.org/abs/2607.20062" }
+            ]
+        },
+        {
             title: "ReSCORE: Label-free Iterative Retriever Training for Multi-hop Question Answering with Relevance-Consistency Supervision",
             authors: "{Dosung Lee, Wonjun Oh}*, Boyoung Kim, Minyoung Kim, {Joonsuk Park, Paul Hongsuck Seo}†",
             venue: "ACL 2025",

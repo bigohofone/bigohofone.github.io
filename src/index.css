@@ -1,48 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&family=Inter:wght@400;500&display=swap");
+@import "https://static.toss.im/tps/main-swap.css";
+@import "https://static.toss.im/tps/others-swap.css";
+@import "https://static.toss.im/tossface-font/v1.7.0/tossface.css";
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
-
-/* Google Material palette: white / grey ramp / green.
-   Light: Grey 100 surfaces, Grey 900/700 text, Green 600 accent.
-   Dark (Material dark theme): #121212 canvas, #1E1E1E surfaces,
-   lighter Green 200 accent per Material dark-theme guidance. */
-:root {
-  --background: #ffffff;
-  --box: #f5f5f5;
-  --heading: #212121;
-  --body: #616161;
-  --faint: #9e9e9e;
-  --accent: #212121;
-  --accent-fg: #212121;
-}
-
-.dark {
-  --background: #121212;
-  --box: #1e1e1e;
-  --heading: #e0e0e0;
-  --body: #9e9e9e;
-  --faint: #9e9e9e;
-  /* Monotone accent: flips to light grey for contrast on the dark canvas. */
-  --accent: #e0e0e0;
-  --accent-fg: #e0e0e0;
-}
-
 @theme inline {
-  /* One global line grid: every text size renders on 22px lines. */
-  --text-xs--line-height: 22px;
-  --text-sm--line-height: 22px;
-  --text-base--line-height: 22px;
+  --text-xs: 13px;
+  --text-xs--line-height: 19.5px;
+  --text-sm: 15px;
+  --text-sm--line-height: 22.5px;
+  --text-base: 17px;
+  --text-base--line-height: 25.5px;
+  --text-lg: 20px;
+  --text-lg--line-height: 29px;
+  --text-xl: 22px;
+  --text-xl--line-height: 31px;
+  --text-2xl: 26px;
+  --text-2xl--line-height: 35px;
+  --text-3xl: 30px;
+  --text-3xl--line-height: 40px;
 
-  --color-background: var(--background);
-  --color-box: var(--box);
-  --color-heading: var(--heading);
-  --color-body: var(--body);
-  --color-faint: var(--faint);
-  --color-accent: var(--accent);
-  --color-accent-fg: var(--accent-fg);
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: "Toss Product Sans", "Tossface", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  --font-mono: "Toss Product Sans", "Tossface", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
 }
 
 @layer base {
@@ -53,13 +31,25 @@
     color-scheme: dark;
   }
   body {
-    background-color: var(--background);
-    color: var(--body);
-    font-family: "Inter", system-ui, -apple-system, sans-serif;
-    font-size: 14px;
-    line-height: 22px;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    line-height: 22.5px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  @media (min-width: 640px) {
+    body {
+      font-size: var(--text-sm);
+      line-height: 22.5px;
+    }
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+    font-weight: inherit;
   }
   /* Superscripts (author markers) must not stretch the 24px line box. */
   sup {
@@ -70,32 +60,11 @@
   }
 }
 
-/* Underlined link with a trailing arrow; the whole link (text + arrow)
-   nudges up 2px on hover. inline-block makes the transform take effect —
-   fine here since every LinkAll sits on its own line, and long titles
-   still wrap inside the box. */
 .link-all {
   display: inline-block;
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--heading);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  transition: transform 0.15s ease-in;
-}
-.link-all:hover {
-  color: var(--heading);
-  transform: translateY(-2px);
-}
-/* Radix ArrowTopRightIcon rendered inline. At its native 15px the glyph
-   inside the viewBox has ~4px top padding, so a small baseline nudge puts
-   the visible arrow's top level with the 14px caps. currentColor handles
-   dark mode. */
-.link-all .link-arrow {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  margin-left: 2px;
-  vertical-align: -2px;
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: 25.5px;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out;
 }
