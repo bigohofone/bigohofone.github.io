@@ -17,7 +17,7 @@ export function Box({ className = "", id, title, count, controls, children }) {
   return (
     <div
       id={id}
-      className={`py-12 ${LINE} ${className}`}
+      className={`pt-16 pb-24 ${LINE} ${className}`}
     >
       {title && (
         <div className="mb-6">

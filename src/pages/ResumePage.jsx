@@ -17,6 +17,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { FiMail, FiDownload } from "react-icons/fi";
 import { getYearsInRange, compareItemsByDateThenAlphabetical, startYear, endYear, parseDateRange } from "@/utils/date"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Pagination } from "@/components/ui/pagination"
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
 
 const isOngoing = (date) => parseDateRange(date).isPresent
@@ -179,7 +180,7 @@ function ProfileBox() {
 function BentoSeparator() {
   return (
     <div
-      className="relative left-1/2 h-4 w-screen -translate-x-1/2"
+      className="md:hidden relative left-1/2 h-4 w-screen -translate-x-1/2"
       style={{ backgroundColor: colors.grey100 }}
       aria-hidden="true"
     />
@@ -239,8 +240,10 @@ function EducationBox() {
 }
 
 function PublicationsBox() {
-
-  const [showSelected, setShowSelected] = useState(true)
+  const [showSelected, setShowSelected] = useState(false)
+  const [page, setPage] = useState(1)
+  const [visibleCount, setVisibleCount] = useState(10)
+  const PAGE_SIZE = 10
 
   // Year filter is based on `date` field, not `venue`
   const years = [...new Set(publications.items.map((item) => startYear(item.date)))].filter((y) => /^\d{4}$/.test(y)).sort().reverse()
@@ -250,6 +253,9 @@ function PublicationsBox() {
     .filter((item) => (!showSelected || item.selected !== false) && selectedYears.includes(startYear(item.date)))
     .sort(compareItemsByDateThenAlphabetical)
 
+  const paginatedItems = items.slice(0, visibleCount)
+  const totalPages = Math.ceil(items.length / PAGE_SIZE)
+
   return (
     <Box
       id="publications"
@@ -257,7 +263,7 @@ function PublicationsBox() {
       count={publications.items.length}
       controls={<SectionControls showSelected={showSelected} onToggle={() => setShowSelected((v) => !v)} years={years} selectedYears={selectedYears} onToggleYear={(year) => setSelectedYears((v) => v.includes(year) ? v.filter((y) => y !== year) : [...v, year])} onToggleAll={() => setSelectedYears((v) => v.length === years.length ? [] : years)} />}
     >
-      {items.map((pub) => {
+      {paginatedItems.map((pub) => {
         const arxivUrl = pub.links?.find((l) => l.url.includes("arxiv.org"))?.url
         return (
           <Row
@@ -271,13 +277,16 @@ function PublicationsBox() {
           </Row>
         )
       })}
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
     </Box>
   )
 }
 
 
 function AwardsBox() {
-  const [showSelected, setShowSelected] = useState(true)
+  const [showSelected, setShowSelected] = useState(false)
+  const [page, setPage] = useState(1)
+  const PAGE_SIZE = 10
 
   const itemsWithYears = awards.items.map((item) => ({
     ...item,
@@ -296,6 +305,9 @@ function AwardsBox() {
       item.years.some((year) => selectedYears.includes(year))
     )
     .sort(compareItemsByDateThenAlphabetical)
+
+  const paginatedItems = filteredItems.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE)
 
   return (
     <Box
@@ -319,7 +331,7 @@ function AwardsBox() {
         />
       }
     >
-      {filteredItems.map((it, i) => (
+      {paginatedItems.map((it, i) => (
         <Row
           key={`${it.title}-${i}`}
           year={it.years[it.years.length - 1] ?? ""}
@@ -339,19 +351,26 @@ function AwardsBox() {
           )}
         </Row>
       ))}
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
     </Box>
   )
 }
 
 
 function ActivitiesBox() {
-  const [showSelected, setShowSelected] = useState(true)
+  const [showSelected, setShowSelected] = useState(false)
+  const [page, setPage] = useState(1)
+  const [visibleCount, setVisibleCount] = useState(10)
+  const PAGE_SIZE = 10
   const items = [...extracurricular.items, ...talks.items]
   const years = [...new Set(items.map((item) => startYear(item.date)))].filter((item) => /^\d{4}$/.test(item)).sort().reverse()
   const [selectedYears, setSelectedYears] = useState(years)
   const visibleItems = items
     .filter((item) => (!showSelected || item.selected !== false) && selectedYears.includes(startYear(item.date)))
     .sort(compareItemsByDateThenAlphabetical)
+
+  const paginatedItems = visibleItems.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const totalPages = Math.ceil(visibleItems.length / PAGE_SIZE)
 
   return (
     <Box
@@ -360,7 +379,7 @@ function ActivitiesBox() {
       count={items.length}
       controls={<SectionControls showSelected={showSelected} onToggle={() => setShowSelected((value) => !value)} years={years} selectedYears={selectedYears} onToggleYear={(year) => setSelectedYears((value) => value.includes(year) ? value.filter((item) => item !== year) : [...value, year])} onToggleAll={() => setSelectedYears((value) => value.length === years.length ? [] : years)} />}
     >
-      {visibleItems.map((it) => (
+      {paginatedItems.map((it) => (
         <Row key={it.title} year={startYear(it.date)} description={it.organization}>
           {it.markdownContent || it.description ? (
             <Details title={it.title} subtitle={it.organization} meta={it.date} trigger={it.title}>
@@ -371,6 +390,7 @@ function ActivitiesBox() {
           )}
         </Row>
       ))}
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
     </Box>
   )
 }

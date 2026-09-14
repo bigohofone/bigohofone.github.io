@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Pagination } from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { SegmentedControl } from "@/components/ui/segmented-control"
@@ -7,6 +8,13 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from "@/compon
 import { BookmarkIcon as BookmarkSolid } from "@heroicons/react/24/solid"
 import { BookmarkIcon as BookmarkOutline } from "@heroicons/react/24/outline"
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
+
+function PaginationDemo() {
+  const [page, setPage] = useState(1)
+  return (
+    <Pagination currentPage={page} totalPages={5} onPageChange={setPage} />
+  )
+}
 
 function SegmentedControlDemo() {
   const [value, setValue] = useState("all")
@@ -59,6 +67,11 @@ export default function UiShowcase() {
           </DropdownMenuTrigger>
           <DropdownMenuContent><Button variant="ghost"><Checkbox />Button</Button></DropdownMenuContent>
         </DropdownMenu>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold mb-4">Pagination</h2>
+        <PaginationDemo />
       </section>
 
       <section>
