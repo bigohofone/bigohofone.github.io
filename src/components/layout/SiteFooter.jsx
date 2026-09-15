@@ -25,32 +25,16 @@ const resumeSections = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-12 pt-32 pb-16 px-6" style={{ backgroundColor: colors.grey100 }}>
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-start text-sm" style={{ color: colors.grey700 }}>
-        <nav className="flex flex-col items-start gap-2 text-sm" aria-label="Site map">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Link to="/" className="font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xl" style={{ color: colors.grey700 }}>Shortcut</Link>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-fit">
-              {resumeSections.map(([label, id]) => (
-                <DropdownMenuItem key={id}>
-                  <a href={`/#${id}`} className="text-sm" style={{ color: colors.grey700 }}>{label}</a>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <div className="flex flex-col items-start gap-2">
-            {resumeSections.map(([label, id]) => (
-              <a key={id} href={`/#${id}`} className="font-normal outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xl" style={{ color: colors.grey700 }}>{label}</a>
-            ))}
-          </div>
-          {/* <Link to="/blog" className="mt-6 font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>Blog</Link> */}
+    <footer className="text-sm" style={{ backgroundColor: colors.grey100 }}>
+      <div className="mx-auto w-full max-w-3xl px-6 pt-36 pb-18" style={{ color: colors.grey700 }}>
+        <nav className="flex flex-col items-start gap-2" aria-label="Site map">
+          <div className="font-bold" style={{ color: colors.grey700 }}>Site Map</div>
+          <Link to="/" className="" style={{ color: colors.grey700 }}>About</Link>
+          <Link to="/blog" className="" style={{ color: colors.grey700 }}>Blog</Link>
         </nav>
 
         <div className="mt-12">
-          <p className="font-bold" style={{ color: colors.grey700 }}>Wonjun Oh&apos;s Website</p>
-          <p className="font-bold" style={{ color: colors.grey700 }}>Copyright ⓒ Wonjun Oh. All Rights Reserved</p>
+          <p className="font-bold" style={{ color: colors.grey700 }}>ⓒ Wonjun Oh. All Rights Reserved</p>
         </div>
 
         <div className="mt-12 flex flex-wrap gap-2">

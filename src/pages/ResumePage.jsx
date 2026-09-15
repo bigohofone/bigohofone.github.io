@@ -69,32 +69,25 @@ function ProfileBox() {
         />
       </div>
       <div className={`mt-8`}>
-        <h1
-          className={`text-2xl font-bold`}
-          style={{ color: colors.grey700 }}
-        >
+        <h1>
           {profile.name}
         </h1>
 
-        <p className={`mt-3`}>
+        <p>
           M.S./Ph.D. Student, KAIST AI
         </p>
 
-        <h2
-          className={`mt-5 text-xl font-bold tracking-wide`}
-          style={{ color: colors.grey700 }}
-        >
+        <h2>
           About Me
         </h2>
 
-        <p className={`mt-3`}>
+        <p>
           Hi, I'm Wonjun Oh! I am an Integrated M.S./Ph.D. Student at{" "}
           <a href="https://gsai.kaist.ac.kr/?lang=en">KAIST AI</a>, advised by{" "}
           <a href="https://hyunw.kim/">Hyunwoo Kim</a>.
         </p>
 
-
-        <p className={`mt-3`}>
+        <p>
           My research focuses on evaluating and enhancing the general reasoning
           capabilities of LLMs. Specifically, I investigate data-centric
           methodologies leveraging LLMs to synthesize and filter high-quality
@@ -104,7 +97,7 @@ function ProfileBox() {
           absent.
         </p>
 
-        <p className={`mt-3`}>
+        <p>
           Previously, I was a Research Intern at{" "}
           <a href="https://www.upstage.ai/">Upstage</a>, where I contributed to
           their Sovereign AI project. Working within the Coding Agent team, I
@@ -250,7 +243,7 @@ function ActivitiesBox() {
 
 export default function ResumePage() {
   return (
-    <div className="mx-auto w-full max-w-3xl px-6">
+    <div className="mx-auto w-full max-w-3xl px-6 pb-18">
       <div className="flex flex-col">
         <ProfileBox />
 

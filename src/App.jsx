@@ -8,7 +8,7 @@ import UiShowcase from "@/pages/UiShowcase"
 
 export default function App() {
   return (
-    <div className="flex min-h-dvh flex-col" style={{ backgroundColor: colors.white, color: colors.grey600 }}>
+    <div className="flex min-h-dvh flex-col">
       <SiteHeader />
       <main className="flex-1">
         <Routes>

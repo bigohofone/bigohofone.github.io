@@ -225,19 +225,16 @@ function Row({
       "
     >
       <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <h4
-          className="text-lg font-bold"
-          style={{ color: colors.grey700 }}
-        >
+        <h3>
           {title}
-        </h4>
+        </h3>
 
         <div>
           <span style={{ color: present ? colors.blue500 : colors.grey500 }}>
             {date}
           </span>
-          <span> · </span>
-          <span>{subtitle}</span>
+          <span style={{ color: colors.grey300 }}> · </span>
+          <span style={{ color: colors.grey500 }}>{subtitle}</span>
         </div>
       </div>
     </motion.div>
@@ -312,13 +309,12 @@ export function Box({
   return (
     <>
       <div id={id} className="pt-12 pb-18">
-        <div className="mb-6 flex items-center gap-2 text-xl font-bold">
-          <h3 style={{ color: colors.grey700 }}>
+        <div className="mb-6 flex items-center gap-2">
+          <h2 className="!mt-0">
             {title}
-          </h3>
-
+          </h2>
           {useCount && (
-            <span style={{ color: colors.blue500 }}>
+            <span className="text-xl font-bold" style={{ color: colors.blue500 }}>
               {filteredItems.length}
             </span>
           )}
