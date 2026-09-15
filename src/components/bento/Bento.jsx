@@ -200,7 +200,7 @@ function Row({
   }
 
   return (
-    <motion.div
+    <motion.li
       animate={
         shaking
           ? { x: [-6, 6, -5, 5, -3, 3, 0] }
@@ -220,24 +220,22 @@ function Row({
         group relative cursor-pointer rounded-xl px-2 py-3
         outline-none transition-colors duration-150
         hover:bg-gray-100
-        focus-visible:ring-2 focus-visible:ring-blue-500
-        focus-visible:ring-offset-2
+        focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2
+        flex min-w-0 flex-1 flex-col gap-2
       "
     >
-      <div className="flex min-w-0 flex-1 flex-col gap-2">
-        <h3>
-          {title}
-        </h3>
+      <h3 className="!mt-0">
+        {title}
+      </h3>
 
-        <div>
-          <span style={{ color: present ? colors.blue500 : colors.grey500 }}>
-            {date}
-          </span>
-          <span style={{ color: colors.grey300 }}> · </span>
-          <span style={{ color: colors.grey500 }}>{subtitle}</span>
-        </div>
-      </div>
-    </motion.div>
+      <p className="!mt-0">
+        <span style={{ color: present ? colors.blue500 : colors.grey500 }}>
+          {date}
+        </span>
+        <span style={{ color: colors.grey300 }}> · </span>
+        <span style={{ color: colors.grey500 }}>{subtitle}</span>
+      </p>
+    </motion.li>
   )
 }
 
@@ -308,7 +306,7 @@ export function Box({
 
   return (
     <>
-      <div id={id} className="pt-12 pb-18">
+      <section id={id} className="pt-12 pb-18">
         <div className="mb-6 flex items-center gap-2">
           <h2 className="!mt-0">
             {title}
@@ -337,7 +335,7 @@ export function Box({
           </div>
         )}
 
-        <div>
+        <ul>
           {visibleItems.map((item) => (
             <Row
               key={item.title}
@@ -351,7 +349,7 @@ export function Box({
               }
             />
           ))}
-        </div>
+        </ul>
 
         {usePagination && totalPages > 1 && (
           <Pagination
@@ -360,7 +358,7 @@ export function Box({
             onPageChange={setPage}
           />
         )}
-      </div>
+      </section>
 
       <MarkdownModal
         md={md}

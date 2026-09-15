@@ -34,7 +34,7 @@ export function SiteFooter() {
         </nav>
 
         <div className="mt-12">
-          <p className="font-bold" style={{ color: colors.grey700 }}>ⓒ Wonjun Oh. All Rights Reserved</p>
+          <p className="!text-sm !font-bold" style={{ color: colors.grey700 }}>ⓒ Wonjun Oh. All Rights Reserved</p>
         </div>
 
         <div className="mt-12 flex flex-wrap gap-2">
