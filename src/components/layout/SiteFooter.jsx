@@ -25,7 +25,7 @@ const resumeSections = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-12 pt-32 pb-16" style={{ backgroundColor: colors.grey100 }}>
+    <footer className="mt-12 pt-32 pb-16 px-6" style={{ backgroundColor: colors.grey100 }}>
       <div className="mx-auto flex w-full max-w-3xl flex-col items-start text-sm" style={{ color: colors.grey700 }}>
         <nav className="flex flex-col items-start gap-2 text-sm" aria-label="Site map">
           <DropdownMenu>
