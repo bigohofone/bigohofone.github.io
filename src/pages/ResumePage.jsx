@@ -15,35 +15,6 @@ import { Button } from "@/components/ui/button"
 import { FiMail, FiDownload } from "react-icons/fi"
 
 
-function renderAuthors(authors) {
-  const parts = authors.split(/({[^}]+}[*†]?)/g).filter(Boolean)
-
-  return parts.map((part, i) => {
-    const match = part.match(/^{([^}]+)}([*†]?)$/)
-
-    if (!match) return <span key={i}>{part}</span>
-
-    const [, names, marker] = match
-
-    if (!marker) return <span key={i}>{names}</span>
-
-    const splitAt = names.lastIndexOf(", ")
-    const head = splitAt >= 0 ? names.slice(0, splitAt + 2) : ""
-    const tail = splitAt >= 0 ? names.slice(splitAt + 2) : names
-
-    return (
-      <span key={i}>
-        {head}
-        <span className="whitespace-nowrap">
-          {tail}
-          <sup className="ml-0.5">{marker}</sup>
-        </span>
-      </span>
-    )
-  })
-}
-
-
 const EMAIL =
   contact.items.find((item) => item.label === "Email")?.value ?? ""
 
@@ -69,25 +40,25 @@ function ProfileBox() {
         />
       </div>
       <div className={`mt-8`}>
-        <h1>
+        <h1 className="text-2xl font-bold text-gray-700">
           {profile.name}
         </h1>
 
-        <p>
+        <p className="mt-2 text-base text-gray-500">
           M.S./Ph.D. Student, KAIST AI
         </p>
 
-        <h2>
+        <h2 className="mt-6 text-xl font-bold text-gray-700">
           About Me
         </h2>
 
-        <p>
+        <p className="mt-2 text-base text-gray-500">
           Hi, I'm Wonjun Oh! I am an Integrated M.S./Ph.D. Student at{" "}
           <a href="https://gsai.kaist.ac.kr/?lang=en">KAIST AI</a>, advised by{" "}
           <a href="https://hyunw.kim/">Hyunwoo Kim</a>.
         </p>
 
-        <p>
+        <p className="mt-2 text-base text-gray-500">
           My research focuses on evaluating and enhancing the general reasoning
           capabilities of LLMs. Specifically, I investigate data-centric
           methodologies leveraging LLMs to synthesize and filter high-quality
@@ -97,22 +68,23 @@ function ProfileBox() {
           absent.
         </p>
 
-        <p>
+        <p className="mt-2 text-base text-gray-500">
           Previously, I was a Research Intern at{" "}
           <a href="https://www.upstage.ai/">Upstage</a>, where I contributed to
           their Sovereign AI project. Working within the Coding Agent team, I
           helped develop the Solar Open2 and Solar Pro4 models.
         </p>
       </div>
+
       <div className="flex flex-wrap gap-2 mt-12">
-        <Button variant="secondary" size="md" onClick={handleCopyEmail}>
+        <Button variant="secondary" size="lg" onClick={handleCopyEmail}>
           <span className="flex size-6 shrink-0 items-center justify-center">
             <FiMail className="size-5 stroke-2" aria-hidden="true" />
           </span>
           Mail
         </Button>
 
-        <Button variant="default" size="md" onClick={downloadCV}>
+        <Button variant="default" size="lg" onClick={downloadCV}>
           <span className="flex size-6 shrink-0 items-center justify-center">
             <FiDownload className="size-5 stroke-2" aria-hidden="true" />
           </span>
@@ -176,7 +148,7 @@ function ExperienceBox() {
 function PublicationsBox() {
   const items = publications.items.map((it) => ({
     title: it.title,
-    subtitle: renderAuthors(it.authors),
+    subtitle: it.authors,
     date: it.date,
     selected: it.selected,
     md: it.md,
@@ -187,6 +159,7 @@ function PublicationsBox() {
       id="publications"
       title={publications.title}
       items={items}
+      useCount
       useYearFilter
       useSelectedFilter
       usePagination
@@ -210,6 +183,7 @@ function AwardsBox() {
       id="awards"
       title={awards.title}
       items={items}
+      useCount
       useYearFilter
       useSelectedFilter
       usePagination
@@ -233,6 +207,7 @@ function ActivitiesBox() {
       id="activities"
       title="Activities"
       items={items}
+      useCount
       useYearFilter
       useSelectedFilter
       usePagination

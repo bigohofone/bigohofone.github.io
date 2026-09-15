@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { createPortal } from "react-dom"
-import { AnimatePresence, motion } from "framer-motion"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { colors } from "@toss/tds-colors"
 
@@ -12,6 +11,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuCheckItem
 } from "@/components/ui/dropdown"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Pagination } from "@/components/ui/pagination"
@@ -23,6 +23,9 @@ import {
 
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
 
+import {ListRow} from "@/components/ui/ListRow"
+
+
 
 function YearSelect({
   years,
@@ -31,54 +34,23 @@ function YearSelect({
   onToggleAll,
 }) {
   const [open, setOpen] = useState(false)
-  const allSelected = selectedYears.length === years.length
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="md"
-          className="inline-flex items-center gap-2 rounded-xl"
-        >
+        <Button variant="secondary" size="md">
           Years
-          <ChevronDownIcon
-            className="h-4 w-4 text-[#374151]"
-            strokeWidth={2}
-          />
+          <ChevronDownIcon className="size-4 text-[#374151]" strokeWidth={2.5}/>
         </Button>
       </DropdownMenuTrigger>
-
       <DropdownMenuContent className="w-fit">
-        <DropdownMenuItem onClick={onToggleAll}>
-          <label
-            className="flex cursor-pointer items-center gap-2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Checkbox
-              checked={allSelected}
-              onCheckedChange={onToggleAll}
-            />
-            <span className="text-sm">All</span>
-          </label>
-        </DropdownMenuItem>
-
+        <DropdownMenuCheckItem onClick={onToggleAll} checked={selectedYears.length === years.length}>
+          All
+        </DropdownMenuCheckItem>
         {years.map((year) => (
-          <DropdownMenuItem
-            key={year}
-            onClick={() => onToggleYear(year)}
-          >
-            <label
-              className="flex cursor-pointer items-center gap-2"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Checkbox
-                checked={selectedYears.includes(year)}
-                onCheckedChange={() => onToggleYear(year)}
-              />
-              <span className="text-sm">{year}</span>
-            </label>
-          </DropdownMenuItem>
+          <DropdownMenuCheckItem onClick={() => onToggleYear(year)} checked={selectedYears.includes(year)}>
+            {year}
+          </DropdownMenuCheckItem>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
@@ -86,43 +58,15 @@ function YearSelect({
 }
 
 
-function SectionControls({
-  showSelected,
-  onToggleSelected,
-  years,
-  selectedYears,
-  onToggleYear,
-  onToggleAll,
-}) {
-  return (
-    <div className="flex items-start gap-2">
-      {years && (
-        <YearSelect
-          years={years}
-          selectedYears={selectedYears}
-          onToggleYear={onToggleYear}
-          onToggleAll={onToggleAll}
-        />
-      )}
-
-      {onToggleSelected && (
-        <SegmentedControl
-          options={[
-            { value: "all", label: "All" },
-            { value: "selected", label: "Selected" },
-          ]}
-          value={showSelected ? "selected" : "all"}
-          onChange={(value) =>
-            onToggleSelected(value === "selected")
-          }
-        />
-      )}
-    </div>
-  )
-}
-
-
+// 1. MarkdownModal 수정 코드
 function MarkdownModal({ md, onClose }) {
+  const [mounted, setMounted] = useState(false)
+
+  // SSR 환경 대응: 클라이언트 마운트 완료 후 포탈 렌더링
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   useEffect(() => {
     if (!md) return
 
@@ -139,103 +83,31 @@ function MarkdownModal({ md, onClose }) {
     }
   }, [md, onClose])
 
-  if (!md) return null
+  if (!mounted || !md) return null
 
   return createPortal(
-    <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-      >
-        <motion.div
-          className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white p-6 shadow-xl"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 12 }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="flex justify-end mb-4">
-            <Button
-              variant="ghost"
-              onClick={onClose}
-              className="size-11 p-0"
-              aria-label="Close"
-            >
-              <Cross2Icon className="size-5" />
-            </Button>
-          </div>
-          <MarkdownRenderer content={md} />
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>,
-    document.body
-  )
-}
-
-
-function Row({
-  title,
-  subtitle,
-  date,
-  onClick,
-}) {
-  const present = /present/i.test(date || "")
-  const [shaking, setShaking] = useState(false)
-
-  const handleClick = () => {
-    if (onClick) {
-      onClick()
-      return
-    }
-
-    setShaking(false)
-
-    setTimeout(() => {
-      setShaking(true)
-      setTimeout(() => setShaking(false), 500)
-    }, 10)
-  }
-
-  return (
-    <motion.li
-      animate={
-        shaking
-          ? { x: [-6, 6, -5, 5, -3, 3, 0] }
-          : { x: 0 }
-      }
-      transition={{ duration: 0.4 }}
-      role="button"
-      tabIndex={0}
-      onClick={handleClick}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault()
-          handleClick()
-        }
-      }}
-      className="
-        group relative cursor-pointer rounded-xl px-2 py-3
-        outline-none transition-colors duration-150
-        hover:bg-gray-100
-        focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2
-        flex min-w-0 flex-1 flex-col gap-2
-      "
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      onClick={onClose}
     >
-      <h3 className="!mt-0">
-        {title}
-      </h3>
-
-      <p className="!mt-0">
-        <span style={{ color: present ? colors.blue500 : colors.grey500 }}>
-          {date}
-        </span>
-        <span style={{ color: colors.grey300 }}> · </span>
-        <span style={{ color: colors.grey500 }}>{subtitle}</span>
-      </p>
-    </motion.li>
+      <div
+        className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white px-6 pt-0 pb-18 shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex justify-end my-4">
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            className="size-8 p-0 items-center justify-center rounded-full"
+            aria-label="Close"
+          >
+            <Cross2Icon className="size-5" />
+          </Button>
+        </div>
+        <MarkdownRenderer content={md} />
+      </div>
+    </div>,
+    document.body
   )
 }
 
@@ -244,109 +116,103 @@ export function Box({
   id,
   title,
   items = [],
-  useCount = true,
+  useCount = false,
   usePagination = false,
   useYearFilter = false,
   useSelectedFilter = false,
   pageSize = 10,
 }) {
   const [page, setPage] = useState(1)
-  const [showSelected, setShowSelected] = useState(false)
+  const [showSelected, setShowSelected] = useState(true)
   const [selectedYears, setSelectedYears] = useState([])
   const [md, setMd] = useState(null)
 
-  const years = [
-    ...new Set(items.map((item) => startYear(item.date))),
-  ]
-    .filter((year) => /^\d{4}$/.test(year))
-    .sort()
-    .reverse()
+  // 1. 연도 목록 계산 (불필요한 재연산 방지)
+  const years = useMemo(() => {
+    if (!useYearFilter) return []
+    return [...new Set(items.map((item) => startYear(item.date)))]
+      .filter((year) => /^\d{4}$/.test(year))
+      .sort((a, b) => b.localeCompare(a))
+  }, [items, useYearFilter])
 
   useEffect(() => {
     setSelectedYears(years)
-  }, [items])
+  }, [years])
 
-  const filteredItems = [...items]
-    .filter(
-      (item) =>
-        (!useSelectedFilter ||
-          !showSelected ||
-          item.selected !== false) &&
-        (!useYearFilter ||
-          selectedYears.includes(startYear(item.date)))
-    )
-    .sort(compareItemsByDateThenAlphabetical)
+  // 2. 필터링 및 정렬 (조건식 단순화 및 메모이제이션)
+  const filteredItems = useMemo(() => {
+    return items
+      .filter((item) => {
+        if (useSelectedFilter && showSelected && item.selected === false) return false
+        if (useYearFilter && !selectedYears.includes(startYear(item.date))) return false
+        return true
+      })
+      .sort(compareItemsByDateThenAlphabetical)
+  }, [items, useSelectedFilter, showSelected, useYearFilter, selectedYears])
 
-  const totalPages = Math.ceil(
-    filteredItems.length / pageSize
-  )
-
+  // 3. 페이지네이션 계산
+  const totalPages = Math.ceil(filteredItems.length / pageSize)
   const visibleItems = usePagination
-    ? filteredItems.slice(
-        (page - 1) * pageSize,
-        page * pageSize
-      )
+    ? filteredItems.slice((page - 1) * pageSize, page * pageSize)
     : filteredItems
 
   const toggleYear = (year) => {
-    setSelectedYears((current) =>
-      current.includes(year)
-        ? current.filter((value) => value !== year)
-        : [...current, year]
+    setSelectedYears((prev) =>
+      prev.includes(year) ? prev.filter((y) => y !== year) : [...prev, year]
     )
     setPage(1)
   }
 
   const toggleAllYears = () => {
-    setSelectedYears((current) =>
-      current.length === years.length ? [] : years
-    )
+    setSelectedYears((prev) => (prev.length === years.length ? [] : years))
+    setPage(1)
+  }
+
+  const handleSelectedChange = (value) => {
+    setShowSelected(value === "selected")
     setPage(1)
   }
 
   return (
     <>
       <section id={id} className="pt-12 pb-18">
-        <div className="mb-6 flex items-center gap-2">
-          <h2 className="!mt-0">
-            {title}
-          </h2>
+        <div className="flex gap-2 mb-6">
+          <h2 className="text-xl font-bold text-gray-700">{title}</h2>
           {useCount && (
-            <span className="text-xl font-bold" style={{ color: colors.blue500 }}>
-              {filteredItems.length}
-            </span>
+            <span className="text-xl font-bold text-blue-500">{filteredItems.length}</span>
           )}
         </div>
 
         {(useYearFilter || useSelectedFilter) && (
-          <div className="mb-6">
-            <SectionControls
-              showSelected={showSelected}
-              onToggleSelected={
-                useSelectedFilter
-                  ? setShowSelected
-                  : undefined
-              }
-              years={useYearFilter ? years : undefined}
-              selectedYears={selectedYears}
-              onToggleYear={toggleYear}
-              onToggleAll={toggleAllYears}
-            />
+          <div className="flex gap-2 mb-6">
+            {useYearFilter && (
+              <YearSelect
+                years={years}
+                selectedYears={selectedYears}
+                onToggleYear={toggleYear}
+                onToggleAll={toggleAllYears}
+              />
+            )}
+            {useSelectedFilter && (
+              <SegmentedControl
+                options={[
+                  { value: "all", label: "All" },
+                  { value: "selected", label: "Selected" },
+                ]}
+                value={showSelected ? "selected" : "all"}
+                onChange={handleSelectedChange}
+              />
+            )}
           </div>
         )}
 
         <ul>
           {visibleItems.map((item) => (
-            <Row
-              key={item.title}
+            <ListRow
+              key={item.id || item.title}
               title={item.title}
-              subtitle={item.subtitle}
-              date={item.date}
-              onClick={
-                item.md
-                  ? () => setMd(item.md)
-                  : undefined
-              }
+              subtitle={`${item.date} · ${item.subtitle}`}
+              onClick={item.md ? () => setMd(item.md) : undefined}
             />
           ))}
         </ul>
@@ -360,10 +226,7 @@ export function Box({
         )}
       </section>
 
-      <MarkdownModal
-        md={md}
-        onClose={() => setMd(null)}
-      />
+      <MarkdownModal md={md} onClose={() => setMd(null)} />
     </>
   )
 }

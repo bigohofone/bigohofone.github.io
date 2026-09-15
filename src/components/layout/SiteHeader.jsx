@@ -9,15 +9,9 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline"
 // underlined, inactive links sit in the faint grey until hovered.
 function HeaderLink({ to, children }) {
   return (
-    <NavLink
-      to={to}
-      className="rounded-xl px-4 h-11 text-sm font-bold flex items-center transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-      style={{ color: colors.grey700, backgroundColor: "transparent" }}
-      onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
-      onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = "transparent" }}
-    >
+    <Button as={NavLink} to={to} variant="ghost" size="md">
       {children}
-    </NavLink>
+    </Button>
   )
 }
 

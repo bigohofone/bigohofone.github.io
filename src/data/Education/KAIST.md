@@ -1,6 +1,6 @@
 ---
-organization: KAIST
-major: "M.S./Ph.D., Kim Jaechul Graduate School of AI"
+organization: KAIST AI
+major: "M.S./Ph.D., Artificial Intelligence"
 date: "2026-08-31 ~ Present"
 location: "Seoul, Korea"
 ---

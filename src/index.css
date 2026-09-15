@@ -2,6 +2,7 @@
 @import "https://static.toss.im/tps/others-swap.css";
 @import "https://static.toss.im/tossface-font/v1.7.0/tossface.css";
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* 1. 기본 스타일 변수 선언 (768px 이상 기준 - 큰 사이즈) */
 :root {
@@ -110,38 +111,4 @@ a:active {
   line-height: var(--text-base--line-height);
   text-decoration: none;
   transition: color 0.15s ease-in-out;
-}
-
-p {
-  font-weight: normal;
-  color: #8b95a1;
-
-  font-size: var(--text-base);
-  line-height: var(--text-base--line-height);
-
-  margin-top: 12px;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: bold;
-  color: #4e5968;
-  margin-top: 16px;
-}
-
-h1 {
-  font-size: var(--text-2xl);
-  line-height: var(--text-2xl--line-height);
-  margin-top: 24px;
-}
-
-h2 {
-  font-size: var(--text-xl);
-  line-height: var(--text-xl--line-height);
-  margin-top: 20px;
-}
-
-h3 {
-  font-size: var(--text-lg);
-  line-height: var(--text-lg--line-height);
-  margin-top: 16px;
 }

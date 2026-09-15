@@ -3,7 +3,7 @@ import { Pagination } from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { SegmentedControl } from "@/components/ui/segmented-control"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from "@/components/ui/dropdown"
+import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuCheckItem } from "@/components/ui/dropdown"
 
 import { BookmarkIcon as BookmarkSolid } from "@heroicons/react/24/solid"
 import { BookmarkIcon as BookmarkOutline } from "@heroicons/react/24/outline"
@@ -13,6 +13,35 @@ function PaginationDemo() {
   const [page, setPage] = useState(1)
   return (
     <Pagination currentPage={page} totalPages={5} onPageChange={setPage} />
+  )
+}
+
+function DropdownCheckDemo() {
+  const [checked, setChecked] = useState(false)
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="secondary">Options</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuCheckItem checked={checked} onCheckedChange={setChecked}>Enable feature</DropdownMenuCheckItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+function DropdownDemo() {
+  const [open, setOpen] = useState(true)
+  return (
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger asChild>
+        <Button variant="secondary">Select</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem>Option 1</DropdownMenuItem>
+        <DropdownMenuItem>Option 2</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
@@ -58,15 +87,20 @@ export default function UiShowcase() {
       </section>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Dropdown + CheckboxButton</h2>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="inline-flex items-center gap-1">
-              Years <ChevronDownIcon className="!size-4 text-[#374151]" strokeWidth={2.5} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent><Button variant="ghost"><Checkbox />Button</Button></DropdownMenuContent>
-        </DropdownMenu>
+        <h2 className="text-2xl font-semibold mb-4">Checkbox</h2>
+        <div className="flex items-center gap-4">
+          <Checkbox size="sm" />
+          <Checkbox size="md" />
+          <Checkbox size="lg" />
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold mb-4">Dropdown</h2>
+        <div className="flex gap-4 items-center">
+          <DropdownDemo />
+          <DropdownCheckDemo />
+        </div>
       </section>
 
       <section>

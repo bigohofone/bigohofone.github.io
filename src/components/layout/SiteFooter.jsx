@@ -40,6 +40,7 @@ export function SiteFooter() {
         <div className="mt-12 flex flex-wrap gap-2">
           {contact.items.filter((item) => item.label !== "Website").map((item) => {
             const Icon = contactIcons[item.label]
+
             return (
               <a
                 key={item.label}
@@ -47,7 +48,7 @@ export function SiteFooter() {
                 target={item.link.startsWith("http") ? "_blank" : undefined}
                 rel={item.link.startsWith("http") ? "noreferrer" : undefined}
                 aria-label={`${item.label}: ${item.value}`}
-                className="flex size-11 items-center justify-center rounded-[12px] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="flex size-12 items-center justify-center rounded-[12px] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                 style={{ backgroundColor: colors.grey400, color: colors.grey100 }}
                 onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey500 }}
                 onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.grey400 }}
