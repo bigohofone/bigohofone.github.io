@@ -3,8 +3,8 @@
 @import "https://static.toss.im/tossface-font/v1.7.0/tossface.css";
 @import "tailwindcss";
 
-
-@theme inline {
+/* 1. 기본 스타일 변수 선언 (768px 이상 기준 - 큰 사이즈) */
+:root {
   --text-xs: 13px;
   --text-xs--line-height: 19.5px;
   --text-sm: 15px;
@@ -12,9 +12,9 @@
   --text-base: 17px;
   --text-base--line-height: 25.5px;
   --text-lg: 20px;
-  --text-lg--line-height: 29px;
+  --text-lg--line-height: 30px;
   --text-xl: 22px;
-  --text-xl--line-height: 31px;
+  --text-xl--line-height: 33px;
   --text-2xl: 26px;
   --text-2xl--line-height: 35px;
   --text-3xl: 30px;
@@ -22,14 +22,47 @@
 
   --font-sans: "Toss Product Sans", "Tossface", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
   --font-mono: "Toss Product Sans", "Tossface", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+}
 
-  --color-blue-500: #3182f6;
-  --color-red-500: #f44336;
-  --color-grey-100: #f3f4f6;
-  --color-grey-200: #e5e7eb;
-  --color-grey-300: #d1d5db;
-  --color-grey-700: #374151;
-  --color-blue-100: #dbeafe;
+/* 2. 화면 폭이 768px 미만일 때 변수값 한 단계씩 축소 */
+@media (max-width: 767.98px) {
+  :root {
+    --text-xs: 11px;
+    --text-xs--line-height: 16.5px;
+    --text-sm: 13px;
+    --text-sm--line-height: 19.5px;
+    --text-base: 15px;
+    --text-base--line-height: 22.5px;
+    --text-lg: 17px;
+    --text-lg--line-height: 25.5px;
+    --text-xl: 20px;
+    --text-xl--line-height: 30px;
+    --text-2xl: 22px;
+    --text-2xl--line-height: 33px;
+    --text-3xl: 26px;
+    --text-3xl--line-height: 35px;
+  }
+}
+
+/* 3. Tailwind Theme에 CSS 변수 연결 */
+@theme inline {
+  --text-xs: var(--text-xs);
+  --text-xs--line-height: var(--text-xs--line-height);
+  --text-sm: var(--text-sm);
+  --text-sm--line-height: var(--text-sm--line-height);
+  --text-base: var(--text-base);
+  --text-base--line-height: var(--text-base--line-height);
+  --text-lg: var(--text-lg);
+  --text-lg--line-height: var(--text-lg--line-height);
+  --text-xl: var(--text-xl);
+  --text-xl--line-height: var(--text-xl--line-height);
+  --text-2xl: var(--text-2xl);
+  --text-2xl--line-height: var(--text-2xl--line-height);
+  --text-3xl: var(--text-3xl);
+  --text-3xl--line-height: var(--text-3xl--line-height);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
 @layer base {
@@ -41,18 +74,10 @@
   }
   body {
     font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    color: #8b95a1;
-    font-weight: 500;
-    line-height: 22.5px;
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-  @media (min-width: 640px) {
-    body {
-      font-size: var(--text-sm);
-      line-height: 22.5px;
-    }
   }
   button,
   input,
@@ -61,18 +86,12 @@
     font-family: inherit;
     font-weight: inherit;
   }
-  /* Superscripts (author markers) must not stretch the 24px line box. */
   sup {
     position: relative;
     top: -0.35em;
     vertical-align: baseline;
     line-height: 0;
   }
-}
-
-a {
-  color: #3182f6;
-  text-decoration: none;
 }
 
 a {
@@ -88,7 +107,7 @@ a:active {
   display: inline-block;
   font-size: var(--text-base);
   font-weight: 700;
-  line-height: 25.5px;
+  line-height: var(--text-base--line-height);
   text-decoration: none;
   transition: color 0.15s ease-in-out;
 }

@@ -1,219 +1,375 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { AnimatePresence, motion } from "framer-motion"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { colors } from "@toss/tds-colors"
+
 import { MarkdownRenderer } from "@/components/common/MarkdownRenderer"
+import { Button } from "@/components/ui/button"
+import { SegmentedControl } from "@/components/ui/segmented-control"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Pagination } from "@/components/ui/pagination"
 
-// Text line-height comes from the active text-size token.
-export const LINE = ""
-const RowClickContext = createContext(null)
+import {
+  compareItemsByDateThenAlphabetical,
+  startYear,
+} from "@/utils/date"
 
-// Editorial look: sharp corners, hairline border, hard offset shadow toward
-// the bottom-right, fill matching the page background. When `title` is given
-// it renders as a separate header strip with its own even padding, divided
-// from the body by a full-width rule.
-export function Box({ className = "", id, title, count, controls, children }) {
+import { ChevronDownIcon } from "@heroicons/react/24/outline"
+
+
+function YearSelect({
+  years,
+  selectedYears,
+  onToggleYear,
+  onToggleAll,
+}) {
+  const [open, setOpen] = useState(false)
+  const allSelected = selectedYears.length === years.length
+
   return (
-    <div
-      id={id}
-      className={`pt-16 pb-24 ${LINE} ${className}`}
-    >
-      {title && (
-        <div className="mb-6">
-          <h3 className={`font-mono text-xl font-bold ${LINE}`} style={{ color: colors.grey800 }}>
-          {title}
-          {count !== undefined && <span className="ml-2 font-bold" style={{ color: colors.blue500 }}>{count}</span>}
-          </h3>
-          {controls}
-        </div>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          size="md"
+          className="inline-flex items-center gap-2 rounded-xl"
+        >
+          Years
+          <ChevronDownIcon
+            className="h-4 w-4 text-[#374151]"
+            strokeWidth={2}
+          />
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent className="w-fit">
+        <DropdownMenuItem onClick={onToggleAll}>
+          <label
+            className="flex cursor-pointer items-center gap-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Checkbox
+              checked={allSelected}
+              onCheckedChange={onToggleAll}
+            />
+            <span className="text-sm">All</span>
+          </label>
+        </DropdownMenuItem>
+
+        {years.map((year) => (
+          <DropdownMenuItem
+            key={year}
+            onClick={() => onToggleYear(year)}
+          >
+            <label
+              className="flex cursor-pointer items-center gap-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Checkbox
+                checked={selectedYears.includes(year)}
+                onCheckedChange={() => onToggleYear(year)}
+              />
+              <span className="text-sm">{year}</span>
+            </label>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+
+function SectionControls({
+  showSelected,
+  onToggleSelected,
+  years,
+  selectedYears,
+  onToggleYear,
+  onToggleAll,
+}) {
+  return (
+    <div className="flex items-start gap-2">
+      {years && (
+        <YearSelect
+          years={years}
+          selectedYears={selectedYears}
+          onToggleYear={onToggleYear}
+          onToggleAll={onToggleAll}
+        />
       )}
-      <div className={title ? "[&>:first-child]:mt-0" : ""}>{children}</div>
+
+      {onToggleSelected && (
+        <SegmentedControl
+          options={[
+            { value: "all", label: "All" },
+            { value: "selected", label: "Selected" },
+          ]}
+          value={showSelected ? "selected" : "all"}
+          onChange={(value) =>
+            onToggleSelected(value === "selected")
+          }
+        />
+      )}
     </div>
   )
 }
 
-export function Row({ year, present = false, description, onClick, hasDetails = false, children }) {
-  const clickHandlerRef = useRef(onClick)
-  const [interactive, setInteractive] = useState(Boolean(onClick) || hasDetails)
-  const [shaking, setShaking] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
-  const shakeTimeoutRef = useRef(null)
 
-  const resetHover = useCallback(() => {
-    setIsHovered(false)
-  }, [])
+function MarkdownModal({ md, onClose }) {
+  useEffect(() => {
+    if (!md) return
 
-  const registerClickHandler = useCallback((handler) => {
-    clickHandlerRef.current = handler
-    setInteractive(true)
-    return () => {
-      clickHandlerRef.current = null
-      setInteractive(Boolean(onClick))
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose()
     }
-  }, [onClick])
 
-  const triggerShake = useCallback(() => {
-    if (shakeTimeoutRef.current) clearTimeout(shakeTimeoutRef.current)
+    document.addEventListener("keydown", handleKeyDown)
+    document.body.style.overflow = "hidden"
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+      document.body.style.overflow = ""
+    }
+  }, [md, onClose])
+
+  if (!md) return null
+
+  return createPortal(
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <motion.div
+          className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white p-6 shadow-xl"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 12 }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex justify-end mb-4">
+            <Button
+              variant="ghost"
+              onClick={onClose}
+              className="size-11 p-0"
+              aria-label="Close"
+            >
+              <Cross2Icon className="size-5" />
+            </Button>
+          </div>
+          <MarkdownRenderer content={md} />
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>,
+    document.body
+  )
+}
+
+
+function Row({
+  title,
+  subtitle,
+  date,
+  onClick,
+}) {
+  const present = /present/i.test(date || "")
+  const [shaking, setShaking] = useState(false)
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick()
+      return
+    }
+
     setShaking(false)
+
     setTimeout(() => {
       setShaking(true)
-      shakeTimeoutRef.current = setTimeout(() => {
-        setShaking(false)
-      }, 500)
+      setTimeout(() => setShaking(false), 500)
     }, 10)
-  }, [])
-
-  const handleClick = (event) => {
-    if (event.defaultPrevented) return
-    if (clickHandlerRef.current) {
-      clickHandlerRef.current(event)
-    } else {
-      triggerShake()
-    }
   }
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault()
-      handleClick(event)
-    }
-  }
-
-  const rowContextValue = useMemo(
-    () => ({ registerClickHandler, resetHover }),
-    [registerClickHandler, resetHover]
-  )
-
   return (
-    <RowClickContext.Provider value={rowContextValue}>
-      <motion.div
-        animate={shaking ? { x: [-6, 6, -5, 5, -3, 3, 0] } : { x: 0 }}
-        transition={{ duration: 0.4 }}
-        role="button"
-        tabIndex={0}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        className={`group relative rounded-[12px] px-2 py-3 cursor-pointer transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${LINE}`}
-        style={{ backgroundColor: isHovered ? colors.grey100 : colors.white }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div className={`min-w-0 flex-1 flex flex-col gap-1 ${LINE}`}>
-          {children}
-          {description && (
-            <p className={`text-sm ${LINE}`} style={{ color: colors.grey500 }}>
-              <span style={present ? { color: colors.blue500 } : undefined}>
-                {present ? "Present" : year}
-              </span>
-              {" · "}
-              {description}
-            </p>
-          )}
-        </div>
-      </motion.div>
-    </RowClickContext.Provider>
-  )
-}
-
-
-export function RowTitle({ children, className = "" }) {
-  return (
-    <span className={`inline-block text-base font-semibold ${className}`} style={{ color: colors.grey800 }}>
-      {children}
-    </span>
-  )
-}
-
-// Title trigger that opens the full description in a popup styled like an
-// expanded bento row: logo tile + title/subtitle header, then body.
-export function Details({ title, subtitle, meta, logo, trigger, children }) {
-  const [open, setOpen] = useState(false)
-  const rowContext = useContext(RowClickContext)
-  const registerClickHandler = rowContext?.registerClickHandler
-  const resetHover = rowContext?.resetHover
-
-  const closeDetails = useCallback(() => {
-    setOpen(false)
-  }, [])
-
-  useEffect(() => {
-    if (!registerClickHandler) return undefined
-    return registerClickHandler(() => {
-      resetHover?.()
-      setOpen(true)
-    })
-  }, [registerClickHandler, resetHover])
-
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e) => {
-      if (e.key === "Escape") {
-        e.stopPropagation()
-        closeDetails()
+    <motion.div
+      animate={
+        shaking
+          ? { x: [-6, 6, -5, 5, -3, 3, 0] }
+          : { x: 0 }
       }
-    }
-    window.addEventListener("keydown", onKey)
-    return () => window.removeEventListener("keydown", onKey)
-  }, [closeDetails, open])
+      transition={{ duration: 0.4 }}
+      role="button"
+      tabIndex={0}
+      onClick={handleClick}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault()
+          handleClick()
+        }
+      }}
+      className="
+        group relative cursor-pointer rounded-xl px-2 py-3
+        outline-none transition-colors duration-150
+        hover:bg-gray-100
+        focus-visible:ring-2 focus-visible:ring-blue-500
+        focus-visible:ring-offset-2
+      "
+    >
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <h4
+          className="text-lg font-bold"
+          style={{ color: colors.grey700 }}
+        >
+          {title}
+        </h4>
 
+        <div>
+          <span style={{ color: present ? colors.blue500 : colors.grey500 }}>
+            {date}
+          </span>
+          <span> · </span>
+          <span>{subtitle}</span>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+
+export function Box({
+  id,
+  title,
+  items = [],
+  useCount = true,
+  usePagination = false,
+  useYearFilter = false,
+  useSelectedFilter = false,
+  pageSize = 10,
+}) {
+  const [page, setPage] = useState(1)
+  const [showSelected, setShowSelected] = useState(false)
+  const [selectedYears, setSelectedYears] = useState([])
+  const [md, setMd] = useState(null)
+
+  const years = [
+    ...new Set(items.map((item) => startYear(item.date))),
+  ]
+    .filter((year) => /^\d{4}$/.test(year))
+    .sort()
+    .reverse()
+
+  useEffect(() => {
+    setSelectedYears(years)
+  }, [items])
+
+  const filteredItems = [...items]
+    .filter(
+      (item) =>
+        (!useSelectedFilter ||
+          !showSelected ||
+          item.selected !== false) &&
+        (!useYearFilter ||
+          selectedYears.includes(startYear(item.date)))
+    )
+    .sort(compareItemsByDateThenAlphabetical)
+
+  const totalPages = Math.ceil(
+    filteredItems.length / pageSize
+  )
+
+  const visibleItems = usePagination
+    ? filteredItems.slice(
+        (page - 1) * pageSize,
+        page * pageSize
+      )
+    : filteredItems
+
+  const toggleYear = (year) => {
+    setSelectedYears((current) =>
+      current.includes(year)
+        ? current.filter((value) => value !== year)
+        : [...current, year]
+    )
+    setPage(1)
+  }
+
+  const toggleAllYears = () => {
+    setSelectedYears((current) =>
+      current.length === years.length ? [] : years
+    )
+    setPage(1)
+  }
 
   return (
     <>
-      <RowTitle>{trigger || title}</RowTitle>
-      {createPortal(
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-5 backdrop-blur-[2px]"
-              style={{ backgroundColor: `${colors.grey900}66` }}
-              onClick={closeDetails}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.97, y: 12 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.97, y: 12 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                role="dialog"
-                aria-modal="true"
-                aria-label={title}
-                onClick={(e) => e.stopPropagation()}
-                className={`w-full max-w-3xl h-full rounded-[12px] px-6 py-6 overflow-y-auto ${LINE}`}
-                style={{ backgroundColor: colors.white, boxShadow: `4px 4px 2px 0 ${colors.greyOpacity200}` }}
-              >
-                <div className="mb-2 flex w-full items-start justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={closeDetails}
-                    aria-label="Close"
-                    className="flex size-8 cursor-pointer items-center justify-center rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 outline-none"
-                    style={{ backgroundColor: colors.grey100, color: colors.grey700 }}
-                    onMouseEnter={(event) => { event.currentTarget.style.backgroundColor = colors.grey200 }}
-                    onMouseLeave={(event) => { event.currentTarget.style.backgroundColor = colors.grey100 }}
-                  >
-                    <Cross2Icon className="size-4" />
-                  </button>
-                </div>
-                <div className="mb-2 flex w-full flex-col items-start">
-                  <RowTitle>{title}</RowTitle>
-                  {subtitle && <p className={`mt-2 text-sm ${LINE}`} style={{ color: colors.grey500 }}>{subtitle}</p>}
-                  {meta && <p className={`text-sm ${LINE}`} style={{ color: colors.grey500 }}>{meta}</p>}
-                </div>
-                <div className="mt-6 flex w-full flex-col items-start">
-                  <MarkdownRenderer>{children}</MarkdownRenderer>
-                </div>
-              </motion.div>
-            </motion.div>
+      <div id={id} className="pt-12 pb-18">
+        <div className="mb-6 flex items-center gap-2 text-xl font-bold">
+          <h3 style={{ color: colors.grey700 }}>
+            {title}
+          </h3>
+
+          {useCount && (
+            <span style={{ color: colors.blue500 }}>
+              {filteredItems.length}
+            </span>
           )}
-        </AnimatePresence>,
-        document.body
-      )}
+        </div>
+
+        {(useYearFilter || useSelectedFilter) && (
+          <div className="mb-6">
+            <SectionControls
+              showSelected={showSelected}
+              onToggleSelected={
+                useSelectedFilter
+                  ? setShowSelected
+                  : undefined
+              }
+              years={useYearFilter ? years : undefined}
+              selectedYears={selectedYears}
+              onToggleYear={toggleYear}
+              onToggleAll={toggleAllYears}
+            />
+          </div>
+        )}
+
+        <div>
+          {visibleItems.map((item) => (
+            <Row
+              key={item.title}
+              title={item.title}
+              subtitle={item.subtitle}
+              date={item.date}
+              onClick={
+                item.md
+                  ? () => setMd(item.md)
+                  : undefined
+              }
+            />
+          ))}
+        </div>
+
+        {usePagination && totalPages > 1 && (
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        )}
+      </div>
+
+      <MarkdownModal
+        md={md}
+        onClose={() => setMd(null)}
+      />
     </>
   )
 }
-
-

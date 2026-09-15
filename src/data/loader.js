@@ -11,17 +11,15 @@ const extracurricularFiles = import.meta.glob("./Extracurricular/*.md", { eager:
 
 function loadItems(fileMap) {
   const items = Object.entries(fileMap).map(([path, rawContent]) => {
-    const { metadata, content } = parseMarkdownWithYaml(rawContent)
+    const { metadata } = parseMarkdownWithYaml(rawContent)
+
     return {
       ...metadata,
-      markdownContent: content,
-      // Fallback description to plain content if not specified in frontmatter
-      description: content || metadata.description || "",
+      md: rawContent,
       _filePath: path,
     }
   })
 
-  // Sort by date (supports month, date, year, x~x ranges) descending, then alphabetically
   return items.sort(compareItemsByDateThenAlphabetical)
 }
 

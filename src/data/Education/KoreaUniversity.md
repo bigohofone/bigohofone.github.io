@@ -1,7 +1,7 @@
 ---
 organization: Korea University 
 major: "B.S. in Computer Science (Valedictorian)"
-date: "2019-02 ~ 2026-02"
+date: "2019-03-04 ~ 2026-02-25"
 location: "Seoul, Korea"
 ---
 

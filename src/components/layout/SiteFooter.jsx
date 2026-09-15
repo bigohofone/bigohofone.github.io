@@ -25,12 +25,12 @@ const resumeSections = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-16 py-[72px]" style={{ backgroundColor: colors.grey100 }}>
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-start gap-12 px-8 text-sm" style={{ color: colors.grey700 }}>
+    <footer className="mt-12 pt-32 pb-16" style={{ backgroundColor: colors.grey100 }}>
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-start text-sm" style={{ color: colors.grey700 }}>
         <nav className="flex flex-col items-start gap-2 text-sm" aria-label="Site map">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Link to="/" className="font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>Shortcut</Link>
+              <Link to="/" className="font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xl" style={{ color: colors.grey700 }}>Shortcut</Link>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-fit">
               {resumeSections.map(([label, id]) => (
@@ -42,16 +42,18 @@ export function SiteFooter() {
           </DropdownMenu>
           <div className="flex flex-col items-start gap-2">
             {resumeSections.map(([label, id]) => (
-              <a key={id} href={`/#${id}`} className="font-normal outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>{label}</a>
+              <a key={id} href={`/#${id}`} className="font-normal outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xl" style={{ color: colors.grey700 }}>{label}</a>
             ))}
           </div>
           {/* <Link to="/blog" className="mt-6 font-bold outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-[4px]" style={{ color: colors.grey700 }}>Blog</Link> */}
         </nav>
-        <div className="text-sm">
+
+        <div className="mt-12">
           <p className="font-bold" style={{ color: colors.grey700 }}>Wonjun Oh&apos;s Website</p>
           <p className="font-bold" style={{ color: colors.grey700 }}>Copyright ⓒ Wonjun Oh. All Rights Reserved</p>
         </div>
-        <div className="flex flex-wrap gap-2">
+
+        <div className="mt-12 flex flex-wrap gap-2">
           {contact.items.filter((item) => item.label !== "Website").map((item) => {
             const Icon = contactIcons[item.label]
             return (

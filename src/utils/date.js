@@ -53,22 +53,35 @@ function parseSingleDate(token, isEnd = false) {
  * Parses a date or date-range string "Date ~ Date" → { start, end, isPresent }.
  */
 export function parseDateRange(dateStr) {
-  if (!dateStr) return { start: 0, end: 0, isPresent: false }
+  if (!dateStr) return { start: 0, end: 0 }
+
   const str = String(dateStr).trim()
   const isPresent = /present/i.test(str)
 
   const parts = str.split(/\s*~\s*/)
+
   if (parts.length >= 2) {
     return {
       start: parseSingleDate(parts[0], false),
-      end: parseSingleDate(parts[1], true),
-      isPresent,
+      end: isPresent
+        ? new Date().getFullYear()
+        : parseSingleDate(parts[1], true),
     }
   }
 
   const point = parseSingleDate(str, false)
-  return { start: point, end: point, isPresent }
+  return { start: point, end: point }
 }
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Compare two items by date descending (newest first).

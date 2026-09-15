@@ -1,7 +1,7 @@
 ---
 organization: "MIIL @ Korea University"
 role: Undergraduate Researcher
-date: "2024-03 ~ 2024-10"
+date: "2024-03-01 ~ 2024-07-31"
 location: "Seoul, Korea"
 ---
 

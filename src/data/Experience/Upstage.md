@@ -1,7 +1,7 @@
 ---
 organization: Upstage
 role: AI Research Engineer Intern
-date: "2026-04 ~ 2026-08"
+date: "2026-03-30 ~ 2026-08-28"
 location: "Seoul, Korea"
 ---
 

@@ -11,7 +11,7 @@ export function SegmentedControl({ options, value, onChange, className }) {
           type="button"
           onClick={() => onChange?.(opt.value)}
           className={cn(
-            "px-4 py-0 rounded-lg text-md font-semibold transition-all duration-150 cursor-pointer",
+            "px-4 py-0 rounded-lg text-sm font-semibold transition-all duration-150 cursor-pointer",
             value === opt.value
               ? "bg-white"
               : ""
