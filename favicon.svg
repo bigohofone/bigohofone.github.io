@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="22" fill="#0a0a0a"/>
+  <rect width="100" height="100" rx="22" fill="#2b7fff"/>
   <text
-    x="50"
-    y="70"
-    font-size="60"
+    x="48"
+    y="75"
+    font-size="64"
     font-weight="500"
     fill="#ffffff"
     text-anchor="middle"
     font-family="'Toss Product Sans', system-ui, -apple-system, sans-serif"
     letter-spacing="-3"
-  >W</text>
+  >☁️</text>
 </svg>
