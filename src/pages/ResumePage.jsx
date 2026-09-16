@@ -14,24 +14,11 @@ import { extracurricular } from "@/data/extracurricular"
 import { Button } from "@/components/ui/button"
 import { FiMail, FiDownload } from "react-icons/fi"
 
-
-const EMAIL =
-  contact.items.find((item) => item.label === "Email")?.value ?? ""
-
-
-async function handleCopyEmail() {
-  try {
-    await navigator.clipboard.writeText(EMAIL)
-    alert(`Copied "${EMAIL}" to clipboard!`)
-  } catch (error) {
-    console.error("Failed to copy email:", error)
-  }
-}
-
+import { Contact } from "@/components/common/contact"
 
 function ProfileBox() {
   return (
-    <div id="bio" className="pt-12 pb-18 flex flex-col">
+    <div id="bio" className="pt-16 pb-24 flex flex-col">
       <div className={`size-32 overflow-hidden rounded-xl`}>
         <img
           src={profile.image}
@@ -44,7 +31,7 @@ function ProfileBox() {
           {profile.name}
         </h1>
 
-        <p className="mt-2 text-base text-gray-500">
+        <p className="mt-2 text-base font-medium text-gray-500">
           M.S./Ph.D. Student, KAIST AI
         </p>
 
@@ -52,13 +39,13 @@ function ProfileBox() {
           About Me
         </h2>
 
-        <p className="mt-2 text-base text-gray-500">
+        <p className="mt-2 text-base font-medium text-gray-500">
           Hi, I'm Wonjun Oh! I am an Integrated M.S./Ph.D. Student at{" "}
           <a href="https://gsai.kaist.ac.kr/?lang=en">KAIST AI</a>, advised by{" "}
           <a href="https://hyunw.kim/">Hyunwoo Kim</a>.
         </p>
 
-        <p className="mt-2 text-base text-gray-500">
+        <p className="mt-2 text-base font-medium text-gray-500">
           My research focuses on evaluating and enhancing the general reasoning
           capabilities of LLMs. Specifically, I investigate data-centric
           methodologies leveraging LLMs to synthesize and filter high-quality
@@ -68,7 +55,7 @@ function ProfileBox() {
           absent.
         </p>
 
-        <p className="mt-2 text-base text-gray-500">
+        <p className="mt-2 text-base font-medium text-gray-500">
           Previously, I was a Research Intern at{" "}
           <a href="https://www.upstage.ai/">Upstage</a>, where I contributed to
           their Sovereign AI project. Working within the Coding Agent team, I
@@ -77,18 +64,19 @@ function ProfileBox() {
       </div>
 
       <div className="flex flex-wrap gap-2 mt-12">
-        <Button variant="secondary" size="lg" onClick={handleCopyEmail}>
+        {/* <Button variant="secondary" size="lg" onClick={handleCopyEmail}>
           <span className="flex size-6 shrink-0 items-center justify-center">
             <FiMail className="size-5 stroke-2" aria-hidden="true" />
           </span>
           Mail
-        </Button>
+        </Button> */}
+        <Contact />
 
         <Button variant="default" size="lg" onClick={downloadCV}>
           <span className="flex size-6 shrink-0 items-center justify-center">
             <FiDownload className="size-5 stroke-2" aria-hidden="true" />
           </span>
-          Curriculum Vitae
+          CV
         </Button>
       </div>
     </div>

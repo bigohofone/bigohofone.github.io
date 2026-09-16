@@ -175,7 +175,7 @@ export function Box({
 
   return (
     <>
-      <section id={id} className="pt-12 pb-18">
+      <section id={id} className="pt-16 pb-24">
         <div className="flex gap-2 mb-6">
           <h2 className="text-xl font-bold text-gray-700">{title}</h2>
           {useCount && (

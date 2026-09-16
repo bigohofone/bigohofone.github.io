@@ -25,7 +25,7 @@ export function ListRow({
       )}    
     >
         <h3 className="text-lg font-bold text-gray-700">{title}</h3>
-        {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+        {subtitle && <p className="text-sm font-medium text-gray-500">{subtitle}</p>}
     </li>
   )
 }

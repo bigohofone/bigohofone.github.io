@@ -6,9 +6,9 @@ import { INTERACTION_TOKENS } from "@/lib/interactions"
 export const variants = {
   default: "bg-blue-500 text-white",
   destructive: "bg-red-500 text-white",
-  outline: "bg-transparent text-gray-700 border-2 border-gray-100",
-  secondary: "bg-gray-100 text-gray-700",
-  ghost: "bg-transparent text-gray-700",
+  outline: "bg-transparent text-gray-500 border-2 border-gray-100",
+  secondary: "bg-gray-100 text-gray-500",
+  ghost: "bg-transparent text-gray-500",
   link: "bg-transparent text-blue-500",
 }
 
