@@ -41,19 +41,18 @@ export const GoogleScholarIcon = React.forwardRef(
             {/* 기본적으로 전체를 보이게 함 */}
             <rect x="0" y="0" width="24" height="24" fill="white" />
             {/* 마름모가 지나는 자리를 검은색 두꺼운 선으로 덮어 마스킹(잘라냄) 처리 */}
-            <circle cx="12" cy="16.5" r="5"
-              fill="black"
-              stroke="black"
-              strokeWidth={strokeWidth * 2} // 갈라지는 갭(Gap) 두께 조절
+            <circle cx="12" cy="16" r="6"
+              fill="black"stroke="black"
+              strokeWidth={strokeWidth*2} // 갈라지는 갭(Gap) 두께 조절
             />
           </mask>
         </defs>
 
         {/* 1. 상단 마름모 (점 4개) */}
-        <polygon points="12 3 22 9.5 12 16 2 9.5" mask={`url(#${maskId})`} />
+        <polygon points="12 2 22 8 12 16 2 8" mask={`url(#${maskId})`} />
 
         {/* 2. 하단 원 (마스크가 적용되어 마름모와 만나는 위쪽이 뚫려있음) */}
-        <circle cx="12" cy="16.5" r="5" />
+        <circle cx="12" cy="16" r="6" />
       </svg>
     )
   }
@@ -96,7 +95,7 @@ export const MailIcon = React.forwardRef(
           <mask id={maskId}>
             <rect x="0" y="0" width="24" height="24" fill="white" />
             <polyline
-              points="0 4 12 12 24 4"
+              points="0 3 12 12 24 3"
               fill="none"
               stroke="black"
               strokeWidth={strokeWidth} // 갈라지는 여백(Gap) 두께

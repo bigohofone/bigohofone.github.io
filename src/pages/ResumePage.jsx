@@ -64,19 +64,11 @@ function ProfileBox() {
       </div>
 
       <div className="flex flex-wrap gap-2 mt-12">
-        {/* <Button variant="secondary" size="lg" onClick={handleCopyEmail}>
-          <span className="flex size-6 shrink-0 items-center justify-center">
-            <FiMail className="size-5 stroke-2" aria-hidden="true" />
-          </span>
-          Mail
-        </Button> */}
         <Contact />
 
-        <Button variant="default" size="lg" onClick={downloadCV}>
-          <span className="flex size-6 shrink-0 items-center justify-center">
-            <FiDownload className="size-5 stroke-2" aria-hidden="true" />
-          </span>
-          CV
+        <Button variant="default" size="lg" className="size-12 p-0 flex items-center justify-center" onClick={downloadCV}>
+          <FiDownload className="size-5 stroke-2" aria-hidden="true" />
+          {/* CV */}
         </Button>
       </div>
     </div>
