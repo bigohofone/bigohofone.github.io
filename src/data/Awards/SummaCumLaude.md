@@ -6,4 +6,4 @@ type: "Honor"
 selected: true
 ---
 
-Awarded for achieving the highest academic standing among the graduates of the College of Informatics.
+Awarded for achieving the highest academic standing among the graduates of the College of Informatics (ranked 1st out of 212).
