@@ -212,7 +212,7 @@ date: "2024-03-01"
 selected: true
 ---
 `,kpe=`---
-title: "I am honored to have graduated from Korea University as valedictorian of the College of Informatics."
+title: "I am honored to have graduated from Korea University Summa Cum Laude, ranked 1st in the College of Informatics."
 organization: "Korea University"
 date: "2026-02-25"
 selected: true
@@ -245,14 +245,14 @@ location: "Seoul, Korea"
 Integrated master's and doctoral program at the Kim Jaechul Graduate School of AI (KAIST AI).
 `,Dpe=`---
 organization: Korea University 
-major: "B.S. in Computer Science (Valedictorian)"
+major: "B.S. in Computer Science (Summa Cum Laude, 1st/212)"
 date: "2019-03-04 ~ 2026-02-25"
 location: "Seoul, Korea"
 ---
 
 GPA: 4.43 / 4.5 (Major GPA: 4.5 / 4.5)
 
-Graduated as the valedictorian from the College of Informatics. (Ranked 1st out of 212)
+Graduated Summa Cum Laude from the College of Informatics, ranked 1st out of 212.
 `,Npe=`---
 organization: "Multimodal Interactive Intelligence Laboratory (MIIL)"
 role: Undergraduate Researcher
@@ -352,7 +352,7 @@ type: "Honor"
 selected: true
 ---
 
-Awarded for achieving the highest academic standing among the graduates of the College of Informatics.
+Awarded for achieving the highest academic standing among the graduates of the College of Informatics (ranked 1st out of 212).
 `,Ype=`---
 title: "Club President"
 organization: "AIKU (Korea University AI Club)"
