@@ -1,37 +1,39 @@
-import * as React from "react"
+import { useId } from "react"
 import { motion } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { INTERACTION_TOKENS } from "@/lib/interactions"
 
-export function Pagination({ currentPage, totalPages, onPageChange }) {
-  const layoutId = React.useId()
+const baseNavClass = "rounded-full flex items-center justify-center text-fg"
+
+// 화살표는 쓸 수 없을 때 흐리게, 쓸 수 있을 때 진하게
+const arrowClass =
+  "text-fg-strong transition-colors disabled:text-blue-300 sm:hover:text-blue-500 sm:disabled:hover:text-blue-300"
+
+// sm 은 목록이 짧을 때 쓰는 작은 버전
+const sizes = {
+  base: { nav: "size-10", icon: "size-6", label: "text-base", gap: "gap-2", mt: "mt-15" },
+  sm: { nav: "size-8", icon: "size-5", label: "text-sm", gap: "gap-1", mt: "mt-15" },
+}
+
+export function Pagination({ currentPage, totalPages, onPageChange, size = "base" }) {
+  const layoutId = useId()
+  const s = sizes[size] ?? sizes.base
+  const navClass = cn(baseNavClass, s.nav)
 
   if (totalPages <= 1) return null
 
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
-  const navBtnClass = cn(
-    "size-8 rounded-full flex items-center justify-center text-gray-500 cursor-pointer",
-    INTERACTION_TOKENS.press,
-    INTERACTION_TOKENS.hover,
-    INTERACTION_TOKENS.focus,
-    INTERACTION_TOKENS.disabled
-  )
-
   return (
-    <div className="flex items-center justify-center gap-2 mt-12">
-      {/* 이전 페이지 */}
+    <div className={cn("flex items-center justify-center", s.gap, s.mt)}>
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className={navBtnClass}
+        className={cn(navClass, arrowClass)}
         aria-label="Previous"
       >
-        <ChevronLeft className="size-5 stroke-[2.5]" />
+        <ChevronLeft className={cn(s.icon, "stroke-[1.5]")} />
       </button>
 
-      {/* 페이지 번호 목록 */}
-      {pages.map((num) => {
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => {
         const isSelected = num === currentPage
 
         return (
@@ -39,17 +41,18 @@ export function Pagination({ currentPage, totalPages, onPageChange }) {
             key={num}
             onClick={() => onPageChange(num)}
             className={cn(
-              "relative size-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors cursor-pointer z-10 select-none",
-              isSelected ? "text-gray-700" : "text-gray-500 hover:text-gray-900",
-              INTERACTION_TOKENS.press,
-              INTERACTION_TOKENS.hover,
-              INTERACTION_TOKENS.focus
+              navClass,
+              "relative z-10 cursor-pointer select-none font-normal transition-colors",
+              s.label,
+              // 현재 페이지가 아닌 번호만 호버에 반응한다
+              isSelected ? "text-fg-strong" : "sm:hover:text-blue-500"
             )}
           >
             {isSelected && (
               <motion.div
                 layoutId={`pagination-active-${layoutId}`}
-                className="absolute inset-0 bg-gray-300 rounded-full -z-10"
+                // 선택 표시 — 페이지 배경을 90% 밝기로 깐다 (거의 검은 다크 배경에서는 곱셈이 통하지 않아 한 단계 밝은 면색을 쓴다)
+                className="absolute inset-0 -z-10 rounded-full bg-bg brightness-90 dark:bg-surface-subtle dark:brightness-100"
                 transition={{ type: "spring", stiffness: 500, damping: 35 }}
               />
             )}
@@ -58,14 +61,13 @@ export function Pagination({ currentPage, totalPages, onPageChange }) {
         )
       })}
 
-      {/* 다음 페이지 */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className={navBtnClass}
+        className={cn(navClass, arrowClass)}
         aria-label="Next"
       >
-        <ChevronRight className="size-5 stroke-[2.5]" />
+        <ChevronRight className={cn(s.icon, "stroke-[1.5]")} />
       </button>
     </div>
   )

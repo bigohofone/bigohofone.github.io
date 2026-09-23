@@ -52,7 +52,7 @@ function parseSingleDate(token, isEnd = false) {
 /**
  * Parses a date or date-range string "Date ~ Date" → { start, end, isPresent }.
  */
-export function parseDateRange(dateStr) {
+function parseDateRange(dateStr) {
   if (!dateStr) return { start: 0, end: 0 }
 
   const str = String(dateStr).trim()
@@ -64,7 +64,7 @@ export function parseDateRange(dateStr) {
     return {
       start: parseSingleDate(parts[0], false),
       end: isPresent
-        ? new Date().getFullYear()
+        ? 99991231
         : parseSingleDate(parts[1], true),
     }
   }
@@ -73,49 +73,20 @@ export function parseDateRange(dateStr) {
   return { start: point, end: point }
 }
 
-
-
-
-
-
-
-
-
-
-
 /**
- * Compare two items by date descending (newest first).
- * Falls back to alphabetical (A-Z) when dates are equal.
+ * Compare two items by start date descending (newest first).
+ * Ties break on the end date, then alphabetically (A-Z).
  */
 export function compareItemsByDateThenAlphabetical(a, b) {
   const rangeA = parseDateRange(a.date || "")
   const rangeB = parseDateRange(b.date || "")
 
-  if (rangeA.end !== rangeB.end) return rangeB.end - rangeA.end
   if (rangeA.start !== rangeB.start) return rangeB.start - rangeA.start
+  if (rangeA.end !== rangeB.end) return rangeB.end - rangeA.end
 
   const labelA = String(a.title || a.organization || a.major || a.role || "").toLowerCase()
   const labelB = String(b.title || b.organization || b.major || b.role || "").toLowerCase()
   return labelA.localeCompare(labelB)
-}
-
-/**
- * Returns all 4-digit years covered by the date/range string (inclusive).
- * e.g. "2024-03 ~ 2025-08" → ["2024", "2025"]
- *      "2026-09 ~ Present"  → ["2026", "<current year>"]
- */
-export function getYearsInRange(dateStr) {
-  const { start, end } = parseDateRange(dateStr)
-  if (!start && !end) return []
-
-  const startYear = Math.floor(start / 10000)
-  const endYear = end === 99991231 ? new Date().getFullYear() : Math.floor(end / 10000)
-
-  if (!startYear) return []
-
-  const years = []
-  for (let y = startYear; y <= endYear; y++) years.push(String(y))
-  return years
 }
 
 /**
@@ -129,12 +100,50 @@ export function startYear(dateStr) {
 }
 
 /**
- * Returns the end year string from a date/range string.
- * e.g. "2024-03 ~ 2025-08" → "2025"
+ * Label shown next to a resume item.
+ *   "2026-08-31 ~ Present"      → "Present"
+ *   "2019-03-04 ~ 2026-02-25"   → "2019"   (start year only)
+ *   "2025-05-27" / "2025"       → "2025"   (single date → its year)
  */
-export function endYear(dateStr) {
+export function formatDateLabel(dateStr) {
+  if (!dateStr) return ""
+
   const { end } = parseDateRange(dateStr)
-  if (end === 99991231) return String(new Date().getFullYear())
-  const y = Math.floor(end / 10000)
-  return y ? String(y) : String(dateStr ?? "")
+  if (end === 99991231) return "Present"
+
+  return startYear(dateStr)
+}
+
+/**
+ * Month/year label for news rows: "2026-08-31" → "Aug. 2026"
+ * Falls back to the year when the date has no month (e.g. "2026").
+ */
+export function formatMonthYear(dateStr) {
+  if (!dateStr) return ""
+  if (!/^\d{4}-\d{2}/.test(String(dateStr).trim())) return startYear(dateStr)
+
+  const { start } = parseDateRange(dateStr)
+  const year = Math.floor(start / 10000)
+  const month = Math.floor(start / 100) % 100
+
+  const names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  return `${names[month - 1]}. ${year}`
+}
+
+/**
+ * Splits a date/range string into the two endpoint labels used by the timeline.
+ *   "2026-03-30 ~ 2026-08-28" → { start: "Mar. 2026", end: "Aug. 2026" }
+ *   "2026-08-31 ~ Present"    → { start: "Aug. 2026", end: "Present" }
+ *   "2025-05-27"              → { start: "May. 2025", end: "" }
+ */
+export function formatDateEndpoints(dateStr) {
+  if (!dateStr) return { start: "", end: "" }
+
+  const parts = String(dateStr).trim().split(/\s*~\s*/)
+  if (parts.length < 2) return { start: formatMonthYear(parts[0]), end: "" }
+
+  return {
+    start: formatMonthYear(parts[0]),
+    end: /^present$/i.test(parts[1].trim()) ? "Present" : formatMonthYear(parts[1]),
+  }
 }

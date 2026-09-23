@@ -1,12 +1,7 @@
 import { Page, Text, View, Document, Link, Svg, Path, Circle, Polyline, Line, pdf } from "@react-pdf/renderer"
 
 import { profile } from "@/data/profile"
-import { education } from "@/data/education"
-import { experience } from "@/data/experience"
-import { publications } from "@/data/publications"
-import { awards } from "@/data/awards"
-import { talks } from "@/data/talks"
-import { extracurricular } from "@/data/extracurricular"
+import { awards, education, experience, extracurricular, publications, talks } from "@/data/loader"
 import { contact } from "@/data/contact"
 import styles from "./cvStyles"
 

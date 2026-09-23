@@ -1,222 +1,93 @@
-import { colors } from "@toss/tds-colors"
-import { Box } from "@/components/bento/Bento"
-import { downloadCV } from "@/components/cv/cvPDF"
+import { ContactSection } from "@/components/resume/ContactSection"
+import { ProfileSection } from "@/components/resume/ProfileSection"
+import { ResumeSection } from "@/components/resume/ResumeSection"
+import { BackToTop } from "@/components/ui/back-to-top"
+import { NewsRow } from "@/components/ui/news-row"
+import { PublicationRow } from "@/components/ui/publication-row"
+import { TimelineRow } from "@/components/ui/timeline-row"
+import { awards, education, experience, news, publications } from "@/data/loader"
+import { formatDateEndpoints, formatDateLabel, formatMonthYear } from "@/utils/date"
 
-import { profile } from "@/data/profile"
-import { contact } from "@/data/contact"
-import { experience } from "@/data/experience"
-import { education } from "@/data/education"
-import { publications } from "@/data/publications"
-import { awards } from "@/data/awards"
-import { talks } from "@/data/talks"
-import { extracurricular } from "@/data/extracurricular"
-
-import { Button } from "@/components/ui/button"
-import { FiMail, FiDownload } from "react-icons/fi"
-
-import { Contact } from "@/components/common/contact"
-
-function ProfileBox() {
-  return (
-    <div id="bio" className="pt-16 pb-24 flex flex-col">
-      <div className={`size-32 overflow-hidden rounded-xl`}>
-        <img
-          src={profile.image}
-          alt={profile.name}
-          className="size-full object-cover"
-        />
-      </div>
-      <div className={`mt-8`}>
-        <h1 className="text-2xl font-bold text-gray-700">
-          {profile.name}
-        </h1>
-
-        <p className="mt-2 text-base font-medium text-gray-500">
-          M.S./Ph.D. Student, KAIST AI
-        </p>
-
-        <h2 className="mt-6 text-xl font-bold text-gray-700">
-          About Me
-        </h2>
-
-        <p className="mt-2 text-base font-medium text-gray-500">
-          Hi, I'm Wonjun Oh! I am an Integrated M.S./Ph.D. Student at{" "}
-          <a href="https://gsai.kaist.ac.kr/?lang=en">KAIST AI</a>, advised by{" "}
-          <a href="https://hyunw.kim/">Hyunwoo Kim</a>.
-        </p>
-
-        <p className="mt-2 text-base font-medium text-gray-500">
-          My research focuses on evaluating and enhancing the general reasoning
-          capabilities of LLMs. Specifically, I investigate data-centric
-          methodologies leveraging LLMs to synthesize and filter high-quality
-          datasets to push model reasoning beyond existing capabilities. Beyond
-          data curation, I am deeply interested in extending LLM reasoning to
-          non-verifiable tasks where deterministic verification signals are
-          absent.
-        </p>
-
-        <p className="mt-2 text-base font-medium text-gray-500">
-          Previously, I was a Research Intern at{" "}
-          <a href="https://www.upstage.ai/">Upstage</a>, where I contributed to
-          their Sovereign AI project. Working within the Coding Agent team, I
-          helped develop the Solar Open2 and Solar Pro4 models.
-        </p>
-      </div>
-
-      <div className="flex flex-wrap gap-2 mt-12">
-        <Contact />
-
-        <Button variant="default" size="lg" className="size-12 p-0 flex items-center justify-center" onClick={downloadCV}>
-          <FiDownload className="size-5 stroke-2" aria-hidden="true" />
-          {/* CV */}
-        </Button>
-      </div>
-    </div>
-  )
+// 마크다운에서 읽은 항목을 행이 쓰는 모양으로 옮긴다.
+// id·date·selected·md 는 섹션(정렬·필터·모달)이 쓰므로 언제나 함께 넘긴다.
+function toRowItems(items, toRow) {
+  return items.map((item) => ({
+    id: item.id,
+    date: item.date,
+    selected: item.selected,
+    md: item.md,
+    ...toRow(item),
+  }))
 }
 
+const newsItems = toRowItems(news.items, (it) => ({
+  title: it.title,
+  leading: formatMonthYear(it.date),
+}))
 
-function BentoSeparator() {
-  return (
-    <div
-      className="relative left-1/2 h-4 w-screen -translate-x-1/2 md:hidden"
-      style={{ backgroundColor: colors.grey100 }}
-      aria-hidden="true"
-    />
-  )
-}
+const publicationItems = toRowItems(publications.items, (it) => ({
+  title: it.title,
+  authors: it.authors,
+  image: it.image,
+}))
 
+const awardItems = toRowItems(awards.items, (it) => ({
+  title: it.title,
+  subtitle: `${formatDateLabel(it.date)} · ${it.organization}`,
+}))
 
-function EducationBox() {
-  const items = education.items.map((it) => ({
+// Education 과 Experience 는 폴더를 따로 두고 관리하되, 화면에서는 한 줄기 타임라인으로 합친다
+const vitaeItems = [
+  ...toRowItems(education.items, (it) => ({
     title: it.organization,
     subtitle: it.major,
-    date: it.date,
-    selected: it.selected,
-    md: it.md,
-  }))
-
-  return (
-    <Box
-      id="education"
-      title={education.title}
-      items={items}
-    />
-  )
-}
-
-
-function ExperienceBox() {
-  const items = experience.items.map((it) => ({
+    ...formatDateEndpoints(it.date),
+  })),
+  ...toRowItems(experience.items, (it) => ({
     title: it.organization,
     subtitle: it.role,
-    date: it.date,
-    selected: it.selected,
-    md: it.md,
-  }))
+    ...formatDateEndpoints(it.date),
+  })),
+]
 
-  return (
-    <Box
-      id="experience"
-      title={experience.title}
-      items={items}
-    />
-  )
-}
-
-
-function PublicationsBox() {
-  const items = publications.items.map((it) => ({
-    title: it.title,
-    subtitle: it.authors,
-    date: it.date,
-    selected: it.selected,
-    md: it.md,
-  }))
-
-  return (
-    <Box
-      id="publications"
-      title={publications.title}
-      items={items}
-      useCount
-      useYearFilter
-      useSelectedFilter
-      usePagination
-      pageSize={10}
-    />
-  )
-}
-
-
-function AwardsBox() {
-  const items = awards.items.map((it) => ({
-    title: it.title,
-    subtitle: it.organization,
-    date: it.date,
-    selected: it.selected,
-    md: it.md,
-  }))
-
-  return (
-    <Box
-      id="awards"
-      title={awards.title}
-      items={items}
-      useCount
-      useYearFilter
-      useSelectedFilter
-      usePagination
-      pageSize={10}
-    />
-  )
-}
-
-
-function ActivitiesBox() {
-  const items = [...extracurricular.items, ...talks.items].map((it) => ({
-    title: it.title,
-    subtitle: it.organization,
-    date: it.date,
-    selected: it.selected,
-    md: it.md,
-  }))
-
-  return (
-    <Box
-      id="activities"
-      title="Activities"
-      items={items}
-      useCount
-      useYearFilter
-      useSelectedFilter
-      usePagination
-      pageSize={10}
-    />
-  )
-}
+const publicationsFootnote = (
+  <>
+    <p>* denotes co-first authors, who contributed equally to the work.</p>
+    <p>
+      † denotes corresponding authors, who supervised the work and handle inquiries about the paper.
+    </p>
+  </>
+)
 
 export default function ResumePage() {
+  // 데스크톱에서도 최대 폭 768px까지만 — 모바일과 같은 한 줄 레이아웃
   return (
-    <div className="mx-auto w-full max-w-3xl px-6 pb-18">
-      <div className="flex flex-col">
-        <ProfileBox />
+    <div className="mx-auto w-full max-w-[768px]">
+      <ProfileSection />
+      <ContactSection />
 
-        <BentoSeparator />
-        <EducationBox />
+      <ResumeSection
+        id="news"
+        title={news.title}
+        items={newsItems}
+        Row={NewsRow}
+        usePagination
+      />
 
-        <BentoSeparator />
-        <ExperienceBox />
+      <ResumeSection
+        id="publications"
+        title={publications.title}
+        items={publicationItems}
+        Row={PublicationRow}
+        usePagination
+        footnote={publicationsFootnote}
+      />
 
-        <BentoSeparator />
-        <PublicationsBox />
+      <ResumeSection id="awards" title={awards.title} items={awardItems} usePagination />
 
-        <BentoSeparator />
-        <AwardsBox />
+      <ResumeSection id="vitae" title="Vitae" items={vitaeItems} Row={TimelineRow} extraTitleGap />
 
-        <BentoSeparator />
-        <ActivitiesBox />
-      </div>
+      <BackToTop />
     </div>
   )
 }

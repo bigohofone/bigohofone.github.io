@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Pagination } from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -7,7 +7,30 @@ import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuConten
 
 import { BookmarkIcon as BookmarkSolid } from "@heroicons/react/24/solid"
 import { BookmarkIcon as BookmarkOutline } from "@heroicons/react/24/outline"
-import { ChevronDownIcon } from "@heroicons/react/24/outline"
+import { ChevronDownIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline"
+
+function ThemeToggle() {
+  const [dark, setDark] = useState(() =>
+    document.documentElement.classList.contains("dark")
+  )
+
+  // main.jsx 가 첫 페인트 전에 읽는 것과 같은 키에 저장한다
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark)
+    localStorage.setItem("theme", dark ? "dark" : "light")
+  }, [dark])
+
+  return (
+    <Button
+      variant="outline"
+      aria-pressed={dark}
+      onClick={() => setDark((prev) => !prev)}
+    >
+      {dark ? <SunIcon className="size-4" /> : <MoonIcon className="size-4" />}
+      {dark ? "Light" : "Dark"}
+    </Button>
+  )
+}
 
 function PaginationDemo() {
   const [page, setPage] = useState(1)
@@ -61,11 +84,14 @@ function SegmentedControlDemo() {
 
 export default function UiShowcase() {
   return (
-    <div className="min-h-screen bg-white text-neutral-900 p-10 space-y-16">
-      <h1 className="text-4xl font-bold">shadcn/ui Components</h1>
+    <div className="min-h-screen bg-bg text-fg p-10 space-y-16">
+      <div className="flex items-center justify-between gap-4">
+        <h1>shadcn/ui Components</h1>
+        <ThemeToggle />
+      </div>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Button Variants</h2>
+        <h2 className="mb-4">Button Variants</h2>
         <div className="flex gap-3 flex-wrap">
           <Button>Default</Button>
           <Button variant="secondary">Secondary</Button>
@@ -77,7 +103,7 @@ export default function UiShowcase() {
       </section>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Button Sizes</h2>
+        <h2 className="mb-4">Button Sizes</h2>
         <div className="flex gap-3 items-center flex-wrap">
           <Button size="sm">Small</Button>
           <Button size="md">Medium</Button>
@@ -87,7 +113,7 @@ export default function UiShowcase() {
       </section>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Checkbox</h2>
+        <h2 className="mb-4">Checkbox</h2>
         <div className="flex items-center gap-4">
           <Checkbox size="sm" />
           <Checkbox size="md" />
@@ -96,7 +122,7 @@ export default function UiShowcase() {
       </section>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Dropdown</h2>
+        <h2 className="mb-4">Dropdown</h2>
         <div className="flex gap-4 items-center">
           <DropdownDemo />
           <DropdownCheckDemo />
@@ -104,12 +130,12 @@ export default function UiShowcase() {
       </section>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Pagination</h2>
+        <h2 className="mb-4">Pagination</h2>
         <PaginationDemo />
       </section>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Segmented Control</h2>
+        <h2 className="mb-4">Segmented Control</h2>
         <SegmentedControlDemo />
       </section>
     </div>

@@ -23,14 +23,14 @@ export const contact = {
             link: "https://scholar.google.com/citations?user=5MjTfesAAAAJ"
         },
         {
-            label: "X (Twitter)",
-            value: "@bigohofone",
-            link: "https://x.com/bigohofone"
-        },
-        {
             label: "LinkedIn",
             value: "@wonjun-oh-8067b5265",
             link: "https://www.linkedin.com/in/wonjun-oh-8067b5265/"
+        },
+        {
+            label: "X (Twitter)",
+            value: "@bigohofone",
+            link: "https://x.com/bigohofone"
         },
     ]
 };

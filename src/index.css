@@ -1,11 +1,79 @@
+/* ==========================================================================
+   Fonts & Tailwind
+   ========================================================================== */
 @import "https://static.toss.im/tps/main-swap.css";
 @import "https://static.toss.im/tps/others-swap.css";
 @import "https://static.toss.im/tossface-font/v1.7.0/tossface.css";
+@import "@fontsource/open-sauce-sans/latin-300.css";
+@import "@fontsource/open-sauce-sans/latin-400.css";
+@import "@fontsource/open-sauce-sans/latin-500.css";
+@import "@fontsource/open-sauce-sans/latin-600.css";
+@import "@fontsource/open-sauce-sans/latin-700.css";
+@import "@fontsource/open-sauce-sans/latin-800.css";
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* 1. 기본 스타일 변수 선언 (768px 이상 기준 - 큰 사이즈) */
+/* 다크 모드는 OS 설정이 아니라 <html class="dark"> 로만 켠다 (main.jsx) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ==========================================================================
+   Palette — 테마별 원시 값. 여기만 고치면 라이트/다크가 함께 바뀐다.
+     글자  라이트 700 / 600 / 500   ↔  다크 300 / 400 / 500
+     배경·선 라이트 white / 100 / 300 ↔  다크 950 / 800 / 600
+   ========================================================================== */
 :root {
+  /* 배경 */
+  --bg: var(--color-blue-200);
+  --surface: var(--color-white);
+  --surface-subtle: var(--color-gray-50);
+  --surface-muted: var(--color-gray-100);
+  --surface-inverse: var(--color-gray-700); /* 흰 글자를 올리는 진한 면 */
+
+  /* 글자 — 뒤 숫자는 bg 위에서의 대비 */
+  --fg-strong: var(--color-gray-700); /* 10.31:1 */
+  --fg: var(--color-gray-600); /*  7.56:1 */
+  --fg-muted: var(--color-gray-500); /*  4.84:1 */
+  --fg-subtle: var(--color-gray-400); /*  2.60:1 — 비활성 표시용 */
+
+  /* 선 */
+  --border: var(--color-gray-100);
+  --border-strong: var(--color-gray-300);
+
+  /* 포인트 */
+  --primary: var(--color-blue-700);
+  --primary-fg: var(--color-white); /*  6.82:1 */
+  --link: var(--color-blue-500);
+  --danger: var(--color-red-700);
+  --danger-fg: var(--color-white); /*  6.42:1 */
+}
+
+.dark {
+  --bg: var(--color-gray-950);
+  --surface: var(--color-gray-950);
+  --surface-subtle: var(--color-gray-900);
+  --surface-muted: var(--color-gray-800);
+  --surface-inverse: var(--color-gray-800);
+
+  --fg-strong: var(--color-gray-300); /* 13.67:1 */
+  --fg: var(--color-gray-400); /*  7.73:1 */
+  --fg-muted: var(--color-gray-500); /*  4.16:1 */
+  --fg-subtle: var(--color-gray-600); /*  2.66:1 — 비활성 표시용 */
+
+  --border: var(--color-gray-800);
+  --border-strong: var(--color-gray-600);
+
+  --primary: var(--color-blue-400);
+  --primary-fg: var(--color-gray-950); /*  7.63:1 */
+  --link: var(--color-blue-400); /*  7.63:1 */
+  --danger: var(--color-red-400);
+  --danger-fg: var(--color-gray-950); /*  6.96:1 */
+}
+
+/* ==========================================================================
+   Theme — Tailwind 유틸리티로 노출되는 토큰
+   ========================================================================== */
+@theme inline {
+  /* --- Typography scale --- */
   --text-xs: 13px;
   --text-xs--line-height: 19.5px;
   --text-sm: 15px;
@@ -21,65 +89,175 @@
   --text-3xl: 30px;
   --text-3xl--line-height: 40px;
 
-  --font-sans: "Toss Product Sans", "Tossface", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
-  --font-mono: "Toss Product Sans", "Tossface", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  /* --- Font weights (Tailwind 기본값) --- */
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* --- Radius: 4px 배수의 표준 스케일, 기본은 rounded-base --- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-base: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+
+  /* --- Font families --- */
+  --font-sans: "Open Sauce Sans", "Toss Product Sans", "Tossface", -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  --font-mono: var(--font-sans);
+
+  /* --- Semantic colors (bg-surface, text-fg-strong, border-border ...) --- */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-inverse: var(--surface-inverse);
+
+  --color-fg: var(--fg);
+  --color-fg-strong: var(--fg-strong);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-link: var(--link);
+  --color-danger: var(--danger);
+  --color-danger-fg: var(--danger-fg);
 }
 
-/* 2. 화면 폭이 768px 미만일 때 변수값 한 단계씩 축소 */
-@media (max-width: 767.98px) {
-  :root {
-    --text-xs: 11px;
-    --text-xs--line-height: 16.5px;
-    --text-sm: 13px;
-    --text-sm--line-height: 19.5px;
-    --text-base: 15px;
-    --text-base--line-height: 22.5px;
-    --text-lg: 17px;
-    --text-lg--line-height: 25.5px;
-    --text-xl: 20px;
-    --text-xl--line-height: 30px;
-    --text-2xl: 22px;
-    --text-2xl--line-height: 33px;
-    --text-3xl: 26px;
-    --text-3xl--line-height: 35px;
-  }
-}
-
-/* 3. Tailwind Theme에 CSS 변수 연결 */
-@theme inline {
-  --text-xs: var(--text-xs);
-  --text-xs--line-height: var(--text-xs--line-height);
-  --text-sm: var(--text-sm);
-  --text-sm--line-height: var(--text-sm--line-height);
-  --text-base: var(--text-base);
-  --text-base--line-height: var(--text-base--line-height);
-  --text-lg: var(--text-lg);
-  --text-lg--line-height: var(--text-lg--line-height);
-  --text-xl: var(--text-xl);
-  --text-xl--line-height: var(--text-xl--line-height);
-  --text-2xl: var(--text-2xl);
-  --text-2xl--line-height: var(--text-2xl--line-height);
-  --text-3xl: var(--text-3xl);
-  --text-3xl--line-height: var(--text-3xl--line-height);
-
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-}
-
+/* ==========================================================================
+   Base
+   ========================================================================== */
 @layer base {
   html {
     color-scheme: light;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
   }
   html.dark {
     color-scheme: dark;
   }
+
   body {
     font-family: var(--font-sans);
     font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    /* letter-spacing: var(--tracking-tight); */
     line-height: var(--text-base--line-height);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* 제목 크기는 시멘틱 태그가 결정한다.
+     페이지에서 text-* 로 따로 지정하지 않는다. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-fg-strong);
+    font-weight: var(--font-weight-semibold);
+  }
+  /* balance 는 짧은 대제목에만. 목록 제목처럼 긴 글에 걸면
+     줄 길이를 억지로 맞추느라 줄바꿈이 들쭉날쭉해진다. */
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-wrap: pretty;
+  }
+  h1 {
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+  }
+  h2 {
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
+  }
+  h3 {
+    font-size: var(--text-lg);
+    line-height: var(--text-lg--line-height);
+  }
+  h4 {
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+  h5 {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+  h6 {
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
+  }
+
+  /* 본문 요소도 태그가 크기를 정한다.
+     p·li 는 규칙을 두지 않는다 — 본문 크기를 물려받고,
+     감싼 쪽이 작게 잡으면 그대로 따라가야 하기 때문. */
+  /* small 은 크기만 줄인 본문이다. 색까지 흐리면 내용이 안 읽힌다. */
+  small {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+  label {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+  dt,
+  dd {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+  dt {
+    color: var(--color-fg);
+  }
+  dd {
+    color: var(--color-fg-strong);
+    margin: 0;
+  }
+  strong,
+  b {
+    color: var(--color-fg-strong);
+    font-weight: var(--font-weight-semibold);
+  }
+  hr {
+    border-color: var(--color-border);
+  }
+
+  /* 넓은 화면에서 상위 제목만 한 단계 키운다 */
+  @media (width >= 48rem) {
+    h1 {
+      font-size: var(--text-3xl);
+      line-height: var(--text-3xl--line-height);
+    }
+    h2 {
+      font-size: var(--text-2xl);
+      line-height: var(--text-2xl--line-height);
+    }
+    h3 {
+      font-size: var(--text-xl);
+      line-height: var(--text-xl--line-height);
+    }
+  }
+
+  /* 폼 요소가 기본 폰트/굵기를 물려받도록 */
   button,
   input,
   select,
@@ -87,28 +265,38 @@
     font-family: inherit;
     font-weight: inherit;
   }
+
+  /* 누름 피드백은 여기서 한 번만 정의한다. 모바일 전용이라 호버는 두지 않는다. */
+  button,
+  [role="button"] {
+    cursor: pointer;
+    transition: all 75ms;
+  }
+  button:active,
+  [role="button"]:active {
+    scale: 0.95;
+    filter: brightness(0.9);
+    backdrop-filter: brightness(0.9);
+  }
+  button:disabled {
+    opacity: 0.1;
+    pointer-events: none;
+  }
+
+  /* @layer base 안에 두어야 text-* 유틸리티로 덮어쓸 수 있다 */
+  a {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+  a:active {
+    filter: brightness(0.9);
+  }
+
+  /* 각주 번호가 줄 높이를 밀지 않게 */
   sup {
     position: relative;
     top: -0.35em;
     vertical-align: baseline;
     line-height: 0;
   }
-}
-
-a {
-  color: #3182f6;
-  text-decoration: none;
-}
-
-a:active {
-  filter: brightness(0.9);
-}
-
-.link-all {
-  display: inline-block;
-  font-size: var(--text-base);
-  font-weight: 700;
-  line-height: var(--text-base--line-height);
-  text-decoration: none;
-  transition: color 0.15s ease-in-out;
 }

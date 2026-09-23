@@ -1,18 +1,18 @@
-import * as React from "react"
+import { useId } from "react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
-import { variants, sizes } from "@/components/ui/button"
+import { variants } from "@/components/ui/button"
 
 export function SegmentedControl({ options, value, onChange, className }) {
-  // 여러 개 생성되어도 애니메이션 ID가 충돌하지 않도록 고유 ID 생성
-  const layoutId = React.useId()
+  // 컨트롤이 여러 개여도 하이라이트 애니메이션이 서로 섞이지 않도록
+  const layoutId = useId()
 
+  // 컨테이너 패딩은 사방 4px 로 고정 — 버튼 사이즈(px-5, h-10)를 물려받지 않는다
   return (
     <div
       className={cn(
-        variants["secondary"],
-        sizes["md"],
-        "inline-flex p-1 gap-1 relative overflow-hidden",
+        "relative inline-flex gap-1 overflow-hidden rounded-base p-1 text-sm",
+        variants.secondary,
         className
       )}
     >
@@ -25,21 +25,16 @@ export function SegmentedControl({ options, value, onChange, className }) {
             type="button"
             onClick={() => onChange?.(opt.value)}
             className={cn(
-              "relative px-4 py-1.5 text-sm font-bold transition-colors duration-150 cursor-pointer z-10 select-none",
-              isSelected ? "text-gray-900" : "text-gray-500 hover:text-gray-700"
+              "relative z-10 select-none px-4 py-1.5 font-semibold transition-colors",
+              isSelected && "text-fg-strong"
             )}
           >
-            {/* 선택된 버튼 위치로 슬라이딩 이동하는 하이라이트 배경 */}
+            {/* 선택된 칸으로 미끄러지는 하이라이트 */}
             {isSelected && (
               <motion.div
-                layout
-                layoutId={`active-indicator-${layoutId}`}
-                className="absolute inset-0 bg-white rounded-[8px] shadow-xs -z-10"
-                transition={{
-                  type: "spring",
-                  stiffness: 500,
-                  damping: 35,
-                }}
+                layoutId={`segmented-active-${layoutId}`}
+                className="absolute inset-0 -z-10 rounded-base bg-surface shadow-xs"
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
               />
             )}
             {opt.label}

@@ -23,17 +23,17 @@ export function MarkdownRenderer({ content }) {
 
       {/* Metadata */}
       {Object.keys(metadata).length > 0 && (
-        <div className="space-y-2 mt-12">
+        <dl className="mt-12 space-y-2">
           {Object.entries(metadata).map(([key, value]) => (
             <div
               key={key}
-              className="flex gap-4 border-b border-gray-100 pb-2 first:pt-2 first:border-t first:border-gray-100"
+              className="flex gap-4 border-b border-border pb-2 first:border-t first:border-border first:pt-2"
             >
-              <span className="w-32 shrink-0 text-xs font-medium text-gray-500 capitalize">{key}</span>
-              <span className="text-xs font-medium text-gray-700">{String(value)}</span>
+              <dt className="w-32 shrink-0 capitalize">{key}</dt>
+              <dd>{String(value)}</dd>
             </div>
           ))}
-        </div>
+        </dl>
       )}
     </div>
   )
