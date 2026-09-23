@@ -1,6 +1,6 @@
 ---
 organization: Korea University 
-major: "B.S. in Computer Science (Summa Cum Laude, 1st/212)"
+major: "B.S. in Computer Science (Summa Cum Laude)"
 date: "2019-03-04 ~ 2026-02-25"
 location: "Seoul, Korea"
 ---

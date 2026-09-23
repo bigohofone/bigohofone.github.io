@@ -23,7 +23,7 @@
    ========================================================================== */
 :root {
   /* 배경 */
-  --bg: var(--color-blue-200);
+  --bg: var(--color-blue-100);
   --surface: var(--color-white);
   --surface-subtle: var(--color-gray-50);
   --surface-muted: var(--color-gray-100);
@@ -145,6 +145,8 @@
     color-scheme: light;
     background-color: var(--color-bg);
     color: var(--color-fg);
+    /* 모바일 브라우저가 덧씌우는 각진 탭 하이라이트를 끄고, 각 요소의 active 스타일만 쓴다 */
+    -webkit-tap-highlight-color: transparent;
   }
   html.dark {
     color-scheme: dark;
@@ -285,8 +287,14 @@
 
   /* @layer base 안에 두어야 text-* 유틸리티로 덮어쓸 수 있다 */
   a {
-    color: var(--color-link);
-    text-decoration: none;
+    /* 본문 색 그대로 두고 밑줄로만 링크임을 알린다 */
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 150ms;
+  }
+  a:hover {
+    color: var(--color-blue-500);
   }
   a:active {
     filter: brightness(0.9);

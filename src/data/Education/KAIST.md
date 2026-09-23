@@ -1,6 +1,6 @@
 ---
 organization: KAIST AI
-major: "M.S./Ph.D., Artificial Intelligence"
+major: "M.S./Ph.D., Artificial Intelligence (Advised by Prof. Hyunwoo Kim)"
 date: "2026-08-31 ~ Present"
 location: "Seoul, Korea"
 ---

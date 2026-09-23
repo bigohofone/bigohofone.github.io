@@ -55,11 +55,12 @@ export function TimelineRow({ title, subtitle, start, end, onClick }) {
           onClick={onClick}
           className={cn(
             // 모바일에선 알약보다 8px 안쪽으로 들여 쓴다
-            "flex w-full flex-col gap-1 pl-2 outline-none sm:min-h-24 sm:pl-0",
-            // sm 이상의 클릭 블록만 — 다른 행들과 같은 여백으로 좌우를 채우고 흰색 20% 를 덮어 밝게 띄운다
+            "flex w-full flex-col gap-1 px-2 outline-none sm:min-h-24 sm:px-0",
+            // 누를 수 있는 블록 — 글자 주변까지 감싸는 면에 흰색 20% 를 덮어 밝게 띄운다.
+            // 모바일은 hover 가 없으니 누르는 동안(active)만 보이고, sm 이상은 hover 로 보인다.
             // 위아래 -my-2 만큼 끌어올리므로 min-h 도 그만큼(16px) 더 잡아야 96px 로 놓인다
             onClick &&
-              "group/row cursor-pointer sm:-mx-3 sm:-my-2 sm:min-h-28 sm:rounded-lg sm:px-3 sm:py-2 sm:transition-colors sm:hover:bg-white/20"
+              "group/row -my-2 cursor-pointer rounded-lg py-2 transition-colors active:bg-white/20 sm:-mx-3 sm:min-h-28 sm:px-3 sm:hover:bg-white/20"
           )}
         >
           {/* sm 이상: 줄간격 28px + 윗여백 (32-28)/2 = 2px 로 첫 줄 중심을 위 점(16px)에 맞춘다 */}
