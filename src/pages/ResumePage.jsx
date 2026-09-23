@@ -27,8 +27,10 @@ const newsItems = toRowItems(news.items, (it) => ({
 
 const publicationItems = toRowItems(publications.items, (it) => ({
   title: it.title,
+  venue: it.venue,
   authors: it.authors,
   image: it.image,
+  link: it.arxiv, // 논문은 모달 대신 arXiv 로 보낸다
 }))
 
 const awardItems = toRowItems(awards.items, (it) => ({

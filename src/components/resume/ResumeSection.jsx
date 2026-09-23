@@ -8,7 +8,8 @@ import { compareItemsByDateThenAlphabetical } from "@/utils/date"
 
 /**
  * 제목 + 목록으로 이루어진 이력 섹션.
- * 행의 생김새는 Row 로 갈아끼우고, 본문(md)이 있는 항목은 눌러서 모달로 연다.
+ * 행의 생김새는 Row 로 갈아끼운다. 항목에 link 가 있으면 새 탭으로 열고,
+ * 없으면 본문(md)을 모달로 띄운다. 둘 다 없으면 누를 수 없는 행이 된다.
  */
 export function ResumeSection({
   id,
@@ -29,6 +30,12 @@ export function ResumeSection({
     () => items.filter((item) => item.selected !== false).sort(compareItemsByDateThenAlphabetical),
     [items]
   )
+
+  const rowAction = (item) => {
+    if (item.link) return () => window.open(item.link, "_blank", "noopener,noreferrer")
+    if (item.md) return () => setOpenMd(item.md)
+    return undefined
+  }
 
   const totalPages = usePagination ? Math.ceil(visibleItems.length / pageSize) : 1
   const pagedItems = usePagination
@@ -52,7 +59,7 @@ export function ResumeSection({
             <Row
               key={item.id ?? item.title}
               {...item}
-              onClick={item.md ? () => setOpenMd(item.md) : undefined}
+              onClick={rowAction(item)}
             />
           ))}
         </ul>

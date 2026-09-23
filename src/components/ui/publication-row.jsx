@@ -5,7 +5,7 @@ import { interactiveRowClass, rowTitleHoverClass } from "@/components/ui/row-sty
 const placeholderGradient =
   "radial-gradient(circle at center, var(--color-blue-100) 0%, var(--color-blue-50) 100%)"
 
-export function PublicationRow({ title, authors, image, onClick }) {
+export function PublicationRow({ title, venue, authors, image, onClick }) {
   return (
     <li
       role={onClick ? "button" : undefined}
@@ -40,7 +40,7 @@ export function PublicationRow({ title, authors, image, onClick }) {
           {title}
         </h3>
         <p className="line-clamp-2 text-sm/normal font-normal text-fg-strong sm:text-[16px]/normal">
-          {authors}
+          {venue ? `${venue} · ${authors}` : authors}
         </p>
       </div>
     </li>
