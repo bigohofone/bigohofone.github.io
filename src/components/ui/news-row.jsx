@@ -20,11 +20,11 @@ export function NewsRow({ title, leading, onClick }) {
       <span aria-hidden className="absolute inset-x-0 bottom-0 h-[1.5px] rounded-full bg-fg-strong" />
 
       {leading && (
-        <small className="text-xs/normal font-normal sm:text-[15px]/normal">{leading}</small>
+        <small className="text-xs/normal font-normal">{leading}</small>
       )}
 
       {/* 한글은 단어 단위로 끊어 자연스럽게 줄바꿈한다 */}
-      <h3 className="min-w-0 flex-1 break-keep text-base/normal font-normal text-fg-strong sm:text-[20px]/normal">
+      <h3 className="min-w-0 flex-1 break-keep text-base/normal font-normal text-fg-strong">
         {title}
       </h3>
     </li>

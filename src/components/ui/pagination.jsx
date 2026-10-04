@@ -7,7 +7,7 @@ const baseNavClass = "rounded-full flex items-center justify-center text-fg"
 
 // 화살표는 쓸 수 없을 때 흐리게, 쓸 수 있을 때 진하게
 const arrowClass =
-  "text-fg-strong transition-colors disabled:text-blue-300 sm:hover:text-blue-500 sm:disabled:hover:text-blue-300"
+  "text-fg-strong transition-colors disabled:text-blue-300 sm:hover:text-link sm:disabled:hover:text-blue-300"
 
 // sm 은 목록이 짧을 때 쓰는 작은 버전
 const sizes = {
@@ -45,7 +45,7 @@ export function Pagination({ currentPage, totalPages, onPageChange, size = "base
               "relative z-10 cursor-pointer select-none font-normal transition-colors",
               s.label,
               // 현재 페이지가 아닌 번호만 호버에 반응한다
-              isSelected ? "text-fg-strong" : "sm:hover:text-blue-500"
+              isSelected ? "text-fg-strong" : "sm:hover:text-link"
             )}
           >
             {isSelected && (

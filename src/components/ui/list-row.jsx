@@ -13,14 +13,14 @@ export function ListRow({ title, subtitle, onClick }) {
       {/* Publication 행과 같은 타이포 규칙 — 모바일에서 한 단계 작게 */}
       <h3
         className={cn(
-          "text-base/normal font-medium text-fg-strong sm:text-[20px]/normal",
+          "text-base/normal font-medium text-fg-strong",
           rowTitleHoverClass
         )}
       >
         {title}
       </h3>
       {subtitle && (
-        <small className="text-sm/normal font-normal text-fg-strong sm:text-[16px]/normal">
+        <small className="text-sm/normal font-normal text-fg-strong">
           {subtitle}
         </small>
       )}

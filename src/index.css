@@ -19,7 +19,7 @@
 /* ==========================================================================
    Palette — 테마별 원시 값. 여기만 고치면 라이트/다크가 함께 바뀐다.
      글자  라이트 700 / 600 / 500   ↔  다크 300 / 400 / 500
-     배경·선 라이트 white / 100 / 300 ↔  다크 950 / 800 / 600
+     배경·선 라이트 white / 100 / 300 ↔  다크 900 / 800 / 600
    ========================================================================== */
 :root {
   /* 배경 */
@@ -48,11 +48,11 @@
 }
 
 .dark {
-  --bg: var(--color-gray-950);
-  --surface: var(--color-gray-950);
-  --surface-subtle: var(--color-gray-900);
-  --surface-muted: var(--color-gray-800);
-  --surface-inverse: var(--color-gray-800);
+  --bg: var(--color-gray-900);
+  --surface: var(--color-gray-900);
+  --surface-subtle: var(--color-gray-800);
+  --surface-muted: var(--color-gray-700);
+  --surface-inverse: var(--color-gray-700);
 
   --fg-strong: var(--color-gray-300); /* 13.67:1 */
   --fg: var(--color-gray-400); /*  7.73:1 */
@@ -243,22 +243,6 @@
     border-color: var(--color-border);
   }
 
-  /* 넓은 화면에서 상위 제목만 한 단계 키운다 */
-  @media (width >= 48rem) {
-    h1 {
-      font-size: var(--text-3xl);
-      line-height: var(--text-3xl--line-height);
-    }
-    h2 {
-      font-size: var(--text-2xl);
-      line-height: var(--text-2xl--line-height);
-    }
-    h3 {
-      font-size: var(--text-xl);
-      line-height: var(--text-xl--line-height);
-    }
-  }
-
   /* 폼 요소가 기본 폰트/굵기를 물려받도록 */
   button,
   input,
@@ -294,7 +278,7 @@
     transition: color 150ms;
   }
   a:hover {
-    color: var(--color-blue-500);
+    color: var(--color-link);
   }
   a:active {
     filter: brightness(0.9);

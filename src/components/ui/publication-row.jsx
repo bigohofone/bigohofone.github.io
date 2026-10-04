@@ -33,13 +33,13 @@ export function PublicationRow({ title, venue, authors, image, onClick }) {
       <div className="flex min-w-0 flex-1 flex-col justify-start gap-1">
         <h3
           className={cn(
-            "line-clamp-2 text-base/normal font-medium text-fg-strong sm:text-[20px]/normal",
+            "line-clamp-2 text-base/normal font-medium text-fg-strong",
             rowTitleHoverClass
           )}
         >
           {title}
         </h3>
-        <p className="line-clamp-2 text-sm/normal font-normal text-fg-strong sm:text-[16px]/normal">
+        <p className="line-clamp-2 text-sm/normal font-normal text-fg-strong">
           {venue ? `${venue} · ${authors}` : authors}
         </p>
       </div>

@@ -30,19 +30,19 @@ export function MarkdownRenderer({ content }) {
       <header className="flex flex-col">
         {period && <small className={`${datePillClass} mb-4 self-start`}>{period}</small>}
         {title && (
-          <h2 className="mb-2 text-[20px]/normal font-medium text-fg-strong sm:text-[24px]/normal">
+          <h2 className="mb-2 text-[20px]/normal font-medium text-fg-strong">
             {title}
           </h2>
         )}
         {subtitle && (
-          <p className="text-sm/normal font-normal text-fg-strong sm:text-[16px]/normal">
+          <p className="text-sm/normal font-normal text-fg-strong">
             {subtitle}
           </p>
         )}
       </header>
 
       <div
-        className="prose prose-sm max-w-none font-normal text-fg-strong prose-headings:font-medium prose-headings:text-fg-strong prose-p:text-fg-strong prose-a:text-inherit prose-a:underline hover:prose-a:text-blue-500 prose-strong:text-fg-strong prose-li:text-fg-strong sm:prose-base dark:prose-invert"
+        className="prose prose-sm max-w-none font-normal text-fg-strong prose-headings:font-medium prose-headings:text-fg-strong prose-p:text-fg-strong prose-a:text-inherit prose-a:underline hover:prose-a:text-link prose-strong:text-fg-strong prose-li:text-fg-strong sm:prose-base dark:prose-invert"
       >
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}

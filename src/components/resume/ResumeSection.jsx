@@ -47,7 +47,7 @@ export function ResumeSection({
       <section id={id} className="px-5 pb-30">
         {title && (
           <>
-            <h2 className="text-center text-[28px] font-medium text-fg-strong sm:text-[32px]">
+            <h2 className="text-center text-[28px] font-medium text-fg-strong">
               {title}
             </h2>
             <div className={extraTitleGap ? "h-15" : "h-10"} />

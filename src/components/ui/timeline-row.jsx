@@ -14,17 +14,17 @@ export function TimelineRow({ title, subtitle, start, end, onClick }) {
       </div>
 
       {/* 레일 — 모바일에선 선 왼쪽에 10px 여백을 둔다.
-          점은 알약 중심에, 아래 점은 모바일에선 행 끝 / sm 이상에선 두 번째 알약(80px) 에 맞춘다 */}
+          점은 알약 중심에, 아래 점은 모바일에선 행 끝 / sm 이상에선 두 번째 알약(68px) 에 맞춘다 */}
       <div className="relative ml-2.5 flex w-3 shrink-0 justify-center self-stretch sm:ml-0">
         <span
           aria-hidden
-          className="absolute top-3 bottom-1.5 w-[1.5px] bg-fg-strong sm:top-4 sm:bottom-auto sm:h-16"
+          className="absolute top-3 bottom-1.5 w-[1.5px] bg-fg-strong sm:bottom-auto sm:h-14"
         />
         {/* 아래 점에서 다음 행 위 점까지 — 행이 길어져도 pb-16(64px) + 점 반지름만큼 더 내려간다.
             CSS 점선은 끝이 각져서, 끝이 둥근 파선을 쓰려고 SVG 로 그린다 */}
         <svg
           aria-hidden
-          className="absolute top-[calc(100%-6px)] -bottom-[76px] w-[1.5px] group-last:hidden sm:top-20 sm:-bottom-20"
+          className="absolute top-[calc(100%-6px)] -bottom-[76px] w-[1.5px] group-last:hidden sm:top-[68px]"
         >
           <line
             x1="1"
@@ -37,8 +37,8 @@ export function TimelineRow({ title, subtitle, start, end, onClick }) {
             strokeDasharray="2 6"
           />
         </svg>
-        <span aria-hidden className={cn(dotClass, "top-1.5 sm:top-2.5")} />
-        <span aria-hidden className={cn(dotClass, "bottom-0 sm:bottom-auto sm:top-[74px]")} />
+        <span aria-hidden className={cn(dotClass, "top-1.5")} />
+        <span aria-hidden className={cn(dotClass, "bottom-0 sm:bottom-auto sm:top-[62px]")} />
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-2">
@@ -55,25 +55,24 @@ export function TimelineRow({ title, subtitle, start, end, onClick }) {
           onClick={onClick}
           className={cn(
             // 모바일에선 알약보다 8px 안쪽으로 들여 쓴다
-            "flex w-full flex-col gap-1 px-2 outline-none sm:min-h-24 sm:px-0",
-            // 누를 수 있는 블록 — 글자 주변까지 감싸는 면에 흰색 20% 를 덮어 밝게 띄운다.
+            "flex w-full flex-col gap-1 px-2 outline-none sm:min-h-20 sm:px-0",
+            // 누를 수 있는 블록 — 글자 주변까지 감싸는 면을 blue-50 (다크: gray-800) 으로 밝게 띄운다.
             // 모바일은 hover 가 없으니 누르는 동안(active)만 보이고, sm 이상은 hover 로 보인다.
-            // 위아래 -my-2 만큼 끌어올리므로 min-h 도 그만큼(16px) 더 잡아야 96px 로 놓인다
+            // 위아래 -my-2 만큼 끌어올리므로 min-h 도 그만큼(16px) 더 잡아야 80px 로 놓인다
             onClick &&
-              "group/row -my-2 cursor-pointer rounded-lg py-2 transition-colors active:bg-white/20 sm:-mx-3 sm:min-h-28 sm:px-3 sm:hover:bg-white/20"
+              "group/row -my-2 cursor-pointer rounded-lg py-2 transition-colors active:bg-blue-50 dark:active:bg-gray-800 sm:-mx-3 sm:min-h-24 sm:px-3 sm:hover:bg-blue-50 dark:sm:hover:bg-gray-800"
           )}
         >
-          {/* sm 이상: 줄간격 28px + 윗여백 (32-28)/2 = 2px 로 첫 줄 중심을 위 점(16px)에 맞춘다 */}
           <h3
             className={cn(
-              "text-base/normal font-medium text-fg-strong sm:pt-0.5 sm:text-[20px]/[28px]",
+              "text-base/normal font-medium text-fg-strong",
               rowTitleHoverClass
             )}
           >
             {title}
           </h3>
           {subtitle && (
-            <small className="text-sm/normal font-normal text-fg-strong sm:text-[16px]/normal">
+            <small className="text-sm/normal font-normal text-fg-strong">
               {subtitle}
             </small>
           )}

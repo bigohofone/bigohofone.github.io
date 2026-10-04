@@ -10,7 +10,7 @@ export function ProfileSection() {
       />
       <div className="h-5" />
 
-      <h1 className="text-center text-[28px] font-medium sm:text-[32px] text-fg-strong">{profile.name}</h1>
+      <h1 className="text-center text-[28px] font-medium text-fg-strong">{profile.name}</h1>
       <div className="h-2" />
 
       <div>
@@ -22,7 +22,7 @@ export function ProfileSection() {
       </div>
       <div className="h-10" />
 
-      <div className="space-y-[18px] break-keep text-base/[1.8] font-normal sm:text-lg/[1.8] text-fg-strong">
+      <div className="space-y-[18px] break-keep text-base/[1.8] font-normal text-fg-strong">
         <p>
           I am an Integrated M.S./Ph.D. Student at{" "}
           <a href="https://gsai.kaist.ac.kr/?lang=en">KAIST AI</a>, advised by{" "}
