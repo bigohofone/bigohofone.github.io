@@ -7,7 +7,7 @@ const baseNavClass = "rounded-full flex items-center justify-center text-fg"
 
 // 화살표는 쓸 수 없을 때 흐리게, 쓸 수 있을 때 진하게
 const arrowClass =
-  "text-fg-strong transition-colors disabled:text-blue-300 sm:hover:text-link sm:disabled:hover:text-blue-300"
+  "text-fg-strong transition-colors disabled:text-fg-subtle sm:hover:text-link sm:disabled:hover:text-fg-subtle"
 
 // sm 은 목록이 짧을 때 쓰는 작은 버전
 const sizes = {
@@ -51,8 +51,8 @@ export function Pagination({ currentPage, totalPages, onPageChange, size = "base
             {isSelected && (
               <motion.div
                 layoutId={`pagination-active-${layoutId}`}
-                // 선택 표시 — 페이지 배경을 90% 밝기로 깐다 (거의 검은 다크 배경에서는 곱셈이 통하지 않아 한 단계 밝은 면색을 쓴다)
-                className="absolute inset-0 -z-10 rounded-full bg-bg brightness-90 dark:bg-surface-subtle dark:brightness-100"
+                // 선택 표시 — 행 호버와 같은 반투명 tint
+                className="absolute inset-0 -z-10 rounded-full bg-tint"
                 transition={{ type: "spring", stiffness: 500, damping: 35 }}
               />
             )}

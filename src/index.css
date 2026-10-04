@@ -45,6 +45,9 @@
   --link: var(--color-blue-500);
   --danger: var(--color-red-700);
   --danger-fg: var(--color-white); /*  6.42:1 */
+
+  /* 호버·선택 면 — 아래 배경을 살짝 눌러 보이게 하는 반투명 막 */
+  --tint: rgb(0 0 0 / 0.05);
 }
 
 .dark {
@@ -67,6 +70,38 @@
   --link: var(--color-blue-400); /*  7.63:1 */
   --danger: var(--color-red-400);
   --danger-fg: var(--color-gray-950); /*  6.96:1 */
+}
+
+/* 하늘 배경 위의 글자·강조 색 — 테마와 상관없이 하늘 밝기로 고른다 (sky-background.jsx).
+   html[data-…] 가 .dark 보다 구체적이라 테마 값을 덮어쓴다.
+   하늘색이 시시각각 바뀌므로 강조색을 따로 두지 않는다: 강조는 글자색 그대로,
+   호버는 한 단계 흐리게, 선택·호버 면은 반투명 tint 로.
+   --bg 는 모달·떠 있는 버튼처럼 하늘을 가리는 면에 쓰여, 글자와 반대 톤을 준다. */
+html[data-sky-text="dark"] {
+  --bg: var(--color-white);
+  --primary: var(--color-gray-900);
+  --primary-fg: var(--color-white);
+  --link: var(--color-gray-500);
+  --tint: rgb(0 0 0 / 0.07);
+  --fg-strong: var(--color-gray-800);
+  --fg: var(--color-gray-700);
+  --fg-muted: var(--color-gray-600);
+  --fg-subtle: var(--color-gray-500);
+  --border: rgb(0 0 0 / 0.08);
+  --border-strong: rgb(0 0 0 / 0.25);
+}
+html[data-sky-text="light"] {
+  --bg: var(--color-gray-900);
+  --primary: var(--color-white);
+  --primary-fg: var(--color-gray-900);
+  --link: var(--color-gray-400);
+  --tint: rgb(255 255 255 / 0.14);
+  --fg-strong: var(--color-gray-50);
+  --fg: var(--color-gray-200);
+  --fg-muted: var(--color-gray-300);
+  --fg-subtle: var(--color-gray-400);
+  --border: rgb(255 255 255 / 0.12);
+  --border-strong: rgb(255 255 255 / 0.35);
 }
 
 /* ==========================================================================
@@ -135,6 +170,7 @@
   --color-link: var(--link);
   --color-danger: var(--danger);
   --color-danger-fg: var(--danger-fg);
+  --color-tint: var(--tint);
 }
 
 /* ==========================================================================
@@ -292,3 +328,4 @@
     line-height: 0;
   }
 }
+

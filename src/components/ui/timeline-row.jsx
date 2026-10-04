@@ -56,11 +56,11 @@ export function TimelineRow({ title, subtitle, start, end, onClick }) {
           className={cn(
             // 모바일에선 알약보다 8px 안쪽으로 들여 쓴다
             "flex w-full flex-col gap-1 px-2 outline-none sm:min-h-20 sm:px-0",
-            // 누를 수 있는 블록 — 글자 주변까지 감싸는 면을 blue-50 (다크: gray-800) 으로 밝게 띄운다.
+            // 누를 수 있는 블록 — 글자 주변까지 감싸는 면에 반투명 tint 를 깐다.
             // 모바일은 hover 가 없으니 누르는 동안(active)만 보이고, sm 이상은 hover 로 보인다.
             // 위아래 -my-2 만큼 끌어올리므로 min-h 도 그만큼(16px) 더 잡아야 80px 로 놓인다
             onClick &&
-              "group/row -my-2 cursor-pointer rounded-lg py-2 transition-colors active:bg-blue-50 dark:active:bg-gray-800 sm:-mx-3 sm:min-h-24 sm:px-3 sm:hover:bg-blue-50 dark:sm:hover:bg-gray-800"
+              "group/row -my-2 cursor-pointer rounded-lg py-2 transition-colors active:bg-tint sm:-mx-3 sm:min-h-24 sm:px-3 sm:hover:bg-tint"
           )}
         >
           <h3

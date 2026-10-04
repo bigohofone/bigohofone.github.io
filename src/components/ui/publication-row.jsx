@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils"
 import { interactiveRowClass, rowTitleHoverClass } from "@/components/ui/row-styles"
 
-// 이미지가 없을 때 자리를 대신 채운다 (바깥은 blue-50, 안쪽으로 갈수록 blue-100)
+// 이미지가 없을 때 자리를 대신 채운다 (바깥은 gray-50, 안쪽으로 갈수록 gray-200)
 const placeholderGradient =
-  "radial-gradient(circle at center, var(--color-blue-100) 0%, var(--color-blue-50) 100%)"
+  "radial-gradient(circle at center, var(--color-gray-200) 0%, var(--color-gray-50) 100%)"
 
 export function PublicationRow({ title, venue, authors, image, onClick }) {
   return (
