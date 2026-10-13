@@ -175,13 +175,15 @@
   --danger-fg: var(--color-gray-950); /*  6.96:1 */
 }
 
-/* 소개(Wonjun Oh) 부분에서 색을 뒤집는다 (ProfileSection 이 <html> 에 붙였다 뗀다).
-   라임 배경은 ProfileSection 의 LimeFill 이 칸 단위로 퍼뜨려 그리고, 여기서는 글자를 원래 배경색으로,
-   원래 라임이던 것(대표색)을 흰색으로 바꾼다. 대표색 위 글자(primary-fg)는 원래 배경색 그대로다 */
-.lime-mode {
+/* 라임 배경 위에 있는 소개 부분(이름·소개 글·CV 버튼)에만 붙여 그 안의 색만 뒤집는다 (ProfileSection 이 붙였다 뗀다).
+   라임 배경은 ProfileSection 의 LimeFill 이 칸 단위로 그린다. 글자는 원래 배경색, 줄무늬는 한 단계 짙은 라임,
+   원래 라임이던 것(대표색)은 흰색. 대표색 위 글자(primary-fg)는 원래 배경색 그대로다.
+   다른 섹션에는 붙이지 않으므로 그쪽 색은 바뀌지 않는다 */
+.lime-section {
   --fg-strong: var(--color-gray-900);
   --fg: var(--color-gray-900);
   --fg-muted: var(--color-gray-900);
+  --bg-light: var(--color-lime-400);
   --primary: var(--color-white);
 }
 

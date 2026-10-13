@@ -543,7 +543,7 @@ function PixelWave({ spread, opacity }) {
       canvas.style.height = `${rows * cell}px`
 
       const ctx = canvas.getContext("2d")
-      ctx.fillStyle = "rgb(0 0 0 / 0.5)"
+      ctx.fillStyle = "rgb(0 0 0 / 0.4)"
       const eased = 1 - (1 - spread) ** 3
       const waveLength = WAVE_LENGTH * Math.max(cols, rows)
       const reach = eased * Math.hypot(cols, rows) * 0.6
@@ -556,7 +556,7 @@ function PixelWave({ spread, opacity }) {
           if (distance > reach) continue
           const ring = 0.5 + 0.5 * Math.cos((2 * Math.PI * (distance - phase)) / waveLength)
           const front = Math.max(0, 1 - (reach - distance) / 10) * crest
-          const value = 0.75 * ring ** 2 + 0.35 * front + 0.2 * (cellNoise(col, row) - 0.5)
+          const value = 0.75 * ring ** 0.7 + 0.35 * front + 0.2 * (cellNoise(col, row) - 0.5)
           if (value > BAYER[row % 4][col % 4]) ctx.fillRect(col, row, 1, 1)
         }
       }
@@ -589,30 +589,38 @@ function useLockScrollUntil(done) {
   }, [done])
 }
 
-// 소개 부분에 들어선 정도 (0~1). 소개 위끝이 화면 아래끝에서 가운데까지 올라오는 동안 0 → 1,
-// 소개 아래끝이 화면 가운데에서 위끝까지 올라가는 동안 1 → 0. 스크롤할 때마다 다시 그려지므로 그때 잰다
-function introProgress(el) {
-  if (!el) return 0
-  const { top, bottom } = el.getBoundingClientRect()
-  const half = window.innerHeight / 2
-  return Math.min(clamp01((window.innerHeight - top) / half), clamp01(bottom / half))
+// 소개 부분(이름·소개 글·CV 버튼)에서는 배경이 라임으로 바뀐다. 둘 다 화면 높이의 LIME_SPAN 만큼 스크롤하는 동안 일어난다.
+// - 들어올 때: 소개 위끝이 화면 아래에 나타나면 화면 아래 가운데에서 라임 원이 자라 화면을 다 덮는다 (grow 0 → 1)
+// - 나갈 때: 다음 섹션(News) 위끝이 화면 아래에 나타나면 라임이 화면 위 가운데로 모여드는 원이 되어 줄어 사라진다 (shrink 0 → 1)
+// 스크롤할 때마다 다시 그려지므로 그때 잰다
+const LIME_SPAN = 0.6
+
+function introLime(el) {
+  const next = document.getElementById("news")
+  if (!el || !next) return { grow: 0, shrink: 0, nextTop: Infinity }
+  const progress = (top) => clamp01((window.innerHeight - top) / (window.innerHeight * LIME_SPAN))
+  const nextTop = next.getBoundingClientRect().top
+  return { grow: progress(el.getBoundingClientRect().top), shrink: progress(nextTop), nextTop }
 }
 
-// 소개 부분에서는 배경이 라임으로 바뀐다. 라임 칸이 화면 가운데에서 바깥으로 퍼지며 덮고(돌아갈 때는 바깥에서 가운데로 모이며 걷힌다),
-// 글자는 칸 단위로 바꿀 수 없어, 라임이 화면 대부분(가장자리 글자까지)을 덮었을 때 <html> 에 lime-mode 를 붙여 한꺼번에 뒤집는다.
-// 더 일찍 뒤집으면 아직 어두운 바깥쪽에 어두운 글자가 남는다 (index.css 참고)
-const LIME_TEXT_AT = 0.8
+// 색은 라임 원과 따로, 소개 부분이 화면에 나타나는 순간 뒤집고 다음 섹션(News) 위끝이 화면 가운데를 넘어서면 되돌린다
+// 뒤집는 곳은 소개 부분(이름·소개 글)과 CV 버튼 줄(#contact)뿐이다 (index.css 의 lime-section)
+function limeColorsOn({ grow, nextTop }) {
+  return grow > 0 && nextTop > window.innerHeight / 2
+}
 
-function useLimeMode(progress) {
-  const on = progress >= LIME_TEXT_AT
+// CV 버튼 줄은 다른 컴포넌트(ContactSection)라 id 로 찾아 붙인다
+function useLimeContact(on) {
   useEffect(() => {
-    document.documentElement.classList.toggle("lime-mode", on)
+    document.getElementById("contact")?.classList.toggle("lime-section", on)
   }, [on])
-  useEffect(() => () => document.documentElement.classList.remove("lime-mode"), [])
 }
 
-// 원 묶음과 같은 격자(한 칸 = UNIT)에 라임 칸을 찍는다. 가장자리는 4×4 순서 디더링으로 픽셀이 흩어지며 번진다
-function LimeFill({ progress }) {
+// 원 묶음과 같은 격자(한 칸 = UNIT)에 라임 칸을 찍는다. 라임은 아래 가운데에서 자라는 원과 위 가운데로 줄어드는 원이
+// 겹치는 곳이고, 원 가장자리는 4×4 순서 디더링으로 픽셀이 흩어지며 번진다
+const LIME_EDGE = 0.15 // 원 가장자리 번짐 폭 (화면을 다 덮는 반지름에 대한 비율)
+
+function LimeFill({ grow, shrink }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -624,16 +632,21 @@ function LimeFill({ progress }) {
     canvas.height = rows
     canvas.style.width = `${cols * cell}px`
     canvas.style.height = `${rows * cell}px`
-    if (progress === 0) return
+    if (grow === 0 || shrink === 1) return
 
     const ctx = canvas.getContext("2d")
     ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--color-lime-300")
-    const farthest = Math.hypot(cols, rows) / 2
-    const edge = 0.15
+    // 캔버스는 화면 가운데에 놓여 위아래로 조금 넘친다. 두 원의 중심은 화면 아래 가운데와 화면 위 가운데
+    const canvasTop = (window.innerHeight - rows * cell) / 2
+    const bottomRow = (window.innerHeight - canvasTop) / cell
+    const topRow = -canvasTop / cell
+    const farthest = Math.hypot(cols / 2, bottomRow - topRow)
+    // 반지름 radius(0~1) 원 안쪽이면 1 이상, 바깥이면 0 이하. 그 사이가 번지는 가장자리
+    const inside = (col, row, centerRow, radius) =>
+      (radius * (1 + LIME_EDGE) - Math.hypot(col + 0.5 - cols / 2, row + 0.5 - centerRow) / farthest) / LIME_EDGE
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
-        const distance = Math.hypot(col + 0.5 - cols / 2, row + 0.5 - rows / 2) / farthest
-        const value = (progress * (1 + edge) - distance) / edge
+        const value = Math.min(inside(col, row, bottomRow, grow), inside(col, row, topRow, 1 - shrink))
         if (value > BAYER[row % 4][col % 4]) ctx.fillRect(col, row, 1, 1)
       }
     }
@@ -704,8 +717,9 @@ export function ProfileSection() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { progress, spread } = useIntro()
   const introRef = useRef(null)
-  const limeProgress = introProgress(introRef.current)
-  useLimeMode(limeProgress)
+  const lime = introLime(introRef.current)
+  const limeColors = limeColorsOn(lime)
+  useLimeContact(limeColors)
   useLockScrollUntil(spread === 1)
   const shown = scrollCircles(
     hovered === null || absorbed ? circles : makeRoom(circles, hovered),
@@ -756,7 +770,7 @@ export function ProfileSection() {
       <div className="h-[200dvh]" />
       {/* 배경 파동은 본문 뒤에 두고, 스크롤해 원이 흡수되는 동안 서서히 사라진다 */}
       <PixelWave spread={spread} opacity={1 - clamp01(scrollY / window.innerHeight)} />
-      <LimeFill progress={limeProgress} />
+      <LimeFill grow={lime.grow} shrink={lime.shrink} />
       <div className="pointer-events-none fixed inset-0 z-40 overflow-hidden">
         {/* 다 흡수되면 배지가 라임색으로 바뀌고 링크 아이콘이 뜬다. 그 뒤로는 눌러서 연락처를 펼친다 */}
         <button
@@ -907,8 +921,8 @@ export function ProfileSection() {
       </div>
       <div className="h-cell-3" />
 
-      {/* 소개 부분 — 화면 가운데에 걸쳐 있는 동안 페이지 색을 뒤집는다 (index.css 의 lime-mode) */}
-      <div ref={introRef}>
+      {/* 소개 부분 — 라임 배경 위에 있는 동안 이 안의 색만 뒤집는다 (index.css 의 lime-section) */}
+      <div ref={introRef} className={cn(limeColors && "lime-section")}>
         {/* 좌우 여백(px-cell-5)을 걷어내 본문 폭(100칸) 한가운데에 둔다. 글자 폭이 8칸의 배수라 왼쪽 끝도 칸 경계에 맞는다 */}
         <PixelTitle as="h1" className="-mx-cell-5 text-fg-strong">
           {profile.name}
