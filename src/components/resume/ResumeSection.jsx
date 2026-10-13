@@ -5,6 +5,7 @@ import { MarkdownRenderer } from "@/components/ui/markdown-renderer"
 import { Modal } from "@/components/ui/modal"
 import { Pagination } from "@/components/ui/pagination"
 import { PixelTitle } from "@/components/ui/pixel-title"
+import { cn } from "@/lib/utils"
 import { compareItemsByDateThenAlphabetical } from "@/utils/date"
 
 /**
@@ -22,6 +23,7 @@ export function ResumeSection({
   paginationSize = "sm",
   extraTitleGap = false, // 제목과 목록 사이를 20px 더 띄운다
   footnote = null, // 목록 아래에 붙는 주석 (예: 저자 기호 설명)
+  pixelCorners = true, // 줄무늬 목록의 위·아래 꼭짓점을 한 칸씩 깎는다 (pixel-list)
 }) {
   const [page, setPage] = useState(1)
   const [openMd, setOpenMd] = useState(null)
@@ -45,16 +47,15 @@ export function ResumeSection({
 
   return (
     <>
-      <section id={id} className="px-cell-5 pb-cell-20">
+      <section id={id} className="px-cell-1 pb-cell-20">
         {title && (
           <>
-            {/* 섹션 좌우 여백(px-cell-5)을 걷어내 본문 폭(100칸) 한가운데에 둔다. 글자 폭이 8칸의 배수라 왼쪽 끝도 칸 경계에 맞는다 */}
-            <PixelTitle className="-mx-cell-5 text-fg-strong">{title}</PixelTitle>
+            <PixelTitle className="text-fg-strong">{title}</PixelTitle>
             <div className={extraTitleGap ? "h-cell-8" : "h-cell-6"} />
           </>
         )}
 
-        <ul className="flex flex-col">
+        <ul className={cn("flex flex-col", pixelCorners && "pixel-list")}>
           {pagedItems.map((item, index) => (
             <Row
               key={item.id ?? item.title}

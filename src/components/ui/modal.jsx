@@ -65,34 +65,48 @@ export function Modal({ open, onClose, className, children }) {
               }
             }}
             className={cn(
-              // 대표색(라임) 한 칸 테두리를 두르고 네 꼭짓점을 한 칸씩 깎아 픽셀 모서리로 만든다
-              "relative flex w-full flex-col overflow-y-auto border-[length:var(--cell)] border-primary bg-bg pixel-corners",
-              // 패널 폭은 본문 폭(w-frame, 100칸)과 같다. 내용이 짧아도 최소 4:3 (가로:세로) 비율은 유지하되
+              // sm 이상 떠 있는 패널만 대표색(라임) 한 칸 테두리를 두르고 네 꼭짓점을 한 칸씩 깎아 픽셀 모서리로 만든다
+              "relative flex w-full flex-col bg-bg sm:border-[length:var(--cell)] sm:border-primary sm:pixel-corners",
+              // 패널 폭은 본문 폭(w-frame)과 같다. 내용이 짧아도 최소 4:3 (가로:세로) 비율은 유지하되
               // 화면이 낮으면 그만큼만 쓴다
-              "sm:max-h-[85vh] sm:min-h-[min(calc(var(--cell)*75),85vh)] sm:w-frame",
+              "sm:max-h-[85vh] sm:min-h-[min(calc(var(--cell)*var(--frame-cells)*0.75),85vh)] sm:w-frame",
               className
             )}
           >
-            {/* 내용이 길어도 닫기 버튼은 위에 붙어 있는다 */}
-            <div className="sticky top-0 z-10 flex justify-end bg-bg px-5 pt-5 pb-2 sm:px-8 sm:pt-6">
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label="Close"
-                className="flex size-11 items-center justify-center text-fg-strong outline-none transition-colors hover:text-primary"
-              >
-                {/* pixelarticons 닫기 아이콘은 24 격자에 2단위 픽셀로 5~19 사이에 7×7 픽셀이 그려져 있어,
-                    그 부분만 잘라 7×7 글자 픽셀 크기로 그리면 아이콘 픽셀이 격자에 맞는다 */}
-                <Close
-                  viewBox="5 5 14 14"
-                  shapeRendering="crispEdges"
-                  aria-hidden="true"
-                  style={{ width: "calc(7 * var(--font-px))", height: "calc(7 * var(--font-px))" }}
-                />
-              </button>
-            </div>
+            {/* 깎인 꼭짓점 안쪽에 라임 칸을 하나씩 덧대 테두리가 끊기지 않게 한다.
+                스크롤되는 안쪽 판 위에 고정해 두어야 내용을 스크롤해도 따라 움직이지 않는다 */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-20 hidden sm:block"
+              style={{
+                backgroundImage: Array(4).fill("linear-gradient(var(--primary), var(--primary))").join(","),
+                backgroundSize: "var(--cell) var(--cell)",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "top left, top right, bottom left, bottom right",
+              }}
+            />
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              {/* 내용이 길어도 닫기 버튼은 위에 붙어 있는다 */}
+              <div className="sticky top-0 z-10 flex justify-end bg-bg px-5 pt-5 pb-2 sm:px-8 sm:pt-6">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close"
+                  className="flex size-11 items-center justify-center text-fg-strong outline-none transition-colors hover:text-primary"
+                >
+                  {/* pixelarticons 닫기 아이콘은 24 격자에 2단위 픽셀로 5~19 사이에 7×7 픽셀이 그려져 있어,
+                      그 부분만 잘라 7×7 글자 픽셀 크기로 그리면 아이콘 픽셀이 격자에 맞는다 */}
+                  <Close
+                    viewBox="5 5 14 14"
+                    shapeRendering="crispEdges"
+                    aria-hidden="true"
+                    style={{ width: "calc(7 * var(--font-px))", height: "calc(7 * var(--font-px))" }}
+                  />
+                </button>
+              </div>
 
-            <div className="px-5 pb-15 sm:px-8 sm:pb-12">{children}</div>
+              <div className="px-5 pb-15 sm:px-8 sm:pb-12">{children}</div>
+            </div>
           </motion.div>
         </motion.div>
       )}

@@ -13,7 +13,7 @@ export function BackToTop() {
   }
 
   return (
-    <div className="flex justify-center px-cell-5 pb-cell-15">
+    <div className="flex justify-center pb-cell-15">
       <button
         type="button"
         onClick={scrollToTop}

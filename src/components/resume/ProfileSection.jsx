@@ -150,7 +150,7 @@ function LoadingGauge({ cells, progress }) {
 // 24 격자에 2단위 픽셀로 가로 5~19 · 세로 4~20 사이에 7×8 픽셀이 그려져 있어 그 부분만 잘라 쓴다.
 // 화면 아래쪽 가운데, 아래에서 네 칸 위에 격자에 맞춰 띄운다. 화면 가운데가 칸 경계라 7픽셀 폭은 왼쪽으로 4픽셀부터 놓는다
 function ScrollArrow() {
-  const bottomCells = Math.floor(window.innerHeight / 2 / unitPx()) - 4 - 4
+  const bottomCells = Math.floor(window.innerHeight / 2 / cellPx()) - 4 - 4
   return (
     <ArrowDown
       viewBox="5 4 14 16"
@@ -196,15 +196,29 @@ const ICON_COLORS = {
 
 const LINKS = contact.items.filter((item) => ICON_MAP[item.label])
 
-// 원 묶음은 화면 가운데의 지름 100칸 원(경계 원) 안에 원을 채운다. 좌표는 경계 원을 감싸는 100×100 칸 판이고,
-// (50, 50) 이 화면 가운데다. 화면에서 1 은 UNIT(격자 한 칸, index.css 의 --cell)이다.
-// 한 칸 크기는 화면 폭으로만 정해지고 경계도 칸으로만 정해지므로, 창 크기가 바뀌어도 다시 배치할 필요 없이
-// 묶음 전체가 같은 비율로 커지고 줄어든다. 화면이 경계 원보다 낮으면 원 위아래가 잘린다
+// 원 묶음은 화면 가운데의 경계 원(지름 = 본문 폭) 안에 원을 채운다. 배치는 경계 원을 감싸는 100×100 판 좌표로 하고
+// ((50, 50) 이 화면 가운데), 그릴 때 판 1 을 본문 폭/100 칸으로 바꿔 격자(한 칸 = UNIT, index.css 의 --cell)에 맞춘다.
+// 화면 폭 구간마다 한 칸 크기와 본문 칸 수가 정해져 있다 (index.css 와 같은 값):
+// 720px 이상은 8px × 90칸, 그 아래는 6px × 60칸.
+// 창 크기가 바뀌어도 다시 배치할 필요 없이 같은 배치를 새 칸 수로 바꿔 그린다. 화면이 경계 원보다 낮으면 원 위아래가 잘린다
 const UNIT = "var(--cell)"
-const CELL_MAX_PX = 8
 
-// 원마다 GAP 의 절반씩 여백을 두르고 여백끼리 맞닿게 붙여서, 보이는 원 사이에는 GAP 만큼 틈이 남는다
-const GAP = 1.5
+function cellPx() {
+  return window.innerWidth >= 720 ? 8 : 6
+}
+
+function frameCells() {
+  return window.innerWidth >= 720 ? 90 : 60
+}
+
+// 배치 판 1 이 몇 칸인지
+function boardScale() {
+  return frameCells() / 100
+}
+
+// 원마다 GAP 의 절반씩 여백을 두르고 여백끼리 맞닿게 붙여서, 보이는 원 사이에는 GAP 만큼 틈이 남는다.
+// 판 2 는 60칸 화면에서도 1칸 넘게 남아, 칸에 맞추며 생기는 어긋남이 있어도 원끼리 겹치지 않는다
+const GAP = 2
 
 // 반지름 r 인 원이 경계 원 안에 들도록 경계를 r 만큼 줄여서 잰, 가운데로부터 경계까지의 비율 (1 이하면 안쪽)
 function boundaryReach(x, y, r) {
@@ -386,15 +400,12 @@ const lerp = (from, to, t) => from + (to - from) * t
 const BADGE_TOP_MARGIN = 2
 const BADGE_FINAL_SIZE = 9
 
-// 화면에서 UNIT 하나가 몇 px 인지 (index.css 의 --cell 과 같은 식)
-function unitPx() {
-  return Math.min(window.innerWidth / 100, CELL_MAX_PX)
-}
-
 // finalSize: 위에 붙었을 때 배지 지름 (칸)
 // spread: 첫 화면에서 원들이 배지 밖으로 퍼져 나온 정도 (0 이면 모두 배지 안, 1 이면 제자리). 가까운 원부터 나온다
 function scrollCircles(circles, scrollY, finalSize, spread) {
-  const unit = unitPx()
+  // 아래 계산은 배치 판 좌표로 한다. 칸으로 정한 크기·여백은 판 단위로 바꿔 쓴다
+  const scale = boardScale()
+  const unit = cellPx() * scale
   const absorbPx = window.innerHeight
   const absorb = clamp01(scrollY / absorbPx)
   const badge = circles[0]
@@ -419,25 +430,25 @@ function scrollCircles(circles, scrollY, finalSize, spread) {
     }
   })
 
-  const travel = window.innerHeight / 2 / unit - BADGE_TOP_MARGIN - finalSize / 2
+  const travel = window.innerHeight / 2 / unit - (BADGE_TOP_MARGIN + finalSize / 2) / scale
   const rise = clamp01((scrollY - absorbPx) / unit / travel)
   out[0] = {
     ...badge,
     y: badge.y - rise * travel,
-    size: lerp(badge.size, finalSize, rise),
+    size: lerp(badge.size, finalSize / scale, rise),
     morph: rise,
   }
   return out
 }
 
-// 원을 격자에 맞춘다. 지름은 칸 수로 반올림하고, 화면 가운데를 원점으로 왼쪽·위 모서리를 칸 경계에 둔다.
-// 원 사이 GAP 이 1.5 칸이라 반올림으로 생기는 어긋남(원마다 반 칸 안쪽)이 있어도 원끼리 겹치지 않는다
+// 판 좌표의 원을 격자에 맞춘다. 지름은 칸 수로 반올림하고, 화면 가운데를 원점으로 왼쪽·위 모서리를 칸 경계에 둔다
 function snapCircle({ x, y, size }) {
-  const cells = Math.round(size)
+  const scale = boardScale()
+  const cells = Math.round(size * scale)
   return {
     cells,
-    left: Math.round(x - 50 - cells / 2),
-    top: Math.round(y - 50 - cells / 2),
+    left: Math.round((x - 50) * scale - cells / 2),
+    top: Math.round((y - 50) * scale - cells / 2),
   }
 }
 
@@ -532,7 +543,7 @@ function PixelWave({ spread, opacity }) {
     let frame
     const draw = (now) => {
       const spread = spreadRef.current
-      const cell = unitPx()
+      const cell = cellPx()
       // 짝수 칸으로 잡고 화면 가운데에 두어, 원들처럼 화면 가운데가 칸 경계가 되게 한다
       const cols = 2 * Math.ceil(window.innerWidth / cell / 2) + 2
       const rows = 2 * Math.ceil(window.innerHeight / cell / 2) + 2
@@ -624,7 +635,7 @@ function LimeFill({ grow, shrink }) {
   const ref = useRef(null)
 
   useEffect(() => {
-    const cell = unitPx()
+    const cell = cellPx()
     const cols = 2 * Math.ceil(window.innerWidth / cell / 2) + 2
     const rows = 2 * Math.ceil(window.innerHeight / cell / 2) + 2
     const canvas = ref.current
@@ -661,10 +672,11 @@ function LimeFill({ grow, shrink }) {
   )
 }
 
+// 스크롤 위치를 돌려준다. 창 크기가 바뀔 때도 다시 그리게 해 칸 수(frameCells)가 바뀐 배치를 새로 그린다
 function useScrollY() {
-  const [scrollY, setScrollY] = useState(0)
+  const [view, setView] = useState({ scrollY: 0, width: 0, height: 0 })
   useEffect(() => {
-    const update = () => setScrollY(window.scrollY)
+    const update = () => setView({ scrollY: window.scrollY, width: window.innerWidth, height: window.innerHeight })
     update()
     window.addEventListener("scroll", update, { passive: true })
     window.addEventListener("resize", update)
@@ -673,7 +685,7 @@ function useScrollY() {
       window.removeEventListener("resize", update)
     }
   }, [])
-  return scrollY
+  return view.scrollY
 }
 
 // Email 은 메일 앱을 여는 대신 주소를 복사한다. 아이콘은 원 폭의 30% 로 잡아 원 크기를 따라간다
@@ -765,7 +777,7 @@ export function ProfileSection() {
   }
 
   return (
-    <header id="bio" className="flex flex-col px-cell-5 pb-cell-10">
+    <header id="bio" className="flex flex-col pb-cell-10">
       {/* 원 묶음은 화면에 고정해 두고, 이 빈 공간(첫 화면 + 흡수에 쓰는 화면 하나)만큼 스크롤한다 */}
       <div className="h-[200dvh]" />
       {/* 배경 파동은 본문 뒤에 두고, 스크롤해 원이 흡수되는 동안 서서히 사라진다 */}
@@ -889,7 +901,7 @@ export function ProfileSection() {
         {spread === 1 && !absorbed && <ScrollArrow />}
 
         {/* 첫 화면 인사말 — 원 묶음 바깥 빈자리에 쓴다. 원이 퍼지며 나타나고, 스크롤해 흡수되는 동안 사라진다.
-            데스크톱(1280px 이상)은 원 왼쪽·오른쪽, 휴대폰(640px 미만)은 원 위·아래에 두고,
+            데스크톱(1080px 이상)은 원 왼쪽·오른쪽, 폰(720px 미만)은 원 위·아래에 두고,
             그 사이 화면은 원 옆자리가 글자보다 좁아 쓰지 않는다 */}
         <div
           style={{
@@ -899,13 +911,13 @@ export function ProfileSection() {
           {[
             [
               "Hello",
-              "left-0 inset-y-0 w-[calc(50%-var(--cell)*50)] xl:flex",
-              "top-0 inset-x-0 h-[calc(50%-var(--cell)*50)] max-sm:flex",
+              "left-0 inset-y-0 w-[calc(50%-var(--cell)*var(--frame-cells)/2)] min-[1080px]:flex",
+              "top-0 inset-x-0 h-[calc(50%-var(--cell)*var(--frame-cells)/2)] max-[719px]:flex",
             ],
             [
               "World!",
-              "right-0 inset-y-0 w-[calc(50%-var(--cell)*50)] xl:flex",
-              "bottom-0 inset-x-0 h-[calc(50%-var(--cell)*50)] max-sm:flex",
+              "right-0 inset-y-0 w-[calc(50%-var(--cell)*var(--frame-cells)/2)] min-[1080px]:flex",
+              "bottom-0 inset-x-0 h-[calc(50%-var(--cell)*var(--frame-cells)/2)] max-[719px]:flex",
             ],
           ].map(([word, desktop, mobile]) => (
             <Fragment key={word}>
@@ -922,9 +934,8 @@ export function ProfileSection() {
       <div className="h-cell-3" />
 
       {/* 소개 부분 — 라임 배경 위에 있는 동안 이 안의 색만 뒤집는다 (index.css 의 lime-section) */}
-      <div ref={introRef} className={cn(limeColors && "lime-section")}>
-        {/* 좌우 여백(px-cell-5)을 걷어내 본문 폭(100칸) 한가운데에 둔다. 글자 폭이 8칸의 배수라 왼쪽 끝도 칸 경계에 맞는다 */}
-        <PixelTitle as="h1" className="-mx-cell-5 text-fg-strong">
+      <div ref={introRef} className={cn("px-cell-1", limeColors && "lime-section")}>
+        <PixelTitle as="h1" className="text-fg-strong">
           {profile.name}
         </PixelTitle>
         <div className="h-cell-6" />

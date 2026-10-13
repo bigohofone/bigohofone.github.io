@@ -8,7 +8,7 @@ export function ListRow({ title, subtitle, onClick }) {
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
-      className={cn("flex flex-col gap-cell-1 p-cell-2 outline-none odd:bg-bg-light", onClick && interactiveRowClass)}
+      className={cn("flex flex-col gap-cell-1 p-cell-2 outline-none bg-bg-mid odd:bg-bg-light", onClick && interactiveRowClass)}
     >
       {/* Publication 행과 같은 타이포 규칙 — 모바일에서 한 단계 작게 */}
       <h3

@@ -7,9 +7,9 @@ export function NewsRow({ title, leading, onClick }) {
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
-      // 언제나 한 열 — 내용 아래에 날짜를 둔다. 구분선 대신 홀수 줄에 밝은 배경을 깔아 줄을 나눈다
+      // 언제나 한 열 — 내용 아래에 날짜를 둔다. 구분선 대신 줄마다 배경과 다른 면을 깔고, 홀수·짝수 줄 색을 번갈아 줄을 나눈다
       className={cn(
-        "flex flex-col-reverse gap-cell-1 p-cell-2 outline-none odd:bg-bg-light",
+        "flex flex-col-reverse gap-cell-1 p-cell-2 outline-none bg-bg-mid odd:bg-bg-light",
         onClick && interactiveRowClass
       )}
     >

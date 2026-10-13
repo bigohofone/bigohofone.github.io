@@ -86,7 +86,7 @@ export default function ResumePage() {
 
       <ResumeSection id="awards" title={awards.title} items={awardItems} usePagination />
 
-      <ResumeSection id="vitae" title="Vitae" items={vitaeItems} Row={TimelineRow} extraTitleGap />
+      <ResumeSection id="vitae" title="Vitae" items={vitaeItems} Row={TimelineRow} extraTitleGap pixelCorners={false} />
 
       <BackToTop />
     </div>

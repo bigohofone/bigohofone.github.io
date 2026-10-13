@@ -8,7 +8,7 @@ export function PublicationRow({ title, venue, authors, onClick }) {
       tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
       className={cn(
-        "flex flex-col gap-cell-1 p-cell-2 outline-none odd:bg-bg-light",
+        "flex flex-col gap-cell-1 p-cell-2 outline-none bg-bg-mid odd:bg-bg-light",
         onClick && interactiveRowClass
       )}
     >

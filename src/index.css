@@ -82,6 +82,50 @@
    - pixel-title: 섹션 제목(Jersey 10). 줄 상자를 대문자 위끝~바닥선으로 잘라(text-box, 블록 상자에서만 먹는다)
      상자 높이를 대문자 높이(10픽셀)로 둔다. 가로 맞춤은 PixelTitle 이 --pixel-title-x 로 반 픽셀을 민다
    - pixel-label: 그 밖의 Jersey 10 글자(CV 버튼). 줄 높이는 14픽셀 */
+/* 줄무늬 목록 — 첫 줄은 위 두 꼭짓점, 마지막 줄은 아래 두 꼭짓점을 격자 한 칸씩 깎아 목록 전체가 픽셀 모서리를 갖게 한다 */
+@utility pixel-list {
+  & > li:first-child {
+    clip-path: polygon(
+      var(--cell) 0,
+      calc(100% - var(--cell)) 0,
+      calc(100% - var(--cell)) var(--cell),
+      100% var(--cell),
+      100% 100%,
+      0 100%,
+      0 var(--cell),
+      var(--cell) var(--cell)
+    );
+  }
+  & > li:last-child {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - var(--cell)),
+      calc(100% - var(--cell)) calc(100% - var(--cell)),
+      calc(100% - var(--cell)) 100%,
+      var(--cell) 100%,
+      var(--cell) calc(100% - var(--cell)),
+      0 calc(100% - var(--cell))
+    );
+  }
+  & > li:only-child {
+    clip-path: polygon(
+      var(--cell) 0,
+      calc(100% - var(--cell)) 0,
+      calc(100% - var(--cell)) var(--cell),
+      100% var(--cell),
+      100% calc(100% - var(--cell)),
+      calc(100% - var(--cell)) calc(100% - var(--cell)),
+      calc(100% - var(--cell)) 100%,
+      var(--cell) 100%,
+      var(--cell) calc(100% - var(--cell)),
+      0 calc(100% - var(--cell)),
+      0 var(--cell),
+      var(--cell) var(--cell)
+    );
+  }
+}
+
 @utility pixel-title {
   height: calc(var(--font-px) * 10);
   text-align: center;
@@ -112,13 +156,23 @@
      글자  라이트 700 / 600 / 500   ↔  다크 300 / 400 / 500
      배경·선 라이트 white / 100 / 300 ↔  다크 900 / 800 / 600
    ========================================================================== */
-/* 격자 한 칸(--cell)과 그 100 칸(--frame). 한 칸은 화면 폭으로만 정한다 — 화면 폭의 1%, 단 8px 을 넘지 않는다.
-   그래서 본문 폭(100칸)은 화면 폭과 같고, 800px 보다 넓은 화면에서는 800px 에 머문다.
-   첫 화면 원 묶음(ProfileSection, CELL_MAX_PX 와 맞춘다)과 본문이 이 값을 함께 쓴다. Tailwind 에서는 p-cell, w-frame 처럼 쓴다 */
+/* 격자 한 칸(--cell)과 본문 폭(--frame-cells 칸, Tailwind 의 w-frame). 화면 폭 구간마다 고정한다 —
+   한 칸이 늘 정수 px 라 픽셀 그림·픽셀 글꼴이 번지지 않는다.
+     폰(720px 미만)        6px × 60칸 = 360px
+     태블릿·데스크톱(720px 이상) 8px × 90칸 = 720px
+   360px 보다 좁은 폰도 360px 로 그리고, 넘치는 부분은 잘라 옆으로 스크롤되지 않게 한다 (body 의 overflow-x).
+   첫 화면 원 묶음(ProfileSection 의 cellPx · frameCells)과 본문이 이 값을 함께 쓴다. Tailwind 에서는 p-cell, w-frame 처럼 쓴다 */
 :root {
-  --cell: min(1vw, 8px);
-  /* 픽셀 글꼴의 글자 픽셀 하나 — 격자의 반 칸(본문 폭의 1/200) */
+  --cell: 6px;
+  --frame-cells: 60;
+  /* 픽셀 글꼴의 글자 픽셀 하나 — 격자의 반 칸 */
   --font-px: calc(var(--cell) / 2);
+}
+@media (min-width: 720px) {
+  :root {
+    --cell: 8px;
+    --frame-cells: 90;
+  }
 }
 
 :root {
@@ -192,23 +246,25 @@
    ========================================================================== */
 @theme inline {
   --spacing-cell: var(--cell);
-  --spacing-frame: calc(var(--cell) * 100);
+  --spacing-frame: calc(var(--cell) * var(--frame-cells));
 
   /* --- Typography scale --- */
-  --text-xs: 13px;
-  --text-xs--line-height: 19.5px;
-  --text-sm: 15px;
-  --text-sm--line-height: 22.5px;
-  --text-base: 17px;
-  --text-base--line-height: 25.5px;
-  --text-lg: 20px;
-  --text-lg--line-height: 30px;
-  --text-xl: 22px;
-  --text-xl--line-height: 33px;
-  --text-2xl: 26px;
-  --text-2xl--line-height: 35px;
-  --text-3xl: 30px;
-  --text-3xl--line-height: 40px;
+  /* 글자 크기도 격자 칸(--cell)의 배수로 정해, 폰·태블릿·데스크톱 어디서나 칸에 대해 같은 크기다.
+     태블릿·데스크톱(한 칸 8px)에서 13/15/17/20/22/26/30px 이 되도록 잡았다 */
+  --text-xs: calc(var(--cell) * 1.625);
+  --text-xs--line-height: calc(var(--cell) * 2.4375);
+  --text-sm: calc(var(--cell) * 1.875);
+  --text-sm--line-height: calc(var(--cell) * 2.8125);
+  --text-base: calc(var(--cell) * 2.125);
+  --text-base--line-height: calc(var(--cell) * 3.1875);
+  --text-lg: calc(var(--cell) * 2.5);
+  --text-lg--line-height: calc(var(--cell) * 3.75);
+  --text-xl: calc(var(--cell) * 2.75);
+  --text-xl--line-height: calc(var(--cell) * 4.125);
+  --text-2xl: calc(var(--cell) * 3.25);
+  --text-2xl--line-height: calc(var(--cell) * 4.375);
+  --text-3xl: calc(var(--cell) * 3.75);
+  --text-3xl--line-height: calc(var(--cell) * 5);
 
   /* --- Font weights (Tailwind 기본값) --- */
   --font-weight-thin: 100;
@@ -241,6 +297,8 @@
   /* --- Semantic colors (bg-surface, text-fg-strong, border-border ...) --- */
   --color-bg: var(--bg);
   --color-bg-light: var(--bg-light);
+  /* 배경과 bg-light 의 가운데 — 줄무늬 목록의 짝수 줄. 홀수 줄(bg-light)과 번갈아 나오면서도 둘 다 배경과 구분된다 */
+  --color-bg-mid: color-mix(in oklch, var(--bg), var(--bg-light));
   --color-surface: var(--surface);
   --color-surface-subtle: var(--surface-subtle);
   --color-surface-muted: var(--surface-muted);
@@ -290,6 +348,8 @@
    ========================================================================== */
 @layer base {
   html {
+    /* 360px 보다 좁은 화면에서 넘치는 본문을 잘라 옆으로 스크롤되지 않게 한다 */
+    overflow-x: clip;
     color-scheme: light;
     background-color: var(--color-bg);
     color: var(--color-fg);

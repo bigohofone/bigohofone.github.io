@@ -29,7 +29,7 @@ export function MarkdownRenderer({ content }) {
       <header className="flex flex-col">
         {period && <small className="mb-4 text-xs/normal font-normal text-fg-muted">{period}</small>}
         {title && (
-          <h2 className="mb-2 text-[20px]/normal font-medium text-fg-strong">
+          <h2 className="mb-2 text-lg/normal font-medium text-fg-strong">
             {title}
           </h2>
         )}
