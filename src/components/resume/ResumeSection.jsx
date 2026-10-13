@@ -4,6 +4,7 @@ import { ListRow } from "@/components/ui/list-row"
 import { MarkdownRenderer } from "@/components/ui/markdown-renderer"
 import { Modal } from "@/components/ui/modal"
 import { Pagination } from "@/components/ui/pagination"
+import { PixelTitle } from "@/components/ui/pixel-title"
 import { compareItemsByDateThenAlphabetical } from "@/utils/date"
 
 /**
@@ -44,21 +45,22 @@ export function ResumeSection({
 
   return (
     <>
-      <section id={id} className="px-5 pb-30">
+      <section id={id} className="px-cell-5 pb-cell-20">
         {title && (
           <>
-            <h2 className="text-center text-[28px] font-medium text-fg-strong">
-              {title}
-            </h2>
-            <div className={extraTitleGap ? "h-15" : "h-10"} />
+            {/* 섹션 좌우 여백(px-cell-5)을 걷어내 본문 폭(100칸) 한가운데에 둔다. 글자 폭이 8칸의 배수라 왼쪽 끝도 칸 경계에 맞는다 */}
+            <PixelTitle className="-mx-cell-5 text-fg-strong">{title}</PixelTitle>
+            <div className={extraTitleGap ? "h-cell-8" : "h-cell-6"} />
           </>
         )}
 
         <ul className="flex flex-col">
-          {pagedItems.map((item) => (
+          {pagedItems.map((item, index) => (
             <Row
               key={item.id ?? item.title}
               {...item}
+              index={index}
+              isLast={index === pagedItems.length - 1}
               onClick={rowAction(item)}
             />
           ))}
@@ -74,7 +76,7 @@ export function ResumeSection({
         )}
 
         {footnote && (
-          <div className="mt-10 text-left text-sm/relaxed font-normal text-fg-muted">{footnote}</div>
+          <div className="mt-cell-5 text-left text-sm/relaxed font-normal text-fg-muted">{footnote}</div>
         )}
       </section>
 

@@ -8,19 +8,19 @@ export function ListRow({ title, subtitle, onClick }) {
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
-      className={cn("flex flex-col gap-1 py-5 outline-none", onClick && interactiveRowClass)}
+      className={cn("flex flex-col gap-cell-1 p-cell-2 outline-none odd:bg-bg-light", onClick && interactiveRowClass)}
     >
       {/* Publication 행과 같은 타이포 규칙 — 모바일에서 한 단계 작게 */}
       <h3
         className={cn(
-          "text-base/normal font-medium text-fg-strong",
+          "text-base/normal font-normal text-fg-strong",
           rowTitleHoverClass
         )}
       >
         {title}
       </h3>
       {subtitle && (
-        <small className="text-sm/normal font-normal text-fg-strong">
+        <small className="text-xs/normal font-normal text-fg-muted">
           {subtitle}
         </small>
       )}

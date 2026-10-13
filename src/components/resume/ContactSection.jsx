@@ -1,76 +1,29 @@
-import { useState } from "react"
-import { FileDown } from "lucide-react"
-import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi"
+import { Download } from "pixelarticons/react"
 
-import { chipClass, chipIconClass } from "@/components/ui/chip"
-import { GoogleScholarIcon, MailIcon } from "@/components/ui/icons"
+import { pixelButtonClass, pixelButtonTextClass } from "@/components/ui/chip"
+import { cn } from "@/lib/utils"
 import { downloadCV } from "@/components/cv/cvPDF"
-import { contact } from "@/data/contact"
 
-const ICON_MAP = {
-  GitHub: FiGithub,
-  "Google Scholar": GoogleScholarIcon,
-  LinkedIn: FiLinkedin,
-  "X (Twitter)": FiTwitter,
-}
-
-// 긴 이름은 칩 안에서 줄이지 않고 짧은 표기로 바꾼다
-const SHORT_LABEL = {
-  "Google Scholar": "Scholar",
-  "X (Twitter)": "X",
-}
-
+// pixelarticons 아이콘은 24 격자에 2단위 픽셀로 3~21 사이에 9×9 픽셀이 그려져 있어,
+// 그 부분만 잘라(viewBox 3 3 18 18) 9픽셀 크기로 그리면 아이콘 픽셀 하나가 글자 픽셀 하나와 겹친다.
+// 버튼 폭은 42픽셀(짝수)이라 가운데 정렬해도 격자에 맞는다
 export function ContactSection() {
-  const email = contact.items.find((item) => item.label === "Email")
-  // Email 은 복사 버튼으로 따로 두고, ICON_MAP 에 있는 항목만 링크 칩으로 만든다
-  const links = contact.items.filter((item) => ICON_MAP[item.label])
-  const [copied, setCopied] = useState(false)
-
-  const copyEmail = async () => {
-    if (!email?.value) return
-    try {
-      await navigator.clipboard.writeText(email.value)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
-    } catch (error) {
-      console.error("Failed to copy email:", error)
-    }
-  }
-
   return (
-    <section id="contact" className="px-5 pb-30">
-      {/* 칩 줄은 전체 폭의 80% 안에서만 늘어나고 가운데 정렬 */}
-      <div className="mx-auto flex max-w-[80%] flex-wrap justify-center gap-2">
-        <button type="button" onClick={downloadCV} className={chipClass} aria-label="Download CV">
-          <FileDown className={chipIconClass} aria-hidden="true" />
-          CV
-        </button>
-
-        {email && (
-          <button type="button" onClick={copyEmail} className={chipClass} aria-label="Copy email">
-            <MailIcon className={chipIconClass} aria-hidden="true" />
-            {copied ? "Copied!" : "Email"}
-          </button>
-        )}
-
-        {links.map((item) => {
-          const Icon = ICON_MAP[item.label]
-
-          return (
-            <a
-              key={item.label}
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={chipClass}
-              aria-label={item.label}
-            >
-              <Icon className={chipIconClass} aria-hidden="true" />
-              {SHORT_LABEL[item.label] ?? item.label}
-            </a>
-          )
-        })}
-      </div>
+    <section id="contact" className="flex justify-center px-cell-5 pb-cell-20">
+      <button
+        type="button"
+        onClick={downloadCV}
+        aria-label="Download CV"
+        className={cn(pixelButtonClass, "bg-primary text-primary-fg sm:hover:brightness-110")}
+      >
+        <Download
+          viewBox="3 3 18 18"
+          shapeRendering="crispEdges"
+          aria-hidden="true"
+          style={{ width: "calc(9 * var(--font-px))", height: "calc(9 * var(--font-px))" }}
+        />
+        <span className={pixelButtonTextClass}>CV</span>
+      </button>
     </section>
   )
 }

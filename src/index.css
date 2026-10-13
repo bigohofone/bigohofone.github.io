@@ -10,20 +10,121 @@
 @import "@fontsource/open-sauce-sans/latin-600.css";
 @import "@fontsource/open-sauce-sans/latin-700.css";
 @import "@fontsource/open-sauce-sans/latin-800.css";
+@import "@fontsource/jersey-10/latin-400.css";
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 /* 다크 모드는 OS 설정이 아니라 <html class="dark"> 로만 켠다 (main.jsx) */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* 본문 여백을 격자 칸 단위로 준다. pb-cell-15 는 15칸, -mx-cell-3 은 -3칸.
+   데스크톱 800px 높이 화면에서 한 칸이 8px(Tailwind 간격 2단계)이라, 예전 pb-30 은 pb-cell-15 처럼 반으로 옮겼다 */
+@utility p-cell-* {
+  padding: calc(var(--cell) * --value(number));
+}
+@utility px-cell-* {
+  padding-inline: calc(var(--cell) * --value(number));
+}
+@utility py-cell-* {
+  padding-block: calc(var(--cell) * --value(number));
+}
+@utility pl-cell-* {
+  padding-left: calc(var(--cell) * --value(number));
+}
+@utility pr-cell-* {
+  padding-right: calc(var(--cell) * --value(number));
+}
+@utility pb-cell-* {
+  padding-bottom: calc(var(--cell) * --value(number));
+}
+@utility mt-cell-* {
+  margin-top: calc(var(--cell) * --value(number));
+}
+@utility -mx-cell-* {
+  margin-inline: calc(var(--cell) * --value(number) * -1);
+}
+@utility -my-cell-* {
+  margin-block: calc(var(--cell) * --value(number) * -1);
+}
+@utility gap-cell-* {
+  gap: calc(var(--cell) * --value(number));
+}
+@utility space-y-cell-* {
+  & > :not(:last-child) {
+    margin-block-end: calc(var(--cell) * --value(number));
+  }
+}
+@utility h-cell-* {
+  height: calc(var(--cell) * --value(number));
+}
+
+/* 네 꼭짓점을 격자 한 칸씩 깎아 픽셀로 그린 둥근 모서리처럼 보이게 한다 */
+@utility pixel-corners {
+  clip-path: polygon(
+    var(--cell) 0,
+    calc(100% - var(--cell)) 0,
+    calc(100% - var(--cell)) var(--cell),
+    100% var(--cell),
+    100% calc(100% - var(--cell)),
+    calc(100% - var(--cell)) calc(100% - var(--cell)),
+    calc(100% - var(--cell)) 100%,
+    var(--cell) 100%,
+    var(--cell) calc(100% - var(--cell)),
+    0 calc(100% - var(--cell)),
+    0 var(--cell),
+    var(--cell) var(--cell)
+  );
+}
+
+/* 픽셀 글꼴. 글자 픽셀 하나는 --font-px(격자의 반 칸)와 같게 잡아 격자 위에 놓는다.
+   글자 크기·줄 높이를 글자 픽셀의 배수로, 자간을 0 으로 둬야 글자 픽셀이 칸에서 밀리지 않는다.
+   Jersey 10 은 1em 이 56/3픽셀, 대문자가 10픽셀이다.
+   - pixel-title: 섹션 제목(Jersey 10). 줄 상자를 대문자 위끝~바닥선으로 잘라(text-box, 블록 상자에서만 먹는다)
+     상자 높이를 대문자 높이(10픽셀)로 둔다. 가로 맞춤은 PixelTitle 이 --pixel-title-x 로 반 픽셀을 민다
+   - pixel-label: 그 밖의 Jersey 10 글자(CV 버튼). 줄 높이는 14픽셀 */
+@utility pixel-title {
+  height: calc(var(--font-px) * 10);
+  text-align: center;
+  translate: var(--pixel-title-x, 0) 0;
+  font-family: var(--font-pixel-label);
+  font-size: calc(var(--font-px) * 56 / 3);
+  line-height: calc(var(--font-px) * 14);
+  letter-spacing: 0;
+  /* 글꼴에 굵은 꼴이 없어 굵게 쓰면 브라우저가 획을 부풀려(가짜 굵게) 픽셀이 격자에서 번진다 */
+  font-weight: 400;
+  font-synthesis: none;
+  white-space: nowrap;
+  text-box: trim-both cap alphabetic;
+}
+@utility pixel-label {
+  font-family: var(--font-pixel-label);
+  font-size: calc(var(--font-px) * 56 / 3);
+  line-height: calc(var(--font-px) * 14);
+  letter-spacing: 0;
+  /* 글꼴에 굵은 꼴이 없어 굵게 쓰면 브라우저가 획을 부풀려(가짜 굵게) 픽셀이 격자에서 번진다 */
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+
 /* ==========================================================================
    Palette — 테마별 원시 값. 여기만 고치면 라이트/다크가 함께 바뀐다.
      글자  라이트 700 / 600 / 500   ↔  다크 300 / 400 / 500
      배경·선 라이트 white / 100 / 300 ↔  다크 900 / 800 / 600
    ========================================================================== */
+/* 격자 한 칸(--cell)과 그 100 칸(--frame). 한 칸은 화면 폭으로만 정한다 — 화면 폭의 1%, 단 8px 을 넘지 않는다.
+   그래서 본문 폭(100칸)은 화면 폭과 같고, 800px 보다 넓은 화면에서는 800px 에 머문다.
+   첫 화면 원 묶음(ProfileSection, CELL_MAX_PX 와 맞춘다)과 본문이 이 값을 함께 쓴다. Tailwind 에서는 p-cell, w-frame 처럼 쓴다 */
+:root {
+  --cell: min(1vw, 8px);
+  /* 픽셀 글꼴의 글자 픽셀 하나 — 격자의 반 칸(본문 폭의 1/200) */
+  --font-px: calc(var(--cell) / 2);
+}
+
 :root {
   /* 배경 */
   --bg: var(--color-blue-100);
+  --bg-light: var(--color-gray-50); /* 배경보다 한 단계 밝은 면 — 첫 화면 단색 원, News 줄무늬 */
   --surface: var(--color-white);
   --surface-subtle: var(--color-gray-50);
   --surface-muted: var(--color-gray-100);
@@ -40,8 +141,9 @@
   --border-strong: var(--color-gray-300);
 
   /* 포인트 */
-  --primary: var(--color-blue-700);
-  --primary-fg: var(--color-white); /*  6.82:1 */
+  /* 대표색은 라임. 라임 위 글자는 페이지 배경색으로 둔다 */
+  --primary: var(--color-lime-300);
+  --primary-fg: var(--bg);
   --link: var(--color-blue-500);
   --danger: var(--color-red-700);
   --danger-fg: var(--color-white); /*  6.42:1 */
@@ -52,6 +154,7 @@
 
 .dark {
   --bg: var(--color-gray-900);
+  --bg-light: var(--color-gray-800);
   --surface: var(--color-gray-900);
   --surface-subtle: var(--color-gray-800);
   --surface-muted: var(--color-gray-700);
@@ -65,49 +168,30 @@
   --border: var(--color-gray-800);
   --border-strong: var(--color-gray-600);
 
-  --primary: var(--color-blue-400);
-  --primary-fg: var(--color-gray-950); /*  7.63:1 */
+  --primary: var(--color-lime-300);
+  --primary-fg: var(--bg);
   --link: var(--color-blue-400); /*  7.63:1 */
   --danger: var(--color-red-400);
   --danger-fg: var(--color-gray-950); /*  6.96:1 */
 }
 
-/* 하늘 배경 위의 글자·강조 색 — 테마와 상관없이 하늘 밝기로 고른다 (sky-background.jsx).
-   html[data-…] 가 .dark 보다 구체적이라 테마 값을 덮어쓴다.
-   하늘색이 시시각각 바뀌므로 강조색을 따로 두지 않는다: 강조는 글자색 그대로,
-   호버는 한 단계 흐리게, 선택·호버 면은 반투명 tint 로.
-   --bg 는 모달·떠 있는 버튼처럼 하늘을 가리는 면에 쓰여, 글자와 반대 톤을 준다. */
-html[data-sky-text="dark"] {
-  --bg: var(--color-white);
-  --primary: var(--color-gray-900);
-  --primary-fg: var(--color-white);
-  --link: var(--color-gray-500);
-  --tint: rgb(0 0 0 / 0.07);
-  --fg-strong: var(--color-gray-800);
-  --fg: var(--color-gray-700);
-  --fg-muted: var(--color-gray-600);
-  --fg-subtle: var(--color-gray-500);
-  --border: rgb(0 0 0 / 0.08);
-  --border-strong: rgb(0 0 0 / 0.25);
-}
-html[data-sky-text="light"] {
-  --bg: var(--color-gray-900);
+/* 소개(Wonjun Oh) 부분에서 색을 뒤집는다 (ProfileSection 이 <html> 에 붙였다 뗀다).
+   라임 배경은 ProfileSection 의 LimeFill 이 칸 단위로 퍼뜨려 그리고, 여기서는 글자를 원래 배경색으로,
+   원래 라임이던 것(대표색)을 흰색으로 바꾼다. 대표색 위 글자(primary-fg)는 원래 배경색 그대로다 */
+.lime-mode {
+  --fg-strong: var(--color-gray-900);
+  --fg: var(--color-gray-900);
+  --fg-muted: var(--color-gray-900);
   --primary: var(--color-white);
-  --primary-fg: var(--color-gray-900);
-  --link: var(--color-gray-400);
-  --tint: rgb(255 255 255 / 0.14);
-  --fg-strong: var(--color-gray-50);
-  --fg: var(--color-gray-200);
-  --fg-muted: var(--color-gray-300);
-  --fg-subtle: var(--color-gray-400);
-  --border: rgb(255 255 255 / 0.12);
-  --border-strong: rgb(255 255 255 / 0.35);
 }
 
 /* ==========================================================================
    Theme — Tailwind 유틸리티로 노출되는 토큰
    ========================================================================== */
 @theme inline {
+  --spacing-cell: var(--cell);
+  --spacing-frame: calc(var(--cell) * 100);
+
   /* --- Typography scale --- */
   --text-xs: 13px;
   --text-xs--line-height: 19.5px;
@@ -149,9 +233,12 @@ html[data-sky-text="light"] {
   --font-sans: "Open Sauce Sans", "Toss Product Sans", "Tossface", -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
   --font-mono: var(--font-sans);
+  /* 픽셀 글꼴 — 섹션 제목·CV 버튼은 Jersey 10 (pixel-title · pixel-label) */
+  --font-pixel-label: "Jersey 10", monospace;
 
   /* --- Semantic colors (bg-surface, text-fg-strong, border-border ...) --- */
   --color-bg: var(--bg);
+  --color-bg-light: var(--bg-light);
   --color-surface: var(--surface);
   --color-surface-subtle: var(--surface-subtle);
   --color-surface-muted: var(--surface-muted);
@@ -171,6 +258,29 @@ html[data-sky-text="light"] {
   --color-danger: var(--danger);
   --color-danger-fg: var(--danger-fg);
   --color-tint: var(--tint);
+
+  /* 첫 화면 배지가 0 에서 제 크기로 커진다 */
+  --animate-grow: grow 500ms ease-out 200ms both;
+  @keyframes grow {
+    from {
+      scale: 0;
+    }
+    to {
+      scale: 1;
+    }
+  }
+
+  /* 아래 화살표가 격자 한 칸(--cell)씩 끊어서 두 칸 위로 올라갔다 내려온다 */
+  --animate-bob: bob 1.2s steps(3, jump-none) infinite;
+  @keyframes bob {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 calc(var(--cell) * -2);
+    }
+  }
 }
 
 /* ==========================================================================
@@ -293,6 +403,9 @@ html[data-sky-text="light"] {
   [role="button"] {
     cursor: pointer;
     transition: all 75ms;
+    /* 터치 대상 최소 크기 */
+    min-width: 44px;
+    min-height: 44px;
   }
   button:active,
   [role="button"]:active {
@@ -314,7 +427,7 @@ html[data-sky-text="light"] {
     transition: color 150ms;
   }
   a:hover {
-    color: var(--color-link);
+    color: var(--color-primary);
   }
   a:active {
     filter: brightness(0.9);

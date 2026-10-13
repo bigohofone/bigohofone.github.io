@@ -3,7 +3,6 @@ import rehypeHighlight from "rehype-highlight"
 import rehypeSanitize from "rehype-sanitize"
 import remarkGfm from "remark-gfm"
 
-import { datePillClass } from "@/components/ui/row-styles"
 import { formatDateEndpoints } from "@/utils/date"
 import { parseMarkdownWithYaml } from "@/utils/markdown"
 
@@ -28,7 +27,7 @@ export function MarkdownRenderer({ content }) {
   return (
     <article className="flex flex-col gap-8">
       <header className="flex flex-col">
-        {period && <small className={`${datePillClass} mb-4 self-start`}>{period}</small>}
+        {period && <small className="mb-4 text-xs/normal font-normal text-fg-muted">{period}</small>}
         {title && (
           <h2 className="mb-2 text-[20px]/normal font-medium text-fg-strong">
             {title}

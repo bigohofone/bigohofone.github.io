@@ -23,7 +23,7 @@ export function ThemeToggle() {
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={dark}
       onClick={() => setDark((prev) => !prev)}
-      className="fixed top-4 right-4 z-40 inline-flex size-10 items-center justify-center rounded-full border-[1.5px] border-fg-strong bg-bg text-fg-strong outline-none transition-colors hover:border-link hover:text-link"
+      className="fixed top-4 right-4 z-40 inline-flex size-11 items-center justify-center rounded-full border-[1.5px] border-fg-strong bg-bg text-fg-strong outline-none transition-colors hover:border-link hover:text-link"
     >
       <Icon className={chipIconClass} aria-hidden="true" />
     </button>

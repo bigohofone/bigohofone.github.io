@@ -29,7 +29,6 @@ const publicationItems = toRowItems(publications.items, (it) => ({
   title: it.title,
   venue: it.venue,
   authors: it.authors,
-  image: it.image,
   link: it.arxiv, // 논문은 모달 대신 arXiv 로 보낸다
 }))
 
@@ -62,9 +61,9 @@ const publicationsFootnote = (
 )
 
 export default function ResumePage() {
-  // 데스크톱에서도 최대 폭 768px까지만 — 모바일과 같은 한 줄 레이아웃
+  // 본문 폭은 격자 100 칸(w-frame) — 데스크톱은 첫 화면 경계 원의 지름, 모바일은 화면 전체 폭
   return (
-    <div className="mx-auto w-full max-w-[768px]">
+    <div className="mx-auto w-frame overflow-x-clip">
       <ProfileSection />
       <ContactSection />
 

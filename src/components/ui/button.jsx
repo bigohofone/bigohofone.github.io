@@ -10,8 +10,8 @@ export const variants = {
 }
 
 export const sizes = {
-  sm: "h-8 text-xs px-4 rounded-base gap-1.5",
-  md: "h-10 text-sm px-5 rounded-base gap-2",
+  sm: "h-11 text-xs px-4 rounded-base gap-1.5",
+  md: "h-11 text-sm px-5 rounded-base gap-2",
   lg: "h-12 text-base px-6 rounded-base gap-2.5",
   xl: "h-14 text-lg px-7 rounded-base gap-3",
 }
