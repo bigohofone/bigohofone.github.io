@@ -1,10 +1,10 @@
 import { ContactSection } from "@/components/resume/ContactSection"
 import { ProfileSection } from "@/components/resume/ProfileSection"
 import { ResumeSection } from "@/components/resume/ResumeSection"
+import { VitaeSection } from "@/components/resume/VitaeSection"
 import { BackToTop } from "@/components/ui/back-to-top"
 import { NewsRow } from "@/components/ui/news-row"
 import { PublicationRow } from "@/components/ui/publication-row"
-import { TimelineRow } from "@/components/ui/timeline-row"
 import { awards, education, experience, news, publications } from "@/data/loader"
 import { formatDateEndpoints, formatDateLabel, formatMonthYear } from "@/utils/date"
 
@@ -37,19 +37,20 @@ const awardItems = toRowItems(awards.items, (it) => ({
   subtitle: `${formatDateLabel(it.date)} · ${it.organization}`,
 }))
 
-// Education 과 Experience 는 폴더를 따로 두고 관리하되, 화면에서는 한 줄기 타임라인으로 합친다
-const vitaeItems = [
-  ...toRowItems(education.items, (it) => ({
-    title: it.organization,
-    subtitle: it.major,
-    ...formatDateEndpoints(it.date),
-  })),
-  ...toRowItems(experience.items, (it) => ({
-    title: it.organization,
-    subtitle: it.role,
-    ...formatDateEndpoints(it.date),
-  })),
-]
+// logo 는 지점 액자에 넣을 기관 로고
+const educationItems = toRowItems(education.items, (it) => ({
+  title: it.organization,
+  subtitle: it.major,
+  logo: it.logo,
+  ...formatDateEndpoints(it.date),
+}))
+
+const experienceItems = toRowItems(experience.items, (it) => ({
+  title: it.organization,
+  subtitle: it.role,
+  logo: it.logo,
+  ...formatDateEndpoints(it.date),
+}))
 
 const publicationsFootnote = (
   <>
@@ -86,7 +87,8 @@ export default function ResumePage() {
 
       <ResumeSection id="awards" title={awards.title} items={awardItems} usePagination />
 
-      <ResumeSection id="vitae" title="Vitae" items={vitaeItems} Row={TimelineRow} extraTitleGap pixelCorners={false} />
+      <VitaeSection id="experience" title="Work Experience" items={experienceItems} />
+      <VitaeSection id="education" title="Education" items={educationItems} />
 
       <BackToTop />
     </div>

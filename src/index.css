@@ -161,7 +161,7 @@
      폰(720px 미만)        6px × 60칸 = 360px
      태블릿·데스크톱(720px 이상) 8px × 90칸 = 720px
    360px 보다 좁은 폰도 360px 로 그리고, 넘치는 부분은 잘라 옆으로 스크롤되지 않게 한다 (body 의 overflow-x).
-   첫 화면 원 묶음(ProfileSection 의 cellPx · frameCells)과 본문이 이 값을 함께 쓴다. Tailwind 에서는 p-cell, w-frame 처럼 쓴다 */
+   JS 에서는 src/lib/cell.js 의 cellPx · frameCells 가 같은 값을 쓴다. Tailwind 에서는 p-cell, w-frame 처럼 쓴다 */
 :root {
   --cell: 6px;
   --frame-cells: 60;
@@ -330,6 +330,22 @@
     }
   }
 
+  /* 잠든 캐릭터 머리 위로 Z 가 한 칸씩 끊어 오른쪽 위로 떠오르며 나타났다 사라진다 */
+  --animate-zzz: zzz 2.4s steps(6, jump-none) infinite;
+  @keyframes zzz {
+    from {
+      translate: 0 0;
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    to {
+      translate: calc(var(--cell) * 3) calc(var(--cell) * -6);
+      opacity: 0;
+    }
+  }
+
   /* 아래 화살표가 격자 한 칸(--cell)씩 끊어서 두 칸 위로 올라갔다 내려온다 */
   --animate-bob: bob 1.2s steps(3, jump-none) infinite;
   @keyframes bob {
@@ -339,6 +355,18 @@
     }
     50% {
       translate: 0 calc(var(--cell) * -2);
+    }
+  }
+
+  /* Back to top 버튼이 같은 빠르기로 세 칸 위로 올라갔다 내려온다 */
+  --animate-bob-3: bob-3 1.6s steps(4, jump-none) infinite;
+  @keyframes bob-3 {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 calc(var(--cell) * -3);
     }
   }
 }
@@ -464,7 +492,11 @@
   button,
   [role="button"] {
     cursor: pointer;
-    transition: all 75ms;
+    /* 누름 효과(scale·filter)만 부드럽게 넘긴다. all 로 두면 위치(left·top·transform)까지 늦게 따라와 스크롤에 맞춰 움직이는 버튼이 밀린다 */
+    transition:
+      scale 75ms,
+      filter 75ms,
+      backdrop-filter 75ms;
     /* 터치 대상 최소 크기 */
     min-width: 44px;
     min-height: 44px;

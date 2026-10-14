@@ -7,6 +7,7 @@ import { toolbarButtonClass } from "@/components/ui/chip"
 import { PixelTitle } from "@/components/ui/pixel-title"
 import { GoogleScholarIcon, MailIcon } from "@/components/ui/icons"
 import { cn } from "@/lib/utils"
+import { cellPx, frameCells } from "@/lib/cell"
 import { contact } from "@/data/contact"
 import { profile } from "@/data/profile"
 
@@ -202,14 +203,6 @@ const LINKS = contact.items.filter((item) => ICON_MAP[item.label])
 // 720px 이상은 8px × 90칸, 그 아래는 6px × 60칸.
 // 창 크기가 바뀌어도 다시 배치할 필요 없이 같은 배치를 새 칸 수로 바꿔 그린다. 화면이 경계 원보다 낮으면 원 위아래가 잘린다
 const UNIT = "var(--cell)"
-
-function cellPx() {
-  return window.innerWidth >= 720 ? 8 : 6
-}
-
-function frameCells() {
-  return window.innerWidth >= 720 ? 90 : 60
-}
 
 // 배치 판 1 이 몇 칸인지
 function boardScale() {
@@ -479,7 +472,7 @@ const circleClass =
 // → 다 차면 100% 를 잠깐(SPREAD_PAUSE_MS) 보인 뒤 프로필 사진이 곧바로 배지를 덮고, 다른 원들이 SPREAD_MS 동안 배지 밖으로 퍼져 나온다.
 // 게이지는 페이지(사진 등)가 다 불러와질 때까지 90% 에서 기다리고, 빨리 불러와져도 LOAD_MIN_MS 동안은 차오른다
 const GROW_MS = 700
-const LOAD_MIN_MS = 1500
+const LOAD_MIN_MS = 800
 const SPREAD_PAUSE_MS = 200
 const SPREAD_MS = 1200
 
@@ -598,6 +591,88 @@ function useLockScrollUntil(done) {
     targets.forEach((el) => (el.style.overflow = "hidden"))
     return () => targets.forEach((el) => (el.style.overflow = ""))
   }, [done])
+}
+
+// 첫 화면과 소개 부분 사이는 한 번만 스크롤해도 끝까지 저절로 넘어간다. 원이 흡수되고 배지가 위로 붙는 움직임은
+// 스크롤 위치를 따르므로, 그 사이를 SNAP_MS 동안 직접 스크롤해 같은 움직임을 보여 준다.
+// 소개 제목은 위에 붙은 배지 아래 SNAP_GAP 칸에 오고, 거기서 위로 스크롤하면 첫 화면으로 돌아간다
+const SNAP_MS = 1400
+const SNAP_GAP = 6
+const SETTLE_MS = 1000
+const easeInOut = (t) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2)
+
+function useSnapToIntro(introRef, enabled) {
+  useEffect(() => {
+    if (!enabled) return
+    let animating = false
+    // 트랙패드는 손을 뗀 뒤에도 점점 약해지는 관성 휠 이벤트가 이어진다. 넘어간 뒤에는 그 관성만 무시한다 —
+    // 휠이 잠깐 멈추거나, 다시 세지거나(새로 스크롤함), SETTLE_MS 가 지나면 바로 다시 스크롤된다
+    let settledAt = null
+    let lastWheel = 0
+    let lastDelta = 0
+    let touchY = null
+
+    const target = () =>
+      introRef.current.getBoundingClientRect().top + window.scrollY - cellPx() * (BADGE_TOP_MARGIN + BADGE_FINAL_SIZE + SNAP_GAP)
+
+    const scrollTo = (to) => {
+      animating = true
+      const from = window.scrollY
+      const start = performance.now()
+      const step = (now) => {
+        const t = Math.min((now - start) / SNAP_MS, 1)
+        window.scrollTo({ top: lerp(from, to, easeInOut(t)), behavior: "instant" })
+        if (t < 1) return requestAnimationFrame(step)
+        animating = false
+        settledAt = now
+      }
+      requestAnimationFrame(step)
+    }
+
+    // 아래로(direction 1) 가면 소개 부분으로, 위로(-1) 가면 첫 화면으로 넘어간다. 넘어갈 자리면 그 입력은 막는다
+    const snapTarget = (direction) => {
+      // 소개 부분보다 한참 아래에서는 휠마다 위치를 재지 않는다
+      if (window.scrollY > window.innerHeight * 3) return null
+      const end = target()
+      if (direction > 0 && window.scrollY < end - 1) return end
+      if (direction < 0 && window.scrollY > 0 && window.scrollY <= end + 1) return 0
+      return null
+    }
+
+    const onWheel = (event) => {
+      const now = performance.now()
+      const delta = Math.abs(event.deltaY)
+      const momentum = now - lastWheel < 200 && delta <= lastDelta
+      lastWheel = now
+      lastDelta = delta
+      if (animating) return event.preventDefault()
+      if (settledAt !== null && momentum && now - settledAt < SETTLE_MS) return event.preventDefault()
+      settledAt = null
+      const to = snapTarget(Math.sign(event.deltaY))
+      if (to === null) return
+      event.preventDefault()
+      scrollTo(to)
+    }
+    const onTouchStart = (event) => (touchY = event.touches[0].clientY)
+    // 브라우저가 스크롤을 시작해 버리면 막을 수 없으므로, 넘어갈 자리면 첫 움직임부터 막고 조금 끌었을 때 넘어간다
+    const onTouchMove = (event) => {
+      const dy = touchY - event.touches[0].clientY
+      if (animating) return event.preventDefault()
+      const to = snapTarget(Math.sign(dy))
+      if (to === null) return
+      event.preventDefault()
+      if (Math.abs(dy) > 10) scrollTo(to)
+    }
+
+    window.addEventListener("wheel", onWheel, { passive: false })
+    window.addEventListener("touchstart", onTouchStart, { passive: true })
+    window.addEventListener("touchmove", onTouchMove, { passive: false })
+    return () => {
+      window.removeEventListener("wheel", onWheel)
+      window.removeEventListener("touchstart", onTouchStart)
+      window.removeEventListener("touchmove", onTouchMove)
+    }
+  }, [introRef, enabled])
 }
 
 // 소개 부분(이름·소개 글·CV 버튼)에서는 배경이 라임으로 바뀐다. 둘 다 화면 높이의 LIME_SPAN 만큼 스크롤하는 동안 일어난다.
@@ -733,6 +808,7 @@ export function ProfileSection() {
   const limeColors = limeColorsOn(lime)
   useLimeContact(limeColors)
   useLockScrollUntil(spread === 1)
+  useSnapToIntro(introRef, spread === 1)
   const shown = scrollCircles(
     hovered === null || absorbed ? circles : makeRoom(circles, hovered),
     scrollY,
