@@ -2,7 +2,7 @@
 
 // 날짜 알약 — 테두리 없이 반투명 tint 배경 (상세 팝업 머리에 쓴다)
 export const datePillClass =
-  "inline-flex h-6 items-center rounded-full bg-tint px-3 text-base/normal font-normal whitespace-nowrap text-fg-strong"
+  "inline-flex h-6 items-center rounded-full bg-tint px-3 text-base font-normal whitespace-nowrap text-fg-strong"
 
 // 누를 수 있는 행 — 반투명 tint 를 깔아 띄운다 (포인터가 없는 모바일은 제외)
 export const interactiveRowClass = "group/row cursor-pointer transition-colors sm:hover:bg-tint"

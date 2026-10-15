@@ -56,9 +56,9 @@ export function ResumeSection({
         )}
 
         <ul className="flex flex-col">
-          {pagedItems.map((item, i) => (
+          {pagedItems.map((item) => (
             <li key={item.id ?? item.title}>
-              <Row {...item} number={(page - 1) * pageSize + i + 1} onClick={rowAction(item)} />
+              <Row {...item} onClick={rowAction(item)} />
               <div className="h-line" />
             </li>
           ))}

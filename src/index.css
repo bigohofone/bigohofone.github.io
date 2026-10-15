@@ -79,9 +79,9 @@
   --text-sm: 15px;
   --text-sm--line-height: 22.5px;
   --text-base: 17px;
-  --text-base--line-height: 25.5px;
+  --text-base--line-height: 20px; /* 타자기 한 줄 띄우기 — 글자 크기와 거의 같은 높이 */
   /* 타자 한 줄 — 모든 글자·선·빈 줄이 이 높이의 배수로 놓인다 (h-line, mt-line …) */
-  --spacing-line: 25.5px;
+  --spacing-line: 20px;
   --text-lg: 20px;
   --text-lg--line-height: 30px;
   --text-xl: 22px;
@@ -347,4 +347,3 @@
     line-height: 0;
   }
 }
-

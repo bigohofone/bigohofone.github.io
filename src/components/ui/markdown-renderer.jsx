@@ -30,12 +30,12 @@ export function MarkdownRenderer({ content }) {
       <header className="flex flex-col">
         {period && <small className={`${datePillClass} mb-4 self-start`}>{period}</small>}
         {title && (
-          <h2 className="mb-2 text-base/normal font-normal text-fg-strong">
+          <h2 className="mb-2 text-base font-normal text-fg-strong">
             {title}
           </h2>
         )}
         {subtitle && (
-          <p className="text-base/normal font-normal text-fg-strong">
+          <p className="text-base font-normal text-fg-strong">
             {subtitle}
           </p>
         )}

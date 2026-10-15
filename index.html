@@ -134,6 +134,23 @@
       <feGaussianBlur stdDeviation="0.5" />
     </filter>
     <!-- 같은 필터를 다른 노이즈로 — 겹쳐 친 두 번째 글자가 첫 번째와 다르게 어긋나도록 -->
+    <!-- 사진을 복사기로 찍은 것처럼 — 흑백, 대비 조금 더, 잉크 점·빠진 점, 그리고 글자와 같은 흔들림·번짐 -->
+    <filter id="print-photo" color-interpolation-filters="sRGB">
+      <feColorMatrix type="saturate" values="0" />
+      <feComponentTransfer result="photo">
+        <feFuncR type="linear" slope="1.25" intercept="-0.1" />
+        <feFuncG type="linear" slope="1.25" intercept="-0.1" />
+        <feFuncB type="linear" slope="1.25" intercept="-0.1" />
+      </feComponentTransfer>
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="3" result="noise" />
+      <feColorMatrix in="noise" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.4 0 0 0 -0.8" result="ink" />
+      <feColorMatrix in="noise" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 -1.4 0 0 0 0.6" result="gaps" />
+      <feComposite in="ink" in2="photo" operator="atop" result="inked" />
+      <feComposite in="gaps" in2="inked" operator="atop" result="printed" />
+      <feTurbulence type="fractalNoise" baseFrequency="0.09 0.12" numOctaves="1" seed="11" result="wobble" />
+      <feDisplacementMap in="printed" in2="wobble" scale="1.6" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.5" />
+    </filter>
     <filter id="print-2" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency="0.09 0.12" numOctaves="1" seed="42" />
       <feDisplacementMap in="SourceGraphic" scale="1.6" xChannelSelector="R" yChannelSelector="G" />

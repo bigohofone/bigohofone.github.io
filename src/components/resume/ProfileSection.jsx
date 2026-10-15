@@ -3,12 +3,13 @@ import { profile } from "@/data/profile"
 
 export function ProfileSection() {
   return (
-    // 사진도 줄 높이 6 칸에 맞춰, 아래 글들이 타자 줄 위에 그대로 놓이게 한다
+    // 사진도 줄 높이 8 칸에 맞춰, 아래 글들이 타자 줄 위에 그대로 놓이게 한다
     <header id="bio" className="flex flex-col px-5 pt-[calc(var(--spacing-line)*2)] pb-[calc(var(--spacing-line)*2)]">
       <img
         src={profile.image}
         alt=""
-        className="mx-auto size-[calc(var(--spacing-line)*6)] rounded-base object-cover object-center"
+        // 인쇄된 사진처럼 — 흑백 복사 필터(index.html #print-photo)를 걸고, 라이트에선 종이 질감이 비치도록 곱하기로 얹는다
+        className="mx-auto size-[calc(var(--spacing-line)*8)] object-cover object-center mix-blend-multiply [filter:url(#print-photo)] dark:mix-blend-normal"
       />
       <div className="h-line" />
 

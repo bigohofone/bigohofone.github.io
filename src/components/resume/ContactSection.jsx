@@ -10,15 +10,17 @@ import { contact } from "@/data/contact"
 
 const contactClass = cn(chipClass, "h-line border-0 px-0 sm:h-line sm:px-0")
 
-// 상자 폭(글자 수) — 휴대폰 폭에도 들어가고, 모서리가 글자 칸에 딱 맞도록 정수 글자로 잡는다
-const BOX_WIDTH = 32
-const BOX_EDGE = `+${"-".repeat(BOX_WIDTH - 2)}+`
-
 const ICON_MAP = {
   GitHub: FiGithub,
   "Google Scholar": GoogleScholarIcon,
   LinkedIn: FiLinkedin,
   "X (Twitter)": FiTwitter,
+}
+
+// 긴 이름은 줄이지 않고 짧은 표기로 바꾼다
+const SHORT_LABEL = {
+  "Google Scholar": "Scholar",
+  "X (Twitter)": "X",
 }
 
 export function ContactSection() {
@@ -40,54 +42,37 @@ export function ContactSection() {
 
   return (
     <section id="contact" className="px-5 pb-[calc(var(--spacing-line)*4)]">
-      {/* 타자로 친 아스키 상자 안에 — CV 만 글자를 두고 나머지는 아이콘만, 왼쪽에서 오른쪽으로 한 줄에 */}
-      <div className="mx-auto whitespace-pre text-fg-strong" style={{ width: `${BOX_WIDTH}ch` }}>
-        <p aria-hidden>{BOX_EDGE}</p>
-        <div className="flex">
-          <p aria-hidden>|</p>
-          <div className="flex flex-1 justify-evenly">
-            <button
-              type="button"
-              onClick={downloadCV}
+      {/* 아이콘과 이름을 왼쪽에서 오른쪽으로 한 줄에, 좁으면 다음 줄로 */}
+      <div className="flex flex-wrap justify-center gap-x-[2ch]">
+        <button type="button" onClick={downloadCV} className={contactClass} aria-label="Download CV">
+          <FileDown className={chipIconClass} aria-hidden="true" />
+          CV
+        </button>
+
+        {email && (
+          <button type="button" onClick={copyEmail} className={contactClass} aria-label="Copy email">
+            <MailIcon className={chipIconClass} aria-hidden="true" />
+            {copied ? "Copied!" : "Email"}
+          </button>
+        )}
+
+        {links.map((item) => {
+          const Icon = ICON_MAP[item.label]
+
+          return (
+            <a
+              key={item.label}
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
               className={contactClass}
-              aria-label="Download CV"
+              aria-label={item.label}
             >
-              <FileDown className={chipIconClass} aria-hidden="true" />
-              CV
-            </button>
-
-            {email && (
-              <button
-                type="button"
-                onClick={copyEmail}
-                className={contactClass}
-                aria-label="Copy email"
-              >
-                <MailIcon className={chipIconClass} aria-hidden="true" />
-                {copied && "Copied!"}
-              </button>
-            )}
-
-            {links.map((item) => {
-              const Icon = ICON_MAP[item.label]
-
-              return (
-                <a
-                  key={item.label}
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={contactClass}
-                  aria-label={item.label}
-                >
-                  <Icon className={chipIconClass} aria-hidden="true" />
-                </a>
-              )
-            })}
-          </div>
-          <p aria-hidden>|</p>
-        </div>
-        <p aria-hidden>{BOX_EDGE}</p>
+              <Icon className={chipIconClass} aria-hidden="true" />
+              {SHORT_LABEL[item.label] ?? item.label}
+            </a>
+          )
+        })}
       </div>
     </section>
   )
