@@ -1,29 +1,21 @@
 import { cn } from "@/lib/utils"
+import { Overstrike } from "@/components/ui/overstrike"
 import { interactiveRowClass, rowTitleHoverClass } from "@/components/ui/row-styles"
 
-// 제목 + 부제목 한 줄짜리 기본 행
-export function ListRow({ title, subtitle, onClick }) {
+// 제목, 부제목, 기간을 한 줄씩 친다
+export function ListRow({ title, subtitle, period, onClick }) {
   return (
-    <li
+    <div
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
-      className={cn("flex flex-col gap-1 py-5 outline-none", onClick && interactiveRowClass)}
+      className={cn("outline-none", onClick && interactiveRowClass)}
     >
-      {/* Publication 행과 같은 타이포 규칙 — 모바일에서 한 단계 작게 */}
-      <h3
-        className={cn(
-          "text-base/normal font-medium text-fg-strong",
-          rowTitleHoverClass
-        )}
-      >
+      <Overstrike as="h3" className={cn("text-fg-strong", rowTitleHoverClass)}>
         {title}
-      </h3>
-      {subtitle && (
-        <small className="text-sm/normal font-normal text-fg-strong">
-          {subtitle}
-        </small>
-      )}
-    </li>
+      </Overstrike>
+      {subtitle && <p className="text-fg-strong">{subtitle}</p>}
+      {period && <p className="text-fg-strong">{period}</p>}
+    </div>
   )
 }

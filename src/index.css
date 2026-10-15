@@ -4,12 +4,6 @@
 @import "https://static.toss.im/tps/main-swap.css";
 @import "https://static.toss.im/tps/others-swap.css";
 @import "https://static.toss.im/tossface-font/v1.7.0/tossface.css";
-@import "@fontsource/open-sauce-sans/latin-300.css";
-@import "@fontsource/open-sauce-sans/latin-400.css";
-@import "@fontsource/open-sauce-sans/latin-500.css";
-@import "@fontsource/open-sauce-sans/latin-600.css";
-@import "@fontsource/open-sauce-sans/latin-700.css";
-@import "@fontsource/open-sauce-sans/latin-800.css";
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -23,17 +17,17 @@
    ========================================================================== */
 :root {
   /* 배경 */
-  --bg: var(--color-blue-100);
+  --bg: #ffffff; /* A4 복사지처럼 아주 살짝 따뜻한 흰색 */
   --surface: var(--color-white);
   --surface-subtle: var(--color-gray-50);
   --surface-muted: var(--color-gray-100);
   --surface-inverse: var(--color-gray-700); /* 흰 글자를 올리는 진한 면 */
 
   /* 글자 — 뒤 숫자는 bg 위에서의 대비 */
-  --fg-strong: var(--color-gray-700); /* 10.31:1 */
-  --fg: var(--color-gray-600); /*  7.56:1 */
-  --fg-muted: var(--color-gray-500); /*  4.84:1 */
-  --fg-subtle: var(--color-gray-400); /*  2.60:1 — 비활성 표시용 */
+  --fg-strong: var(--color-black);
+  --fg: var(--color-black);
+  --fg-muted: var(--color-black);
+  --fg-subtle: var(--color-black); /* 비활성 표시용 */
 
   /* 선 */
   --border: var(--color-gray-100);
@@ -51,16 +45,17 @@
 }
 
 .dark {
-  --bg: var(--color-gray-900);
-  --surface: var(--color-gray-900);
+  --bg: #161514; /* 먹지처럼 아주 살짝 따뜻한 검정 */
+  --surface: #161514;
   --surface-subtle: var(--color-gray-800);
   --surface-muted: var(--color-gray-700);
   --surface-inverse: var(--color-gray-700);
 
-  --fg-strong: var(--color-gray-300); /* 13.67:1 */
-  --fg: var(--color-gray-400); /*  7.73:1 */
-  --fg-muted: var(--color-gray-500); /*  4.16:1 */
-  --fg-subtle: var(--color-gray-600); /*  2.66:1 — 비활성 표시용 */
+  /* 글자 — 라이트의 검정 잉크를 뒤집은 흰 잉크 */
+  --fg-strong: #efede6;
+  --fg: #efede6;
+  --fg-muted: #efede6;
+  --fg-subtle: #efede6;
 
   --border: var(--color-gray-800);
   --border-strong: var(--color-gray-600);
@@ -70,38 +65,8 @@
   --link: var(--color-blue-400); /*  7.63:1 */
   --danger: var(--color-red-400);
   --danger-fg: var(--color-gray-950); /*  6.96:1 */
-}
 
-/* 하늘 배경 위의 글자·강조 색 — 테마와 상관없이 하늘 밝기로 고른다 (sky-background.jsx).
-   html[data-…] 가 .dark 보다 구체적이라 테마 값을 덮어쓴다.
-   하늘색이 시시각각 바뀌므로 강조색을 따로 두지 않는다: 강조는 글자색 그대로,
-   호버는 한 단계 흐리게, 선택·호버 면은 반투명 tint 로.
-   --bg 는 모달·떠 있는 버튼처럼 하늘을 가리는 면에 쓰여, 글자와 반대 톤을 준다. */
-html[data-sky-text="dark"] {
-  --bg: var(--color-white);
-  --primary: var(--color-gray-900);
-  --primary-fg: var(--color-white);
-  --link: var(--color-gray-500);
-  --tint: rgb(0 0 0 / 0.07);
-  --fg-strong: var(--color-gray-800);
-  --fg: var(--color-gray-700);
-  --fg-muted: var(--color-gray-600);
-  --fg-subtle: var(--color-gray-500);
-  --border: rgb(0 0 0 / 0.08);
-  --border-strong: rgb(0 0 0 / 0.25);
-}
-html[data-sky-text="light"] {
-  --bg: var(--color-gray-900);
-  --primary: var(--color-white);
-  --primary-fg: var(--color-gray-900);
-  --link: var(--color-gray-400);
-  --tint: rgb(255 255 255 / 0.14);
-  --fg-strong: var(--color-gray-50);
-  --fg: var(--color-gray-200);
-  --fg-muted: var(--color-gray-300);
-  --fg-subtle: var(--color-gray-400);
-  --border: rgb(255 255 255 / 0.12);
-  --border-strong: rgb(255 255 255 / 0.35);
+  --tint: rgb(255 255 255 / 0.08);
 }
 
 /* ==========================================================================
@@ -115,6 +80,8 @@ html[data-sky-text="light"] {
   --text-sm--line-height: 22.5px;
   --text-base: 17px;
   --text-base--line-height: 25.5px;
+  /* 타자 한 줄 — 모든 글자·선·빈 줄이 이 높이의 배수로 놓인다 (h-line, mt-line …) */
+  --spacing-line: 25.5px;
   --text-lg: 20px;
   --text-lg--line-height: 30px;
   --text-xl: 22px;
@@ -146,7 +113,7 @@ html[data-sky-text="light"] {
   --radius-3xl: 32px;
 
   /* --- Font families --- */
-  --font-sans: "Open Sauce Sans", "Toss Product Sans", "Tossface", -apple-system, BlinkMacSystemFont,
+  --font-sans: "Courier New", Courier, "Toss Product Sans", "Tossface", -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
   --font-mono: var(--font-sans);
 
@@ -180,22 +147,73 @@ html[data-sky-text="light"] {
   html {
     color-scheme: light;
     background-color: var(--color-bg);
+    /* 종이 질감 — 잔 섬유 노이즈와 넓게 번진 얼룩 노이즈를 겹친다. 노이즈 값이 어두운 쪽 절반만 불투명해지도록 알파를 깎아, 흰 바탕은 그대로 두고 그늘진 곳만 어두워지게 한다 */
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0 0.32 0.5 0 0 0 -0.27'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.02' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0 0.32 0.12 0 0 0 -0.065'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     color: var(--color-fg);
     /* 모바일 브라우저가 덧씌우는 각진 탭 하이라이트를 끄고, 각 요소의 active 스타일만 쓴다 */
     -webkit-tap-highlight-color: transparent;
   }
+  /* 다크 — 먹지 위의 흰 잉크. 종이 질감은 밝은 섬유로 뒤집는다 */
   html.dark {
     color-scheme: dark;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.93 0 0 0 0 0.88 0.25 0 0 0 -0.135'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.02' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.93 0 0 0 0 0.88 0.06 0 0 0 -0.0325'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   body {
     font-family: var(--font-sans);
     font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-normal);
     /* letter-spacing: var(--tracking-tight); */
     line-height: var(--text-base--line-height);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  /* 인쇄 농도 얼룩 — 흰 막을 lighten 으로 덮어 글자만 군데군데 옅어지게 한다 (바탕은 이미 밝아 거의 그대로).
+     가로로 길게 늘인 노이즈라 한 줄을 따라가며 진했다 옅어지고, 줄마다 다르게 찍힌다.
+     사진은 이 막 위로 올려 흐려지지 않게 한다 */
+  body {
+    position: relative;
+  }
+  body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    mix-blend-mode: lighten;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.25' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.55 0 0 0 -0.31'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='600'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.003 0.04' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.1 0 0 0 -0.52'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  img {
+    position: relative;
+    z-index: 31;
+  }
+  /* 선 아이콘(lucide·react-icons·icons.jsx) 의 선을 크기와 상관없이 화면에서 1px 로 맞춘다 */
+  svg[stroke="currentColor"] {
+    stroke-width: 1px;
+  }
+  svg[stroke="currentColor"] * {
+    vector-effect: non-scaling-stroke;
+  }
+  /* 인쇄 필터(index.html 의 #print) — 글자와 선을 아주 조금씩 어긋나게 하고 살짝 흐린다.
+     가장 바깥 요소에만 건다 — 겹쳐 걸면 두 번 흔들리고, 사진에는 걸지 않는다.
+     body 에 한 번에 걸지 않는 건 fixed 요소의 기준이 바뀌고 사진까지 흐려지기 때문이다 */
+  :where(h1, h2, h3, h4, h5, h6, p, small, a, button, label, .prose li, svg, hr, [class*="border"], .bg-fg-strong):not(
+      :where(h1, h2, h3, h4, h5, h6, p, small, a, button, label, .prose li, svg, hr, [class*="border"], .bg-fg-strong) *
+    ) {
+    filter: url(#print);
+  }
+  /* 다크에선 흰 글자가 군데군데 옅어지도록 바탕색(--bg #161514) 막을 darken 으로 덮는다 — 바탕은 그대로 둔다 */
+  html.dark body::after {
+    mix-blend-mode: darken;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.25' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.086 0 0 0 0 0.082 0 0 0 0 0.078 0.55 0 0 0 -0.31'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='600'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.003 0.04' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.086 0 0 0 0 0.082 0 0 0 0 0.078 1.1 0 0 0 -0.52'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   /* 제목 크기는 시멘틱 태그가 결정한다.
@@ -207,7 +225,7 @@ html[data-sky-text="light"] {
   h5,
   h6 {
     color: var(--color-fg-strong);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-normal);
   }
   /* balance 는 짧은 대제목에만. 목록 제목처럼 긴 글에 걸면
      줄 길이를 억지로 맞추느라 줄바꿈이 들쭉날쭉해진다. */
@@ -222,28 +240,28 @@ html[data-sky-text="light"] {
     text-wrap: pretty;
   }
   h1 {
-    font-size: var(--text-2xl);
-    line-height: var(--text-2xl--line-height);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
   }
   h2 {
-    font-size: var(--text-xl);
-    line-height: var(--text-xl--line-height);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
   }
   h3 {
-    font-size: var(--text-lg);
-    line-height: var(--text-lg--line-height);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
   }
   h4 {
     font-size: var(--text-base);
     line-height: var(--text-base--line-height);
   }
   h5 {
-    font-size: var(--text-sm);
-    line-height: var(--text-sm--line-height);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
   }
   h6 {
-    font-size: var(--text-xs);
-    line-height: var(--text-xs--line-height);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
   }
 
   /* 본문 요소도 태그가 크기를 정한다.
@@ -251,17 +269,17 @@ html[data-sky-text="light"] {
      감싼 쪽이 작게 잡으면 그대로 따라가야 하기 때문. */
   /* small 은 크기만 줄인 본문이다. 색까지 흐리면 내용이 안 읽힌다. */
   small {
-    font-size: var(--text-sm);
-    line-height: var(--text-sm--line-height);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
   }
   label {
-    font-size: var(--text-sm);
-    line-height: var(--text-sm--line-height);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
   }
   dt,
   dd {
-    font-size: var(--text-sm);
-    line-height: var(--text-sm--line-height);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
   }
   dt {
     color: var(--color-fg);
@@ -273,7 +291,7 @@ html[data-sky-text="light"] {
   strong,
   b {
     color: var(--color-fg-strong);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-normal);
   }
   hr {
     border-color: var(--color-border);
@@ -311,6 +329,7 @@ html[data-sky-text="light"] {
     color: inherit;
     text-decoration: underline;
     text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
     transition: color 150ms;
   }
   a:hover {

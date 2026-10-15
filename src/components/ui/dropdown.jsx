@@ -39,7 +39,7 @@ export function DropdownMenuItem({ className, onSelect, ...props }) {
         onSelect?.(e)
       }}
       className={cn(
-        "inline-flex cursor-pointer items-center gap-2 font-semibold",
+        "inline-flex cursor-pointer items-center gap-2 font-normal",
         variants.ghost,
         sizes.md,
         className

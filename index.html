@@ -126,6 +126,20 @@
 </head>
 
 <body>
+  <!-- 인쇄기로 친 글자처럼 자리를 아주 조금씩 어긋나게 하고 살짝 흐리는 필터 (index.css 의 filter: url(#print)) -->
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+    <filter id="print" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.09 0.12" numOctaves="1" seed="7" />
+      <feDisplacementMap in="SourceGraphic" scale="1.6" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.5" />
+    </filter>
+    <!-- 같은 필터를 다른 노이즈로 — 겹쳐 친 두 번째 글자가 첫 번째와 다르게 어긋나도록 -->
+    <filter id="print-2" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.09 0.12" numOctaves="1" seed="42" />
+      <feDisplacementMap in="SourceGraphic" scale="1.6" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.5" />
+    </filter>
+  </svg>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>

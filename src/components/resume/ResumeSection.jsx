@@ -3,6 +3,7 @@ import { useMemo, useState } from "react"
 import { ListRow } from "@/components/ui/list-row"
 import { MarkdownRenderer } from "@/components/ui/markdown-renderer"
 import { Modal } from "@/components/ui/modal"
+import { Overstrike } from "@/components/ui/overstrike"
 import { Pagination } from "@/components/ui/pagination"
 import { compareItemsByDateThenAlphabetical } from "@/utils/date"
 
@@ -19,7 +20,6 @@ export function ResumeSection({
   usePagination = false,
   pageSize = 10,
   paginationSize = "sm",
-  extraTitleGap = false, // 제목과 목록 사이를 20px 더 띄운다
   footnote = null, // 목록 아래에 붙는 주석 (예: 저자 기호 설명)
 }) {
   const [page, setPage] = useState(1)
@@ -44,23 +44,23 @@ export function ResumeSection({
 
   return (
     <>
-      <section id={id} className="px-5 pb-30">
+      {/* 타자로 친 것처럼 — 제목 한 줄, 빈 줄, 그 뒤로 항목마다 빈 줄을 둔다 */}
+      <section id={id} className="px-5 pb-[calc(var(--spacing-line)*4)]">
         {title && (
           <>
-            <h2 className="text-center text-[28px] font-medium text-fg-strong">
-              {title}
-            </h2>
-            <div className={extraTitleGap ? "h-15" : "h-10"} />
+            <Overstrike as="h2" className="text-center text-fg-strong">
+              ⟨ {title} ⟩
+            </Overstrike>
+            <div className="h-line" />
           </>
         )}
 
         <ul className="flex flex-col">
-          {pagedItems.map((item) => (
-            <Row
-              key={item.id ?? item.title}
-              {...item}
-              onClick={rowAction(item)}
-            />
+          {pagedItems.map((item, i) => (
+            <li key={item.id ?? item.title}>
+              <Row {...item} number={(page - 1) * pageSize + i + 1} onClick={rowAction(item)} />
+              <div className="h-line" />
+            </li>
           ))}
         </ul>
 
@@ -74,7 +74,7 @@ export function ResumeSection({
         )}
 
         {footnote && (
-          <div className="mt-10 text-left text-sm/relaxed font-normal text-fg-muted">{footnote}</div>
+          <div className="mt-line text-left text-fg-muted">{footnote}</div>
         )}
       </section>
 

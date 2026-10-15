@@ -11,7 +11,7 @@ export function SegmentedControl({ options, value, onChange, className }) {
   return (
     <div
       className={cn(
-        "relative inline-flex gap-1 overflow-hidden rounded-base p-1 text-sm",
+        "relative inline-flex gap-1 overflow-hidden rounded-base p-1 text-base",
         variants.secondary,
         className
       )}
@@ -25,7 +25,7 @@ export function SegmentedControl({ options, value, onChange, className }) {
             type="button"
             onClick={() => onChange?.(opt.value)}
             className={cn(
-              "relative z-10 select-none px-4 py-1.5 font-semibold transition-colors",
+              "relative z-10 select-none px-4 py-1.5 font-normal transition-colors",
               isSelected && "text-fg-strong"
             )}
           >

@@ -3,7 +3,7 @@ import { Moon, Sun } from "lucide-react"
 
 import { chipIconClass } from "@/components/ui/chip"
 
-// 화면 오른쪽 위에 떠 있는 다크 모드 전환 버튼 — Contact 칩과 같은 테두리의 원형
+// 화면 오른쪽 위에 떠 있는 다크 모드 전환 버튼 — Contact 처럼 테두리 없이 아이콘만
 export function ThemeToggle() {
   const [dark, setDark] = useState(() =>
     document.documentElement.classList.contains("dark")
@@ -23,7 +23,7 @@ export function ThemeToggle() {
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={dark}
       onClick={() => setDark((prev) => !prev)}
-      className="fixed top-4 right-4 z-40 inline-flex size-10 items-center justify-center rounded-full border-[1.5px] border-fg-strong bg-bg text-fg-strong outline-none transition-colors hover:border-link hover:text-link"
+      className="fixed top-4 right-4 z-40 inline-flex size-10 items-center justify-center rounded-full bg-bg text-fg-strong outline-none transition-colors hover:text-link"
     >
       <Icon className={chipIconClass} aria-hidden="true" />
     </button>

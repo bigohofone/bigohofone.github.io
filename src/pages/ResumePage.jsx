@@ -4,9 +4,13 @@ import { ResumeSection } from "@/components/resume/ResumeSection"
 import { BackToTop } from "@/components/ui/back-to-top"
 import { NewsRow } from "@/components/ui/news-row"
 import { PublicationRow } from "@/components/ui/publication-row"
-import { TimelineRow } from "@/components/ui/timeline-row"
 import { awards, education, experience, news, publications } from "@/data/loader"
 import { formatDateEndpoints, formatDateLabel, formatMonthYear } from "@/utils/date"
+
+function formatPeriod(date) {
+  const { start, end } = formatDateEndpoints(date)
+  return end ? `${start} – ${end}` : start
+}
 
 // 마크다운에서 읽은 항목을 행이 쓰는 모양으로 옮긴다.
 // id·date·selected·md 는 섹션(정렬·필터·모달)이 쓰므로 언제나 함께 넘긴다.
@@ -29,7 +33,6 @@ const publicationItems = toRowItems(publications.items, (it) => ({
   title: it.title,
   venue: it.venue,
   authors: it.authors,
-  image: it.image,
   link: it.arxiv, // 논문은 모달 대신 arXiv 로 보낸다
 }))
 
@@ -38,19 +41,17 @@ const awardItems = toRowItems(awards.items, (it) => ({
   subtitle: `${formatDateLabel(it.date)} · ${it.organization}`,
 }))
 
-// Education 과 Experience 는 폴더를 따로 두고 관리하되, 화면에서는 한 줄기 타임라인으로 합친다
-const vitaeItems = [
-  ...toRowItems(education.items, (it) => ({
-    title: it.organization,
-    subtitle: it.major,
-    ...formatDateEndpoints(it.date),
-  })),
-  ...toRowItems(experience.items, (it) => ({
-    title: it.organization,
-    subtitle: it.role,
-    ...formatDateEndpoints(it.date),
-  })),
-]
+const experienceItems = toRowItems(experience.items, (it) => ({
+  title: it.organization,
+  subtitle: it.role,
+  period: formatPeriod(it.date),
+}))
+
+const educationItems = toRowItems(education.items, (it) => ({
+  title: it.organization,
+  subtitle: it.major,
+  period: formatPeriod(it.date),
+}))
 
 const publicationsFootnote = (
   <>
@@ -87,7 +88,17 @@ export default function ResumePage() {
 
       <ResumeSection id="awards" title={awards.title} items={awardItems} usePagination />
 
-      <ResumeSection id="vitae" title="Vitae" items={vitaeItems} Row={TimelineRow} extraTitleGap />
+      <ResumeSection
+        id="experience"
+        title="Work Experience"
+        items={experienceItems}
+      />
+
+      <ResumeSection
+        id="education"
+        title={education.title}
+        items={educationItems}
+      />
 
       <BackToTop />
     </div>

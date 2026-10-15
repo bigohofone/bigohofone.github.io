@@ -1,28 +1,28 @@
+import { Overstrike } from "@/components/ui/overstrike"
 import { profile } from "@/data/profile"
 
 export function ProfileSection() {
   return (
-    <header id="bio" className="flex flex-col px-5 pt-15 pb-20">
+    // 사진도 줄 높이 6 칸에 맞춰, 아래 글들이 타자 줄 위에 그대로 놓이게 한다
+    <header id="bio" className="flex flex-col px-5 pt-[calc(var(--spacing-line)*2)] pb-[calc(var(--spacing-line)*2)]">
       <img
         src={profile.image}
         alt=""
-        className="mx-auto aspect-square w-40 rounded-base object-cover object-center"
+        className="mx-auto size-[calc(var(--spacing-line)*6)] rounded-base object-cover object-center"
       />
-      <div className="h-5" />
+      <div className="h-line" />
 
-      <h1 className="text-center text-[28px] font-medium text-fg-strong">{profile.name}</h1>
-      <div className="h-2" />
+      <Overstrike as="h1" className="text-center text-fg-strong">
+        {profile.name}
+      </Overstrike>
+      {profile.affiliations.map((affiliation) => (
+        <p key={affiliation} className="text-center text-fg-strong">
+          {affiliation}
+        </p>
+      ))}
+      <div className="h-line" />
 
-      <div>
-        {profile.affiliations.map((affiliation) => (
-          <p key={affiliation} className="text-center text-base font-normal text-fg-strong">
-            {affiliation}
-          </p>
-        ))}
-      </div>
-      <div className="h-10" />
-
-      <div className="space-y-[18px] break-keep text-base/[1.8] font-normal text-fg-strong">
+      <div className="space-y-line break-keep text-fg-strong">
         <p>
           I am an Integrated M.S./Ph.D. Student at{" "}
           <a href="https://gsai.kaist.ac.kr/?lang=en">KAIST AI</a>, advised by{" "}
@@ -34,9 +34,9 @@ export function ProfileSection() {
           capabilities of LLMs. Specifically, I investigate data-centric
           methodologies leveraging LLMs to synthesize and filter high-quality
           datasets to push model reasoning beyond existing capabilities. Beyond
-          data curation, I am deeply interested in extending LLM reasoning to
-          non-verifiable tasks where deterministic verification signals are
-          absent.
+          data curation, I study seemingly unmeasurable non-verifiable tasks,
+          seeking out the measurable properties hidden within them and turning
+          those properties into verifiable environments for LLM reasoning.
         </p>
 
         <p>

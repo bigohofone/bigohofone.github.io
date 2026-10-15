@@ -10,17 +10,17 @@ export const variants = {
 }
 
 export const sizes = {
-  sm: "h-8 text-xs px-4 rounded-base gap-1.5",
-  md: "h-10 text-sm px-5 rounded-base gap-2",
+  sm: "h-8 text-base px-4 rounded-base gap-1.5",
+  md: "h-10 text-base px-5 rounded-base gap-2",
   lg: "h-12 text-base px-6 rounded-base gap-2.5",
-  xl: "h-14 text-lg px-7 rounded-base gap-3",
+  xl: "h-14 text-base px-7 rounded-base gap-3",
 }
 
 export function Button({ variant = "default", size = "md", className, ...props }) {
   return (
     <button
       className={cn(
-        "inline-flex items-center font-semibold",
+        "inline-flex items-center font-normal",
         variants[variant],
         sizes[size],
         className

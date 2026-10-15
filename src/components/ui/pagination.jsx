@@ -11,8 +11,8 @@ const arrowClass =
 
 // sm 은 목록이 짧을 때 쓰는 작은 버전
 const sizes = {
-  base: { nav: "size-10", icon: "size-6", label: "text-base", gap: "gap-2", mt: "mt-15" },
-  sm: { nav: "size-8", icon: "size-5", label: "text-sm", gap: "gap-1", mt: "mt-15" },
+  base: { nav: "size-line", icon: "size-[1em]", label: "text-base", gap: "gap-2", mt: "mt-line" },
+  sm: { nav: "size-line", icon: "size-[1em]", label: "text-base", gap: "gap-1", mt: "mt-line" },
 }
 
 export function Pagination({ currentPage, totalPages, onPageChange, size = "base" }) {
