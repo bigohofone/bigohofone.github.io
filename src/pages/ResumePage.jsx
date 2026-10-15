@@ -1,4 +1,3 @@
-import { ContactSection } from "@/components/resume/ContactSection"
 import { ProfileSection } from "@/components/resume/ProfileSection"
 import { ResumeSection } from "@/components/resume/ResumeSection"
 import { VitaeSection } from "@/components/resume/VitaeSection"
@@ -66,7 +65,6 @@ export default function ResumePage() {
   return (
     <div className="mx-auto w-frame overflow-x-clip">
       <ProfileSection />
-      <ContactSection />
 
       <ResumeSection
         id="news"

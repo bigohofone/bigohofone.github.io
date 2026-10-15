@@ -9,7 +9,7 @@ import { downloadCV } from "@/components/cv/cvPDF"
 // 버튼 폭은 42픽셀(짝수)이라 가운데 정렬해도 격자에 맞는다
 export function ContactSection() {
   return (
-    <section id="contact" className="flex justify-center px-cell-1 pb-cell-20">
+    <section id="contact" className="flex justify-center">
       <button
         type="button"
         onClick={downloadCV}

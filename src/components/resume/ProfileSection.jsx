@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useCallback, useEffect, useRef, useState } from "react"
 import { Check } from "lucide-react"
 import { ArrowDown, Contact } from "pixelarticons/react"
 import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi"
@@ -8,6 +8,7 @@ import { PixelTitle } from "@/components/ui/pixel-title"
 import { GoogleScholarIcon, MailIcon } from "@/components/ui/icons"
 import { cn } from "@/lib/utils"
 import { cellPx, frameCells } from "@/lib/cell"
+import { ContactSection } from "@/components/resume/ContactSection"
 import { contact } from "@/data/contact"
 import { profile } from "@/data/profile"
 
@@ -593,15 +594,20 @@ function useLockScrollUntil(done) {
   }, [done])
 }
 
-// 첫 화면과 소개 부분 사이는 한 번만 스크롤해도 끝까지 저절로 넘어간다. 원이 흡수되고 배지가 위로 붙는 움직임은
-// 스크롤 위치를 따르므로, 그 사이를 SNAP_MS 동안 직접 스크롤해 같은 움직임을 보여 준다.
-// 소개 제목은 위에 붙은 배지 아래 SNAP_GAP 칸에 오고, 거기서 위로 스크롤하면 첫 화면으로 돌아간다
-const SNAP_MS = 1400
+// 첫 화면 → 소개 부분 → News 는 한 번만 스크롤해도 다음 자리까지 저절로 넘어간다 (useSnapScroll).
+// 소개 부분은 적어도 화면 하나를 채우고, News 제목은 위에 붙은 배지 아래 SNAP_GAP 칸에 온다
 const SNAP_GAP = 6
+const SNAP_TOP = BADGE_TOP_MARGIN + BADGE_FINAL_SIZE + SNAP_GAP
+const pageTop = (el) => el.getBoundingClientRect().top + window.scrollY
+
+// 두 자리 사이는 한 번만 스크롤해도 끝까지 저절로 넘어간다. links() 는 [위 자리, 아래 자리] (페이지 y) 쌍의 목록이고,
+// 그 사이에서 아래로 스크롤하면 아래 자리로, 위로 스크롤하면 위 자리로 SNAP_MS 동안 직접 스크롤한다.
+// 원이 흡수되고 배지가 붙는 움직임과 라임 커튼은 스크롤 위치를 따르므로 그대로 보인다. 자리는 휠마다 다시 잰다
+const SNAP_MS = 1400
 const SETTLE_MS = 1000
 const easeInOut = (t) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2)
 
-function useSnapToIntro(introRef, enabled) {
+function useSnapScroll(enabled, links) {
   useEffect(() => {
     if (!enabled) return
     let animating = false
@@ -611,9 +617,6 @@ function useSnapToIntro(introRef, enabled) {
     let lastWheel = 0
     let lastDelta = 0
     let touchY = null
-
-    const target = () =>
-      introRef.current.getBoundingClientRect().top + window.scrollY - cellPx() * (BADGE_TOP_MARGIN + BADGE_FINAL_SIZE + SNAP_GAP)
 
     const scrollTo = (to) => {
       animating = true
@@ -629,13 +632,13 @@ function useSnapToIntro(introRef, enabled) {
       requestAnimationFrame(step)
     }
 
-    // 아래로(direction 1) 가면 소개 부분으로, 위로(-1) 가면 첫 화면으로 넘어간다. 넘어갈 자리면 그 입력은 막는다
-    const snapTarget = (direction) => {
-      // 소개 부분보다 한참 아래에서는 휠마다 위치를 재지 않는다
-      if (window.scrollY > window.innerHeight * 3) return null
-      const end = target()
-      if (direction > 0 && window.scrollY < end - 1) return end
-      if (direction < 0 && window.scrollY > 0 && window.scrollY <= end + 1) return 0
+    // 아래로(direction 1) 가면 아래 자리로, 위로(-1) 가면 위 자리로 넘어간다. 넘어갈 자리면 그 입력은 막는다
+    const snap = (direction) => {
+      const y = window.scrollY
+      for (const [top, bottom] of links()) {
+        if (direction > 0 && y >= top - 1 && y < bottom - 1) return () => scrollTo(bottom)
+        if (direction < 0 && y > top + 1 && y <= bottom + 1) return () => scrollTo(top)
+      }
       return null
     }
 
@@ -648,20 +651,20 @@ function useSnapToIntro(introRef, enabled) {
       if (animating) return event.preventDefault()
       if (settledAt !== null && momentum && now - settledAt < SETTLE_MS) return event.preventDefault()
       settledAt = null
-      const to = snapTarget(Math.sign(event.deltaY))
-      if (to === null) return
+      const go = snap(Math.sign(event.deltaY))
+      if (!go) return
       event.preventDefault()
-      scrollTo(to)
+      go()
     }
     const onTouchStart = (event) => (touchY = event.touches[0].clientY)
     // 브라우저가 스크롤을 시작해 버리면 막을 수 없으므로, 넘어갈 자리면 첫 움직임부터 막고 조금 끌었을 때 넘어간다
     const onTouchMove = (event) => {
       const dy = touchY - event.touches[0].clientY
       if (animating) return event.preventDefault()
-      const to = snapTarget(Math.sign(dy))
-      if (to === null) return
+      const go = snap(Math.sign(dy))
+      if (!go) return
       event.preventDefault()
-      if (Math.abs(dy) > 10) scrollTo(to)
+      if (Math.abs(dy) > 10) go()
     }
 
     window.addEventListener("wheel", onWheel, { passive: false })
@@ -672,41 +675,34 @@ function useSnapToIntro(introRef, enabled) {
       window.removeEventListener("touchstart", onTouchStart)
       window.removeEventListener("touchmove", onTouchMove)
     }
-  }, [introRef, enabled])
+  }, [enabled, links])
 }
 
-// 소개 부분(이름·소개 글·CV 버튼)에서는 배경이 라임으로 바뀐다. 둘 다 화면 높이의 LIME_SPAN 만큼 스크롤하는 동안 일어난다.
-// - 들어올 때: 소개 위끝이 화면 아래에 나타나면 화면 아래 가운데에서 라임 원이 자라 화면을 다 덮는다 (grow 0 → 1)
-// - 나갈 때: 다음 섹션(News) 위끝이 화면 아래에 나타나면 라임이 화면 위 가운데로 모여드는 원이 되어 줄어 사라진다 (shrink 0 → 1)
+// 소개 부분(이름·소개 글·CV 버튼)에서는 배경이 라임으로 바뀐다.
+// - 들어올 때: 소개 위끝이 화면 아래에 나타나면, 화면 높이의 LIME_SPAN 만큼 스크롤하는 동안 화면 아래 가운데에서
+//   라임 원이 자라 화면을 다 덮는다 (grow 0 → 1)
+// - 나갈 때: 라임은 소개 아래끝(edge, 화면 위에서 잰 px)까지만 덮어, 스크롤과 같은 속도로 커튼처럼 걷히며
+//   News 를 끌어올리는 것처럼 보인다
 // 스크롤할 때마다 다시 그려지므로 그때 잰다
 const LIME_SPAN = 0.6
 
 function introLime(el) {
-  const next = document.getElementById("news")
-  if (!el || !next) return { grow: 0, shrink: 0, nextTop: Infinity }
-  const progress = (top) => clamp01((window.innerHeight - top) / (window.innerHeight * LIME_SPAN))
-  const nextTop = next.getBoundingClientRect().top
-  return { grow: progress(el.getBoundingClientRect().top), shrink: progress(nextTop), nextTop }
+  if (!el) return { grow: 0, edge: 0 }
+  const h = window.innerHeight
+  const { top, bottom } = el.getBoundingClientRect()
+  return { grow: clamp01((h - top) / (h * LIME_SPAN)), edge: bottom }
 }
 
-// 색은 라임 원과 따로, 소개 부분이 화면에 나타나는 순간 뒤집고 다음 섹션(News) 위끝이 화면 가운데를 넘어서면 되돌린다
-// 뒤집는 곳은 소개 부분(이름·소개 글)과 CV 버튼 줄(#contact)뿐이다 (index.css 의 lime-section)
-function limeColorsOn({ grow, nextTop }) {
-  return grow > 0 && nextTop > window.innerHeight / 2
-}
-
-// CV 버튼 줄은 다른 컴포넌트(ContactSection)라 id 로 찾아 붙인다
-function useLimeContact(on) {
-  useEffect(() => {
-    document.getElementById("contact")?.classList.toggle("lime-section", on)
-  }, [on])
-}
-
-// 원 묶음과 같은 격자(한 칸 = UNIT)에 라임 칸을 찍는다. 라임은 아래 가운데에서 자라는 원과 위 가운데로 줄어드는 원이
-// 겹치는 곳이고, 원 가장자리는 4×4 순서 디더링으로 픽셀이 흩어지며 번진다
+// 원 묶음과 같은 격자(한 칸 = UNIT)에 라임 칸을 찍는다. 라임은 아래 가운데에서 자라는 원에서 아래부터 걷히는 커튼을
+// 뺀 곳이고, 원과 커튼 가장자리는 4×4 순서 디더링으로 픽셀이 흩어지며 번진다
 const LIME_EDGE = 0.15 // 원 가장자리 번짐 폭 (화면을 다 덮는 반지름에 대한 비율)
+const CURTAIN_EDGE = 6 // 걷히는 커튼 끝이 번지는 줄 수
+const CURTAIN_RAGGED = 4 // 커튼 끝이 열마다 들쭉날쭉한 줄 수
+// 커튼 끝 번짐은 소개 아래 빈칸까지 내려온다. News 로 스냅했을 때 이 번짐까지 화면 위로 다 빠지도록
+// 소개와 News 사이를 배지 자리(SNAP_TOP)에 번짐 폭을 더한 만큼 띄운다
+const NEWS_GAP = SNAP_TOP + CURTAIN_EDGE + CURTAIN_RAGGED
 
-function LimeFill({ grow, shrink }) {
+function LimeFill({ grow, edge }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -718,21 +714,24 @@ function LimeFill({ grow, shrink }) {
     canvas.height = rows
     canvas.style.width = `${cols * cell}px`
     canvas.style.height = `${rows * cell}px`
-    if (grow === 0 || shrink === 1) return
+    if (grow === 0) return
 
     const ctx = canvas.getContext("2d")
     ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--color-lime-300")
-    // 캔버스는 화면 가운데에 놓여 위아래로 조금 넘친다. 두 원의 중심은 화면 아래 가운데와 화면 위 가운데
+    // 캔버스는 화면 가운데에 놓여 위아래로 조금 넘친다. 원의 중심은 화면 아래 가운데
     const canvasTop = (window.innerHeight - rows * cell) / 2
     const bottomRow = (window.innerHeight - canvasTop) / cell
-    const topRow = -canvasTop / cell
-    const farthest = Math.hypot(cols / 2, bottomRow - topRow)
-    // 반지름 radius(0~1) 원 안쪽이면 1 이상, 바깥이면 0 이하. 그 사이가 번지는 가장자리
-    const inside = (col, row, centerRow, radius) =>
-      (radius * (1 + LIME_EDGE) - Math.hypot(col + 0.5 - cols / 2, row + 0.5 - centerRow) / farthest) / LIME_EDGE
+    const farthest = Math.hypot(cols / 2, bottomRow + canvasTop / cell)
+    const edgeRow = (edge - canvasTop) / cell
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
-        const value = Math.min(inside(col, row, bottomRow, grow), inside(col, row, topRow, 1 - shrink))
+        // 원 안쪽이면 1 이상, 바깥이면 0 이하. 그 사이가 번지는 가장자리
+        const distance = Math.hypot(col + 0.5 - cols / 2, row + 0.5 - bottomRow) / farthest
+        const circle = (grow * (1 + LIME_EDGE) - distance) / LIME_EDGE
+        // 커튼 끝(소개 아래끝)보다 위면 1 이상이고, 그 아래로 열마다 들쭉날쭉하게 번진다
+        const ragged = ((col * 7) % 11) % CURTAIN_RAGGED
+        const curtain = (edgeRow + CURTAIN_EDGE + CURTAIN_RAGGED - ragged - row) / CURTAIN_EDGE
+        const value = Math.min(circle, curtain)
         if (value > BAYER[row % 4][col % 4]) ctx.fillRect(col, row, 1, 1)
       }
     }
@@ -805,10 +804,21 @@ export function ProfileSection() {
   const { progress, spread } = useIntro()
   const introRef = useRef(null)
   const lime = introLime(introRef.current)
-  const limeColors = limeColorsOn(lime)
-  useLimeContact(limeColors)
+  // 색은 라임 원과 따로, 소개 부분이 화면에 나타나는 순간 뒤집고 라임이 다 걷히면 되돌린다 (index.css 의 lime-section).
+  // 라임은 소개 아래끝까지 덮으므로 소개는 늘 라임 위에 있다
+  const limeColors = lime.grow > 0 && lime.edge > 0
   useLockScrollUntil(spread === 1)
-  useSnapToIntro(introRef, spread === 1)
+  const snapLinks = useCallback(() => {
+    const intro = pageTop(introRef.current)
+    // 소개가 화면보다 길면 끝(아래끝이 화면 아래에 닿는 곳)까지는 그냥 스크롤해 읽게 한다
+    const introEnd = intro + introRef.current.offsetHeight - window.innerHeight
+    const news = pageTop(document.getElementById("news")) - cellPx() * SNAP_TOP
+    return [
+      [0, intro],
+      [Math.max(intro, introEnd), news],
+    ]
+  }, [])
+  useSnapScroll(spread === 1, snapLinks)
   const shown = scrollCircles(
     hovered === null || absorbed ? circles : makeRoom(circles, hovered),
     scrollY,
@@ -853,12 +863,12 @@ export function ProfileSection() {
   }
 
   return (
-    <header id="bio" className="flex flex-col pb-cell-10">
+    <header id="bio" className="flex flex-col">
       {/* 원 묶음은 화면에 고정해 두고, 이 빈 공간(첫 화면 + 흡수에 쓰는 화면 하나)만큼 스크롤한다 */}
       <div className="h-[200dvh]" />
       {/* 배경 파동은 본문 뒤에 두고, 스크롤해 원이 흡수되는 동안 서서히 사라진다 */}
       <PixelWave spread={spread} opacity={1 - clamp01(scrollY / window.innerHeight)} />
-      <LimeFill grow={lime.grow} shrink={lime.shrink} />
+      <LimeFill grow={lime.grow} edge={lime.edge} />
       <div className="pointer-events-none fixed inset-0 z-40 overflow-hidden">
         {/* 다 흡수되면 배지가 라임색으로 바뀌고 링크 아이콘이 뜬다. 그 뒤로는 눌러서 연락처를 펼친다 */}
         <button
@@ -1010,7 +1020,10 @@ export function ProfileSection() {
       <div className="h-cell-3" />
 
       {/* 소개 부분 — 라임 배경 위에 있는 동안 이 안의 색만 뒤집는다 (index.css 의 lime-section) */}
-      <div ref={introRef} className={cn("px-cell-1", limeColors && "lime-section")}>
+      <div
+        ref={introRef}
+        className={cn("flex min-h-dvh flex-col justify-center px-cell-1", limeColors && "lime-section")}
+      >
         <PixelTitle as="h1" className="text-fg-strong">
           {profile.name}
         </PixelTitle>
@@ -1036,7 +1049,10 @@ export function ProfileSection() {
             Pro4 models.
           </p>
         </div>
+        <div className="h-cell-10" />
+        <ContactSection />
       </div>
+      <div style={{ height: `calc(${NEWS_GAP} * var(--cell))` }} />
     </header>
   )
 }

@@ -143,6 +143,7 @@ const LIE_DOWN_STEP = 2
 // 침대는 액자보다 넓어 가운데를 길에 맞추면 왼쪽이 잘리므로, 왼쪽 끝을 액자 왼쪽 끝(0 열)에 맞춘다
 const BED_WIDTH = BED_STEPS[0][0].length
 const Z = ["1111", "..1.", ".1..", "1111"]
+const Z_DELAY_MS = 800
 
 const TEXT_X = PATH_X + (FRAME + 1) / 2 + 3 // 지점 글이 시작하는 열 — 액자 오른쪽에서 세 칸 띄운다
 
@@ -416,7 +417,7 @@ export function VitaeSection({ id, title, items }) {
                     style={{
                       left: cells(2), // 베개 위 머리 위
                       top: cells(rowAt(0) - BED_STEPS[0].length - Z.length),
-                      animationDelay: `${i * 0.8}s`,
+                      animationDelay: `${i * Z_DELAY_MS}ms`,
                     }}
                   />
                 ))}
