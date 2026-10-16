@@ -177,16 +177,15 @@ const CVPdfDocument = () => {
   )
 }
 
-export async function downloadCV() {
+// 내려받지 않고 새 탭의 PDF 뷰어로 연다.
+// 탭은 클릭 순간에 먼저 열어 둬야 한다 — PDF 를 만든 뒤(await 뒤)에 열면 브라우저가 팝업으로 막는다
+export async function openCV() {
+  const tab = window.open("", "_blank")
   try {
     const blob = await pdf(<CVPdfDocument />).toBlob()
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = "Wonjun_Oh_CV.pdf"
-    a.click()
-    URL.revokeObjectURL(url)
+    tab.location.href = URL.createObjectURL(blob)
   } catch (err) {
+    tab.close()
     console.error("Error generating PDF:", err)
   }
 }

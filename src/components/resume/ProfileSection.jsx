@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import { Check } from "lucide-react"
 import { ArrowDown, Contact } from "pixelarticons/react"
 import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi"
@@ -795,7 +796,7 @@ function menuOffset(i, badgeRadius) {
 }
 
 export function ProfileSection() {
-  const [copied, setCopied] = useState(false)
+  const [copiedEmail, setCopiedEmail] = useState(null)
   const [circles] = useState(packCircles)
   const [hovered, setHovered] = useState(null)
   const scrollY = useScrollY()
@@ -855,8 +856,8 @@ export function ProfileSection() {
   const copyEmail = async (email) => {
     try {
       await navigator.clipboard.writeText(email)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
+      setCopiedEmail(email)
+      setTimeout(() => setCopiedEmail(null), 2000)
     } catch (error) {
       console.error("Failed to copy email:", error)
     }
@@ -935,7 +936,7 @@ export function ProfileSection() {
             <ContactLink
               key={item.label}
               item={item}
-              copied={copied}
+              copied={copiedEmail !== null}
               onCopy={copyEmail}
               className={cn(toolbarButtonClass, circleClass, motion, "h-auto min-h-0 min-w-0", ICON_COLORS[item.label])}
               style={circleStyle(shown[index])}
@@ -951,7 +952,7 @@ export function ProfileSection() {
             <ContactLink
               key={`menu-${item.label}`}
               item={item}
-              copied={copied}
+              copied={copiedEmail !== null}
               onCopy={copyEmail}
               tabIndex={menuOpen ? 0 : -1}
               onPointerEnter={openMenuOnHover}
@@ -969,15 +970,24 @@ export function ProfileSection() {
           )
         })}
 
-        <div
-          className={cn(circleClass, motion, "bg-primary text-lime-950")}
+        {/* WJ 를 누르면 소개 부분으로 넘어간다 */}
+        <button
+          type="button"
+          aria-label="Go to about"
+          onClick={() => spread === 1 && window.scrollTo({ top: pageTop(introRef.current), behavior: "smooth" })}
+          className={cn(
+            circleClass,
+            motion,
+            // 배지 버튼과 같은 이유로 전역 버튼 누름 효과와 최소 크기를 끈다
+            "min-h-0 min-w-0 bg-primary text-lime-950 active:scale-100 active:filter-none active:backdrop-filter-none",
+          )}
           style={circleStyle(shown[MONOGRAM_INDEX], "flower")}
           onMouseEnter={() => setHovered(MONOGRAM_INDEX)}
           onMouseLeave={() => setHovered(null)}
         >
           {/* 글자 판은 배지의 원래 크기로 잡아, 배지가 커지고 줄어드는 대로 글자도 같은 비율로 따라간다 */}
           <PixelWJ cells={snapCircle(circles[MONOGRAM_INDEX]).cells} />
-        </div>
+        </button>
 
         {shown.slice(MAIN_COUNT).map((circle, i) => (
           <div key={i} className={cn(circleClass, motion, "bg-bg-light")} style={circleStyle(circle)} />
@@ -1053,6 +1063,14 @@ export function ProfileSection() {
         <ContactSection />
       </div>
       <div style={{ height: `calc(${NEWS_GAP} * var(--cell))` }} />
+      {/* 주소를 복사하면 화면 아래 가운데에 복사한 주소와 함께 잠깐 띄운다 */}
+      {copiedEmail &&
+        createPortal(
+          <div role="status" className="fixed inset-x-0 bottom-[calc(var(--cell)*4)] z-50 flex justify-center">
+            <p className="bg-primary px-cell-3 py-cell-2 text-lime-950 pixel-corners">Copied {copiedEmail}</p>
+          </div>,
+          document.body
+        )}
     </header>
   )
 }

@@ -2,7 +2,7 @@ import { Download } from "pixelarticons/react"
 
 import { pixelButtonClass, pixelButtonTextClass } from "@/components/ui/chip"
 import { cn } from "@/lib/utils"
-import { downloadCV } from "@/components/cv/cvPDF"
+import { openCV } from "@/components/cv/cvPDF"
 
 // pixelarticons 아이콘은 24 격자에 2단위 픽셀로 3~21 사이에 9×9 픽셀이 그려져 있어,
 // 그 부분만 잘라(viewBox 3 3 18 18) 9픽셀 크기로 그리면 아이콘 픽셀 하나가 글자 픽셀 하나와 겹친다.
@@ -12,8 +12,8 @@ export function ContactSection() {
     <section id="contact" className="flex justify-center">
       <button
         type="button"
-        onClick={downloadCV}
-        aria-label="Download CV"
+        onClick={openCV}
+        aria-label="Open CV"
         className={cn(pixelButtonClass, "bg-primary text-primary-fg sm:hover:brightness-110")}
       >
         <Download
