@@ -28,7 +28,7 @@ export const contact = {
             link: "https://www.linkedin.com/in/wonjun-oh-8067b5265/"
         },
         {
-            label: "X (Twitter)",
+            label: "X",
             value: "@bigohofone",
             link: "https://x.com/bigohofone"
         },

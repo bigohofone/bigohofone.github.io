@@ -9,8 +9,6 @@ import sharp from "sharp"
 const RULES = [
   // 화면에선 160px 이지만 og:image(링크 미리보기)로도 쓰여 넉넉히 둔다
   { match: "assets/img/profile.", maxSize: 800 },
-  { match: "assets/img/publications/", maxSize: 640 },
-  { match: "assets/logo/", maxSize: 400 },
   { match: "", maxSize: 1200 },
 ]
 
