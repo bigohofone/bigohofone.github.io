@@ -110,7 +110,7 @@ export default function Home() {
   return (
     <>
       {/* 첫 화면 — 가운데 명함, 둘레에 사진들을 흩어 놓는다. 메뉴 아래 남은 한 화면을 차지하고,
-          본문 폭(480px)을 넘어 화면 가로 전체를 쓴다. 명함은 메뉴 높이의 절반만큼 끌어올려 창 한가운데 온다 */}
+          본문 폭(675px)을 넘어 화면 가로 전체를 쓴다. 명함은 메뉴 높이의 절반만큼 끌어올려 창 한가운데 온다 */}
       <section
         id="intro"
         className={cn(
@@ -181,7 +181,7 @@ export default function Home() {
                   {entry.title}
                 </a>
                 {entry.lines.map((line) => (
-                  <span key={line} className="block text-xs">
+                  <span key={line} className="block font-sans text-sm">
                     {line}
                   </span>
                 ))}

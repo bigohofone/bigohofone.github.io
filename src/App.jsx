@@ -38,7 +38,7 @@ export default function App() {
       {/* 메뉴 — 어느 페이지든 스크롤해도 화면 맨 위에 붙어 있다(sticky). 자기 높이만큼 자리를 차지해,
           좁은 화면에서 두 줄로 넘어가도 본문을 가리지 않는다. 아래 글이 비치지 않게 바탕색을 깐다 */}
       <header ref={headerRef} className="sticky top-0 z-10 bg-paper">
-        <nav className="mx-auto box-content flex max-w-[480px] flex-wrap gap-x-4 gap-y-1 px-5 py-3">
+        <nav className="mx-auto box-content flex max-w-[675px] flex-wrap gap-x-4 gap-y-1 px-5 py-3">
           <Link to="/">{profile.name}</Link>
           {sections.map(({ path, title }) => (
             <Link key={path} to={`/${path}`}>
@@ -50,9 +50,9 @@ export default function App() {
           </button>
         </nav>
       </header>
-      {/* 본문은 폭 480px 까지, 가운데 정렬. 좌우 20px 여백은 폭 밖에 둬(box-content) 좁은 화면에서도 글이 끝에 붙지 않는다.
+      {/* 본문은 폭 675px 까지, 가운데 정렬. 좌우 20px 여백은 폭 밖에 둬(box-content) 좁은 화면에서도 글이 끝에 붙지 않는다.
           prose(typography 플러그인)가 문단·제목·목록·링크에 기본 여백과 크기를 준다 */}
-      <main className="prose mx-auto box-content max-w-[480px] px-5">
+      <main className="prose mx-auto box-content max-w-[675px] px-5">
         <Routes>
           <Route path="/" element={<Home />} />
           {sections.map((section) => (
