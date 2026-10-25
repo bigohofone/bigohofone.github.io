@@ -93,7 +93,7 @@ export function compareItemsByDateThenAlphabetical(a, b) {
  * Returns the start year string from a date/range string.
  * e.g. "2024-03 ~ 2025-08" → "2024"
  */
-export function startYear(dateStr) {
+function startYear(dateStr) {
   const { start } = parseDateRange(dateStr)
   const y = Math.floor(start / 10000)
   return y ? String(y) : String(dateStr ?? "")
@@ -115,10 +115,10 @@ export function formatDateLabel(dateStr) {
 }
 
 /**
- * Month/year label for news rows: "2026-08-31" → "Aug. 2026"
+ * Month/year label: "2026-08-31" → "Aug. 2026"
  * Falls back to the year when the date has no month (e.g. "2026").
  */
-export function formatMonthYear(dateStr) {
+function formatMonthYear(dateStr) {
   if (!dateStr) return ""
   if (!/^\d{4}-\d{2}/.test(String(dateStr).trim())) return startYear(dateStr)
 

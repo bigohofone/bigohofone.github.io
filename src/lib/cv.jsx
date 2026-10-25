@@ -261,16 +261,15 @@ const CVPdfDocument = () => {
   )
 }
 
-export async function downloadCV() {
+// CV PDF 를 만들어 새 탭에서 브라우저 미리보기로 연다. PDF 를 다 만든 뒤에 새 탭을 열면 팝업 차단에 걸려,
+// 누르자마자 빈 탭부터 열어 두고 다 만들면 그 탭에 띄운다
+export async function openCV() {
+  const tab = window.open("", "_blank")
   try {
     const blob = await pdf(<CVPdfDocument />).toBlob()
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = "Wonjun_Oh_CV.pdf"
-    a.click()
-    URL.revokeObjectURL(url)
+    tab.location.href = URL.createObjectURL(blob)
   } catch (err) {
+    tab.close()
     console.error("Error generating PDF:", err)
   }
 }

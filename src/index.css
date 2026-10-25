@@ -1,34 +1,92 @@
-@import "@fontsource/gelasio/latin-400.css";
-@import "@fontsource/gelasio/latin-700.css";
 @import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/inter/latin-700.css";
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-serif: "Gelasio", serif;
   --font-sans: "Inter", sans-serif;
-  /* 페이지 기본 글꼴 — preflight 가 html 에 거는 글꼴을 Gelasio 로 */
-  --default-font-family: var(--font-serif);
+  /* 본문 한 줄 높이(17px 글씨 × 1.5) — 위아래 여백은 이 배수로 맞춘다. mt-line, mb-line-2, h-line 처럼 쓴다 */
+  --spacing-line: 25.5px;
+  --spacing-line-2: 51px;
+  --spacing-line-4: 102px;
+}
+
+/* Typography 1~7 스케일, 줄 높이도 표 그대로 */
+@theme {
+  --text-*: initial;
+  --text-xs: 13px;
+  --text-xs--line-height: 1.5;
+  --text-sm: 15px;
+  --text-sm--line-height: 1.5;
+  --text-base: 17px;
+  --text-base--line-height: 1.5;
+  --text-lg: 20px;
+  --text-lg--line-height: 29px;
+  --text-xl: 22px;
+  --text-xl--line-height: 31px;
+  --text-2xl: 26px;
+  --text-2xl--line-height: 35px;
+  --text-3xl: 30px;
+  --text-3xl--line-height: 40px;
 }
 
 /* 인쇄한 종이처럼 — 채도 없는 옅은 회색 바탕에 새까맣지 않은 회색 글씨 */
 @theme {
   --color-paper: #f2f2f2;
-  --color-ink: #363636;
-  --color-ink-light: #666666;
+  --color-ink: #2a3142;
+  --color-ink-light: #8a909c;
+  /* 링크 글씨 — 먹색과 어울리게 채도를 누른 파랑. 마우스를 올리면 설명만 뜨는 글(.hint)은 먹색 그대로 */
+  --color-link: #2058c9;
 }
 
-/* prose(typography 플러그인)의 글자색을 먹색으로. 레이어 밖에 둬 플러그인 기본값보다 앞선다 */
+/* prose 문단 사이도 본문 한 줄(25.5px) — 플러그인 기본값(1.25em)보다 앞서게 레이어 밖에 둔다. not-prose 안은 건드리지 않는다 */
+.prose :where(p):not(:where(.not-prose *)) {
+  margin-top: var(--spacing-line);
+  margin-bottom: var(--spacing-line);
+}
+
+/* prose(typography 플러그인)의 글자색 — 글씨는 먹색, 링크는 파랑. 레이어 밖에 둬 플러그인 기본값보다 앞선다 */
 .prose {
   --tw-prose-body: var(--color-ink);
   --tw-prose-headings: var(--color-ink);
-  --tw-prose-lead: var(--color-ink);
-  --tw-prose-links: var(--color-ink);
+  --tw-prose-links: var(--color-link);
   --tw-prose-bold: var(--color-ink);
-  --tw-prose-counters: var(--color-ink-light);
-  --tw-prose-bullets: var(--color-ink-light);
-  --tw-prose-hr: var(--color-ink-light);
-  --tw-prose-quotes: var(--color-ink);
-  --tw-prose-quote-borders: var(--color-ink-light);
-  --tw-prose-captions: var(--color-ink-light);
+}
+
+/* 글씨를 크레용으로 쓴 듯 까끌하게(필터는 App.jsx 의 CrayonText). 부모에 건 필터는 자식이 뺄 수 없어,
+   섹션마다 그 안의 것에 하나씩 걸고 프로필 사진(img)은 뺀다 */
+main :is(section > :not(img), footer) {
+  filter: url(#crayon-text);
+}
+
+/* 링크(App.jsx 의 HoverDestination 이 같은 걸 가리킨다)와 마우스를 올리면 설명이 뜨는 글(.hint) — 밑줄은 그 줄 높이의 맨 아래에
+   1px 점선으로, 마우스를 올리면 선택한 것처럼 1px 실선 상자를 두른다. 선 색은 글씨 색을 따라 링크는 파랑, 설명만 뜨는 글은 먹색이다.
+   브라우저 밑줄(text-decoration)은 기준선에서 따로 px 를 맞춰 상자 아랫변과 1px 씩 어긋나서, 밑줄도 상자처럼 자신의 배경으로 긋는다 —
+   같은 상자의 같은 아래 끝에 그어 늘 겹친다.
+   배경은 padding 안에만 칠해져, 위아래로 줄 높이를 꽉 채우게 padding 을 준다(인라인이라 줄 간격에 영향이 없다). 인라인 요소의 상자는
+   글꼴의 위·아래 끝(Inter: 기준선 위 0.96875em, 아래 0.2412em)까지라 줄 높이(1lh)와의 차이 반(--half-leading)씩이고, 브라우저가
+   글자 상자 아래 여백을 계산보다 1px 쯤 더 둬 아래는 1px 더 준다. 줄이 바뀌면 줄마다 따로 긋는다(box-decoration-break: clone) */
+:is(.prose a, .hint) {
+  --half-leading: calc((1lh - 1.20995em) / 2);
+  padding-block: var(--half-leading) calc(var(--half-leading) + 1px);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  text-decoration: none;
+  background: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 2px) left bottom / 100% 1px no-repeat;
+}
+
+/* 상자는 좌우로 7.5px 를 더 주고 같은 만큼 margin 을 빼 글자 자리는 그대로, 세로변은 가장자리에서 3.5px 안쪽(글자에서 4px 바깥)에,
+   아랫변은 밑줄과 같은 자리(padding 아래 끝)에 긋는다. 휴대폰은 누른 뒤에도 hover 가 남아 있어, 마우스처럼 올려 볼 수 있는 기기에서만 */
+@media (hover: hover) {
+  :is(.prose a, .hint):hover {
+    padding-inline: 7.5px;
+    margin-inline: -7.5px;
+    --line: linear-gradient(currentColor, currentColor);
+    background:
+      var(--line) left 3.5px top / calc(100% - 7px) 1px no-repeat,
+      var(--line) left 3.5px bottom / calc(100% - 7px) 1px no-repeat,
+      var(--line) left 3.5px top / 1px 100% no-repeat,
+      var(--line) right 3.5px top / 1px 100% no-repeat;
+  }
 }

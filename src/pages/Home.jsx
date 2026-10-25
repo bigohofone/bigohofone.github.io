@@ -1,228 +1,367 @@
-import { Fragment, useEffect, useId, useState } from "react"
-import { Link } from "react-router-dom"
+import { useId, useLayoutEffect, useRef, useState } from "react"
 import ReactMarkdown from "react-markdown"
 import rehypeSanitize from "rehype-sanitize"
+import { FiGithub, FiLinkedin } from "react-icons/fi"
 
-import { contact, previews, profile, sections } from "@/data"
+import { awardList, backgroundGroups, contact, profile, publicationList } from "@/data"
+import { openCV } from "@/lib/cv"
 
-const research = sections.find((section) => section.path === "publications")
-
-// Contact 의 Links 줄에 보일 바깥 사이트 — contact.js 에서 이 순서대로 고른다. 새 탭으로 연다
-const CONTACT_LINKS = ["GitHub", "Google Scholar", "LinkedIn", "X"].map((label) =>
+// Contact 에 늘어놓을 연락처 — contact.js 에서 이 순서대로 고른다. 메일 말고는 새 탭으로 연다
+const CONTACT_LINKS = ["Email", "GitHub", "Google Scholar", "LinkedIn", "X"].map((label) =>
   contact.items.find((item) => item.label === label)
 )
 const EXTERNAL = { target: "_blank", rel: "noopener noreferrer" }
-const EMAIL = contact.items.find((item) => item.label === "Email")
-// 명함 둘레 사진 자리 — 화면 가로·세로에 대한 비율(가운데 기준)과 기울기. 사진이 더 많으면 처음부터 다시 돈다
-const PHOTO_SPOTS = [
-  { x: "14%", y: "24%", rotate: -6 },
-  { x: "86%", y: "20%", rotate: 5 },
-  { x: "10%", y: "74%", rotate: 4 },
-  { x: "88%", y: "76%", rotate: -5 },
-  { x: "34%", y: "88%", rotate: -3 },
-  { x: "66%", y: "10%", rotate: 3 },
-]
 
-// 사진 틀 — 가로/세로 비율이 가장 가까운 것을 고른다 (로그로 견줘 4:5 와 5:4 를 같은 거리로 본다)
-const PHOTO_RATIOS = [
-  { value: 4 / 5, className: "aspect-[4/5]" },
-  { value: 1, className: "aspect-square" },
-  { value: 5 / 4, className: "aspect-[5/4]" },
-]
-function nearestRatio(image) {
-  const ratio = image.naturalWidth / image.naturalHeight
-  const distance = (option) => Math.abs(Math.log(ratio / option.value))
-  return PHOTO_RATIOS.reduce((best, option) => (distance(option) < distance(best) ? option : best)).className
-}
+// 메일·구글 스칼라 아이콘 — Feather(react-icons/fi)와 같은 규칙(24 격자, currentColor, 굵기 2)으로 그린 것 (pixel 브랜치에서 가져옴)
+const LineIcon = ({ children, ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    {children}
+  </svg>
+)
 
-// 스냅 자리 — 위가 떠 있는 메뉴 바로 아래에 오도록 메뉴 높이만큼 비워 둔다
-const SNAP_POINT = "snap-start scroll-mt-[var(--header-h,0px)]"
-const cn = (...classes) => classes.filter(Boolean).join(" ")
-
-// 섹션 사이 64px — 섹션 안 첫·마지막 요소의 여백은 0 으로 하고 섹션 안에 가둬(flow-root), 섹션끼리 정확히 64px 떨어지게 한다
-const SECTION = "flow-root mt-16 first:mt-0 [&>:first-child]:mt-0 [&>:last-child]:mb-0"
-// 섹션 번호 — 메인에 놓인 차례대로, 제목 바로 위 줄에 쓴다
-const SECTION_ORDER = ["bio", "research", "publications", "contact"]
-const sectionNumber = (id) => <span className="block">{SECTION_ORDER.indexOf(id) + 1}</span>
-
-// 섹션 제목 — 본문과 48px 떨어진다 (prose 가 제목 바로 다음 요소의 위 여백을 0 으로 둔다)
-const SECTION_TITLE = "mb-12 text-center font-sans text-sm font-normal"
-
-// 섹션 끝의 바로가기(See all …) — 오른쪽 정렬
-const SHORTCUT = "block text-right"
-
-// 섹션 제목 위에 두는 아이콘 — Openclipart 의 퍼블릭 도메인 선화를 손으로 크레용으로 그린 것처럼 바꿔 구운 PNG.
-// 선을 노이즈로 살짝 휘고(손 떨림), 테두리를 까끌하게, 선 속을 종이 결처럼 군데군데 비웠다.
-// 원본: Hand with quill pen(298211), Old Light Bulb - Unlit(336502), White open book being read(355258), Hung Up Rotary Phone(322919)
-const ICONS = {
-  contact: { src: "/assets/img/icons/contact.png", alt: "Rotary telephone" },
-  bio: { src: "/assets/img/icons/bio.png", alt: "Hand writing with a quill pen" },
-  research: { src: "/assets/img/icons/research.png", alt: "Old light bulb" },
-  publications: { src: "/assets/img/icons/background.png", alt: "Open book" },
-}
-// 아이콘은 96×96 칸 안에 비율을 지켜 담는다
-const icon = (id) => <img src={ICONS[id].src} alt={ICONS[id].alt} className="mx-auto size-24 object-contain" />
-
-// 메인이 곧 About — Bio(소개 글), 연구 관심사(data/previews/publications.md), 대표 논문, 연락처, 바닥(저작권)
-// 흩어 놓은 사진 하나 — 틀은 실제 사진 비율에 가장 가까운 4:5·1:1·5:4 중 하나로 고르고, 남는 부분은 잘라 낸다
-function ScatteredPhoto({ src, spot }) {
-  const [ratio, setRatio] = useState("aspect-square")
+// Feather 의 file-text 는 종이 모서리를 둥글게 그려, 같은 모양을 모서리만 직각으로 다시 그린다
+function FileIcon(props) {
   return (
-    <img
-      src={src}
-      alt=""
-      onLoad={(event) => setRatio(nearestRatio(event.currentTarget))}
-      className={cn("absolute w-[clamp(72px,13vw,168px)] object-cover shadow-sm", ratio)}
-      style={{ left: spot.x, top: spot.y, transform: `translate(-50%, -50%) rotate(${spot.rotate}deg)` }}
+    <LineIcon {...props}>
+      <path d="M14 2H4v20h16V8z" />
+      <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+    </LineIcon>
+  )
+}
+
+// Feather 에는 X(옛 트위터) 로고가 없어 Tabler 의 brand-x 를 같은 규칙으로 옮겨 그린다
+function XIcon(props) {
+  return (
+    <LineIcon {...props}>
+      <path d="M4 4l11.733 16H20L8.267 4z" />
+      <path d="m4 20 6.768-6.768m2.46-2.46L20 4" />
+    </LineIcon>
+  )
+}
+
+// 트리 뿌리 앞에 다는 폴더 — 닫히면 탭 달린 윤곽, 열리면 뒤판과 비스듬히 열린 앞판
+function FolderIcon(props) {
+  return (
+    <LineIcon {...props}>
+      <path d="M2 20V3h7l2 3h11v14z" />
+    </LineIcon>
+  )
+}
+
+function FolderOpenIcon(props) {
+  return (
+    <LineIcon {...props}>
+      <path d="M2 20V3h7l2 3h9v4" />
+      <path d="M2 20 6 10h16l-4 10z" />
+    </LineIcon>
+  )
+}
+
+function MailIcon(props) {
+  return (
+    <LineIcon {...props}>
+      <rect x="2" y="4" width="20" height="16" />
+      <path d="m22 7-10 5L2 7" />
+    </LineIcon>
+  )
+}
+
+// 위쪽 마름모(모자)와 아래쪽 원(책)이 만나는 자리를 마스크로 비워 둔다
+function GoogleScholarIcon(props) {
+  // useId 는 콜론 같은 글자가 들어가 url(#…) 참조가 깨질 수 있어 글자·숫자만 남긴다
+  const maskId = `scholar${useId().replace(/[^a-zA-Z0-9]/g, "")}`
+  return (
+    <LineIcon {...props}>
+      <mask id={maskId}>
+        <rect width="24" height="24" fill="white" />
+        <circle cx="12" cy="16" r="6" fill="black" stroke="black" strokeWidth="4" />
+      </mask>
+      <polygon points="12 2 22 8 12 16 2 8" mask={`url(#${maskId})`} />
+      <circle cx="12" cy="16" r="6" />
+    </LineIcon>
+  )
+}
+
+// 글 앞에 다는 선 아이콘(Links 이름은 링크 안에, 트리 뿌리) — 폭은 글씨 크기(1em), 글과는 띄어쓰기 한 칸(Inter 0.28125em) 띄운다.
+// 선 끝은 네모나게, 꺾이는 곳은 뾰족하게 — Feather 아이콘의 둥근 끝·둥근 꺾임도 덮어쓴다.
+// 아이콘마다 24 격자 위아래 빈 곳이 달라, 그린 것(선 굵기의 반 1 까지)만 남게 잘라 내고 그 가운데를 대문자 높이(1cap)의 가운데에 맞춘다.
+// 뾰족한 꺾임은 선 굵기의 반보다 더 튀어나와 잘린 밖도 보이게 둔다
+const LINK_ICONS = {
+  Email: MailIcon,
+  GitHub: FiGithub,
+  "Google Scholar": GoogleScholarIcon,
+  LinkedIn: FiLinkedin,
+  X: XIcon,
+  CV: FileIcon,
+}
+const TextIcon = ({ icon: Icon }) => {
+  const ref = useRef(null)
+  useLayoutEffect(() => {
+    const { y, height } = ref.current.getBBox()
+    const croppedHeight = `${(height + 2) / 24}em`
+    ref.current.setAttribute("viewBox", `0 ${y - 1} 24 ${height + 2}`)
+    ref.current.style.height = croppedHeight
+    ref.current.style.verticalAlign = `calc((1cap - ${croppedHeight}) / 2)`
+  }, [])
+  return (
+    <Icon
+      ref={ref}
+      aria-hidden="true"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      className="mr-[0.28125em] inline-block w-[1em] overflow-visible"
     />
   )
 }
 
-// 크레용으로 그은 듯한 가로선 — 검은 선을 넓은 물결로 살짝 위아래로 휘고(손 떨림), 잘게 밀어 테두리를 까끌하게,
-// 선 속을 종이 결처럼 군데군데 비운다. seed 가 다르면 선마다 휘는 모양이 다르다
-function CrayonRule({ seed }) {
-  // useId 는 ":r1:" 처럼 콜론이 들어가 url(#…) 참조가 깨지므로 글자·숫자만 남긴다
-  const id = `crayon-rule${useId().replace(/[^a-zA-Z0-9]/g, "")}`
+// 기관 로고 — 파일(public/assets/img/logos/이름.png)은 여백 없이 잘라 둔 단색 실루엣이고, 글씨 색으로 칠한다(mask).
+// 글씨 크기(1em)만 한 정사각형 안에 비율대로 가장 크게 가운데에 넣고, 정사각형 가운데를 대문자 높이(1cap)의 가운데에 맞춘다
+const Logo = ({ name }) => (
+  <span
+    aria-hidden="true"
+    className="mr-[0.28125em] inline-block size-[1em] bg-current align-[calc((1cap-1em)/2)]"
+    style={{ mask: `url(/assets/img/logos/${name}.png) center / contain no-repeat` }}
+  />
+)
+
+// 소개 글 링크 앞에는 링크 주소의 도메인으로 고른 로고를 단다
+const BIO_LOGOS = { "gsai.kaist.ac.kr": "kaist", "hyunw.kim": "coco", "www.upstage.ai": "upstage", "www.korea.edu": "korea" }
+const BioLink = ({ node, href, children, ...props }) => {
+  const logo = BIO_LOGOS[new URL(href).hostname]
   return (
-    <svg aria-hidden="true" className="block h-3 w-full overflow-visible">
-      {/* 가로선은 높이가 0 이라 선 기준(objectBoundingBox) 필터 영역이 납작해져 사라진다 — 영역을 svg 전체로 잡는다 */}
-      <filter id={id} filterUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="2" seed={seed} result="warp" />
-        <feDisplacementMap in="SourceGraphic" in2="warp" scale="6" xChannelSelector="R" yChannelSelector="G" result="wobbly" />
-        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed={seed + 50} result="fine" />
-        <feDisplacementMap in="wobbly" in2="fine" scale="1" xChannelSelector="R" yChannelSelector="G" result="rough" />
-        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="2" seed={seed + 100} result="grain" />
-        <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -3 0 0 0 2.6" result="paper" />
-        <feComposite in="rough" in2="paper" operator="in" />
-      </filter>
-      <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#111" strokeWidth="1" strokeLinecap="round" filter={`url(#${id})`} />
-    </svg>
+    <a href={href} {...props}>
+      {logo && <Logo name={logo} />}
+      {children}
+    </a>
   )
 }
 
-export default function Home() {
-  // 메인에서만 스크롤이 스냅 자리(명함·Bio 첫머리)에 붙게 한다 — 다른 페이지로 가면 푼다
-  useEffect(() => {
-    document.documentElement.classList.add("snap-y", "snap-mandatory")
-    return () => document.documentElement.classList.remove("snap-y", "snap-mandatory")
-  }, [])
+// 논문을 종류(논문 md 의 type)별로 — 이 차례대로, 논문이 있는 종류만 보인다
+const PUBLICATION_GROUPS = [
+  { type: "journal", title: "Journal" },
+  { type: "conference", title: "Conference" },
+  { type: "preprint", title: "Preprint" },
+]
+  .map((group) => ({ ...group, entries: publicationList.entries.filter((entry) => entry.type === group.type) }))
+  .filter((group) => group.entries.length > 0)
+
+// 수상을 종류(수상 md 의 type)별로 — 이 차례대로, 있는 종류만 보인다
+const AWARD_GROUPS = [
+  { type: "Honor", title: "Honor" },
+  { type: "Award", title: "Award" },
+]
+  .map((group) => ({ ...group, entries: awardList.entries.filter((entry) => entry.type === group.type) }))
+  .filter((group) => group.entries.length > 0)
+
+// 디렉터리 트리 — 뿌리 줄(TreeRoot, prose 제목 모양을 빼 본문 글씨 그대로, 앞에 열린 폴더 아이콘) 밑에 항목을 한 줄씩, 앞에 터미널 tree 명령의 ├─(마지막은 └─) 모양 가지를 단다.
+// 가지는 글자 대신 선으로 그린다 — 선 문자는 줄 사이가 끊기고 글꼴마다 굵기가 달라서. 굵기는 본문 글씨 획(17px Inter 약 1.5px),
+// 칸 폭은 가지 끝(5px + 가로선 0.9em)에 본문 띄어쓰기 한 칸(Inter 0.28125em)을 더한 만큼 — 글 칸을 들일 때도 같은 폭(pl-[…])으로. 세로선은 칸 높이 내내 이어 다음 항목과 끊기지 않고, 마지막 항목은 첫 줄 가운데까지만,
+// 가로선은 첫 줄 가운데에. 칸은 보통 한 줄 높이로 줄 안에 두고(relative), 여러 줄짜리 항목은 className 으로 항목 왼쪽에 항목 높이만큼 붙인다(absolute). 화면 읽기에선 뺀다
+// 뿌리 줄을 누르면(키보드는 Enter·Space) 항목을 접고 편다 — 처음엔 펼쳐 둔다. 폴더 아이콘도 열고 닫는다.
+// 아이콘은 붙을 때 한 번 잘라 맞춰서, 바뀔 때마다 새로 붙인다(key)
+function TreeRoot({ title, children }) {
+  const [open, setOpen] = useState(true)
+  return (
+    <details open onToggle={(event) => setOpen(event.currentTarget.open)}>
+      <summary className="w-fit cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+        <h3 className="not-prose inline">
+          <TextIcon key={open} icon={open ? FolderOpenIcon : FolderIcon} />
+          {title}
+        </h3>
+      </summary>
+      {children}
+    </details>
+  )
+}
+const TreeBranch = ({ last, className = "relative h-line" }) => (
+  <span
+    aria-hidden="true"
+    className={cn(
+      "inline-block w-[calc(5px+1.18125em)] shrink-0 align-top",
+      "before:absolute before:top-0 before:left-[5px] before:w-[1.5px] before:bg-current",
+      last ? "before:h-[calc(var(--spacing-line)/2+0.75px)]" : "before:h-full",
+      "after:absolute after:top-[calc(var(--spacing-line)/2-0.75px)] after:left-[5px] after:h-[1.5px] after:w-[0.9em] after:bg-current",
+      className
+    )}
+  />
+)
+const cn = (...classes) => classes.filter(Boolean).join(" ")
+
+// 위아래 여백은 사진 말고는 모두 본문 한 줄 높이(25.5px, index.css 의 line)의 배수로 맞춘다. 줄 높이는 글씨 크기마다 정해진 대로.
+// 섹션 사이 네 줄 — 섹션 안 첫·마지막 요소의 여백은 0 으로 하고 섹션 안에 가둬(flow-root), 섹션끼리 정확히 네 줄 떨어지게 한다
+const SECTION = "flow-root mt-line-4 first:mt-0 [&>:first-child]:mt-0 [&>:last-child]:mb-0"
+
+// 섹션 제목 — 본문과 한 줄 떨어진다 (prose 가 제목 바로 다음 요소의 위 여백을 0 으로 둔다)
+const SECTION_TITLE = "mb-line"
+
+// 섹션 — (사진,) 제목(섹션 이름, 또는 따로 준 heading 두 줄), 본문. 사진은 4:5 에 1px 먹색 테두리로, 폭 160.
+// 제목은 본문보다 한 단계 크게(lg) 600 굵기로, heading 은 둘째 줄(소속)부터 본문 크기에 보통 굵기, 회색으로
+function Section({ id, title, heading, photo, children }) {
+  const lines = heading ?? [title]
+  return (
+    <section id={id} className={SECTION}>
+      {photo && (
+        <img src={photo.src} alt={photo.alt} className="not-prose mb-line aspect-[4/5] w-40 border border-ink object-cover" />
+      )}
+      <h2 className={cn(SECTION_TITLE, "text-lg font-semibold")}>
+        {lines.map((line, i) => (
+          <span key={line} className={cn("block", heading && i > 0 && "text-base font-normal text-ink-light")}>
+            {line}
+          </span>
+        ))}
+      </h2>
+      {children}
+    </section>
+  )
+}
+
+// 마우스를 올리면 설명(desc)이 뜨는 글(누르는 것으로는 뜨지 않는다) — 링크처럼 점선 밑줄을 긋고 선택 상자를 띄운다(index.css 의 .hint).
+// 설명은 링크 딱지처럼 상자 오른쪽 끝에 맞춰 4px 밑에 먹색 딱지로 띄우되, 그러면 본문 왼쪽 끝을 넘을 때(설명 폭은 많아야 max-w-xs, 320px)는
+// 상자 왼쪽 끝에 맞춘다. 문단 사이 빈 줄은 줄바꿈으로 살린다
+function Hint({ desc, children }) {
+  const [alignLeft, setAlignLeft] = useState(false)
+  const place = (event) => {
+    const right = event.currentTarget.getBoundingClientRect().right
+    const bodyLeft = event.currentTarget.closest("main").getBoundingClientRect().left
+    setAlignLeft(right - 320 < bodyLeft)
+  }
 
   return (
-    <>
-      {/* 첫 화면 — 가운데 명함, 둘레에 사진들을 흩어 놓는다. 메뉴 아래 남은 한 화면을 차지하고,
-          본문 폭(675px)을 넘어 화면 가로 전체를 쓴다. 명함은 메뉴 높이의 절반만큼 끌어올려 창 한가운데 온다 */}
-      <section
-        id="intro"
+    <span onMouseEnter={place} className="hint group relative cursor-default">
+      {children}
+      <span
         className={cn(
-          "not-prose relative left-1/2 flex h-[calc(100dvh-var(--header-h,0px))] w-screen -translate-x-1/2 items-center justify-center overflow-hidden",
-          SNAP_POINT
+          "pointer-events-none absolute top-full z-20 mt-1 hidden w-max max-w-xs bg-ink px-2 py-1 whitespace-pre-line text-paper group-hover:block",
+          alignLeft ? "left-[3px]" : "right-[3px]"
         )}
       >
-        {profile.photos.map((src, i) => (
-          <ScatteredPhoto key={i} src={src} spot={PHOTO_SPOTS[i % PHOTO_SPOTS.length]} />
-        ))}
+        {desc}
+      </span>
+    </span>
+  )
+}
 
-        {/* 명함 — 실제 명함 크기(90×50mm, 한국 표준). 화면이 그보다 좁으면 비율을 지켜 줄어든다 */}
-        <div className="relative z-10 flex aspect-[9/5] w-[90mm] max-w-[calc(100%-40px)] -translate-y-[calc(var(--header-h,0px)/2)] flex-col justify-between rounded-[3mm] bg-white p-[6mm] shadow-md">
-          <div>
-            <p className="text-lg">{profile.name}</p>
-            {profile.affiliations.map((affiliation) => (
-              <p key={affiliation} className="font-sans text-xs">
-                {affiliation}
-              </p>
-            ))}
-          </div>
-          <a href={EMAIL.link} className="font-sans text-xs underline">
-            {EMAIL.value}
-          </a>
-        </div>
-      </section>
-
-      {/* 명함 아래 전부(바닥까지)를 한 덩어리 스냅 자리로 묶는다 — 명함에서 한 번 내리면 Bio 첫머리로 붙고,
-          그 아래는 덩어리가 화면보다 길어 자유롭게 스크롤된다 */}
-      <div className={cn(SNAP_POINT, "pt-16")}>
-      {/* Bio — 소개 글 */}
-      <section id="bio" className={SECTION}>
-        {icon("bio")}
-        <h2 className={SECTION_TITLE}>
-          {sectionNumber("bio")}
-          Bio
-        </h2>
-
-        <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{profile.bio}</ReactMarkdown>
-        <Link to="/background" className={SHORTCUT}>
-          See all background
-        </Link>
-      </section>
-
-      <section id="research" className={SECTION}>
-        {icon("research")}
-        <h2 className={SECTION_TITLE}>
-          {sectionNumber("research")}
-          Research Interests
-        </h2>
-        <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{previews.publications}</ReactMarkdown>
-      </section>
-
-      {/* 대표 논문 — 논문 md 에 selected: false 를 적은 것은 빠진다. 제목은 arXiv 로 */}
-      <section id="publications" className={SECTION}>
-        {icon("publications")}
-        <h2 className={SECTION_TITLE}>
-          {sectionNumber("publications")}
-          Selected Publications
-        </h2>
-        {/* 점 없이, 위·아래와 논문 사이를 크레용으로 그은 듯한 선으로 나눈다 */}
-        <div className="mb-5">
-          <CrayonRule seed={1} />
-          {research.entries.map((entry, i) => (
-            <Fragment key={entry.id}>
-              <div className="py-2">
-                <a href={entry.link} {...EXTERNAL} className="block leading-snug no-underline">
-                  {entry.title}
-                </a>
-                {entry.lines.map((line) => (
-                  <span key={line} className="block font-sans text-sm">
-                    {line}
-                  </span>
-                ))}
+// 묶음(groups)마다 트리 하나 — 묶음 이름을 뿌리로, 그 밑에 항목을 가지로 단다. 묶음 사이는 한 줄 띄운다.
+// 항목마다 제목(링크가 있으면 링크로, 본문이 있으면 마우스를 올리면 뜨게), 그 밑에 줄들(lines)을 회색으로.
+// 항목 사이도 한 줄 띄우되(spaced, 끄면 붙인다) 그 줄까지 세로선으로 잇는다(띄운 줄을 항목 칸 안 아래 여백으로 둬서). 줄들과 두 줄로 넘친 제목은 가지 오른쪽에 맞춰 들인다
+function EntryTree({ groups, spaced = true }) {
+  return (
+    <div className="space-y-line">
+      {groups.map(({ title, entries }) => (
+        <TreeRoot key={title} title={title}>
+          {entries.map((entry, i) => (
+            <div key={entry.id} className={cn("relative pl-[calc(5px+1.18125em)]", spaced && "not-last:pb-line")}>
+              <TreeBranch last={i === entries.length - 1} className="absolute inset-y-0 left-0" />
+              {/* 제목은 줄 안(inline)으로 — 본문 링크처럼 점선 밑줄을 긋고, 호버 상자가 글자에 맞고 줄마다 나뉜다. 로고가 있으면 제목 앞에 */}
+              <div>
+                {entry.link ? (
+                  <a href={entry.link} {...EXTERNAL}>
+                    {entry.logo && <Logo name={entry.logo} />}
+                    {entry.title}
+                  </a>
+                ) : entry.body ? (
+                  <Hint desc={entry.body.trim()}>
+                    {entry.logo && <Logo name={entry.logo} />}
+                    {entry.title}
+                  </Hint>
+                ) : (
+                  <>
+                    {entry.logo && <Logo name={entry.logo} />}
+                    {entry.title}
+                  </>
+                )}
               </div>
-              <CrayonRule seed={i + 2} />
-            </Fragment>
+              {entry.lines.map((line) => (
+                <span key={line} className="block text-ink-light">
+                  {line}
+                </span>
+              ))}
+            </div>
+          ))}
+        </TreeRoot>
+      ))}
+    </div>
+  )
+}
+
+// 한 페이지에 Bio(소개 글·연구 관심사·링크), 논문, 수상, 경력·학력, 바닥(저작권)
+
+export default function Home() {
+  return (
+    <div className="pt-line-2">
+      {/* Bio — 사진, 이름·소속, 소개 글, 링크 트리 차례로 */}
+      <Section id="bio" heading={[profile.name, profile.affiliations[0]]} photo={{ src: profile.image, alt: profile.name }}>
+        {/* 소개 글 — profile.md 본문. 링크 앞에는 기관 로고 */}
+        <ReactMarkdown rehypePlugins={[rehypeSanitize]} components={{ a: BioLink }}>
+          {profile.bio}
+        </ReactMarkdown>
+        {/* 링크 — "Links" 를 뿌리로 연락처 이름을 아이콘과 함께 트리로, 맨 아래에 CV. 본문 링크처럼 글 속 링크로 둬 점선 밑줄과 글자에 맞는 호버 상자를 그대로 쓴다.
+              CV 는 갈 주소 없이 누르면 PDF 를 만들어 새 탭에 띄운다 — 그래도 같은 모양이 되게 a 로 두고(주소가 없어 버튼 역할과 초점을 따로 준다),
+              딱지에는 data-destination 의 파일 이름을 띄운다 */}
+        <div className="mt-line">
+          <TreeRoot title="Links">
+            {CONTACT_LINKS.map(({ label, link }) => (
+              <div key={label}>
+                <TreeBranch />
+                <a href={link} {...(link.startsWith("mailto:") ? {} : EXTERNAL)} className="font-normal!">
+                  <TextIcon icon={LINK_ICONS[label]} />
+                  {label}
+                </a>
+              </div>
+            ))}
+            <div>
+              <TreeBranch last />
+              <a
+                role="button"
+                tabIndex={0}
+                onClick={openCV}
+                onKeyDown={(event) => event.key === "Enter" && openCV()}
+                data-destination="Wonjun_Oh_CV.pdf"
+                className="cursor-pointer font-normal!"
+              >
+                <TextIcon icon={FileIcon} />
+                CV
+              </a>
+            </div>
+          </TreeRoot>
+        </div>
+      </Section>
+
+      {/* 논문 — 논문 md 에 selected: false 를 적은 것은 빠진다. 제목은 arXiv 로 */}
+      <Section id="publications" title="Publications">
+        {/* 종류(Journal·Conference·Preprint)마다 트리 하나 — 논문 제목은 arXiv 로, 그 밑에 저자·학회 */}
+        <EntryTree groups={PUBLICATION_GROUPS} />
+        {/* * 와 † 표시의 뜻 — 논문 목록 밑에 한 줄 띄워, 줄 사이는 띄우지 않는다(not-prose — prose 의 문단 여백이 걸리지 않게) */}
+        <div className="not-prose mt-line text-ink-light">
+          {publicationList.footnotes.map((footnote) => (
+            <p key={footnote}>{footnote}</p>
           ))}
         </div>
-        <Link to="/publications" className={SHORTCUT}>
-          See all publications
-        </Link>
-      </section>
+      </Section>
 
-      <section id="contact" className={SECTION}>
-        {icon("contact")}
-        <h2 className={SECTION_TITLE}>
-          {sectionNumber("contact")}
-          Contact
-        </h2>
-        {/* 줄마다 "이름: 내용" — 메일은 주소를 적고(복사해 쓰는 경우가 많다), 나머지는 이름만 쉼표로 이어 링크한다 */}
-        <p>
-          Email: <a href={EMAIL.link}>{EMAIL.value}</a>
-          <br />
-          Links:{" "}
-          {CONTACT_LINKS.map((item, i) => (
-            <Fragment key={item.label}>
-              {i > 0 && ", "}
-              <a href={item.link} {...EXTERNAL}>
-                {item.label}
-              </a>
-            </Fragment>
-          ))}
-        </p>
-      </section>
+      {/* 수상 — 종류(Honor·Award)마다 트리 하나. 수상 md 에 selected: false 를 적은 것은 빠진다 */}
+      <Section id="awards" title="Awards & Honors">
+        <EntryTree groups={AWARD_GROUPS} spaced={false} />
+      </Section>
 
-      <footer className="mt-16 text-center text-sm">
+      {/* 경력·학력 */}
+      <Section id="background" title="Background">
+        <EntryTree groups={backgroundGroups} spaced={false} />
+      </Section>
+
+      <footer className="mt-line-4 text-center">
         <p>
           © {new Date().getFullYear()} {profile.name}
         </p>
       </footer>
-      </div>
-    </>
+    </div>
   )
 }

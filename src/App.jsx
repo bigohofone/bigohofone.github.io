@@ -1,64 +1,81 @@
-import { useEffect, useRef } from "react"
-import { Link, Routes, Route, useLocation } from "react-router-dom"
+import { useEffect, useState } from "react"
 
-import { profile, sections } from "@/data"
-import { downloadCV } from "@/lib/cv"
 import Home from "@/pages/Home"
-import Section from "@/pages/Section"
 
-// 페이지를 옮기면 맨 위부터 보이게 한다
-function ScrollToTop() {
-  const { pathname } = useLocation()
-  // 중괄호로 감싸 아무것도 돌려주지 않는다 — 요즘 브라우저의 scrollTo 는 Promise 를 돌려주는데,
-  // 그대로 돌려주면 React 가 정리 함수로 알고 부르다 에러가 나 화면이 통째로 사라진다
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
-  return null
+// 크레용으로 쓴 듯한 글씨 — 잘게 밀어 테두리를 까끌하게, 군데군데 덜 묻게 한다.
+// 본문에 index.css 에서 건다
+function CrayonText() {
+  return (
+    <svg aria-hidden="true" className="absolute size-0">
+      <filter id="crayon-text" x="-1%" y="-1%" width="102%" height="102%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="51" result="fine" />
+        <feDisplacementMap in="SourceGraphic" in2="fine" scale="1.05" xChannelSelector="R" yChannelSelector="G" result="rough" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="101" result="grain" />
+        <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.6 0 0 0 1.9" result="paper" />
+        <feComposite in="rough" in2="paper" operator="in" />
+      </filter>
+    </svg>
+  )
 }
 
-// 메뉴 높이를 --header-h 로 내보낸다 — 좁은 화면에선 두 줄로 넘어가 높이가 바뀌므로 잴 때마다 고친다
-function useHeaderHeight(ref) {
+// 링크가 가는 곳 — 바깥 주소는 https:// 를 떼고, 메일은 주소만. 주소가 없는 링크(CV)는 data-destination 에 적어 둔 것을 쓴다
+function destinationOf(link) {
+  const href = link.getAttribute("href")
+  if (!href) return link.dataset.destination
+  return href
+    .replace(/^mailto:/, "")
+    .replace(/^https?:\/\//, "")
+    .replace(/\/$/, "")
+}
+
+// 링크에 마우스를 올리면 선택 상자(index.css) 오른쪽 아래에 가는 곳을 먹색 딱지로 띄운다 — 링크가 여러 줄이면 마지막 줄에.
+// 딱지 오른쪽 끝은 상자 오른변(글자에서 3.5px 바깥, 좌우 padding 은 빼고 잰다)에, 위는 상자 아래 끝(padding 아래 끝)에서 4px 밑에.
+// 스크롤하면 자리가 어긋나 걷는다
+function HoverDestination() {
+  const [hovered, setHovered] = useState(null)
+
   useEffect(() => {
-    const observer = new ResizeObserver(([entry]) => {
-      document.documentElement.style.setProperty("--header-h", `${entry.borderBoxSize[0].blockSize}px`)
-    })
-    observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [ref])
+    const follow = (event) => {
+      if (event.pointerType !== "mouse") return
+      const link = event.target.closest?.("a")
+      setHovered(
+        link && {
+          destination: destinationOf(link),
+          rect: [...link.getClientRects()].at(-1),
+          paddingRight: parseFloat(getComputedStyle(link).paddingRight),
+        }
+      )
+    }
+    const hide = () => setHovered(null)
+    document.addEventListener("pointerover", follow)
+    window.addEventListener("scroll", hide, { passive: true })
+    return () => {
+      document.removeEventListener("pointerover", follow)
+      window.removeEventListener("scroll", hide)
+    }
+  }, [])
+
+  if (!hovered) return null
+  const { destination, rect, paddingRight } = hovered
+  return (
+    <span
+      aria-hidden="true"
+      className="pointer-events-none fixed z-20 -translate-x-full bg-ink px-1 text-[11px] leading-[1.5] whitespace-nowrap text-paper"
+      style={{ left: rect.right - paddingRight + 3.5, top: rect.bottom + 4 }}
+    >
+      {destination}
+    </span>
+  )
 }
 
 export default function App() {
-  const headerRef = useRef(null)
-  useHeaderHeight(headerRef)
-
   return (
     <>
-      <ScrollToTop />
-      {/* 메뉴 — 어느 페이지든 스크롤해도 화면 맨 위에 붙어 있다(sticky). 자기 높이만큼 자리를 차지해,
-          좁은 화면에서 두 줄로 넘어가도 본문을 가리지 않는다. 아래 글이 비치지 않게 바탕색을 깐다 */}
-      <header ref={headerRef} className="sticky top-0 z-10 bg-paper">
-        <nav className="mx-auto box-content flex max-w-[675px] flex-wrap gap-x-4 gap-y-1 px-5 py-3">
-          <Link to="/">{profile.name}</Link>
-          {sections.map(({ path, title }) => (
-            <Link key={path} to={`/${path}`}>
-              {title}
-            </Link>
-          ))}
-          <button type="button" onClick={downloadCV}>
-            CV
-          </button>
-        </nav>
-      </header>
-      {/* 본문은 폭 675px 까지, 가운데 정렬. 좌우 20px 여백은 폭 밖에 둬(box-content) 좁은 화면에서도 글이 끝에 붙지 않는다.
-          prose(typography 플러그인)가 문단·제목·목록·링크에 기본 여백과 크기를 준다 */}
-      <main className="prose mx-auto box-content max-w-[675px] px-5">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {sections.map((section) => (
-            <Route key={section.path} path={`/${section.path}`} element={<Section section={section} />} />
-          ))}
-        </Routes>
+      <CrayonText />
+      <HoverDestination />
+      {/* 본문 폭은 최대 720px — 좌우 32px 여백은 따로 둔다. prose(typography 플러그인)가 문단·제목·링크에 기본 여백과 크기를 준다 */}
+      <main className="prose mx-auto max-w-[calc(720px+4rem)] px-8 text-base">
+        <Home />
       </main>
     </>
   )

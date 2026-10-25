@@ -1,5 +1,6 @@
 ---
 organization: Upstage
+logo: upstage
 role: AI Research Engineer Intern
 date: "2026-03-30 ~ 2026-08-28"
 location: "Seoul, Korea"

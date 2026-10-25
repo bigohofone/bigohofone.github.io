@@ -9,9 +9,7 @@ export function parseMarkdownWithYaml(rawContent) {
     }
   }
 
-  const match = rawContent.match(
-    /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/
-  )
+  const match = rawContent.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/)
 
   if (match) {
     try {
@@ -39,12 +37,4 @@ export function parseMarkdownWithYaml(rawContent) {
     content: rawContent.trim(),
     rawContent,
   }
-}
-// 마크다운 표를 첫 줄(머리글)을 키로 하는 객체 목록으로 읽는다. 두 번째 줄(---)은 구분선이라 건너뛴다
-export function parseMarkdownTable(text) {
-  const [header, , ...rows] = text
-    .trim()
-    .split("\n")
-    .map((line) => line.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim()))
-  return rows.map((cells) => Object.fromEntries(header.map((key, i) => [key, cells[i]])))
 }
