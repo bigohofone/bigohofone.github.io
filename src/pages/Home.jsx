@@ -1,4 +1,4 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState } from "react"
+import { useId, useLayoutEffect, useRef, useState } from "react"
 import ReactMarkdown from "react-markdown"
 import rehypeSanitize from "rehype-sanitize"
 import { FiGithub, FiLinkedin } from "react-icons/fi"
@@ -223,52 +223,13 @@ function Section({ id, title, heading, photo, children }) {
   )
 }
 
-// 마우스를 올리면 설명(desc)이 뜨는 글 — 링크처럼 점선 밑줄을 긋고 선택 상자를 띄운다(index.css 의 .hint).
-// 마우스를 올릴 수 없는 휴대폰에선 누르면 뜨고(open), 다시 누르거나 다른 데를 누르면 닫힌다. 마우스로는 눌러도 아무 일 없다.
-// 설명은 링크 딱지처럼 상자 오른쪽 끝에 맞춰 4px 밑에 먹색 딱지로 띄우되, 그러면 본문 왼쪽 끝을 넘을 때(설명 폭은 많아야 max-w-xs, 320px)는
-// 상자 왼쪽 끝에 맞춘다. 문단 사이 빈 줄은 줄바꿈으로 살린다
-function Hint({ desc, children }) {
-  const [alignLeft, setAlignLeft] = useState(false)
-  const [open, setOpen] = useState(false)
-  const ref = useRef(null)
-  const place = (event) => {
-    const right = event.currentTarget.getBoundingClientRect().right
-    const bodyLeft = event.currentTarget.closest("main").getBoundingClientRect().left
-    setAlignLeft(right - 320 < bodyLeft)
-  }
-  const toggle = (event) => {
-    if (matchMedia("(hover: hover)").matches) return
-    place(event)
-    setOpen(!open)
-  }
-
-  useEffect(() => {
-    if (!open) return
-    const close = (event) => !ref.current.contains(event.target) && setOpen(false)
-    document.addEventListener("pointerdown", close)
-    return () => document.removeEventListener("pointerdown", close)
-  }, [open])
-
-  return (
-    <span
-      ref={ref}
-      onMouseEnter={place}
-      onClick={toggle}
-      data-open={open || undefined}
-      className="hint group relative cursor-default"
-    >
-      {children}
-      <span
-        className={cn(
-          "pointer-events-none absolute top-full z-20 mt-1 hidden w-max max-w-xs bg-ink px-2 py-1 whitespace-pre-line text-paper group-hover:block group-data-[open]:block",
-          alignLeft ? "left-[3px]" : "right-[3px]"
-        )}
-      >
-        {desc}
-      </span>
-    </span>
-  )
-}
+// 마우스를 올리면(휴대폰에선 누르면) 설명(desc)이 뜨는 글 — 링크처럼 점선 밑줄을 긋고 선택 상자를 띄운다(index.css 의 .hint).
+// 설명은 App.jsx 의 Popup 이 data-desc 를 읽어 띄운다
+const Hint = ({ desc, children }) => (
+  <span data-desc={desc} className="hint cursor-default">
+    {children}
+  </span>
+)
 
 // 묶음(groups)마다 트리 하나 — 묶음 이름을 뿌리로, 그 밑에 항목을 가지로 단다. 묶음 사이는 한 줄 띄운다.
 // 항목마다 제목(링크가 있으면 링크로, 본문이 있으면 마우스를 올리면 뜨게), 그 밑에 줄들(lines)을 회색으로.

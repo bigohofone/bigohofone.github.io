@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
 import Home from "@/pages/Home"
 
@@ -28,51 +28,74 @@ function destinationOf(link) {
     .replace(/\/$/, "")
 }
 
-// 링크에 마우스를 올리면 선택 상자(index.css) 오른쪽 아래에 가는 곳을 먹색 딱지로 띄운다 — 링크가 여러 줄이면 마지막 줄에.
-// 딱지 오른쪽 끝은 상자 오른변(글자에서 3.5px 바깥, 좌우 padding 은 빼고 잰다)에, 위는 상자 아래 끝(padding 아래 끝)에서 4px 밑에.
-// 스크롤하면 자리가 어긋나 걷는다
-function HoverDestination() {
-  const [hovered, setHovered] = useState(null)
+// 링크나 설명이 뜨는 글(.hint)에 마우스를 올리면 선택 상자(index.css) 아래에 먹색 딱지를 띄운다 — 링크는 가는 곳을 작게, 설명은 본문 크기로.
+// 마우스를 올릴 수 없는 휴대폰에선 설명이 뜨는 글을 누르면 띄우고(상자도 data-open 으로 긋는다), 다시 누르거나 다른 데를 누르면 닫는다.
+// 딱지 폭은 본문 폭(좌우 여백 뺀)까지, 넘치면 줄을 바꾼다. 자리는 여러 줄이면 마지막 줄 상자 아래 4px 에, 오른쪽 끝을 상자 오른변(글자에서
+// 3.5px 바깥, 좌우 padding 은 빼고 잰다)에 맞추되 본문 왼쪽·오른쪽 끝을 넘으면 그 안으로 민다. 스크롤하면 자리가 어긋나 걷는다
+function Popup() {
+  const [target, setTarget] = useState(null)
+  const ref = useRef(null)
 
   useEffect(() => {
     const follow = (event) => {
       if (event.pointerType !== "mouse") return
-      const link = event.target.closest?.("a")
-      setHovered(
-        link && {
-          destination: destinationOf(link),
-          rect: [...link.getClientRects()].at(-1),
-          paddingRight: parseFloat(getComputedStyle(link).paddingRight),
-        }
-      )
+      setTarget(event.target.closest?.("a, .hint") ?? null)
     }
-    const hide = () => setHovered(null)
+    const tap = (event) => {
+      if (matchMedia("(hover: hover)").matches) return
+      const hint = event.target.closest?.(".hint")
+      setTarget((shown) => (hint && hint !== shown ? hint : null))
+    }
+    const hide = () => setTarget(null)
     document.addEventListener("pointerover", follow)
+    document.addEventListener("click", tap)
     window.addEventListener("scroll", hide, { passive: true })
     return () => {
       document.removeEventListener("pointerover", follow)
+      document.removeEventListener("click", tap)
       window.removeEventListener("scroll", hide)
     }
   }, [])
 
-  if (!hovered) return null
-  const { destination, rect, paddingRight } = hovered
+  useLayoutEffect(() => {
+    if (!target) return
+    target.dataset.open = ""
+    const main = target.closest("main")
+    const mainStyle = getComputedStyle(main)
+    const bodyLeft = main.getBoundingClientRect().left + parseFloat(mainStyle.paddingLeft)
+    const bodyRight = main.getBoundingClientRect().right - parseFloat(mainStyle.paddingRight)
+    const popup = ref.current
+    popup.style.maxWidth = `${bodyRight - bodyLeft}px`
+    const rect = [...target.getClientRects()].at(-1)
+    const right = rect.right - parseFloat(getComputedStyle(target).paddingRight) + 3.5
+    popup.style.left = `${Math.max(bodyLeft, Math.min(right, bodyRight) - popup.offsetWidth)}px`
+    popup.style.top = `${rect.bottom + 4}px`
+    return () => delete target.dataset.open
+  }, [target])
+
+  if (!target) return null
+  const desc = target.dataset.desc
   return (
     <span
+      ref={ref}
       aria-hidden="true"
-      className="pointer-events-none fixed z-20 -translate-x-full bg-ink px-1 text-[11px] leading-[1.5] whitespace-nowrap text-paper"
-      style={{ left: rect.right - paddingRight + 3.5, top: rect.bottom + 4 }}
+      className={cn(
+        "pointer-events-none fixed z-20 w-max bg-ink text-paper [overflow-wrap:anywhere]",
+        desc ? "px-2 py-1 whitespace-pre-line" : "px-1 text-[11px] leading-[1.5]"
+      )}
     >
-      {destination}
+      {desc ?? destinationOf(target)}
     </span>
   )
 }
+
+const cn = (...classes) => classes.filter(Boolean).join(" ")
 
 export default function App() {
   return (
     <>
       <CrayonText />
-      <HoverDestination />
+      <Popup />
       {/* 본문 폭은 최대 720px — 좌우 여백 32px(휴대폰 폭에선 24px)은 따로 둔다. prose(typography 플러그인)가 문단·제목·링크에 기본 여백과 크기를 준다 */}
       <main className="prose mx-auto max-w-[calc(720px+4rem)] px-6 text-base sm:px-8">
         <Home />
