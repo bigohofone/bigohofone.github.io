@@ -1,4 +1,4 @@
-import { useId, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react"
 import ReactMarkdown from "react-markdown"
 import rehypeSanitize from "rehype-sanitize"
 import { FiGithub, FiLinkedin } from "react-icons/fi"
@@ -223,23 +223,44 @@ function Section({ id, title, heading, photo, children }) {
   )
 }
 
-// 마우스를 올리면 설명(desc)이 뜨는 글(누르는 것으로는 뜨지 않는다) — 링크처럼 점선 밑줄을 긋고 선택 상자를 띄운다(index.css 의 .hint).
+// 마우스를 올리면 설명(desc)이 뜨는 글 — 링크처럼 점선 밑줄을 긋고 선택 상자를 띄운다(index.css 의 .hint).
+// 마우스를 올릴 수 없는 휴대폰에선 누르면 뜨고(open), 다시 누르거나 다른 데를 누르면 닫힌다. 마우스로는 눌러도 아무 일 없다.
 // 설명은 링크 딱지처럼 상자 오른쪽 끝에 맞춰 4px 밑에 먹색 딱지로 띄우되, 그러면 본문 왼쪽 끝을 넘을 때(설명 폭은 많아야 max-w-xs, 320px)는
 // 상자 왼쪽 끝에 맞춘다. 문단 사이 빈 줄은 줄바꿈으로 살린다
 function Hint({ desc, children }) {
   const [alignLeft, setAlignLeft] = useState(false)
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
   const place = (event) => {
     const right = event.currentTarget.getBoundingClientRect().right
     const bodyLeft = event.currentTarget.closest("main").getBoundingClientRect().left
     setAlignLeft(right - 320 < bodyLeft)
   }
+  const toggle = (event) => {
+    if (matchMedia("(hover: hover)").matches) return
+    place(event)
+    setOpen(!open)
+  }
+
+  useEffect(() => {
+    if (!open) return
+    const close = (event) => !ref.current.contains(event.target) && setOpen(false)
+    document.addEventListener("pointerdown", close)
+    return () => document.removeEventListener("pointerdown", close)
+  }, [open])
 
   return (
-    <span onMouseEnter={place} className="hint group relative cursor-default">
+    <span
+      ref={ref}
+      onMouseEnter={place}
+      onClick={toggle}
+      data-open={open || undefined}
+      className="hint group relative cursor-default"
+    >
       {children}
       <span
         className={cn(
-          "pointer-events-none absolute top-full z-20 mt-1 hidden w-max max-w-xs bg-ink px-2 py-1 whitespace-pre-line text-paper group-hover:block",
+          "pointer-events-none absolute top-full z-20 mt-1 hidden w-max max-w-xs bg-ink px-2 py-1 whitespace-pre-line text-paper group-hover:block group-data-[open]:block",
           alignLeft ? "left-[3px]" : "right-[3px]"
         )}
       >

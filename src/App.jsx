@@ -73,8 +73,8 @@ export default function App() {
     <>
       <CrayonText />
       <HoverDestination />
-      {/* 본문 폭은 최대 720px — 좌우 32px 여백은 따로 둔다. prose(typography 플러그인)가 문단·제목·링크에 기본 여백과 크기를 준다 */}
-      <main className="prose mx-auto max-w-[calc(720px+4rem)] px-8 text-base">
+      {/* 본문 폭은 최대 720px — 좌우 여백 32px(휴대폰 폭에선 24px)은 따로 둔다. prose(typography 플러그인)가 문단·제목·링크에 기본 여백과 크기를 준다 */}
+      <main className="prose mx-auto max-w-[calc(720px+4rem)] px-6 text-base sm:px-8">
         <Home />
       </main>
     </>

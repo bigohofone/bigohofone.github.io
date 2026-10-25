@@ -77,16 +77,23 @@ main :is(section > :not(img), footer) {
 }
 
 /* 상자는 좌우로 7.5px 를 더 주고 같은 만큼 margin 을 빼 글자 자리는 그대로, 세로변은 가장자리에서 3.5px 안쪽(글자에서 4px 바깥)에,
-   아랫변은 밑줄과 같은 자리(padding 아래 끝)에 긋는다. 휴대폰은 누른 뒤에도 hover 가 남아 있어, 마우스처럼 올려 볼 수 있는 기기에서만 */
+   아랫변은 밑줄과 같은 자리(padding 아래 끝)에 긋는다. 휴대폰은 누른 뒤에도 hover 가 남아 있어, 마우스처럼 올려 볼 수 있는 기기에서만
+   hover 로 긋고, 휴대폰에선 설명이 뜨는 글(.hint)을 눌러 설명을 띄운 동안(data-open) 긋는다 */
+@utility selection-box {
+  padding-inline: 7.5px;
+  margin-inline: -7.5px;
+  --line: linear-gradient(currentColor, currentColor);
+  background:
+    var(--line) left 3.5px top / calc(100% - 7px) 1px no-repeat,
+    var(--line) left 3.5px bottom / calc(100% - 7px) 1px no-repeat,
+    var(--line) left 3.5px top / 1px 100% no-repeat,
+    var(--line) right 3.5px top / 1px 100% no-repeat;
+}
 @media (hover: hover) {
   :is(.prose a, .hint):hover {
-    padding-inline: 7.5px;
-    margin-inline: -7.5px;
-    --line: linear-gradient(currentColor, currentColor);
-    background:
-      var(--line) left 3.5px top / calc(100% - 7px) 1px no-repeat,
-      var(--line) left 3.5px bottom / calc(100% - 7px) 1px no-repeat,
-      var(--line) left 3.5px top / 1px 100% no-repeat,
-      var(--line) right 3.5px top / 1px 100% no-repeat;
+    @apply selection-box;
   }
+}
+.hint[data-open] {
+  @apply selection-box;
 }
