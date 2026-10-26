@@ -2,7 +2,7 @@
 title: "Honourable Mention (KRW 300,000)"
 organization: "National Excellence in SW Digital Competition"
 date: "2024"
-type: "Award"
+type: "Competition"
 selected: false
 ---
 

@@ -48,7 +48,7 @@ function CvIcon(props) {
   )
 }
 
-// 수상 아이콘 — Award 는 트로피(각진 잔·손잡이·받침), Honor 는 상장(메일 봉투와 같은 크기의 종이에 글 세 줄, 오른쪽 아래 밑변에 걸친 인장과 리본 꼬리)
+// 수상 아이콘 — Competition 은 트로피(각진 잔·손잡이·받침), Honor 는 상장(메일 봉투와 같은 크기의 종이에 글 세 줄, 오른쪽 아래 밑변에 걸친 인장과 리본 꼬리)
 function TrophyIcon(props) {
   return (
     <LineIcon {...props}>
@@ -182,10 +182,10 @@ const PUBLICATION_GROUPS = [
   .map((group) => ({ ...group, entries: publicationList.entries.filter((entry) => entry.type === group.type) }))
   .filter((group) => group.entries.length > 0)
 
-// 수상을 종류(수상 md 의 type)별로 — 이 차례대로, 있는 종류만 보인다. 제목 앞에는 Honor 는 상장, Award 는 트로피
+// 수상을 종류(수상 md 의 type)별로 — 이 차례대로, 있는 종류만 보인다. 제목 앞에는 Honor 는 상장, Competition 은 트로피
 const AWARD_GROUPS = [
   { type: "Honor", title: "Honor", icon: CertificateIcon },
-  { type: "Award", title: "Award", icon: TrophyIcon },
+  { type: "Competition", title: "Competition", icon: TrophyIcon },
 ]
   .map((group) => ({ ...group, entries: awardList.entries.filter((entry) => entry.type === group.type) }))
   .filter((group) => group.entries.length > 0)
@@ -374,8 +374,8 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* 수상 — 종류(Honor·Award)마다 트리 하나. 수상 md 에 selected: false 를 적은 것은 빠진다 */}
-      <Section id="awards" title="Awards & Honors">
+      {/* 수상 — 종류(Honor·Competition)마다 트리 하나. 수상 md 에 selected: false 를 적은 것은 빠진다 */}
+      <Section id="awards" title="Honors & Awards">
         <EntryTree groups={AWARD_GROUPS} spaced={false} />
       </Section>
 

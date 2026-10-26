@@ -30,7 +30,7 @@ export const publications = section(
   import.meta.glob("./publications/*.md", { eager: true, query: "?raw", import: "default" })
 )
 export const awards = section(
-  "Awards & Honors",
+  "Honors & Awards",
   import.meta.glob("./awards/*.md", { eager: true, query: "?raw", import: "default" })
 )
 export const talks = section("Talks", import.meta.glob("./talks/*.md", { eager: true, query: "?raw", import: "default" }))
@@ -71,7 +71,7 @@ export const publicationList = {
 }
 
 // 수상·경력·학력도 따로 페이지 없이 메인에만 보인다. 본문(body)은 메인에서 제목에 마우스를 올리면 뜬다.
-// 수상의 type 은 Award · Honor 중 하나 — 메인에서 이걸로 나눠 보인다
+// 수상의 type 은 Competition · Honor 중 하나 — 메인에서 이걸로 나눠 보인다
 export const awardList = {
   entries: toEntries(awards.items, (it) => ({
     type: it.type,

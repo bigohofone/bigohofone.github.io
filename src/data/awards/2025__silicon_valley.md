@@ -1,5 +1,5 @@
 ---
-title: "Silicon Valley Travel Award"
+title: "Silicon Valley Program Scholarship"
 organization: "Korea University"
 date: "2025"
 type: "Honor"
