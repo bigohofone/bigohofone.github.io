@@ -76,7 +76,7 @@ export const awardList = {
   entries: toEntries(awards.items, (it) => ({
     type: it.type,
     title: it.title,
-    lines: [`${formatDateLabel(it.date)} · ${it.organization}`],
+    lines: [it.organization, formatDateLabel(it.date)],
   })),
 }
 

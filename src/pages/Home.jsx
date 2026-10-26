@@ -6,8 +6,9 @@ import { FiGithub, FiLinkedin } from "react-icons/fi"
 import { awardList, backgroundGroups, contact, profile, publicationList } from "@/data"
 import { openCV } from "@/lib/cv"
 
-// Contact 에 늘어놓을 연락처 — contact.js 에서 이 순서대로 고른다. 메일 말고는 새 탭으로 연다
-const CONTACT_LINKS = ["Email", "GitHub", "Google Scholar", "LinkedIn", "X"].map((label) =>
+// Links 트리에 늘어놓을 연락처 — contact.js 에서 이 순서대로 고른다. 메일은 Contact 트리에 따로 둔다
+const EMAIL = contact.items.find((item) => item.label === "Email")
+const CONTACT_LINKS = ["GitHub", "Google Scholar", "LinkedIn", "X"].map((label) =>
   contact.items.find((item) => item.label === label)
 )
 const EXTERNAL = { target: "_blank", rel: "noopener noreferrer" }
@@ -37,6 +38,35 @@ function FileIcon(props) {
   )
 }
 
+// CV 아이콘 — 같은 종이 윤곽에 줄 대신 접힌 귀 밑으로 CV 를 나란히 각지게 쓴다
+function CvIcon(props) {
+  return (
+    <LineIcon {...props}>
+      <path d="M14 2H4v20h16V8z" />
+      <path d="M14 2v6h6M10 12H6.5v6H10M11.75 12l3 6 3-6" />
+    </LineIcon>
+  )
+}
+
+// 수상 아이콘 — Award 는 트로피(각진 잔·손잡이·받침), Honor 는 상장(메일 봉투와 같은 크기의 종이에 글 세 줄, 오른쪽 아래 밑변에 걸친 인장과 리본 꼬리)
+function TrophyIcon(props) {
+  return (
+    <LineIcon {...props}>
+      <path d="M6 2h12v7l-3 5H9L6 9z" />
+      <path d="M6 4H2v5h4M18 4h4v5h-4M12 14v4M7 18h10v4H7z" />
+    </LineIcon>
+  )
+}
+
+function CertificateIcon(props) {
+  return (
+    <LineIcon {...props}>
+      <path d="M13 20H2V4h20v16h-2M6 8h12M6 11h12M6 14h6M14.5 19.5V23l2-1.5 2 1.5v-3.5" />
+      <circle cx="16.5" cy="17" r="3" />
+    </LineIcon>
+  )
+}
+
 // Feather 에는 X(옛 트위터) 로고가 없어 Tabler 의 brand-x 를 같은 규칙으로 옮겨 그린다
 function XIcon(props) {
   return (
@@ -47,7 +77,8 @@ function XIcon(props) {
   )
 }
 
-// 트리 뿌리 앞에 다는 폴더 — 닫히면 탭 달린 윤곽, 열리면 뒤판과 비스듬히 열린 앞판
+// 트리 뿌리 앞에 다는 폴더 — 닫히면 탭 달린 윤곽, 열리면 같은 뒤판 앞에 오른쪽으로 젖혀진 앞판(평행사변형)을 긋는다.
+// 뒤판(2~22)과 앞판 밑선은 닫힌 폴더 그대로라 가운데(12)가 트리 세로선과 맞고, 젖혀진 앞판 윗변만 아이콘 칸(24) 밖으로 넘친다(overflow-visible)
 function FolderIcon(props) {
   return (
     <LineIcon {...props}>
@@ -59,8 +90,8 @@ function FolderIcon(props) {
 function FolderOpenIcon(props) {
   return (
     <LineIcon {...props}>
-      <path d="M2 20V3h7l2 3h9v4" />
-      <path d="M2 20 6 10h16l-4 10z" />
+      <path d="M2 20V3h7l2 3h11v4" />
+      <path d="M2 20 6 10h20l-4 10z" />
     </LineIcon>
   )
 }
@@ -95,12 +126,10 @@ function GoogleScholarIcon(props) {
 // 아이콘마다 24 격자 위아래 빈 곳이 달라, 그린 것(선 굵기의 반 1 까지)만 남게 잘라 내고 그 가운데를 대문자 높이(1cap)의 가운데에 맞춘다.
 // 뾰족한 꺾임은 선 굵기의 반보다 더 튀어나와 잘린 밖도 보이게 둔다
 const LINK_ICONS = {
-  Email: MailIcon,
   GitHub: FiGithub,
   "Google Scholar": GoogleScholarIcon,
   LinkedIn: FiLinkedin,
   X: XIcon,
-  CV: FileIcon,
 }
 const TextIcon = ({ icon: Icon }) => {
   const ref = useRef(null)
@@ -144,33 +173,36 @@ const BioLink = ({ node, href, children, ...props }) => {
   )
 }
 
-// 논문을 종류(논문 md 의 type)별로 — 이 차례대로, 논문이 있는 종류만 보인다
+// 논문을 종류(논문 md 의 type)별로 — 이 차례대로, 논문이 있는 종류만 보인다. 논문 제목 앞에는 문서 아이콘
 const PUBLICATION_GROUPS = [
-  { type: "journal", title: "Journal" },
-  { type: "conference", title: "Conference" },
-  { type: "preprint", title: "Preprint" },
+  { type: "journal", title: "Journal", icon: FileIcon },
+  { type: "conference", title: "Conference", icon: FileIcon },
+  { type: "preprint", title: "Preprint", icon: FileIcon },
 ]
   .map((group) => ({ ...group, entries: publicationList.entries.filter((entry) => entry.type === group.type) }))
   .filter((group) => group.entries.length > 0)
 
-// 수상을 종류(수상 md 의 type)별로 — 이 차례대로, 있는 종류만 보인다
+// 수상을 종류(수상 md 의 type)별로 — 이 차례대로, 있는 종류만 보인다. 제목 앞에는 Honor 는 상장, Award 는 트로피
 const AWARD_GROUPS = [
-  { type: "Honor", title: "Honor" },
-  { type: "Award", title: "Award" },
+  { type: "Honor", title: "Honor", icon: CertificateIcon },
+  { type: "Award", title: "Award", icon: TrophyIcon },
 ]
   .map((group) => ({ ...group, entries: awardList.entries.filter((entry) => entry.type === group.type) }))
   .filter((group) => group.entries.length > 0)
 
 // 디렉터리 트리 — 뿌리 줄(TreeRoot, prose 제목 모양을 빼 본문 글씨 그대로, 앞에 열린 폴더 아이콘) 밑에 항목을 한 줄씩, 앞에 터미널 tree 명령의 ├─(마지막은 └─) 모양 가지를 단다.
 // 가지는 글자 대신 선으로 그린다 — 선 문자는 줄 사이가 끊기고 글꼴마다 굵기가 달라서. 굵기는 본문 글씨 획(17px Inter 약 1.5px),
-// 칸 폭은 가지 끝(5px + 가로선 0.9em)에 본문 띄어쓰기 한 칸(Inter 0.28125em)을 더한 만큼 — 글 칸을 들일 때도 같은 폭(pl-[…])으로. 세로선은 칸 높이 내내 이어 다음 항목과 끊기지 않고, 마지막 항목은 첫 줄 가운데까지만,
+// 가지는 글씨 크기(1em)만 한 칸에 반 칸을 더한 폭 — 첫 칸 한가운데에 세로선을, 거기서 오른쪽 끝까지 가로선을 긋는다. 세로선은 뿌리의
+// 폴더 아이콘(1em) 가운데에서 내려온다. 칸 폭은 거기에 본문 띄어쓰기 한 칸(Inter 0.28125em)을 더해 항목 글이 뿌리 이름보다 반 칸(0.5em) 안에서
+// 시작하고, 글 칸을 들일 때도 같은 폭(pl-[…])으로.
+// 세로선은 칸 높이 내내 이어 다음 항목과 끊기지 않고, 마지막 항목은 첫 줄 가운데까지만,
 // 가로선은 첫 줄 가운데에. 칸은 보통 한 줄 높이로 줄 안에 두고(relative), 여러 줄짜리 항목은 className 으로 항목 왼쪽에 항목 높이만큼 붙인다(absolute). 화면 읽기에선 뺀다
-// 뿌리 줄을 누르면(키보드는 Enter·Space) 항목을 접고 편다 — 처음엔 펼쳐 둔다. 폴더 아이콘도 열고 닫는다.
+// 뿌리 줄을 누르면(키보드는 Enter·Space) 항목을 접고 편다 — 처음엔 펼쳐 둔다. 폴더 아이콘도 열고 닫는다. 앞에 다른 트리가 있으면 한 줄 띄운다.
 // 아이콘은 붙을 때 한 번 잘라 맞춰서, 바뀔 때마다 새로 붙인다(key)
 function TreeRoot({ title, children }) {
   const [open, setOpen] = useState(true)
   return (
-    <details open onToggle={(event) => setOpen(event.currentTarget.open)}>
+    <details open className="not-first:mt-line" onToggle={(event) => setOpen(event.currentTarget.open)}>
       <summary className="w-fit cursor-pointer list-none [&::-webkit-details-marker]:hidden">
         <h3 className="not-prose inline">
           <TextIcon key={open} icon={open ? FolderOpenIcon : FolderIcon} />
@@ -185,10 +217,10 @@ const TreeBranch = ({ last, className = "relative h-line" }) => (
   <span
     aria-hidden="true"
     className={cn(
-      "inline-block w-[calc(5px+1.18125em)] shrink-0 align-top",
-      "before:absolute before:top-0 before:left-[5px] before:w-[1.5px] before:bg-current",
+      "inline-block w-[1.78125em] shrink-0 align-top",
+      "before:absolute before:top-0 before:left-[calc(0.5em-0.75px)] before:w-[1.5px] before:bg-current",
       last ? "before:h-[calc(var(--spacing-line)/2+0.75px)]" : "before:h-full",
-      "after:absolute after:top-[calc(var(--spacing-line)/2-0.75px)] after:left-[5px] after:h-[1.5px] after:w-[0.9em] after:bg-current",
+      "after:absolute after:top-[calc(var(--spacing-line)/2-0.75px)] after:left-[calc(0.5em-0.75px)] after:h-[1.5px] after:w-[calc(1em+0.75px)] after:bg-current",
       className
     )}
   />
@@ -231,43 +263,46 @@ const Hint = ({ desc, children }) => (
   </span>
 )
 
-// 묶음(groups)마다 트리 하나 — 묶음 이름을 뿌리로, 그 밑에 항목을 가지로 단다. 묶음 사이는 한 줄 띄운다.
-// 항목마다 제목(링크가 있으면 링크로, 본문이 있으면 마우스를 올리면 뜨게), 그 밑에 줄들(lines)을 회색으로.
+// 묶음(groups)마다 트리 하나 — 묶음 이름을 뿌리로, 그 밑에 항목을 가지로 단다. 묶음 사이는 한 줄 띄운다(TreeRoot).
+// 항목마다 제목(링크가 있으면 링크로, 본문이 있으면 마우스를 올리면 뜨게), 그 밑에 줄들(lines)을 회색으로. 제목 앞에는 항목의 로고, 없으면 묶음의 icon.
 // 항목 사이도 한 줄 띄우되(spaced, 끄면 붙인다) 그 줄까지 세로선으로 잇는다(띄운 줄을 항목 칸 안 아래 여백으로 둬서). 줄들과 두 줄로 넘친 제목은 가지 오른쪽에 맞춰 들인다
 function EntryTree({ groups, spaced = true }) {
   return (
-    <div className="space-y-line">
-      {groups.map(({ title, entries }) => (
+    <div>
+      {groups.map(({ title, icon, entries }) => (
         <TreeRoot key={title} title={title}>
-          {entries.map((entry, i) => (
-            <div key={entry.id} className={cn("relative pl-[calc(5px+1.18125em)]", spaced && "not-last:pb-line")}>
-              <TreeBranch last={i === entries.length - 1} className="absolute inset-y-0 left-0" />
-              {/* 제목은 줄 안(inline)으로 — 본문 링크처럼 점선 밑줄을 긋고, 호버 상자가 글자에 맞고 줄마다 나뉜다. 로고가 있으면 제목 앞에 */}
-              <div>
-                {entry.link ? (
-                  <a href={entry.link} {...EXTERNAL}>
-                    {entry.logo && <Logo name={entry.logo} />}
-                    {entry.title}
-                  </a>
-                ) : entry.body ? (
-                  <Hint desc={entry.body.trim()}>
-                    {entry.logo && <Logo name={entry.logo} />}
-                    {entry.title}
-                  </Hint>
-                ) : (
-                  <>
-                    {entry.logo && <Logo name={entry.logo} />}
-                    {entry.title}
-                  </>
-                )}
+          {entries.map((entry, i) => {
+            const mark = entry.logo ? <Logo name={entry.logo} /> : icon && <TextIcon icon={icon} />
+            return (
+              <div key={entry.id} className={cn("relative pl-[1.78125em]", spaced && "not-last:pb-line")}>
+                <TreeBranch last={i === entries.length - 1} className="absolute inset-y-0 left-0" />
+                {/* 제목은 줄 안(inline)으로 — 본문 링크처럼 점선 밑줄을 긋고, 호버 상자가 글자에 맞고 줄마다 나뉜다 */}
+                <div>
+                  {entry.link ? (
+                    <a href={entry.link} {...EXTERNAL}>
+                      {mark}
+                      {entry.title}
+                    </a>
+                  ) : entry.body ? (
+                    <Hint desc={entry.body.trim()}>
+                      {mark}
+                      {entry.title}
+                    </Hint>
+                  ) : (
+                    <>
+                      {mark}
+                      {entry.title}
+                    </>
+                  )}
+                </div>
+                {entry.lines.map((line) => (
+                  <span key={line} className="block text-ink-light">
+                    {line}
+                  </span>
+                ))}
               </div>
-              {entry.lines.map((line) => (
-                <span key={line} className="block text-ink-light">
-                  {line}
-                </span>
-              ))}
-            </div>
-          ))}
+            )
+          })}
         </TreeRoot>
       ))}
     </div>
@@ -285,22 +320,23 @@ export default function Home() {
         <ReactMarkdown rehypePlugins={[rehypeSanitize]} components={{ a: BioLink }}>
           {profile.bio}
         </ReactMarkdown>
-        {/* 링크 — "Links" 를 뿌리로 연락처 이름을 아이콘과 함께 트리로, 맨 아래에 CV. 본문 링크처럼 글 속 링크로 둬 점선 밑줄과 글자에 맞는 호버 상자를 그대로 쓴다.
+        {/* 연락처·링크 — "Contact" 뿌리 밑에 메일, "Links" 뿌리 밑에 맨 위에 CV, 그 밑에 연락처 이름을 아이콘과 함께 트리로.
+              본문 링크처럼 글 속 링크로 둬 점선 밑줄과 글자에 맞는 호버 상자를 그대로 쓴다.
               CV 는 갈 주소 없이 누르면 PDF 를 만들어 새 탭에 띄운다 — 그래도 같은 모양이 되게 a 로 두고(주소가 없어 버튼 역할과 초점을 따로 준다),
               딱지에는 data-destination 의 파일 이름을 띄운다 */}
         <div className="mt-line">
-          <TreeRoot title="Links">
-            {CONTACT_LINKS.map(({ label, link }) => (
-              <div key={label}>
-                <TreeBranch />
-                <a href={link} {...(link.startsWith("mailto:") ? {} : EXTERNAL)} className="font-normal!">
-                  <TextIcon icon={LINK_ICONS[label]} />
-                  {label}
-                </a>
-              </div>
-            ))}
+          <TreeRoot title="Contact">
             <div>
               <TreeBranch last />
+              <a href={EMAIL.link} className="font-normal!">
+                <TextIcon icon={MailIcon} />
+                Email
+              </a>
+            </div>
+          </TreeRoot>
+          <TreeRoot title="Links">
+            <div>
+              <TreeBranch />
               <a
                 role="button"
                 tabIndex={0}
@@ -309,10 +345,19 @@ export default function Home() {
                 data-destination="Wonjun_Oh_CV.pdf"
                 className="cursor-pointer font-normal!"
               >
-                <TextIcon icon={FileIcon} />
+                <TextIcon icon={CvIcon} />
                 CV
               </a>
             </div>
+            {CONTACT_LINKS.map(({ label, link }, i) => (
+              <div key={label}>
+                <TreeBranch last={i === CONTACT_LINKS.length - 1} />
+                <a href={link} {...EXTERNAL} className="font-normal!">
+                  <TextIcon icon={LINK_ICONS[label]} />
+                  {label}
+                </a>
+              </div>
+            ))}
           </TreeRoot>
         </div>
       </Section>
