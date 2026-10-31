@@ -30,7 +30,7 @@ export const publications = section(
   import.meta.glob("./publications/*.md", { eager: true, query: "?raw", import: "default" })
 )
 export const awards = section(
-  "Honors & Awards",
+  "Awards & Honors",
   import.meta.glob("./awards/*.md", { eager: true, query: "?raw", import: "default" })
 )
 export const talks = section("Talks", import.meta.glob("./talks/*.md", { eager: true, query: "?raw", import: "default" }))
@@ -65,8 +65,8 @@ export const publicationList = {
     link: it.arxiv,
   })),
   footnotes: [
-    "* denotes co-first authors, who contributed equally to the work.",
-    "† denotes corresponding authors, who supervised the work and handle inquiries about the paper.",
+    { mark: "*", text: "Denotes equal contribution" },
+    { mark: "†", text: "Denotes corresponding author" },
   ],
 }
 
@@ -83,7 +83,7 @@ export const awardList = {
 // 경력과 학력은 Background 하나에 목록 두 개로 묶는다. logo 는 제목 앞에 다는 기관 로고 파일 이름(public/assets/img/logos)
 export const backgroundGroups = [
   {
-    title: "Work Experience",
+    title: experience.title,
     entries: toEntries(experience.items, (it) => ({
       title: it.organization,
       logo: it.logo,

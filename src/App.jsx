@@ -30,7 +30,8 @@ function destinationOf(link) {
 
 // 링크나 설명이 뜨는 글(.hint)에 마우스를 올리면 선택 상자(index.css) 아래에 먹색 딱지를 띄운다 — 링크는 가는 곳을 작게, 설명은 본문 크기로.
 // 마우스를 올릴 수 없는 휴대폰에선 설명이 뜨는 글을 누르면 띄우고(상자도 data-open 으로 긋는다), 다시 누르거나 다른 데를 누르면 닫는다.
-// 딱지 폭은 본문 폭(좌우 여백 뺀)까지, 넘치면 줄을 바꾼다. 자리는 여러 줄이면 마지막 줄 상자 아래 4px 에, 오른쪽 끝을 상자 오른변(글자에서
+// 설명 딱지는 글이 든 섹션의 좌우를 꽉 채우고 양옆으로 4px 더 — 글에 긋는 선택 상자(글자에서 4px 바깥)와 끝을 맞춘다 — 마지막 줄 상자 아래 4px 에 — 화면 아래로 넘치면 첫 줄 상자 위 4px 에 띄운다.
+// 링크 딱지 폭은 본문 폭(좌우 여백 뺀)까지, 넘치면 줄을 바꾼다. 자리는 여러 줄이면 마지막 줄 상자 아래 4px 에, 오른쪽 끝을 상자 오른변(글자에서
 // 3.5px 바깥, 좌우 padding 은 빼고 잰다)에 맞추되 본문 왼쪽·오른쪽 끝을 넘으면 그 안으로 민다. 스크롤하면 자리가 어긋나 걷는다
 function Popup() {
   const [target, setTarget] = useState(null)
@@ -60,13 +61,23 @@ function Popup() {
   useLayoutEffect(() => {
     if (!target) return
     target.dataset.open = ""
+    const popup = ref.current
+    const rects = [...target.getClientRects()]
+    if (target.dataset.desc) {
+      const section = target.closest("section").getBoundingClientRect()
+      popup.style.left = `${section.left - 4}px`
+      popup.style.width = `${section.width + 8}px`
+      const below = rects.at(-1).bottom + 4
+      const fitsBelow = below + popup.offsetHeight <= window.innerHeight
+      popup.style.top = `${fitsBelow ? below : rects[0].top - 4 - popup.offsetHeight}px`
+      return () => delete target.dataset.open
+    }
     const main = target.closest("main")
     const mainStyle = getComputedStyle(main)
     const bodyLeft = main.getBoundingClientRect().left + parseFloat(mainStyle.paddingLeft)
     const bodyRight = main.getBoundingClientRect().right - parseFloat(mainStyle.paddingRight)
-    const popup = ref.current
     popup.style.maxWidth = `${bodyRight - bodyLeft}px`
-    const rect = [...target.getClientRects()].at(-1)
+    const rect = rects.at(-1)
     const right = rect.right - parseFloat(getComputedStyle(target).paddingRight) + 3.5
     popup.style.left = `${Math.max(bodyLeft, Math.min(right, bodyRight) - popup.offsetWidth)}px`
     popup.style.top = `${rect.bottom + 4}px`
@@ -80,8 +91,8 @@ function Popup() {
       ref={ref}
       aria-hidden="true"
       className={cn(
-        "pointer-events-none fixed z-20 w-max bg-ink text-paper [overflow-wrap:anywhere]",
-        desc ? "px-2 py-1 whitespace-pre-line" : "px-1 text-[11px] leading-[1.5]"
+        "pointer-events-none fixed z-20 bg-ink text-paper [overflow-wrap:anywhere]",
+        desc ? "px-2 py-1 whitespace-pre-line" : "w-max px-1 text-[11px] leading-[1.5]"
       )}
     >
       {desc ?? destinationOf(target)}
@@ -96,8 +107,9 @@ export default function App() {
     <>
       <CrayonText />
       <Popup />
-      {/* 본문 폭은 최대 720px — 좌우 여백 32px(휴대폰 폭에선 24px)은 따로 둔다. prose(typography 플러그인)가 문단·제목·링크에 기본 여백과 크기를 준다 */}
-      <main className="prose mx-auto max-w-[calc(720px+4rem)] px-6 text-base sm:px-8">
+      {/* 최대 폭 1440px(좌우 여백 포함) — 좌우 여백 32px 안을 12칸, 칸 사이 24px 로 나눈다. 휴대폰 폭에선 여백 24px, 4칸, 칸 사이 16px.
+          prose(typography 플러그인)가 문단·제목·링크에 기본 여백과 크기를 준다 */}
+      <main className="prose mx-auto grid max-w-[1440px] grid-cols-4 gap-x-4 px-6 text-base sm:grid-cols-12 sm:gap-x-6 sm:px-8">
         <Home />
       </main>
     </>

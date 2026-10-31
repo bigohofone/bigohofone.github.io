@@ -6,10 +6,10 @@
 
 @theme {
   --font-sans: "Inter", sans-serif;
-  /* 본문 한 줄 높이(17px 글씨 × 1.5) — 위아래 여백은 이 배수로 맞춘다. mt-line, mb-line-2, h-line 처럼 쓴다 */
-  --spacing-line: 25.5px;
-  --spacing-line-2: 51px;
-  --spacing-line-4: 102px;
+  /* 본문 한 줄 높이(16px 글씨 × 1.5) — 위아래 여백은 이 배수로 맞춘다. mt-line, mb-line-2, h-line 처럼 쓴다 */
+  --spacing-line: 24px;
+  --spacing-line-2: 48px;
+  --spacing-line-3: 72px;
 }
 
 /* Typography 1~7 스케일, 줄 높이도 표 그대로 */
@@ -19,7 +19,7 @@
   --text-xs--line-height: 1.5;
   --text-sm: 15px;
   --text-sm--line-height: 1.5;
-  --text-base: 17px;
+  --text-base: 16px;
   --text-base--line-height: 1.5;
   --text-lg: 20px;
   --text-lg--line-height: 29px;
@@ -40,10 +40,17 @@
   --color-link: #2058c9;
 }
 
-/* prose 문단 사이도 본문 한 줄(25.5px) — 플러그인 기본값(1.25em)보다 앞서게 레이어 밖에 둔다. not-prose 안은 건드리지 않는다 */
+/* prose 문단 사이도 본문 한 줄(24px) — 플러그인 기본값(1.25em)보다 앞서게 레이어 밖에 둔다. not-prose 안은 건드리지 않는다 */
 .prose :where(p):not(:where(.not-prose *)) {
   margin-top: var(--spacing-line);
   margin-bottom: var(--spacing-line);
+}
+/* 레이어 밖이라 섹션의 첫·마지막 요소 여백 0([&>:first-child]:mt-0 등)보다 앞서 버려, 첫 문단은 위, 마지막 문단은 아래 여백을 여기서 뺀다 */
+.prose :where(p:first-child) {
+  margin-top: 0;
+}
+.prose :where(p:last-child) {
+  margin-bottom: 0;
 }
 
 /* prose(typography 플러그인)의 글자색 — 글씨는 먹색, 링크는 파랑. 레이어 밖에 둬 플러그인 기본값보다 앞선다 */

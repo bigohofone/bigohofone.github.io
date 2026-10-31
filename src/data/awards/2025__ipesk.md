@@ -1,5 +1,5 @@
 ---
-title: "IPESK Next-generation Enigineers"
+title: "IPESK Next-generation Engineers"
 organization: "Institute for Promotion of Engineering and Science of Korea"
 date: "2025"
 type: "Honor"
