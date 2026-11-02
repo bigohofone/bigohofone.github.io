@@ -174,8 +174,7 @@ const SECTION = "flow-root mt-line-3 first:mt-0 [&>:first-child]:mt-0 [&>:last-c
 const SECTION_TITLE = "mt-0 mb-line max-lg:text-center"
 
 // 섹션 — (사진,) 제목(섹션 이름, 또는 따로 준 heading 두 줄), 본문. 사진은 4:5 에 1.5px 먹색 테두리로, 높이는 본문 열두 줄, 이름과는 한 줄 띄운다.
-// 데스크탑에선 사진 윗변을 옆 칸 소개 글 첫 줄의 대문자 윗선에 맞춘다 — 줄 위 여백((줄 높이 - 대문자 높이)/2)만큼 내리되,
-// 그림만 옮겨(translate) 밑의 이름·연락처는 줄 간격 칸에 그대로 둔다
+// 사진은 줄 간격 칸에 딱 맞게 — 위아래 변이 줄 경계에 온다
 // 제목은 본문보다 한 단계 크게(lg) 600 굵기로, 본문 두 줄 높이를 차지하되 글은 둘째 줄에 둬 옆 칸 본문 줄과 맞춘다 —
 // 같은 줄 높이에서 큰 글씨는 기준선이 1px 아래로 내려가 그만큼 올린다. heading 은 둘째 줄(소속)부터 본문 크기에 보통 굵기, 회색으로
 function Section({ id, title, heading, photo, className, children }) {
@@ -186,7 +185,7 @@ function Section({ id, title, heading, photo, className, children }) {
         <img
           src={photo.src}
           alt={photo.alt}
-          className="not-prose mb-line aspect-[4/5] h-[calc(var(--spacing-line)*12)] border-[1.5px] border-ink object-cover lg:translate-y-[calc((1lh-1cap)/2)]"
+          className="not-prose mb-line aspect-[4/5] h-[calc(var(--spacing-line)*12)] border-[1.5px] border-ink object-cover"
         />
       )}
       <h2 className={cn(SECTION_TITLE, "pt-line text-lg leading-(--spacing-line) font-semibold")}>
