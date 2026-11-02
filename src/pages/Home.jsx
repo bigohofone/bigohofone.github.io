@@ -215,12 +215,13 @@ export default function Home() {
   return (
     // 데스크탑(lg)에선 12칸을 4/8로 — 왼쪽 4칸에 프로필, 오른쪽 8칸에 소개 글부터 나머지 섹션. 태블릿 폭부터는 둘 다 12칸 가득, 위아래로
     <div className="col-span-full grid grid-cols-subgrid pt-line-2">
-      {/* 프로필 — 사진, 이름·소속, 그 밑에 연락처. 위아래로 쌓이는 태블릿·휴대폰 폭에선 통째로 가운데 맞춘다 */}
+      {/* 프로필 — 사진, 이름·소속, 그 밑에 연락처. 위아래로 쌓이는 태블릿·휴대폰 폭에선 통째로 가운데 맞춘다.
+          데스크탑에선 스크롤해도 처음 자리(위에서 두 줄)에 붙어 있게 한다 */}
       <Section
         id="profile"
         heading={[profile.name, profile.affiliations[0]]}
         photo={{ src: profile.image, alt: profile.name }}
-        className="col-span-full max-lg:text-center max-lg:[&>img]:mx-auto lg:col-span-4"
+        className="col-span-full max-lg:text-center max-lg:[&>img]:mx-auto lg:sticky lg:top-line-2 lg:col-span-4 lg:self-start"
       >
         {/* 연락처·링크 — 메일, CV, 그 밑에 연락처 이름을 아이콘과 함께 한 줄씩.
               본문 링크처럼 글 속 링크로 둬 점선 밑줄과 글자에 맞는 호버 상자를 그대로 쓴다.

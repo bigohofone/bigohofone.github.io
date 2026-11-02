@@ -5,4 +5,4 @@ date: "2024"
 type: "Competition"
 ---
 
-Hosted by Ministry of Science and ICT. Collaborated with 4 teammates to train an AST model for dialects, elderly, and children.
+Hosted by the Ministry of Science and ICT. Collaborated with 4 teammates to train an AST model for dialects, elderly, and children.

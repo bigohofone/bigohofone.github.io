@@ -107,9 +107,9 @@ export default function App() {
     <>
       <CrayonText />
       <Popup />
-      {/* 최대 폭 1440px(좌우 여백 포함) — 좌우 여백 32px 안을 12칸, 칸 사이 24px 로 나눈다. 휴대폰 폭에선 여백 24px, 4칸, 칸 사이 16px.
+      {/* 최대 폭은 Tailwind 5xl(1024px, 좌우 여백 포함) — 좌우 여백 32px 안을 12칸, 칸 사이 24px 로 나눈다. 휴대폰 폭에선 여백 24px, 4칸, 칸 사이 16px.
           prose(typography 플러그인)가 문단·제목·링크에 기본 여백과 크기를 준다 */}
-      <main className="prose mx-auto grid max-w-[1440px] grid-cols-4 gap-x-4 px-6 text-base sm:grid-cols-12 sm:gap-x-6 sm:px-8">
+      <main className="prose mx-auto grid max-w-5xl grid-cols-4 gap-x-4 px-6 text-base sm:grid-cols-12 sm:gap-x-6 sm:px-8">
         <Home />
       </main>
     </>

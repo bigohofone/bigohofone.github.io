@@ -23,4 +23,4 @@ My research works toward enabling machines to learn with agency: what a model le
 
 This motivates two complementary directions in my research. (i) Exploration: I study how an agent in an unfamiliar environment gathers information to discover new rules and structures, rather than prematurely relying on pretrained priors. (ii) Test-time learning: I study how an agent transforms this exploratory experience into iterative self-improvement, learning directly from interaction to achieve superhuman performance.
 
-Previously, I interned at [Upstage](https://www.upstage.ai/), where I contributed to their Sovereign AI project. Working within the coding agent team, I helped develop the Solar Open2 and Solar Pro4 models. I received my B.S. in computer science from [Korea University](https://www.korea.edu/).
+Previously, I interned at [Upstage](https://www.upstage.ai/), where I contributed to their Sovereign AI project. Working within the coding agent team, I helped develop the Solar Open 2 and Solar Pro 4 models. I received my B.S. in computer science from [Korea University](https://www.korea.edu/).
