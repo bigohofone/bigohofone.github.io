@@ -108,11 +108,12 @@ function GoogleScholarIcon(props) {
 // 선 끝은 네모나게, 꺾이는 곳은 뾰족하게 — Feather 아이콘의 둥근 끝·둥근 꺾임도 덮어쓴다.
 // 아이콘마다 24 격자 위아래 빈 곳이 달라, 그린 것(선 굵기의 반 1 까지)만 남게 잘라 내고 그 가운데를 대문자 높이(1cap)의 가운데에 맞춘다.
 // 뾰족한 꺾임은 선 굵기의 반보다 더 튀어나와 잘린 밖도 보이게 둔다
+// 연락처 링크는 아이콘·글씨 모두 각 서비스의 브랜드 색으로 (메일·CV 는 링크 파랑 그대로)
 const LINK_ICONS = {
-  GitHub: FiGithub,
-  "Google Scholar": GoogleScholarIcon,
-  LinkedIn: FiLinkedin,
-  X: XIcon,
+  GitHub: { icon: FiGithub, color: "#181717" },
+  "Google Scholar": { icon: GoogleScholarIcon, color: "#4285F4" },
+  LinkedIn: { icon: FiLinkedin, color: "#0A66C2" },
+  X: { icon: XIcon, color: "#000000" },
 }
 const TextIcon = ({ icon: Icon }) => {
   const ref = useRef(null)
@@ -145,11 +146,17 @@ const Logo = ({ name }) => (
 )
 
 // 소개 글 링크 앞에는 링크 주소의 도메인으로 고른 로고를 단다
-const BIO_LOGOS = { "gsai.kaist.ac.kr": "kaist", "hyunw.kim": "coco", "www.upstage.ai": "upstage", "www.korea.edu": "korea" }
+// KAIST·Upstage·고려대는 로고·글씨를 브랜드 색으로 — KAIST 블루, Upstage 는 로고 그라데이션의 진한 끝 보라, 고려대는 크림슨
+const BIO_LOGOS = {
+  "gsai.kaist.ac.kr": { logo: "kaist", color: "#004191" },
+  "hyunw.kim": { logo: "coco" },
+  "www.upstage.ai": { logo: "upstage", color: "#805DFA" },
+  "www.korea.edu": { logo: "korea", color: "#8B0029" },
+}
 const BioLink = ({ node, href, children, ...props }) => {
-  const logo = BIO_LOGOS[new URL(href).hostname]
+  const { logo, color } = BIO_LOGOS[new URL(href).hostname] ?? {}
   return (
-    <a href={href} {...props}>
+    <a href={href} {...props} style={{ color }}>
       {logo && <Logo name={logo} />}
       {children}
     </a>
@@ -173,7 +180,7 @@ const SECTION = "flow-root mt-line-3 first:mt-0 [&>:first-child]:mt-0 [&>:last-c
 // 섹션 제목 — 본문과 한 줄 떨어진다 (prose 가 제목 바로 다음 요소의 위 여백을 0 으로 둔다). 위 여백은 prose 기본값(2em = 40px)이 줄 간격 칸을 벗어나게 해 0 으로 — 사진 밑 여백(한 줄)만 남는다. 태블릿·휴대폰 폭에선 가운데에
 const SECTION_TITLE = "mt-0 mb-line max-lg:text-center"
 
-// 섹션 — (사진,) 제목(섹션 이름, 또는 따로 준 heading 두 줄), 본문. 사진은 4:5 에 1.5px 먹색 테두리로, 높이는 본문 열두 줄, 이름과는 한 줄 띄운다.
+// 섹션 — (사진,) 제목(섹션 이름, 또는 따로 준 heading 두 줄), 본문. 사진은 4:5 에 테두리 없이, 높이는 본문 열두 줄, 이름과는 한 줄 띄운다.
 // 사진은 줄 간격 칸에 딱 맞게 — 위아래 변이 줄 경계에 온다
 // 제목은 본문보다 한 단계 크게(lg) 600 굵기로, 본문 두 줄 높이를 차지하되 글은 둘째 줄에 둬 옆 칸 본문 줄과 맞춘다 —
 // 같은 줄 높이에서 큰 글씨는 기준선이 1px 아래로 내려가 그만큼 올린다. heading 은 둘째 줄(소속)부터 본문 크기에 보통 굵기, 회색으로
@@ -185,7 +192,7 @@ function Section({ id, title, heading, photo, className, children }) {
         <img
           src={photo.src}
           alt={photo.alt}
-          className="not-prose mb-line aspect-[4/5] h-[calc(var(--spacing-line)*12)] border-[1.5px] border-ink object-cover"
+          className="not-prose mb-line aspect-[4/5] h-[calc(var(--spacing-line)*12)] object-cover"
         />
       )}
       <h2 className={cn(SECTION_TITLE, "pt-line text-lg leading-(--spacing-line) font-semibold")}>
@@ -214,13 +221,13 @@ export default function Home() {
   return (
     // 데스크탑(lg)에선 12칸을 4/8로 — 왼쪽 4칸에 프로필, 오른쪽 8칸에 소개 글부터 나머지 섹션. 태블릿 폭부터는 둘 다 12칸 가득, 위아래로
     <div className="col-span-full grid grid-cols-subgrid pt-line-2">
-      {/* 프로필 — 사진, 이름·소속, 그 밑에 연락처. 위아래로 쌓이는 태블릿·휴대폰 폭에선 통째로 가운데 맞춘다.
+      {/* 프로필 — 사진, 이름·소속, 그 밑에 연락처. 통째로 가운데 맞춘다.
           데스크탑에선 스크롤해도 처음 자리(위에서 두 줄)에 붙어 있게 한다 */}
       <Section
         id="profile"
         heading={[profile.name, profile.affiliations[0]]}
         photo={{ src: profile.image, alt: profile.name }}
-        className="col-span-full max-lg:text-center max-lg:[&>img]:mx-auto lg:sticky lg:top-line-2 lg:col-span-4 lg:self-start"
+        className="col-span-full text-center [&>img]:mx-auto lg:sticky lg:top-line-2 lg:col-span-4 lg:self-start"
       >
         {/* 연락처·링크 — 메일, CV, 그 밑에 연락처 이름을 아이콘과 함께 한 줄씩.
               본문 링크처럼 글 속 링크로 둬 점선 밑줄과 글자에 맞는 호버 상자를 그대로 쓴다.
@@ -240,8 +247,8 @@ export default function Home() {
           </div>
           {CONTACT_LINKS.map(({ label, link }) => (
             <div key={label}>
-              <a href={link} {...EXTERNAL} className="font-normal!">
-                <TextIcon icon={LINK_ICONS[label]} />
+              <a href={link} {...EXTERNAL} className="font-normal!" style={{ color: LINK_ICONS[label].color }}>
+                <TextIcon icon={LINK_ICONS[label].icon} />
                 {label}
               </a>
             </div>
