@@ -206,14 +206,14 @@ const BEFORE_TEXT = "relative -top-[0.5px] mr-2 inline-block h-lh w-3.5 align-to
 // KAIST·Upstage·고려대는 로고·글씨를 브랜드 색으로 — 원래 색의 색상(HSL 의 H)은 그대로, 채도 75%, 명도는 흰 바탕 대비 7:1(웹 접근성 AAA 기준)에 맞춘 값
 // 색은 라이트·다크 바탕 각각에서 대비 7:1 로 맞춘 값
 const BIO_LOGOS = {
-  // KAIST AI 는 단색 실루엣 대신 원래 색 그대로의 KAIST 원형 엠블럼 그림(바탕이 투명)
-  "gsai.kaist.ac.kr": { image: "kaist-seal", color: "text-[#1854a0] dark:text-[#86b5ee]" },
+  // KAIST AI 는 KAIST 원형 엠블럼 — 다른 로고처럼 글씨 색으로 칠한다
+  "gsai.kaist.ac.kr": { logo: "kaist-seal", color: "text-[#1854a0] dark:text-[#86b5ee]" },
   "hyunw.kim": { logo: "coco" },
   "www.upstage.ai": { logo: "upstage", color: "text-[#542be1] dark:text-[#b7a7f2]" },
   "www.korea.edu": { logo: "korea", color: "text-[#a51942] dark:text-[#f098b2]" },
 }
 function BioLink({ node, href, children, ...props }) {
-  const { logo, image, color } = BIO_LOGOS[new URL(href).hostname] ?? {}
+  const { logo, color } = BIO_LOGOS[new URL(href).hostname] ?? {}
   return (
     // 로고와 글자가 서로 다른 줄로 갈라지지 않게 링크 전체를 한 줄로
     <a href={href} {...props} className={`whitespace-nowrap ${color ?? ""}`}>
@@ -226,12 +226,7 @@ function BioLink({ node, href, children, ...props }) {
           />
         </span>
       )}
-      {image && (
-        <span aria-hidden="true" className={`${BEFORE_TEXT} mr-0! inline-flex items-center justify-center`}>
-          <img src={`/assets/img/logos/${image}.png`} alt="" className="size-3.5 rounded-xs" />
-        </span>
-      )}
-      {(logo || image) && " "}
+      {logo && " "}
       {children}
     </a>
   )
