@@ -8,10 +8,15 @@
   <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/favicon.svg" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#f6f8fa" />
 
   <!-- Primary SEO -->
   <title>Wonjun Oh</title>
+  <!-- 라이트/다크 모드 — 화면을 그리기 전에 골라 깜빡임이 없게. 고른 적이 없으면 기기 설정을 따른다 -->
+  <script>
+    document.documentElement.dataset.theme =
+      localStorage.getItem("theme") ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+  </script>
   <meta
     name="description"
     content="Wonjun Oh (오원준), M.S./Ph.D. Student at KAIST AI"
@@ -121,8 +126,8 @@
       "inLanguage": "en"
     }
   </script>
-  <script type="module" crossorigin src="/assets/index-BTqhOFpQ.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-rnjA5wD8.css">
+  <script type="module" crossorigin src="/assets/index-CJulqliU.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-U1kM1uD3.css">
 </head>
 
 <body class="bg-paper text-ink">
