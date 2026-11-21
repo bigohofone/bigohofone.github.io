@@ -1,10 +1,13 @@
 @import "@fontsource/inter/latin-400.css";
 /* 굵은 글씨는 600 — 제목(font-semibold)과 본문 강조(strong) 모두. 이 파일이 없으면 브라우저가 400 을 흉내 내 번져 보인다 */
 @import "@fontsource/inter/latin-600.css";
+/* 한글은 Inter 에 없어 Inter 와 어울리는 Pretendard 로 — 글자 범위별로 나뉜 파일이라 페이지에 쓴 한글이 든 조각만 받는다 */
+@import "pretendard/dist/web/static/Pretendard-Regular.css";
+@import "pretendard/dist/web/static/Pretendard-SemiBold.css";
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", sans-serif;
+  --font-sans: "Inter", "Pretendard", sans-serif;
   /* 라이트 — GitHub "Light Default" 팔레트의 옅은 회색 바탕(canvas subtle)에 글씨는 모두 회색. 대비는 이 바탕 기준 —
      본문·제목 7.6:1(다크 모드 본문과 같게), 링크·기관 색 7:1(웹 접근성 AAA), 흐린 회색 4.5:1(AA). 색상은 두고 밝기만 맞춘 값 */
   --color-paper: #f6f8fa;

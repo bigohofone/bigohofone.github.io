@@ -1,137 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Favicons -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="apple-touch-icon" href="/favicon.svg" />
-  <meta name="theme-color" content="#f6f8fa" />
-
-  <!-- Primary SEO -->
-  <title>Wonjun Oh</title>
-  <!-- 라이트/다크 모드 — 화면을 그리기 전에 골라 깜빡임이 없게. 고른 적이 없으면 기기 설정을 따른다 -->
-  <script>
-    document.documentElement.dataset.theme =
-      localStorage.getItem("theme") ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
-  </script>
-  <meta
-    name="description"
-    content="Wonjun Oh (오원준), M.S./Ph.D. Student at KAIST AI"
-  />
-  <meta
-    name="keywords"
-    content="Wonjun Oh, LLM, Reasoning, Reinforcement Learning, NLP, KAIST, COCO Lab, Hyunwoo Kim, Upstage, 오원준, 카이스트, 업스테이지, 김현우, 코코랩"
-  />
-  <meta name="author" content="Wonjun Oh" />
+  <title>Wonjun Oh — KAIST AI</title>
+  <meta name="description" content="Wonjun Oh (오원준) is an integrated M.S./Ph.D. student at KAIST AI, researching data synthesis and diversity preservation in large language models." />
   <link rel="canonical" href="https://wonjunoh.com/" />
-  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#22272e" media="(prefers-color-scheme: dark)" />
 
-  <!-- Open Graph -->
+  <!-- 링크 공유 미리보기(카카오톡·슬랙·X 등) -->
   <meta property="og:type" content="profile" />
-  <meta property="og:site_name" content="Wonjun Oh" />
-  <meta property="og:locale" content="en_US" />
   <meta property="og:url" content="https://wonjunoh.com/" />
-  <meta property="og:title" content="Wonjun Oh" />
-  <meta
-    property="og:description"
-    content="Wonjun Oh (오원준), M.S./Ph.D. Student at KAIST AI"
-  />
+  <meta property="og:title" content="Wonjun Oh — KAIST AI" />
+  <meta property="og:description" content="Integrated M.S./Ph.D. student at KAIST AI, researching data synthesis and diversity preservation in LLMs." />
   <meta property="og:image" content="https://wonjunoh.com/assets/img/profile.jpg" />
-  <meta property="og:image:width" content="600" />
-  <meta property="og:image:height" content="800" />
-  <meta property="og:image:alt" content="Wonjun Oh" />
-  <meta property="profile:first_name" content="Wonjun" />
-  <meta property="profile:last_name" content="Oh" />
-  <meta property="profile:username" content="bigohofone" />
+  <meta name="twitter:card" content="summary" />
 
-  <!-- Twitter / X -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@bigohofone" />
-  <meta name="twitter:creator" content="@bigohofone" />
-  <meta name="twitter:url" content="https://wonjunoh.com/" />
-  <meta name="twitter:title" content="Wonjun Oh" />
-  <meta
-    name="twitter:description"
-    content="Wonjun Oh (오원준), M.S./Ph.D. Student at KAIST AI"
-  />
-  <meta name="twitter:image" content="https://wonjunoh.com/assets/img/profile.jpg" />
-
-  <!-- Crawler / AI controls -->
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
-  <meta name="googlebot" content="index, follow" />
-  <meta name="ai-training" content="noindex, nofollow" />
-
-  <!-- JSON-LD: ProfilePage (Google 프로필 페이지 리치 결과는 Person 을 mainEntity 로 둔 ProfilePage 를 읽는다) -->
+  <!-- 검색 결과에 사람 정보로 읽히게(Google 의 ProfilePage 구조화 데이터) -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ProfilePage",
-      "url": "https://wonjunoh.com/",
       "mainEntity": {
         "@type": "Person",
         "name": "Wonjun Oh",
-        "alternateName": ["오원준", "원준", "Wonjun"],
-        "givenName": "Wonjun",
-        "familyName": "Oh",
+        "alternateName": "오원준",
         "url": "https://wonjunoh.com/",
         "image": "https://wonjunoh.com/assets/img/profile.jpg",
-        "email": "mailto:bigohofone@gmail.com",
-        "jobTitle": "Incoming Graduate Student",
-        "worksFor": [
-          {
-            "@type": "ResearchOrganization",
-            "name": "COCOLab, KAIST",
-            "url": "https://kaist.ac.kr/"
-          }
-        ],
-        "alumniOf": [
-          {
-            "@type": "CollegeOrUniversity",
-            "name": "Korea University",
-            "url": "https://www.korea.ac.kr/"
-          },
-          {
-            "@type": "Organization",
-            "name": "Upstage",
-            "url": "https://www.upstage.ai/"
-          }
-        ],
-        "knowsAbout": [
-          "Large Language Models",
-          "LLM Reasoning",
-          "Reinforcement Learning",
-          "Natural Language Processing"
-        ],
+        "jobTitle": "M.S./Ph.D. Student",
+        "affiliation": { "@type": "CollegeOrUniversity", "name": "KAIST" },
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "Korea University" },
         "sameAs": [
           "https://github.com/bigohofone",
           "https://scholar.google.com/citations?user=5MjTfesAAAAJ",
-          "https://x.com/bigohofone",
-          "https://www.linkedin.com/in/wonjun-oh-8067b5265/"
+          "https://www.linkedin.com/in/wonjun-oh-8067b5265/",
+          "https://x.com/bigohofone"
         ]
       }
     }
   </script>
 
-  <!-- JSON-LD: WebSite -->
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Wonjun Oh",
-      "url": "https://wonjunoh.com/",
-      "author": { "@type": "Person", "name": "Wonjun Oh" },
-      "inLanguage": "en"
-    }
+  <!-- 라이트/다크 모드 — 화면을 그리기 전에 골라 깜빡임이 없게. 고른 적이 없으면 기기 설정을 따른다 -->
+  <script>
+    document.documentElement.dataset.theme =
+      localStorage.getItem("theme") ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
   </script>
 </head>
-
 <body class="bg-paper text-ink">
-  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <noscript>This site needs JavaScript to show its content.</noscript>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
-
 </html>

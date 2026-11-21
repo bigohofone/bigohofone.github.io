@@ -46,10 +46,4 @@ Disallow: /
 User-agent: OAI-SearchBot
 Disallow: /
 
-# Security: Block sensitive paths (if any)
-Disallow: /src/
-Disallow: /node_modules/
-Disallow: .env
-Disallow: .git
-
 Sitemap: https://wonjunoh.com/sitemap.xml

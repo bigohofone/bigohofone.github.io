@@ -255,7 +255,12 @@ function PrismIcon(props) {
 }
 
 // 소개 글 맨 위 인사(## 제목) — 섹션 제목과 같은 크기·굵기
-const BioHeading = ({ node, ...props }) => <h2 className="text-lg/6 font-semibold" {...props} />
+// 한글이 든 제목은 화면 낭독기·검색 엔진이 한국어로 읽게 lang="ko" 를 붙인다
+const BioHeading = ({ node, children }) => (
+  <h2 className="text-lg/6 font-semibold" lang={/[가-힣]/.test(String(children)) ? "ko" : undefined}>
+    {children}
+  </h2>
+)
 
 // 소개 글에서 굵은 머리말로 시작하는 연구 방향 문단 — 앞에 아이콘을 달고, 둘째 줄부터는 논문·수상처럼 아이콘 오른쪽에 맞춰 들인다
 const RESEARCH_ICONS = {
@@ -314,14 +319,14 @@ export default function App() {
       <main className="grid grid-cols-4 gap-x-4 gap-y-18 sm:grid-cols-12 sm:gap-x-6">
         {/* 프로필 — 사진(열두 줄 높이), 이름·소속, 연락처. 좁은 화면에선 가운데, 데스크탑에선 왼쪽 맞춤에 스크롤해도 붙어 있다 */}
         <header className="col-span-full text-center lg:sticky lg:top-24 lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:self-start lg:text-left">
-          <img src={profile.image} alt={profile.name} className="mx-auto aspect-4/5 h-72 rounded object-cover lg:mx-0" />
+          <img src={profile.image} alt={`Photo of ${profile.name}`} className="mx-auto aspect-4/5 h-72 rounded object-cover lg:mx-0" />
           <h1 className="mt-6 text-lg/6 font-semibold">{profile.name}</h1>
           <p className="text-ink-light">{profile.affiliations[0]}</p>
           {/* CV 는 빌드 때 LaTeX 로 만든 PDF(src/cv.js, vite-plugin-cv.js) */}
           <ul className="mt-6">
             {CONTACTS.map(({ label, icon: Icon, link = linkOf(label) }) => (
               <li key={label}>
-                <a href={link} {...EXTERNAL}>
+                <a href={link} {...(link.startsWith("mailto:") ? {} : EXTERNAL)}>
                   <Icon aria-hidden="true" className={BEFORE_TEXT} />
                   {label}
                 </a>
@@ -387,8 +392,7 @@ export default function App() {
             </div>
           </Section>
 
-          {/* 수상 — md 에 selected: false 를 적은 것은 빠진다. 밑에 기관·연도 */}
-          {/* 수상 — 상(Honor) 다음에 대회(Competition)를 한 섹션에 이어서. 한 줄에 제목 · 기관 · 연도 */}
+          {/* 수상 — md 에 selected: false 를 적은 것은 빠진다. 상(Honor) 다음에 대회(Competition)를 이어서, 한 줄에 제목 · 기관 · 연도 */}
           <Section title="Awards & Honors">
             {AWARD_ICONS.flatMap(({ type, icon }) =>
               selected(awards)
