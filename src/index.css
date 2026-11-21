@@ -1,112 +1,47 @@
 @import "@fontsource/inter/latin-400.css";
+/* 굵은 글씨는 600 — 제목(font-semibold)과 본문 강조(strong) 모두. 이 파일이 없으면 브라우저가 400 을 흉내 내 번져 보인다 */
 @import "@fontsource/inter/latin-600.css";
-@import "@fontsource/inter/latin-700.css";
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
 @theme {
   --font-sans: "Inter", sans-serif;
-  /* 본문 한 줄 높이(16px 글씨 × 1.5) — 위아래 여백은 이 배수로 맞춘다. mt-line, mb-line-2, h-line 처럼 쓴다 */
-  --spacing-line: 24px;
-  --spacing-line-2: 48px;
-  --spacing-line-3: 72px;
+  /* 라이트 — GitHub "Light Default" 팔레트의 옅은 회색 바탕(canvas subtle)에 글씨는 모두 회색. 대비는 이 바탕 기준 —
+     본문·제목 7.6:1(다크 모드 본문과 같게), 링크·기관 색 7:1(웹 접근성 AAA), 흐린 회색 4.5:1(AA). 색상은 두고 밝기만 맞춘 값 */
+  --color-paper: #f6f8fa;
+  --color-ink: #49505b;
+  --color-ink-light: #6b737e;
+  --color-link: #17549e;
 }
 
-/* Typography 1~7 스케일, 줄 높이도 표 그대로 */
-@theme {
-  --text-*: initial;
-  --text-xs: 13px;
-  --text-xs--line-height: 1.5;
-  --text-sm: 15px;
-  --text-sm--line-height: 1.5;
-  --text-base: 16px;
-  --text-base--line-height: 1.5;
-  --text-lg: 20px;
-  --text-lg--line-height: 29px;
-  --text-xl: 22px;
-  --text-xl--line-height: 31px;
-  --text-2xl: 26px;
-  --text-2xl--line-height: 35px;
-  --text-3xl: 30px;
-  --text-3xl--line-height: 40px;
+/* 다크 모드 — <html data-theme="dark">(App.jsx 의 ThemeToggle). 눈이 편한 GitHub 의 "Dark Dimmed" — 새까만 바탕 대신 짙은 회청색 바탕에
+   새하얗지 않은 회백색 글씨(7.6:1)로 눈부심을 줄인다. 대비 기준은 라이트와 같다 — 링크 7:1, 회색 글씨 4.5:1. dark: 를 붙인 클래스도 이때 켜진다 */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-paper: #22272e;
+  --color-ink: #adbac7;
+  --color-ink-light: #868e97;
+  --color-link: #84b5ed;
 }
 
-/* 인쇄한 종이처럼 — 채도 없는 옅은 회색 바탕에 새까맣지 않은 회색 글씨 */
-@theme {
-  --color-paper: #f2f2f2;
-  --color-ink: #2a3142;
-  --color-ink-light: #8a909c;
-  /* 링크 글씨 — 먹색과 어울리게 채도를 누른 파랑. 마우스를 올리면 설명만 뜨는 글(.hint)은 먹색 그대로 */
-  --color-link: #2058c9;
-}
-
-/* prose 문단 사이도 본문 한 줄(24px) — 플러그인 기본값(1.25em)보다 앞서게 레이어 밖에 둔다. not-prose 안은 건드리지 않는다 */
-.prose :where(p):not(:where(.not-prose *)) {
-  margin-top: var(--spacing-line);
-  margin-bottom: var(--spacing-line);
-}
-/* 레이어 밖이라 섹션의 첫·마지막 요소 여백 0([&>:first-child]:mt-0 등)보다 앞서 버려, 첫 문단은 위, 마지막 문단은 아래 여백을 여기서 뺀다 */
-.prose :where(p:first-child) {
-  margin-top: 0;
-}
-.prose :where(p:last-child) {
-  margin-bottom: 0;
-}
-
-/* prose(typography 플러그인)의 글자색 — 글씨는 먹색, 링크는 파랑. 레이어 밖에 둬 플러그인 기본값보다 앞선다 */
-.prose {
-  --tw-prose-body: var(--color-ink);
-  --tw-prose-headings: var(--color-ink);
-  --tw-prose-links: var(--color-link);
-  --tw-prose-bold: var(--color-ink);
-}
-
-/* 글씨를 크레용으로 쓴 듯 까끌하게(필터는 App.jsx 의 CrayonText). 부모에 건 필터는 자식이 뺄 수 없어,
-   섹션마다 그 안의 것에 하나씩 걸고 프로필 사진(img)은 뺀다 */
-main :is(section > :not(img), footer) {
-  filter: url(#crayon-text);
-}
-
-/* 링크(App.jsx 의 Popup 이 같은 걸 가리킨다)와 마우스를 올리면 설명이 뜨는 글(.hint) — 밑줄은 그 줄 높이의 맨 아래에
-   1px 점선으로, 마우스를 올리면 선택한 것처럼 1px 실선 상자를 두른다. 선 색은 글씨 색을 따라 링크는 파랑, 설명만 뜨는 글은 먹색이다.
-   브라우저 밑줄(text-decoration)은 기준선에서 따로 px 를 맞춰 상자 아랫변과 1px 씩 어긋나서, 밑줄도 상자처럼 자신의 배경으로 긋는다 —
-   같은 상자의 같은 아래 끝에 그어 늘 겹친다.
-   배경은 padding 안에만 칠해져, 위아래로 줄 높이를 꽉 채우게 padding 을 준다(인라인이라 줄 간격에 영향이 없다). 인라인 요소의 상자는
-   글꼴의 위·아래 끝(Inter: 기준선 위 0.96875em, 아래 0.2412em)까지라 줄 높이(1lh)와의 차이 반(--half-leading)씩이고, 브라우저가
-   글자 상자 아래 여백을 계산보다 1px 쯤 더 둬 아래는 1px 더 준다. 줄이 바뀌면 줄마다 따로 긋는다(box-decoration-break: clone) */
-:is(.prose a, .hint) {
-  --half-leading: calc((1lh - 1.20995em) / 2);
-  padding-block: var(--half-leading) calc(var(--half-leading) + 1px);
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  text-decoration: none;
-  background: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 2px) left bottom / 100% 1px no-repeat;
-}
-
-/* 상자는 좌우로 7.5px 를 더 주고 같은 만큼 margin 을 빼 글자 자리는 그대로, 세로변은 가장자리에서 3.5px 안쪽(글자에서 4px 바깥)에,
-   아랫변은 밑줄과 같은 자리(padding 아래 끝)에 긋는다. 휴대폰은 누른 뒤에도 hover 가 남아 있어, 마우스처럼 올려 볼 수 있는 기기에서만
-   hover 로 긋고, 휴대폰에선 설명이 뜨는 글(.hint)을 눌러 설명을 띄운 동안(data-open) 긋는다 */
-@utility selection-box {
-  padding-inline: 7.5px;
-  margin-inline: -7.5px;
-  --line: linear-gradient(currentColor, currentColor);
-  background:
-    var(--line) left 3.5px top / calc(100% - 7px) 1px no-repeat,
-    var(--line) left 3.5px bottom / calc(100% - 7px) 1px no-repeat,
-    var(--line) left 3.5px top / 1px 100% no-repeat,
-    var(--line) right 3.5px top / 1px 100% no-repeat;
-}
-@media (hover: hover) {
-  :is(.prose a, .hint):hover {
-    @apply selection-box;
+/* 링크 — 파란 글씨에 1px 점선 밑줄(점 1px·틈 1px). 글자 밑줄(text-decoration)은 앞에 단 아이콘·로고 밑으로는 그어지지 않아,
+   모든 링크에 같은 점선을 링크 글자 상자의 맨 아래(글꼴의 아래 끝, 기준선에서 약 4px 아래)에 직접 긋는다 —
+   아이콘이 있든 없든 같은 굵기·같은 위치 */
+@layer base {
+  /* 기본 모양이라 base 층에 — 층 밖에 두면 Tailwind 클래스(text-[…] 로 준 기관 색 등)보다 앞서 버린다 */
+  a {
+    color: var(--color-link);
+    text-decoration: none;
+    background: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 2px) left bottom / 100% 1px no-repeat;
   }
 }
-/* iOS Safari 는 누를 수 있어 보이는(cursor: pointer) 것을 눌러야 click 을 보내, 휴대폰에선 설명이 뜨는 글도 그렇게 둔다 */
-@media (hover: none) {
-  .hint {
-    cursor: pointer;
-  }
+
+/* 아이콘 선 굵기를 화면 픽셀로 고정 — 아이콘을 키우거나 줄여도 선 굵기(App.jsx 의 strokeWidth)는 그대로 */
+svg * {
+  vector-effect: non-scaling-stroke;
 }
-.hint[data-open] {
-  @apply selection-box;
+
+/* 본문 강조(strong)도 제목과 같은 600 — 기본값(bolder)은 700 이 된다 */
+strong {
+  font-weight: 600;
 }

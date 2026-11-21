@@ -1,6 +1,6 @@
 ---
 title: "Silicon Valley Program Scholarship"
-organization: "College of Informatics, Korea University"
+organization: "Korea University"
 date: "2025"
 type: "Honor"
 selected: true

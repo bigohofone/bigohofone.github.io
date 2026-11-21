@@ -6,4 +6,4 @@ date: "2026-03-30 ~ 2026-08-28"
 location: "Seoul, Korea"
 ---
 
-Worked on the coding capabilities of Solar Open 2 and Solar Pro 4, developed for the Sovereign AI project, as part of the SWE Agent team
+Contributed to Korea's national Sovereign AI project as part of the coding agent team

@@ -1,101 +1,43 @@
-import { compareItemsByDateThenAlphabetical, formatDateEndpoints, formatDateLabel } from "@/lib/date"
-import { parseMarkdownWithYaml } from "@/lib/markdown"
+import { load } from "js-yaml"
 
 import profileMarkdown from "./profile.md?raw"
+import aboutMeMarkdown from "./about_me.md?raw"
 
-// 파일 경로를 그대로 id 로 쓴다 — 제목이 겹쳐도 안정적인 key 가 된다. 머리말(YAML)은 항목 값으로, 나머지는 본문(body)으로
-function loadItems(fileMap) {
-  return Object.entries(fileMap)
-    .map(([path, rawContent]) => {
-      const { metadata, content } = parseMarkdownWithYaml(rawContent)
-      return { ...metadata, id: path, body: content || undefined }
-    })
-    .sort(compareItemsByDateThenAlphabetical)
+export { contact } from "./contact"
+
+// md 파일 — 머리말(YAML)은 항목 값으로, 나머지는 본문(body)으로
+function parse(markdown) {
+  const [, yaml, body] = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/)
+  return { ...load(yaml), body: body.trim() }
 }
 
-// 폴더 하나가 섹션 하나 — .md 를 넣으면 그대로 목록에 붙는다.
-// import.meta.glob 은 빌드 시점에 풀리므로 경로와 옵션을 리터럴로 적어야 한다.
-const section = (title, fileMap) => ({ title, items: loadItems(fileMap) })
+// date 는 "2025", "2025-05", "2025-05-27" 이거나 두 날짜를 " ~ " 로 이은 기간("2024-03 ~ Present") — 이 꼴은 글자 순서가 곧 날짜 순서다.
+// 최근 것부터, 시작이 같으면 늦게 끝난 것부터, 그다음 이름순
+function newestFirst(a, b) {
+  const [aStart, aEnd = aStart] = a.date.replace("Present", "9999").split(" ~ ")
+  const [bStart, bEnd = bStart] = b.date.replace("Present", "9999").split(" ~ ")
+  return bStart.localeCompare(aStart) || bEnd.localeCompare(aEnd) || (a.title ?? a.organization).localeCompare(b.title ?? b.organization)
+}
 
-export const education = section(
-  "Education",
-  import.meta.glob("./education/*.md", { eager: true, query: "?raw", import: "default" })
-)
-export const experience = section(
-  "Experience",
-  import.meta.glob("./experience/*.md", { eager: true, query: "?raw", import: "default" })
-)
-export const publications = section(
-  "Publications",
-  import.meta.glob("./publications/*.md", { eager: true, query: "?raw", import: "default" })
-)
-export const awards = section(
-  "Awards & Honors",
-  import.meta.glob("./awards/*.md", { eager: true, query: "?raw", import: "default" })
-)
-export const talks = section("Talks", import.meta.glob("./talks/*.md", { eager: true, query: "?raw", import: "default" }))
-export const extracurricular = section(
-  "Extracurricular Activities",
+// 폴더 하나가 목록 하나 — .md 를 넣으면 그대로 붙는다. 파일 경로를 id(React key)로 쓴다.
+// import.meta.glob 은 빌드 때 풀려 경로와 옵션을 글자 그대로 적어야 한다
+const items = (files) =>
+  Object.entries(files)
+    .map(([id, markdown]) => ({ id, ...parse(markdown) }))
+    .sort(newestFirst)
+
+export const profile = parse(profileMarkdown)
+// 사이트 맨 아래 About Me — 머리말 없는 마크다운. 주석(<!-- -->)은 빼고 본문만
+export const aboutMe = aboutMeMarkdown.replace(/<!--[\s\S]*?-->/g, "").trim()
+export const education = items(import.meta.glob("./education/*.md", { eager: true, query: "?raw", import: "default" }))
+export const experience = items(import.meta.glob("./experience/*.md", { eager: true, query: "?raw", import: "default" }))
+export const publications = items(import.meta.glob("./publications/*.md", { eager: true, query: "?raw", import: "default" }))
+export const awards = items(import.meta.glob("./awards/*.md", { eager: true, query: "?raw", import: "default" }))
+export const extracurricular = items(
   import.meta.glob("./extracurricular/*.md", { eager: true, query: "?raw", import: "default" })
 )
 
-// 머리말은 이름·소속·사진, 본문은 Bio 에 들어가는 소개 글
-const { metadata: profileMetadata, content: bio } = parseMarkdownWithYaml(profileMarkdown)
-export const profile = { ...profileMetadata, bio }
-export { contact } from "./contact"
-
-function formatPeriod(date) {
-  const { start, end } = formatDateEndpoints(date)
-  return end ? `${start} – ${end}` : start
-}
-
-// 메인이 그리는 모양으로 옮긴다 — 제목 한 줄, 그 아래 줄들(lines), 누르면 갈 곳(link), 본문(body).
-// selected: false 로 표시한 항목은 뺀다
-function toEntries(items, toEntry) {
-  return items.filter((item) => item.selected !== false).map((item) => ({ id: item.id, body: item.body, ...toEntry(item) }))
-}
-
-// 논문은 따로 페이지 없이 메인에만 보인다. 논문은 arXiv 로 보낸다.
-// type 은 journal · conference · preprint 중 하나 — 메인에서 이걸로 나눠 보인다
-export const publicationList = {
-  entries: toEntries(publications.items, (it) => ({
-    type: it.type,
-    title: it.title,
-    lines: [it.authors, it.venue].filter(Boolean),
-    link: it.arxiv,
-  })),
-  footnotes: [
-    { mark: "*", text: "Denotes equal contribution" },
-    { mark: "†", text: "Denotes corresponding author" },
-  ],
-}
-
-// 수상·경력·학력도 따로 페이지 없이 메인에만 보인다. 본문(body)은 메인에서 제목에 마우스를 올리면 뜬다.
-// 수상의 type 은 Competition · Honor 중 하나 — 메인에서 이걸로 나눠 보인다
-export const awardList = {
-  entries: toEntries(awards.items, (it) => ({
-    type: it.type,
-    title: it.title,
-    lines: [it.organization, formatDateLabel(it.date)],
-  })),
-}
-
-// 경력과 학력은 Background 하나에 목록 두 개로 묶는다. logo 는 제목 앞에 다는 기관 로고 파일 이름(public/assets/img/logos)
-export const backgroundGroups = [
-  {
-    title: experience.title,
-    entries: toEntries(experience.items, (it) => ({
-      title: it.organization,
-      logo: it.logo,
-      lines: [it.role, formatPeriod(it.date)],
-    })),
-  },
-  {
-    title: education.title,
-    entries: toEntries(education.items, (it) => ({
-      title: it.organization,
-      logo: it.logo,
-      lines: [it.major, formatPeriod(it.date)],
-    })),
-  },
+export const footnotes = [
+  { mark: "*", text: "Denotes equal contribution" },
+  { mark: "†", text: "Denotes corresponding author" },
 ]

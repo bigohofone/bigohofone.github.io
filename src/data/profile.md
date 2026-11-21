@@ -3,24 +3,16 @@ name: Wonjun Oh
 affiliations:
   - M.S./Ph.D. Student @ KAIST AI
 image: /assets/img/profile.jpg
-# CV 맨 위 Research Interest 문단 — 굵은 머리말(title) 뒤에 본문(text)
-research_interest:
-  title: Exploration and Test-Time Learning in LLM Agents
-  text: >-
-    My research works toward enabling machines to learn with agency: what a model learns from matters, but who
-    decides what it learns from is the fundamental question. From this perspective, I study how agents can learn
-    from their own experience by actively gathering the information they lack and turning what they find into better
-    behavior over time. This motivates two complementary directions in my research. (i) Exploration: I study how an
-    agent in an unfamiliar environment gathers information to discover new rules and structures, rather than
-    prematurely relying on pretrained priors. (ii) Test-time learning: I study how an agent transforms this
-    exploratory experience into iterative self-improvement, learning directly from interaction to achieve superhuman
-    performance.
 ---
 
-Hello, I’m an integrated M.S./Ph.D. student at [KAIST AI](https://gsai.kaist.ac.kr/?lang=en), advised by [Hyunwoo Kim](https://hyunw.kim/).
+## Hello, 안녕하세요.
 
-My research works toward enabling machines to learn with agency: what a model learns from matters, but who decides what it learns from is the fundamental question. From this perspective, I study how agents can learn from their own experience by actively gathering the information they lack and turning what they find into better behavior over time.
+I’m an integrated M.S./Ph.D. student at [KAIST AI](https://gsai.kaist.ac.kr/?lang=en), advised by [Hyunwoo Kim](https://hyunw.kim/).
 
-This motivates two complementary directions in my research. (i) Exploration: I study how an agent in an unfamiliar environment gathers information to discover new rules and structures, rather than prematurely relying on pretrained priors. (ii) Test-time learning: I study how an agent transforms this exploratory experience into iterative self-improvement, learning directly from interaction to achieve superhuman performance.
+My research aims to understand how models can generate data for other models and learn from it while preserving its quality and diversity. My work centers on two directions:
 
-Previously, I interned at [Upstage](https://www.upstage.ai/), where I contributed to their Sovereign AI project. Working within the coding agent team, I helped develop the Solar Open 2 and Solar Pro 4 models. I received my B.S. in computer science from [Korea University](https://www.korea.edu/).
+**Data Synthesis and Selection with LLMs.** I study what makes training data good and how to produce it at scale with minimal human effort. My work spans data selection, targeted synthesis, distillation, and inference-time interaction.
+
+**Diversity Preservation in LLMs.** I study when and why LLMs lose diversity, and how to preserve it through the data they are trained on, with a focus on settings where diversity matters most, such as RL exploration and non-verifiable tasks.
+
+Previously, I interned on the coding agent team at [Upstage](https://www.upstage.ai/), where I contributed to Korea's national Sovereign AI project. I received my B.S. in computer science from [Korea University](https://www.korea.edu/).

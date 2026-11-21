@@ -1,36 +1,8 @@
-
-export const contact = {
-    title: "Contact",
-    items: [
-        {
-            label: "Website",
-            value: "wonjunoh.com",
-            link: "https://wonjunoh.com"
-        },
-        {
-            label: "Email",
-            value: "bigohofone@gmail.com",
-            link: "mailto:bigohofone@gmail.com"
-        },
-        {
-            label: "GitHub",
-            value: "@bigohofone",
-            link: "https://github.com/bigohofone"
-        },
-        {
-            label: "Google Scholar",
-            value: "Wonjun Oh",
-            link: "https://scholar.google.com/citations?user=5MjTfesAAAAJ"
-        },
-        {
-            label: "LinkedIn",
-            value: "@wonjun-oh-8067b5265",
-            link: "https://www.linkedin.com/in/wonjun-oh-8067b5265/"
-        },
-        {
-            label: "X",
-            value: "@bigohofone",
-            link: "https://x.com/bigohofone"
-        },
-    ]
-};
+export const contact = [
+  { label: "Website", value: "wonjunoh.com", link: "https://wonjunoh.com" },
+  { label: "Email", value: "bigohofone@gmail.com", link: "mailto:bigohofone@gmail.com" },
+  { label: "GitHub", value: "@bigohofone", link: "https://github.com/bigohofone" },
+  { label: "Google Scholar", value: "Wonjun Oh", link: "https://scholar.google.com/citations?user=5MjTfesAAAAJ" },
+  { label: "LinkedIn", value: "@wonjun-oh-8067b5265", link: "https://www.linkedin.com/in/wonjun-oh-8067b5265/" },
+  { label: "X", value: "@bigohofone", link: "https://x.com/bigohofone" },
+]
