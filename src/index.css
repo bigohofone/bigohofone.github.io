@@ -1,23 +1,19 @@
 @import "@fontsource/inter/latin-400.css";
-/* 굵은 글씨는 600 — 제목(font-semibold)과 본문 강조(strong) 모두. 이 파일이 없으면 브라우저가 400 을 흉내 내 번져 보인다 */
 @import "@fontsource/inter/latin-600.css";
-/* 한글은 Inter 에 없어 Inter 와 어울리는 Pretendard 로 — 글자 범위별로 나뉜 파일이라 페이지에 쓴 한글이 든 조각만 받는다 */
+/* Inter 에 한글이 없어 한글만 Pretendard 로 */
 @import "pretendard/dist/web/static/Pretendard-Regular.css";
 @import "pretendard/dist/web/static/Pretendard-SemiBold.css";
 @import "tailwindcss";
 
+/* GitHub 팔레트에서 밝기만 맞춘 색 — 바탕 대비 본문 7.6:1, 링크 7:1, 흐린 글씨 4.5:1 */
 @theme {
   --font-sans: "Inter", "Pretendard", sans-serif;
-  /* 라이트 — GitHub "Light Default" 팔레트의 옅은 회색 바탕(canvas subtle)에 글씨는 모두 회색. 대비는 이 바탕 기준 —
-     본문·제목 7.6:1(다크 모드 본문과 같게), 링크·기관 색 7:1(웹 접근성 AAA), 흐린 회색 4.5:1(AA). 색상은 두고 밝기만 맞춘 값 */
   --color-paper: #f6f8fa;
   --color-ink: #49505b;
   --color-ink-light: #6b737e;
   --color-link: #17549e;
 }
 
-/* 다크 모드 — <html data-theme="dark">(App.jsx 의 ThemeToggle). 눈이 편한 GitHub 의 "Dark Dimmed" — 새까만 바탕 대신 짙은 회청색 바탕에
-   새하얗지 않은 회백색 글씨(7.6:1)로 눈부심을 줄인다. 대비 기준은 라이트와 같다 — 링크 7:1, 회색 글씨 4.5:1. dark: 를 붙인 클래스도 이때 켜진다 */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 [data-theme="dark"] {
   color-scheme: dark;
@@ -27,24 +23,47 @@
   --color-link: #84b5ed;
 }
 
-/* 링크 — 파란 글씨에 1px 점선 밑줄(점 1px·틈 1px). 글자 밑줄(text-decoration)은 앞에 단 아이콘·로고 밑으로는 그어지지 않아,
-   모든 링크에 같은 점선을 링크 글자 상자의 맨 아래(글꼴의 아래 끝, 기준선에서 약 4px 아래)에 직접 긋는다 —
-   아이콘이 있든 없든 같은 굵기·같은 위치 */
 @layer base {
-  /* 기본 모양이라 base 층에 — 층 밖에 두면 Tailwind 클래스(text-[…] 로 준 기관 색 등)보다 앞서 버린다 */
+  /* 글자 밑줄(text-decoration)은 링크 앞 로고 밑으로 이어지지 않아 배경으로 긋는다 */
   a {
     color: var(--color-link);
     text-decoration: none;
     background: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 2px) left bottom / 100% 1px no-repeat;
   }
+  strong {
+    font-weight: 600;
+  }
 }
 
-/* 아이콘 선 굵기를 화면 픽셀로 고정 — 아이콘을 키우거나 줄여도 선 굵기(App.jsx 의 strokeWidth)는 그대로 */
+/* 아이콘을 줄이거나 키워도 선 굵기는 화면 1.5px 그대로 */
 svg * {
   vector-effect: non-scaling-stroke;
 }
 
-/* 본문 강조(strong)도 제목과 같은 600 — 기본값(bolder)은 700 이 된다 */
-strong {
-  font-weight: 600;
+/* react-markdown 이 그린 글. 글머리 기호는 아이콘처럼 14px 칸에 6px 점, 글과 8px */
+.markdown {
+  & > * + *,
+  & li + li {
+    margin-top: 1.5rem;
+  }
+  & h2 {
+    font-size: var(--text-lg);
+    line-height: 1.5rem;
+    font-weight: 600;
+  }
+  & li {
+    padding-left: 1.375rem;
+    text-indent: -1.375rem;
+  }
+  & li::before {
+    content: "";
+    display: inline-block;
+    width: 0.875rem;
+    height: 1lh;
+    margin-right: 0.5rem;
+    vertical-align: top;
+    position: relative;
+    top: -0.5px;
+    background: radial-gradient(circle, currentColor 3px, transparent 3.5px) center / 0.875rem 0.875rem no-repeat;
+  }
 }

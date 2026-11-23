@@ -1,0 +1,29 @@
+[
+  {
+    "name": "NVIDIA",
+    "position": "Research Intern",
+    "url": "https://www.nvidia.com/",
+    "startDate": "2026-12",
+    "type": "industry"
+  },
+  {
+    "name": "Upstage",
+    "position": "AI Research Engineer Intern",
+    "url": "https://www.upstage.ai/",
+    "location": "Seoul, Korea",
+    "startDate": "2026-03-30",
+    "endDate": "2026-08-28",
+    "summary": "Contributed to Korea's national Sovereign AI project as part of the coding agent team",
+    "type": "industry"
+  },
+  {
+    "name": "Multimodal Interactive Intelligence Laboratory (MIIL)",
+    "position": "Undergraduate Researcher (Advised by Prof. Paul Hongsuck Seo)",
+    "url": "https://miil.korea.ac.kr/",
+    "location": "Seoul, Korea",
+    "startDate": "2024-03-01",
+    "endDate": "2024-07-31",
+    "summary": "Worked on efficient representation learning through model-based supervision",
+    "type": "academia"
+  }
+]

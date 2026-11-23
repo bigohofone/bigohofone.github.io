@@ -1,0 +1,45 @@
+[
+  {
+    "title": "Summa Cum Laude",
+    "date": "2026",
+    "awarder": "Korea University",
+    "summary": "Awarded for achieving the highest academic standing among the graduates of the College of Informatics (ranked 1st out of 212).",
+    "type": "honor"
+  },
+  {
+    "title": "2nd Prize ($3,000)",
+    "date": "2025",
+    "awarder": "Qwen SKYST Hackathon",
+    "summary": "Hosted by Flock.io, Base, and Alibaba Cloud. Collaborated with a teammate to design and develop a \"firewall\" for LLM agents, ensuring secure and controlled model interactions.",
+    "type": "competition"
+  },
+  {
+    "title": "Gold Prize (KRW 2,000,000)",
+    "date": "2025",
+    "awarder": "Korea University Software Contest",
+    "summary": "Hosted by Korea University. Collaborated with 3 teammates to build a real-time LLM-based dating advisor.",
+    "type": "competition"
+  },
+  {
+    "title": "IPESK Next-generation Engineers",
+    "date": "2025",
+    "awarder": "Institute for Promotion of Engineering and Science of Korea",
+    "summary": "Honored as a nationally recognized top-tier engineer, receiving a formal Dean’s Recommendation for exceptional academic and research performance. Recognized for the potential to drive industry-academic innovation and lead competitive advancements in the global technological landscape.",
+    "type": "honor",
+    "selected": false
+  },
+  {
+    "title": "Silicon Valley Program Scholarship",
+    "date": "2025",
+    "awarder": "Korea University",
+    "summary": "Competitively selected as a departmental representative to network with industry professionals in Silicon Valley.",
+    "type": "honor"
+  },
+  {
+    "title": "NIA Director’s Award (KRW 3,000,000)",
+    "date": "2024",
+    "awarder": "Korean AI Contest",
+    "summary": "Hosted by the Ministry of Science and ICT. Collaborated with 4 teammates to train an AST model for dialects, elderly, and children.",
+    "type": "competition"
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Solar Open 2 Technical Report",
+    "publisher": "arXiv 2026",
+    "releaseDate": "2026-07-22",
+    "url": "https://arxiv.org/abs/2607.20062",
+    "authors": "Upstage Solar Team",
+    "type": "tech report",
+    "links": {
+      "Model": "https://huggingface.co/upstage/Solar-Open2-250B"
+    }
+  },
+  {
+    "name": "ReSCORE: Label-free Iterative Retriever Training for Multi-hop Question Answering with Relevance-Consistency Supervision",
+    "publisher": "ACL 2025",
+    "releaseDate": "2025-05-27",
+    "url": "https://arxiv.org/abs/2505.21250",
+    "authors": "Dosung Lee*, Wonjun Oh*, Boyoung Kim, Minyoung Kim, Joonsuk Park†, Paul Hongsuck Seo†",
+    "type": "conference",
+    "links": {
+      "Code": "https://github.com/leeds1219/ReSCORE"
+    }
+  }
+]

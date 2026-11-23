@@ -1,0 +1,22 @@
+[
+  {
+    "institution": "KAIST, The Kim Jaechul Graduate School of AI (KAIST AI)",
+    "studyType": "M.S./Ph.D.",
+    "area": "Artificial Intelligence",
+    "location": "Seoul, Korea",
+    "startDate": "2026-08-31",
+    "summary": "Advised by Prof. Hyunwoo Kim",
+    "type": "graduate"
+  },
+  {
+    "institution": "Korea University",
+    "studyType": "B.S.",
+    "area": "Computer Science",
+    "score": "4.43 / 4.5 (4.5 / 4.5)",
+    "location": "Seoul, Korea",
+    "startDate": "2019-03-04",
+    "endDate": "2026-02-25",
+    "summary": "Graduated Summa Cum Laude from the College of Informatics, ranked 1st out of 212.",
+    "type": "undergraduate"
+  }
+]

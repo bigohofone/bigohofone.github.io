@@ -18,9 +18,27 @@ npm run deploy   # 빌드(사이트 + CV PDF) 후 gh-pages 로 배포
 
 ## 내용 고치기
 
-- 소개 글·이름·사진: `src/data/profile.md`
-- 논문·수상·학력·경력·대외 활동: `src/data/` 아래 폴더마다 `.md` 하나씩
-- 맨 아래 About Me: `src/data/about_me.md`
-- 연락처: `src/data/contact.js`
+모든 내용은 `src/resume/` 에 있다. JSON 파일 하나가 [JSON Resume](https://jsonresume.org/schema) 의 키 하나이고, 불러올 때 하나로 합친다.
+
+- `basics.json`: 이름, 직함(`label`), 사진, 이메일, 웹사이트, 짧은 소개(`summary`), `profiles`(GitHub 등)
+- `summary.md`: 사이트 맨 위 소개 글(마크다운). CV 의 Research Interest 도 여기서 뽑는다
+- `work.json`, `education.json`, `awards.json`, `publications.json`, `volunteer.json`: 목록
+
+목록은 적힌 순서대로 나온다. 날짜는 `2025`, `2025-05`, `2025-05-27` 꼴이고, 아직 다니는 곳은 `endDate` 를 뺀다.
+
+표준에 없어서 덧붙인 키:
+
+- `type`: 모든 목록 항목의 종류. 사이트 아이콘과 범례, CV 순서에 쓴다
+  - `work`: industry·academia
+  - `awards`: honor·award·competition
+  - `publications`: conference·journal·preprint·tech report
+  - `education`: undergraduate·graduate
+  - `volunteer`: club
+- `publications[].authors`: 저자 (`*` 공동 1저자, `†` 교신저자)
+- `publications[].links`: `url`(Paper) 말고 더 붙일 링크, `{ "Code": "https://…" }`
+- `awards[].selected`: `false` 면 사이트에서 숨김(CV 에는 나옴)
+- `education[].location`, `education[].summary`: CV 에 쓰는 위치와 설명
 
 CV(`/Wonjun_Oh_CV.pdf`)는 같은 데이터로 `src/cv.js` 가 빌드 때 만든다.
+
+빌드 때 페이지를 HTML 로 미리 그려 넣어(`vite-plugin-prerender.js`) 검색 엔진이 JavaScript 없이도 내용을 읽는다.
