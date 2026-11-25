@@ -51,17 +51,13 @@ const placeEntry = (place, title, item) =>
     body(item.summary),
   ])
 
-// Research Interest 는 사이트 소개 글의 "My research" 문단과 그 아래 목록을 그대로 쓴다
+// Research Interest 는 사이트 소개 글의 "My research" 문단과 그 아래 번호 목록(1. 2.)을 그대로 쓴다
 const researchParagraphs = () =>
   summary
     .split(/\n\s*\n/)
-    .flatMap((text) => text.split(/\n(?=- )/))
-    .filter((text) => text.startsWith("My research") || text.startsWith("- "))
-    .map((text) => {
-      const item = text.startsWith("- ")
-      const line = tex(item ? text.slice(2) : text).replace(/\*\*(.+?)\*\*/g, "\\textbf{$1}")
-      return `${item ? "\\textbullet\\ " : ""}${line}\\par\\vspace{4pt}`
-    })
+    .flatMap((text) => text.split(/\n(?=\d+\. )/))
+    .filter((text) => text.startsWith("My research") || /^\d+\. /.test(text))
+    .map((text) => `${tex(text)}\\par\\vspace{4pt}`)
 
 export function cvTex() {
   const links = [

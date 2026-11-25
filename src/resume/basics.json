@@ -4,17 +4,17 @@
   "image": "/assets/img/profile.jpg",
   "email": "bigohofone@gmail.com",
   "url": "https://wonjunoh.com",
-  "summary": "Wonjun Oh is an integrated M.S./Ph.D. student at KAIST AI, advised by Hyunwoo Kim, and a research intern at NVIDIA. Wonjun's research studies how models can generate data for other models and learn from it while preserving its quality and diversity.",
+  "summary": "Wonjun Oh is an integrated M.S./Ph.D. student at KAIST AI, advised by Hyunwoo Kim, and a research intern at NVIDIA Research. Wonjun's research studies how models can generate data for other models and learn from it while preserving its quality and diversity.",
   "profiles": [
-    {
-      "network": "GitHub",
-      "username": "bigohofone",
-      "url": "https://github.com/bigohofone"
-    },
     {
       "network": "Google Scholar",
       "username": "Wonjun Oh",
       "url": "https://scholar.google.com/citations?user=5MjTfesAAAAJ"
+    },
+    {
+      "network": "GitHub",
+      "username": "bigohofone",
+      "url": "https://github.com/bigohofone"
     },
     {
       "network": "LinkedIn",

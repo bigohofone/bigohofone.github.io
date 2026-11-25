@@ -1,32 +1,26 @@
-@import "@fontsource/inter/latin-400.css";
-@import "@fontsource/inter/latin-600.css";
-/* Inter 에 한글이 없어 한글만 Pretendard 로 */
-@import "pretendard/dist/web/static/Pretendard-Regular.css";
-@import "pretendard/dist/web/static/Pretendard-SemiBold.css";
+/* 가변 글꼴. Inter 에 한글이 없어 한글만 Pretendard 로(쓰인 글자 묶음만 받는 dynamic subset) */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/inter/wght-italic.css";
+@import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @import "katex/dist/katex.min.css";
 
-/* 줄 격자 한 칸. 이 값만 바꾸면 본문 줄 높이, 간격, 제목 줄 높이, 개발용 격자가 모두 따라간다.
-   --stroke 는 아이콘 선 굵기이자 링크 밑줄 점의 지름 */
+/* 아이콘 선 굵기 */
 :root {
-  --grid: 1.5rem;
   --stroke: 1.5px;
 }
 
 @theme {
-  --spacing-line: var(--grid);
-  --spacing-section: calc(var(--grid) * 2);
-  --spacing-page: calc(var(--grid) * 4);
-  --text-sm--line-height: var(--grid);
-  /* 글 앞 아이콘·글머리 기호 칸(16px)과 글 사이(8px). 넘친 줄은 둘을 합친 만큼 들인다 */
-  --spacing-icon: 1rem;
+  /* 아이콘 크기(어디서나 18px, Material 3 버튼 아이콘)와 글 사이(8px). 넘친 줄은 둘을 합친 만큼 들인다 */
+  --spacing-icon: 1.125rem;
   --spacing-gap: 0.5rem;
   --spacing-hang: calc(var(--spacing-icon) + var(--spacing-gap));
-  --font-sans: "Inter", "Pretendard", sans-serif;
-  /* GitHub 팔레트에서 밝기만 맞춘 색 — 바탕 대비 본문 7.6:1, 링크·흐린 글씨 4.5:1 */
+  --font-sans: "Inter Variable", "Pretendard Variable", sans-serif;
+  /* 바탕 대비 본문 7.6:1, 링크 4.5:1, 흐린 글씨는 카드 위에서도 4.5:1 (WCAG AA) */
   --color-paper: #f6f8fa;
   --color-ink: #49505b;
-  --color-ink-light: #6b737e;
+  --color-ink-light: #646b76;
   --color-link: #1f71d5;
   /* 선과 옅은 바탕은 글자색을 섞어 만들어 다크 모드에서도 그대로 맞는다 */
   --color-line: color-mix(in srgb, var(--color-ink-light) 40%, transparent);
@@ -38,43 +32,65 @@
   color-scheme: dark;
   --color-paper: #22272e;
   --color-ink: #adbac7;
-  --color-ink-light: #868e97;
+  --color-ink-light: #9099a3;
   --color-link: #84b5ed;
 }
 
 @layer base {
-  /* 본문 줄 높이는 격자 한 칸. 한글은 글자마다가 아니라 띄어쓰기에서만 줄을 바꾼다 */
+  html {
+    /* 100vw 띠가 스크롤바 폭만큼 가로 스크롤을 만들지 않게 */
+    overflow-x: clip;
+  }
+  /* 키보드 초점: 2px 링크 색 테두리(대비 4.1:1 이상, WCAG 2.4.13) */
+  :focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: 2px;
+  }
+  /* 한글은 글자마다가 아니라 띄어쓰기에서만 줄을 바꾼다 */
   body {
-    line-height: var(--grid);
     word-break: keep-all;
   }
-  /* 링크 밑줄은 아이콘 선 굵기만 한 둥근 점을 점 하나 간격으로. 글자 밑줄(text-decoration)은 링크 안 아이콘 밑으로
-     이어지지 않아 배경으로 긋는다. 배경은 글자 아래 끝(Inter 기준 밑선 + 4px)까지라 아래로 늘려 그 자리에 점을 둔다.
-     점은 온전한 것만 양 끝에 맞춰 놓고(space), 배경을 좌우로 반 칸씩 넓혀(같은 만큼 margin 으로 되돌림) 끝 점이 링크 끝에 닿게 한다 */
   a {
     color: var(--color-link);
-    text-decoration: none;
-    padding: 0 calc(var(--stroke) / 2) var(--stroke);
-    margin-inline: calc(var(--stroke) / -2);
-    background: radial-gradient(circle closest-side, currentColor 100%, transparent 0) left bottom /
-      calc(var(--stroke) * 2) var(--stroke) space no-repeat;
   }
-  strong {
-    font-weight: 600;
+}
+
+/* 문장 속 링크는 링크 색의 옅은 실선 밑줄, 마우스·키보드가 오면 진하고 굵게. 색만으로 구분하지 않게(WCAG 1.4.1) 늘 긋는다.
+   typography 플러그인의 밑줄보다 앞서도록 레이어 밖에 두고, 단추(no-underline)는 뺀다. 색은 base 의 a 와 기관 색 클래스가 정한다 */
+a:not(.no-underline) {
+  text-decoration: underline 1px color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 0.25em;
+  &:is(:hover, :focus-visible) {
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 2px;
   }
-  /* 제목은 모든 쪽에서 같은 크기·굵기. 크기는 브라우저 기본값, 줄 높이는 글자 크기 이상인 격자의 배수 */
-  :is(h1, h2, h3) {
-    line-height: round(up, 1em, var(--grid));
-    font-weight: 600;
+}
+
+/* 섹션 사이 64px */
+.prose > * + h2 {
+  margin-top: 4rem;
+}
+
+/* 좁은 화면에선 프로필 아래와 첫 쪽 섹션 사이를 화면 끝까지 닿는 8px 띠(Material heavy divider)로 나눈다.
+   띠를 품은 상자가 화면 가운데에 있어 calc(50% - 50vw) 만큼 당기면 화면 왼쪽 끝에 닿는다. 위아래 32px */
+@media (width < 64rem) {
+  header::after,
+  .home > h2:not(:first-child)::before {
+    content: "";
+    display: block;
+    width: 100vw;
+    height: 0.5rem;
+    margin-left: calc(50% - 50vw);
+    background: var(--color-tint);
   }
-  h1 {
-    font-size: 2em;
+  header::after {
+    margin-top: 2rem;
   }
-  h2 {
-    font-size: 1.5em;
+  .home > h2:not(:first-child) {
+    margin-top: 2rem;
   }
-  h3 {
-    font-size: 1.17em;
+  .home > h2:not(:first-child)::before {
+    margin-bottom: 2rem;
   }
 }
 
@@ -84,97 +100,41 @@ svg * {
   stroke-width: var(--stroke);
 }
 
-/* 수식(KaTeX)이 줄 높이를 늘리지 않게. 따로 뗀 수식은 격자 두 칸 가운데에.
-   글 사이 간격(.flow > * + *)이 이기도록 그보다 앞에 둔다 */
-.katex {
-  line-height: 0;
-}
-.katex-display {
-  margin: 0;
-  display: flex;
-  min-height: var(--spacing-section);
-  align-items: center;
-  justify-content: center;
-}
-
-/* 본문 흐름(첫 쪽, 블로그 목록·글). 블록 사이 간격과 마크다운 요소 모양. 글머리 기호는 아이콘처럼 14px 칸에 6px 점, 글과 8px */
-.flow {
-  /* 블록마다 위에 한 줄(목록 항목, 안쪽 목록도). 제목 위는 h1 세 줄, h2 두 줄, h3 한 줄 */
-  & > * + *,
-  & li + li,
-  & li > :is(ul, ol) {
-    margin-top: var(--grid);
+/* 마크다운 본문(typography 플러그인)을 사이트 색에 맞춘다(색 변수가 다크 모드를 따라간다). 링크는 위의 점선 밑줄,
+   굵기는 보통 400·굵게 600 둘만, 인라인 코드 앞뒤 ` 는 뺀다 */
+.prose {
+  --tw-prose-body: var(--color-ink);
+  --tw-prose-headings: var(--color-ink);
+  --tw-prose-lead: var(--color-ink);
+  --tw-prose-links: var(--color-link);
+  --tw-prose-bold: var(--color-ink);
+  --tw-prose-counters: var(--color-ink-light);
+  --tw-prose-bullets: var(--color-ink-light);
+  --tw-prose-hr: var(--color-line);
+  --tw-prose-quotes: var(--color-ink-light);
+  --tw-prose-quote-borders: var(--color-line);
+  --tw-prose-captions: var(--color-ink-light);
+  --tw-prose-code: var(--color-ink);
+  --tw-prose-pre-code: var(--color-ink);
+  --tw-prose-pre-bg: var(--color-tint);
+  --tw-prose-th-borders: var(--color-line);
+  --tw-prose-td-borders: var(--color-line);
+  & :is(a, blockquote) {
+    font-weight: inherit;
   }
-  & > * + h1 {
-    margin-top: calc(var(--grid) * 3);
-  }
-  & > * + h2 {
-    margin-top: var(--spacing-section);
-  }
-  & ul > li {
-    padding-left: var(--spacing-hang);
-    text-indent: calc(-1 * var(--spacing-hang));
-  }
-  & ul > li::before {
-    content: "";
-    display: inline-block;
-    width: var(--spacing-icon);
-    height: 1lh;
-    margin-right: var(--spacing-gap);
-    vertical-align: top;
-    position: relative;
-    top: -0.5px;
-    background: radial-gradient(circle, currentColor 3px, transparent 3.5px) center / var(--spacing-icon) no-repeat;
-  }
-  & ol {
-    list-style: decimal;
-    padding-left: var(--spacing-hang);
-  }
-  & blockquote {
-    border-left: 2px solid var(--color-ink-light);
-    padding-left: 1rem;
-    color: var(--color-ink-light);
-  }
-  & pre {
-    overflow-x: auto;
-    padding: var(--grid);
-    font-size: var(--text-sm);
-    line-height: var(--grid);
-  }
-  & :not(pre) > code {
-    font-size: var(--text-sm);
-    line-height: 0;
-  }
-  /* 표 선은 자리를 차지하지 않는 box-shadow 로 그어 행 높이가 격자 한 칸 그대로다 */
-  & table {
-    display: block;
-    width: max-content;
-    max-width: 100%;
-    overflow-x: auto;
-    font-variant-numeric: tabular-nums;
-    box-shadow: inset 1px 1px var(--color-line);
-  }
-  & th,
-  & td {
-    padding: 0 0.75rem;
-    box-shadow: inset -1px -1px var(--color-line);
-  }
-  & th {
+  & :is(h1, h2, h3, h4, strong, th, dt) {
     font-weight: 600;
-    text-align: left;
-    background-color: var(--color-tint);
   }
-  & hr {
-    height: 1lh;
-    border: 0;
-    background: linear-gradient(var(--color-line) 0 0) center / 100% 1px no-repeat;
+  & code::before,
+  & code::after {
+    content: none;
   }
 }
 
-/* 블로그 코드 색(Shiki). 라이트 색은 글자에 박혀 있고 다크는 변수로 온다. 바탕은 두 모드 모두 글자색을 옅게 */
+/* 코드 색(Shiki): 라이트는 글자에 박혀 있고 다크는 변수로 온다 */
 .shiki {
   background-color: var(--color-tint) !important;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
 }
 [data-theme="dark"] .shiki,
 [data-theme="dark"] .shiki span {

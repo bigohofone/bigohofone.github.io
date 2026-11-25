@@ -30,9 +30,10 @@ export function prerender() {
         const { default: App } = await server.ssrLoadModule("/src/App.jsx")
         const { posts } = await server.ssrLoadModule("/src/blog/index.js")
         const tags = [...new Set(posts.flatMap((post) => post.tags))]
+        const blog = posts.length > 0
         const pages = [
           { path: "/" },
-          { path: "/blog/", title: "Blog" },
+          ...(blog ? [{ path: "/blog/", title: "Blog" }] : []),
           ...tags.map((tag) => ({ path: `/blog/tags/${encodeURIComponent(tag)}/`, title: `#${tag}` })),
           ...posts.map((post) => ({ path: `/blog/${post.slug}/`, title: post.title })),
         ]
@@ -59,6 +60,7 @@ export function prerender() {
           `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
         )
 
+        if (!blog) return
         const feed = new Feed({
           title: `${NAME} — Blog`,
           description: `Blog posts by ${NAME}`,
