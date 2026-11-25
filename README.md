@@ -39,6 +39,27 @@ npm run deploy   # 빌드(사이트 + CV PDF) 후 gh-pages 로 배포
 - `awards[].selected`: `false` 면 사이트에서 숨김(CV 에는 나옴)
 - `education[].location`, `education[].summary`: CV 에 쓰는 위치와 설명
 
+## 블로그
+
+`src/blog/` 에 글 하나당 `.md` 하나. 파일 이름이 주소다(`hello.md` → `/blog/hello/`). `_` 로 시작하는 파일은 개발 서버에서만 보인다(예시·초안).
+
+```md
+---
+date: "2026-11-24"
+tags: [notes]
+---
+
+# 제목 (글에 하나만)
+
+## 소제목
+
+### 그 아래
+
+본문. 수식은 $E = mc^2$, 따로 떼면 $$ … $$. 코드는 ``` 로 감싸고 언어를 적는다.
+```
+
+빌드 때 MDX 로 컴포넌트가 되고, 수식(KaTeX)과 코드 색(Shiki)도 이때 입힌다. 태그 쪽(`/blog/tags/<태그>/`), RSS(`/blog/feed.xml`), sitemap 도 빌드 때 만든다.
+
 CV(`/Wonjun_Oh_CV.pdf`)는 같은 데이터로 `src/cv.js` 가 빌드 때 만든다.
 
 빌드 때 페이지를 HTML 로 미리 그려 넣어(`vite-plugin-prerender.js`) 검색 엔진이 JavaScript 없이도 내용을 읽는다.

@@ -1,8 +1,10 @@
 import { footnotes, period } from "./format"
 import resume from "./resume"
-import summary from "./resume/summary.md?raw"
+import { readFileSync } from "node:fs"
 
 const { basics, work, volunteer, education, awards, publications } = resume
+// 사이트에선 summary.md 가 컴포넌트로 바뀌므로 CV 는 원문을 직접 읽는다(빌드 때 Node 에서만 돈다)
+const summary = readFileSync("src/resume/summary.md", "utf8")
 
 // 양식은 hyunw.kim/CV/CV.pdf 를 따른다. vite-plugin-cv.js 가 Tectonic 으로 PDF 로 만든다
 

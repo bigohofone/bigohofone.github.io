@@ -1,6 +1,7 @@
 [
   {
     "institution": "KAIST, The Kim Jaechul Graduate School of AI (KAIST AI)",
+    "url": "https://gsai.kaist.ac.kr/?lang=en",
     "studyType": "M.S./Ph.D.",
     "area": "Artificial Intelligence",
     "location": "Seoul, Korea",
@@ -10,6 +11,7 @@
   },
   {
     "institution": "Korea University",
+    "url": "https://www.korea.edu/",
     "studyType": "B.S.",
     "area": "Computer Science",
     "score": "4.43 / 4.5 (4.5 / 4.5)",

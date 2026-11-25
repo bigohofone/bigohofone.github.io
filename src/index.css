@@ -4,14 +4,24 @@
 @import "pretendard/dist/web/static/Pretendard-Regular.css";
 @import "pretendard/dist/web/static/Pretendard-SemiBold.css";
 @import "tailwindcss";
+@import "katex/dist/katex.min.css";
 
-/* GitHub 팔레트에서 밝기만 맞춘 색 — 바탕 대비 본문 7.6:1, 링크 7:1, 흐린 글씨 4.5:1 */
+/* 줄 격자 한 칸. 이 값만 바꾸면 본문 줄 높이, 간격, 제목 줄 높이, 개발용 격자가 모두 따라간다 */
+:root {
+  --grid: 1.5rem;
+}
+
 @theme {
+  --spacing-line: var(--grid);
+  --spacing-section: calc(var(--grid) * 2);
+  --spacing-page: calc(var(--grid) * 4);
+  --text-sm--line-height: var(--grid);
   --font-sans: "Inter", "Pretendard", sans-serif;
+  /* GitHub 팔레트에서 밝기만 맞춘 색 — 바탕 대비 본문 7.6:1, 링크·흐린 글씨 4.5:1 */
   --color-paper: #f6f8fa;
   --color-ink: #49505b;
   --color-ink-light: #6b737e;
-  --color-link: #17549e;
+  --color-link: #1f71d5;
 }
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
@@ -24,6 +34,11 @@
 }
 
 @layer base {
+  /* 한글은 글자마다가 아니라 띄어쓰기에서만 줄을 바꾼다 */
+  body {
+    line-height: var(--grid);
+    word-break: keep-all;
+  }
   /* 글자 밑줄(text-decoration)은 링크 앞 로고 밑으로 이어지지 않아 배경으로 긋는다 */
   a {
     color: var(--color-link);
@@ -33,6 +48,22 @@
   strong {
     font-weight: 600;
   }
+  /* 제목은 모든 쪽에서 같은 크기·굵기. 크기는 브라우저 기본값, 줄 높이는 글자 크기 이상인 격자의 배수.
+     .h2 는 태그와 상관없이 h2 크기로 보일 곳(프로필의 이름) */
+  :is(h1, h2, h3, .h2) {
+    line-height: round(up, 1em, var(--grid));
+    font-weight: 600;
+  }
+  h1 {
+    font-size: 2em;
+  }
+  h2,
+  .h2 {
+    font-size: 1.5em;
+  }
+  h3 {
+    font-size: 1.17em;
+  }
 }
 
 /* 아이콘을 줄이거나 키워도 선 굵기는 화면 1.5px 그대로 */
@@ -40,22 +71,35 @@ svg * {
   vector-effect: non-scaling-stroke;
 }
 
-/* react-markdown 이 그린 글. 글머리 기호는 아이콘처럼 14px 칸에 6px 점, 글과 8px */
+/* 수식(KaTeX)이 줄 높이를 늘리지 않게. 따로 뗀 수식은 격자 두 칸 가운데에.
+   글 사이 간격(.markdown > * + *)이 이기도록 그보다 앞에 둔다 */
+.katex {
+  line-height: 0;
+}
+.katex-display {
+  margin: 0;
+  display: flex;
+  min-height: calc(var(--grid) * 2);
+  align-items: center;
+  justify-content: center;
+}
+
+/* 마크다운 글(소개, 블로그). 글머리 기호는 아이콘처럼 14px 칸에 6px 점, 글과 8px */
 .markdown {
+  --table-line: color-mix(in srgb, var(--color-ink-light) 40%, transparent);
+  /* 문단 사이는 한 줄, 제목 위는 두 줄 */
   & > * + *,
   & li + li {
-    margin-top: 1.5rem;
+    margin-top: var(--grid);
   }
-  & h2 {
-    font-size: var(--text-lg);
-    line-height: 1.5rem;
-    font-weight: 600;
+  & > * + :is(h1, h2, h3) {
+    margin-top: var(--spacing-section);
   }
-  & li {
+  & ul > li {
     padding-left: 1.375rem;
     text-indent: -1.375rem;
   }
-  & li::before {
+  & ul > li::before {
     content: "";
     display: inline-block;
     width: 0.875rem;
@@ -66,4 +110,60 @@ svg * {
     top: -0.5px;
     background: radial-gradient(circle, currentColor 3px, transparent 3.5px) center / 0.875rem 0.875rem no-repeat;
   }
+  & ol {
+    list-style: decimal;
+    padding-left: 1.375rem;
+  }
+  & blockquote {
+    border-left: 2px solid var(--color-ink-light);
+    padding-left: 1rem;
+    color: var(--color-ink-light);
+  }
+  & pre {
+    overflow-x: auto;
+    padding: var(--grid);
+    font-size: var(--text-sm);
+    line-height: var(--grid);
+  }
+  & :not(pre) > code {
+    font-size: var(--text-sm);
+    line-height: 0;
+  }
+  /* 표 선은 자리를 차지하지 않는 box-shadow 로 그어 행 높이가 격자 한 칸 그대로다 */
+  & table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    font-variant-numeric: tabular-nums;
+    box-shadow: inset 1px 1px var(--table-line);
+  }
+  & th,
+  & td {
+    padding: 0 0.75rem;
+    box-shadow: inset -1px -1px var(--table-line);
+  }
+  & th {
+    font-weight: 600;
+    text-align: left;
+    background-color: color-mix(in srgb, var(--color-ink) 6%, transparent);
+  }
+  & tr:nth-child(even) td {
+    background-color: color-mix(in srgb, var(--color-ink) 3%, transparent);
+  }
+  & hr {
+    height: 1lh;
+    border: 0;
+    background: linear-gradient(var(--color-ink-light), var(--color-ink-light)) center / 100% 1px no-repeat;
+  }
+}
+
+/* 블로그 코드 색(Shiki). 라이트 색은 글자에 박혀 있고 다크는 변수로 온다. 바탕은 두 모드 모두 글자색을 옅게 */
+.shiki {
+  background-color: color-mix(in srgb, var(--color-ink) 6%, transparent) !important;
+  border-radius: 0.25rem;
+}
+[data-theme="dark"] .shiki,
+[data-theme="dark"] .shiki span {
+  color: var(--shiki-dark) !important;
 }

@@ -39,7 +39,11 @@ export function cv() {
     async closeBundle() {
       // 개발 서버도 닫힐 때 closeBundle 을 부른다
       if (command !== "build") return
-      const server = await createServer({ server: { middlewareMode: true, ws: false }, appType: "custom" })
+      const server = await createServer({
+        cacheDir: "node_modules/.vite-build",
+        server: { middlewareMode: true, ws: false },
+        appType: "custom",
+      })
       try {
         await fs.writeFile(path.join(outDir, `${NAME}.pdf`), await makeCV((id) => server.ssrLoadModule(id)))
         console.log(`  cv  ${NAME}.pdf`)

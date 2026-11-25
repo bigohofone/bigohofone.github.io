@@ -119,14 +119,14 @@ export const Flask = (props) => (
 )
 
 export const Sun = (props) => (
-  <Icon strokeLinecap="round" {...props}>
-    <circle cx="24" cy="24" r="8" />
-    <path d="M24 4v4M24 40v4M4 24h4M40 24h4M9.86 9.86l2.83 2.83M35.31 35.31l2.83 2.83M9.86 38.14l2.83-2.83M35.31 12.69l2.83-2.83" />
+  <Icon {...props}>
+    <circle cx="24" cy="24" r="7" />
+    <path d="M38 24L44 24M33.9 33.9L38.14 38.14M24 38L24 44M14.1 33.9L9.86 38.14M10 24L4 24M14.1 14.1L9.86 9.86M24 10L24 4M33.9 14.1L38.14 9.86" strokeLinecap="butt" />
   </Icon>
 )
 
 export const Moon = (props) => (
   <Icon {...props}>
-    <path d="M40 28.5A17 17 0 1 1 19.5 8 13 13 0 0 0 40 28.5z" />
+    <path d="M44 25.76A20 20 0 1 1 22.24 4 15.56 15.56 0 0 0 44 25.76z" />
   </Icon>
 )
