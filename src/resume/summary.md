@@ -1,4 +1,4 @@
-## Hello, 안녕하세요.
+# About Me
 
 I’m an integrated M.S./Ph.D. student at [KAIST AI](https://gsai.kaist.ac.kr/?lang=en), advised by [Hyunwoo Kim](https://hyunw.kim/), and a research intern at [NVIDIA](https://www.nvidia.com/).
 

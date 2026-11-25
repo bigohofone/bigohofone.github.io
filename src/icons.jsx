@@ -5,7 +5,6 @@ const Icon = ({ children, ...props }) => (
     overflow="visible"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.5"
     strokeLinecap="square"
     strokeLinejoin="round"
     aria-hidden="true"
@@ -105,6 +104,13 @@ export const Trophy = (props) => (
   </Icon>
 )
 
+export const Stopwatch = (props) => (
+  <Icon {...props}>
+    <circle cx="24" cy="27" r="17" />
+    <path d="M19 4h10M24 4v6M24 27V18" strokeLinecap="round" />
+  </Icon>
+)
+
 export const Briefcase = (props) => (
   <Icon {...props}>
     <rect x="4" y="14" width="40" height="28" rx="4" />
@@ -121,7 +127,10 @@ export const Flask = (props) => (
 export const Sun = (props) => (
   <Icon {...props}>
     <circle cx="24" cy="24" r="7" />
-    <path d="M38 24L44 24M33.9 33.9L38.14 38.14M24 38L24 44M14.1 33.9L9.86 38.14M10 24L4 24M14.1 14.1L9.86 9.86M24 10L24 4M33.9 14.1L38.14 9.86" strokeLinecap="butt" />
+    <path
+      d="M38 24L42.2 24M33.9 33.9L36.87 36.87M24 38L24 42.2M14.1 33.9L11.13 36.87M10 24L5.8 24M14.1 14.1L11.13 11.13M24 10L24 5.8M33.9 14.1L36.87 11.13"
+      strokeLinecap="round"
+    />
   </Icon>
 )
 

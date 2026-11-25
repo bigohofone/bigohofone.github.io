@@ -6,9 +6,11 @@
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
 
-/* 줄 격자 한 칸. 이 값만 바꾸면 본문 줄 높이, 간격, 제목 줄 높이, 개발용 격자가 모두 따라간다 */
+/* 줄 격자 한 칸. 이 값만 바꾸면 본문 줄 높이, 간격, 제목 줄 높이, 개발용 격자가 모두 따라간다.
+   --stroke 는 아이콘 선 굵기이자 링크 밑줄 점의 지름 */
 :root {
   --grid: 1.5rem;
+  --stroke: 1.5px;
 }
 
 @theme {
@@ -16,12 +18,19 @@
   --spacing-section: calc(var(--grid) * 2);
   --spacing-page: calc(var(--grid) * 4);
   --text-sm--line-height: var(--grid);
+  /* 글 앞 아이콘·글머리 기호 칸(16px)과 글 사이(8px). 넘친 줄은 둘을 합친 만큼 들인다 */
+  --spacing-icon: 1rem;
+  --spacing-gap: 0.5rem;
+  --spacing-hang: calc(var(--spacing-icon) + var(--spacing-gap));
   --font-sans: "Inter", "Pretendard", sans-serif;
   /* GitHub 팔레트에서 밝기만 맞춘 색 — 바탕 대비 본문 7.6:1, 링크·흐린 글씨 4.5:1 */
   --color-paper: #f6f8fa;
   --color-ink: #49505b;
   --color-ink-light: #6b737e;
   --color-link: #1f71d5;
+  /* 선과 옅은 바탕은 글자색을 섞어 만들어 다크 모드에서도 그대로 맞는다 */
+  --color-line: color-mix(in srgb, var(--color-ink-light) 40%, transparent);
+  --color-tint: color-mix(in srgb, var(--color-ink) 6%, transparent);
 }
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
@@ -34,31 +43,34 @@
 }
 
 @layer base {
-  /* 한글은 글자마다가 아니라 띄어쓰기에서만 줄을 바꾼다 */
+  /* 본문 줄 높이는 격자 한 칸. 한글은 글자마다가 아니라 띄어쓰기에서만 줄을 바꾼다 */
   body {
     line-height: var(--grid);
     word-break: keep-all;
   }
-  /* 글자 밑줄(text-decoration)은 링크 앞 로고 밑으로 이어지지 않아 배경으로 긋는다 */
+  /* 링크 밑줄은 아이콘 선 굵기만 한 둥근 점을 점 하나 간격으로. 글자 밑줄(text-decoration)은 링크 안 아이콘 밑으로
+     이어지지 않아 배경으로 긋는다. 배경은 글자 아래 끝(Inter 기준 밑선 + 4px)까지라 아래로 늘려 그 자리에 점을 둔다.
+     점은 온전한 것만 양 끝에 맞춰 놓고(space), 배경을 좌우로 반 칸씩 넓혀(같은 만큼 margin 으로 되돌림) 끝 점이 링크 끝에 닿게 한다 */
   a {
     color: var(--color-link);
     text-decoration: none;
-    background: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 2px) left bottom / 100% 1px no-repeat;
+    padding: 0 calc(var(--stroke) / 2) var(--stroke);
+    margin-inline: calc(var(--stroke) / -2);
+    background: radial-gradient(circle closest-side, currentColor 100%, transparent 0) left bottom /
+      calc(var(--stroke) * 2) var(--stroke) space no-repeat;
   }
   strong {
     font-weight: 600;
   }
-  /* 제목은 모든 쪽에서 같은 크기·굵기. 크기는 브라우저 기본값, 줄 높이는 글자 크기 이상인 격자의 배수.
-     .h2 는 태그와 상관없이 h2 크기로 보일 곳(프로필의 이름) */
-  :is(h1, h2, h3, .h2) {
+  /* 제목은 모든 쪽에서 같은 크기·굵기. 크기는 브라우저 기본값, 줄 높이는 글자 크기 이상인 격자의 배수 */
+  :is(h1, h2, h3) {
     line-height: round(up, 1em, var(--grid));
     font-weight: 600;
   }
   h1 {
     font-size: 2em;
   }
-  h2,
-  .h2 {
+  h2 {
     font-size: 1.5em;
   }
   h3 {
@@ -66,53 +78,57 @@
   }
 }
 
-/* 아이콘을 줄이거나 키워도 선 굵기는 화면 1.5px 그대로 */
+/* 아이콘을 줄이거나 키워도 선 굵기는 화면에서 --stroke 그대로 */
 svg * {
   vector-effect: non-scaling-stroke;
+  stroke-width: var(--stroke);
 }
 
 /* 수식(KaTeX)이 줄 높이를 늘리지 않게. 따로 뗀 수식은 격자 두 칸 가운데에.
-   글 사이 간격(.markdown > * + *)이 이기도록 그보다 앞에 둔다 */
+   글 사이 간격(.flow > * + *)이 이기도록 그보다 앞에 둔다 */
 .katex {
   line-height: 0;
 }
 .katex-display {
   margin: 0;
   display: flex;
-  min-height: calc(var(--grid) * 2);
+  min-height: var(--spacing-section);
   align-items: center;
   justify-content: center;
 }
 
-/* 마크다운 글(소개, 블로그). 글머리 기호는 아이콘처럼 14px 칸에 6px 점, 글과 8px */
-.markdown {
-  --table-line: color-mix(in srgb, var(--color-ink-light) 40%, transparent);
-  /* 문단 사이는 한 줄, 제목 위는 두 줄 */
+/* 본문 흐름(첫 쪽, 블로그 목록·글). 블록 사이 간격과 마크다운 요소 모양. 글머리 기호는 아이콘처럼 14px 칸에 6px 점, 글과 8px */
+.flow {
+  /* 블록마다 위에 한 줄(목록 항목, 안쪽 목록도). 제목 위는 h1 세 줄, h2 두 줄, h3 한 줄 */
   & > * + *,
-  & li + li {
+  & li + li,
+  & li > :is(ul, ol) {
     margin-top: var(--grid);
   }
-  & > * + :is(h1, h2, h3) {
+  & > * + h1 {
+    margin-top: calc(var(--grid) * 3);
+  }
+  & > * + h2 {
     margin-top: var(--spacing-section);
   }
   & ul > li {
-    padding-left: 1.375rem;
-    text-indent: -1.375rem;
+    padding-left: var(--spacing-hang);
+    text-indent: calc(-1 * var(--spacing-hang));
   }
   & ul > li::before {
     content: "";
     display: inline-block;
-    width: 0.875rem;
+    width: var(--spacing-icon);
     height: 1lh;
-    margin-right: 0.5rem;
+    margin-right: var(--spacing-gap);
     vertical-align: top;
     position: relative;
     top: -0.5px;
-    background: radial-gradient(circle, currentColor 3px, transparent 3.5px) center / 0.875rem 0.875rem no-repeat;
+    background: radial-gradient(circle, currentColor 3px, transparent 3.5px) center / var(--spacing-icon) no-repeat;
   }
   & ol {
     list-style: decimal;
-    padding-left: 1.375rem;
+    padding-left: var(--spacing-hang);
   }
   & blockquote {
     border-left: 2px solid var(--color-ink-light);
@@ -136,31 +152,28 @@ svg * {
     max-width: 100%;
     overflow-x: auto;
     font-variant-numeric: tabular-nums;
-    box-shadow: inset 1px 1px var(--table-line);
+    box-shadow: inset 1px 1px var(--color-line);
   }
   & th,
   & td {
     padding: 0 0.75rem;
-    box-shadow: inset -1px -1px var(--table-line);
+    box-shadow: inset -1px -1px var(--color-line);
   }
   & th {
     font-weight: 600;
     text-align: left;
-    background-color: color-mix(in srgb, var(--color-ink) 6%, transparent);
-  }
-  & tr:nth-child(even) td {
-    background-color: color-mix(in srgb, var(--color-ink) 3%, transparent);
+    background-color: var(--color-tint);
   }
   & hr {
     height: 1lh;
     border: 0;
-    background: linear-gradient(var(--color-ink-light), var(--color-ink-light)) center / 100% 1px no-repeat;
+    background: linear-gradient(var(--color-line) 0 0) center / 100% 1px no-repeat;
   }
 }
 
 /* 블로그 코드 색(Shiki). 라이트 색은 글자에 박혀 있고 다크는 변수로 온다. 바탕은 두 모드 모두 글자색을 옅게 */
 .shiki {
-  background-color: color-mix(in srgb, var(--color-ink) 6%, transparent) !important;
+  background-color: var(--color-tint) !important;
   border-radius: 0.25rem;
 }
 [data-theme="dark"] .shiki,

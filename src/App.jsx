@@ -35,6 +35,9 @@ const AFFILIATIONS = [
   ...work.filter((job) => !job.endDate),
 ]
 
+// 사이트에선 selected: false 인 상을 뺀다(CV 에는 모두)
+const SHOWN_AWARDS = awards.filter((award) => award.selected !== false)
+
 const byType = (types, items) => Object.keys(types).flatMap((type) => items.filter((item) => item.type === type))
 
 // 로고는 단색 실루엣이라 글씨 색으로 칠한다(mask). 색은 대비를 라이트 4.5:1, 다크 7:1 로 맞춘 값
@@ -50,8 +53,9 @@ const ORGS = {
 // 링크 앞 로고를 그릴지. 잠시 꺼 둔다(ORGS 의 logo 는 그대로)
 const SHOW_LOGOS = false
 
-// 아이콘은 14px 폭에 줄 높이 그대로 두고 줄 가운데보다 0.5px 올린다. 글과는 8px
-const ICON = "relative -top-[0.5px] mr-2 inline-block h-lh w-3.5 align-top"
+// 아이콘은 줄 높이 그대로 두고 줄 가운데보다 0.5px 올린다
+const ICON_BOX = "relative -top-[0.5px] h-lh w-icon"
+const ICON = `${ICON_BOX} mr-gap inline-block align-top`
 
 function OrgLink({ href, children, ...props }) {
   const { logo: orgLogo, color } = ORGS[href.split("/")[2]] ?? {}
@@ -64,7 +68,7 @@ function OrgLink({ href, children, ...props }) {
         {logo && (
           <span aria-hidden="true" className={`${ICON} mr-0! inline-flex items-center justify-center`}>
             <span
-              className="size-3.5 bg-current"
+              className="size-icon bg-current"
               style={{ mask: `url(/assets/img/logos/${logo}) center / contain no-repeat` }}
             />
           </span>
@@ -86,42 +90,35 @@ function ThemeToggle() {
   }
   return (
     <button type="button" onClick={toggle} aria-label="Toggle dark mode" className="cursor-pointer text-ink">
-      <Icons.Moon className="relative -top-[0.5px] h-lh w-3.5 dark:hidden" />
-      <Icons.Sun className="relative -top-[0.5px] hidden h-lh w-3.5 dark:block" />
+      <Icons.Moon className={`${ICON_BOX} dark:hidden`} />
+      <Icons.Sun className={`${ICON_BOX} hidden dark:block`} />
     </button>
   )
 }
 
-function Section({ title, children }) {
-  return (
-    <section className="mt-section first:mt-0">
-      {title && <h2 className="mb-line">{title}</h2>}
-      {children}
-    </section>
-  )
-}
-
-// 넘친 줄은 아이콘 오른쪽(14 + 8px)에 맞춰 들인다
 function Entry({ types, type, children }) {
   const Icon = types[type]
   return (
-    <div className="pl-5.5 -indent-5.5 not-last:mb-line">
+    <div className="pl-hang -indent-hang">
       <Icon className={ICON} />
       {children}
     </div>
   )
 }
 
-function Legend({ types }) {
+function Legend({ types, children }) {
   return (
-    <p className="mt-line space-x-4 text-sm text-ink-light capitalize">
-      {Object.entries(types).map(([name, Icon]) => (
-        <span key={name}>
-          <Icon className={ICON} />
-          {name}
-        </span>
-      ))}
-    </p>
+    <div className="text-sm text-ink-light">
+      <p className="space-x-4 capitalize">
+        {Object.entries(types).map(([name, Icon]) => (
+          <span key={name}>
+            <Icon className={ICON} />
+            {name}
+          </span>
+        ))}
+      </p>
+      {children}
+    </div>
   )
 }
 
@@ -148,58 +145,50 @@ function Publication({ paper }) {
 function Home() {
   return (
     <>
-      <div className="markdown">
-        <Summary components={{ a: OrgLink }} />
-      </div>
-      <Section title="Publications">
-        {publications.map((paper) => (
-          <Publication key={paper.name} paper={paper} />
-        ))}
-        <Legend types={PUBLICATION_TYPES} />
-        <div className="text-sm text-ink-light">
-          {footnotes.map(({ mark, text }) => (
-            <p key={mark} className="pl-5.5 -indent-5.5">
-              <span className="mr-2 inline-block w-3.5 indent-0 text-center">{mark}</span>
-              {text}
-            </p>
-          ))}
-        </div>
-      </Section>
+      <Summary components={{ a: OrgLink }} />
 
-      <Section title="Awards">
-        {byType(
-          AWARD_TYPES,
-          awards.filter((award) => award.selected !== false),
-        ).map((award) => (
-          <Entry key={award.title} types={AWARD_TYPES} type={award.type}>
-            {award.title}
-            <span className="text-ink-light">
-              {" "}
-              · {award.awarder} · {award.date.slice(0, 4)}
-            </span>
-          </Entry>
+      <h2>Publications</h2>
+      {publications.map((paper) => (
+        <Publication key={paper.name} paper={paper} />
+      ))}
+      <Legend types={PUBLICATION_TYPES}>
+        {footnotes.map(({ mark, text }) => (
+          <p key={mark} className="pl-hang -indent-hang">
+            <span className="mr-gap inline-block w-icon indent-0 text-center">{mark}</span>
+            {text}
+          </p>
         ))}
-        <Legend types={AWARD_TYPES} />
-      </Section>
+      </Legend>
 
-      <Section title="Work">
-        {work.map((job) => (
-          <Entry key={job.name} types={WORK_TYPES} type={job.type}>
-            {job.position} @{" "}
-            <OrgLink href={job.url} {...EXTERNAL}>
-              {job.name}
-            </OrgLink>
-            <span className="text-ink-light"> · {period(job.startDate, job.endDate)}</span>
-          </Entry>
-        ))}
-        <Legend types={WORK_TYPES} />
-      </Section>
+      <h2>Awards</h2>
+      {byType(AWARD_TYPES, SHOWN_AWARDS).map((award) => (
+        <Entry key={award.title} types={AWARD_TYPES} type={award.type}>
+          {award.title}
+          <span className="text-ink-light">
+            {" "}
+            · {award.awarder} · {award.date.slice(0, 4)}
+          </span>
+        </Entry>
+      ))}
+      <Legend types={AWARD_TYPES} />
+
+      <h2>Work</h2>
+      {work.map((job) => (
+        <Entry key={job.name} types={WORK_TYPES} type={job.type}>
+          {job.position} @{" "}
+          <OrgLink href={job.url} {...EXTERNAL}>
+            {job.name}
+          </OrgLink>
+          <span className="text-ink-light"> · {period(job.startDate, job.endDate)}</span>
+        </Entry>
+      ))}
+      <Legend types={WORK_TYPES} />
     </>
   )
 }
 
 const MENU = [
-  { label: "Home", link: "/" },
+  { label: "About Me", link: "/" },
   { label: "Blog", link: "/blog/" },
 ]
 
@@ -211,21 +200,26 @@ const tagLink = (tag) => (
 
 function BlogList({ tag }) {
   return (
-    <Section title={tag && `#${tag}`}>
+    <>
+      <h1>{tag ? `#${tag}` : "Blog"}</h1>
       {posts
         .filter((post) => !tag || post.tags.includes(tag))
         .map((post) => (
-          <p key={post.slug} className="not-last:mb-line">
+          <p key={post.slug}>
             <a href={`/blog/${post.slug}/`}>{post.title}</a>
-            <span className="text-ink-light"> · {post.date}</span>
+            <span className="text-ink-light">
+              {" "}
+              · {post.date} · <Icons.Stopwatch className={ICON} />
+              {post.minutes} min
+            </span>
           </p>
         ))}
       {tag && (
-        <p className="mt-line">
+        <p>
           <a href="/blog/">All posts</a>
         </p>
       )}
-    </Section>
+    </>
   )
 }
 
@@ -234,62 +228,55 @@ function Post({ post }) {
   const Title = ({ children }) => (
     <>
       <h1>{children}</h1>
-      <p className="mb-[calc(var(--grid)*2)] space-x-2 text-ink-light">
+      <p className="space-x-2 text-ink-light">
         <span>{post.date}</span>
         {post.tags.map(tagLink)}
       </p>
     </>
   )
   return (
-    <article className="markdown">
-      <a href="/blog/" className="block w-fit">
-        ← Blog
-      </a>
+    <article className="flow">
       <post.Content components={{ a: OrgLink, h1: Title }} />
     </article>
   )
 }
 
-// 주소(path)로 쪽을 고른다. 빌드 때 미리 그릴 때도 같은 path 를 넘긴다
-function pageOf(path, post) {
-  const [, top, slug, tag] = path.split("/")
-  if (top !== "blog") return <Home />
-  if (slug === "tags") return <BlogList tag={decodeURIComponent(tag)} />
+// 주소로 쪽을 고른다. 빌드 때 쪽마다 미리 그릴 때도 같은 path 를 넘긴다
+function pageOf(onBlog, slug, tag, post) {
+  if (!onBlog) return <Home />
+  if (slug === "tags" && tag) return <BlogList tag={decodeURIComponent(tag)} />
   return post ? <Post post={post} /> : <BlogList />
 }
 
-// 높이·간격은 모두 줄 격자(--grid)의 배수라 프로필과 본문의 줄이 맞는다
+// 높이·간격은 모두 줄 격자(--grid)의 배수라 프로필과 본문의 줄이 맞는다.
+// 쪽마다 h1 은 그 쪽의 제목 하나(About Me, Blog, #태그, 글 제목)이고 프로필의 이름은 어디서나 h2
 export default function App({ path }) {
-  const post = posts.find((post) => path.startsWith(`/blog/${post.slug}/`))
-  // 글 쪽에선 글 제목이 h1 이라 이름은 보통 글로
-  const Name = post ? "p" : "h1"
-  const current = path.startsWith("/blog") ? "/blog/" : "/"
+  const [, top, slug, tag] = path.split("/")
+  const onBlog = top === "blog"
+  const post = onBlog && posts.find((post) => post.slug === slug)
   return (
     <div className="mx-auto max-w-5xl px-6 pb-page sm:px-8">
       <nav className="sticky top-0 z-10 flex items-center justify-between bg-paper py-line">
         <div className="space-x-4">
-          {MENU.map(({ label, link }) =>
-            link === current ? (
-              <span key={label} aria-current="page">
-                {label}
-              </span>
-            ) : (
-              <a key={label} href={link}>
-                {label}
-              </a>
-            ),
-          )}
+          {MENU.map(({ label, link }) => (
+            <a key={label} href={link} aria-current={link === path ? "page" : undefined}>
+              {label}
+            </a>
+          ))}
         </div>
         <ThemeToggle />
       </nav>
       <main className="mt-line grid grid-cols-4 gap-x-4 gap-y-section sm:grid-cols-12 sm:gap-x-6">
-        <header className="col-span-full text-center lg:sticky lg:top-page lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:self-start lg:text-left">
+        {/* 블로그에선 화면이 좁아 프로필이 글 위로 쌓일 때 프로필을 숨긴다 */}
+        <header
+          className={`${onBlog ? "max-lg:hidden" : ""} col-span-full text-center lg:sticky lg:top-page lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:self-start lg:text-left`}
+        >
           <img
             src={basics.image}
             alt={`Photo of ${basics.name}`}
             className="mx-auto aspect-4/5 h-[calc(var(--grid)*12)] rounded object-cover lg:mx-0"
           />
-          <Name className="h2 my-line">{basics.name}</Name>
+          <h2 className="my-line">{basics.name}</h2>
           {AFFILIATIONS.map(({ position, name, url }) => (
             <p key={name} className="text-ink-light">
               {position} @{" "}
@@ -310,7 +297,7 @@ export default function App({ path }) {
           </ul>
         </header>
 
-        <div className="col-span-full lg:col-span-8 lg:row-start-1">{pageOf(path, post)}</div>
+        <div className="flow col-span-full lg:col-span-8 lg:row-start-1">{pageOf(onBlog, slug, tag, post)}</div>
       </main>
 
       <footer className="mt-page text-center">
