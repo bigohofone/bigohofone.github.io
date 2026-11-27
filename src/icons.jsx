@@ -1,6 +1,7 @@
-// 48×48 격자에 그리고 가운데 40×40(4~44)만 보여 상자를 꽉 채운다. 가장자리 선이 반쯤 잘리지 않게 overflow 는 보인다
-const Icon = ({ children, ...props }) => (
+// 48×48 격자에 그리고 가운데 40×40(4~44)만 보여 24px 상자를 꽉 채운다. 가장자리 선이 반쯤 잘리지 않게 overflow 는 보인다
+const Icon = ({ children, className = "", ...props }) => (
   <svg
+    className={`size-6 ${className}`}
     viewBox="4 4 40 40"
     overflow="visible"
     fill="none"
@@ -63,64 +64,6 @@ export const X = (props) => (
   <Icon {...props}>
     <path d="M6 6l26.4 36H42L15.6 6z" />
     <path d="m6 42 15.228-15.228m5.536-5.536L42 6" strokeLinecap="butt" />
-  </Icon>
-)
-
-const book = (letter) => (props) => (
-  <Icon {...props}>
-    <rect x="6" y="4" width="36" height="40" rx="4" />
-    <path d="M14 4v40" />
-    <path d={letter} strokeLinecap="round" />
-  </Icon>
-)
-export const Conference = book("M32.5 17.88A7 8 0 1 0 32.5 30.12")
-export const Journal = book("M33 16v11a5 5 0 0 1-10 0")
-export const Preprint = book("M23 32V16h6a4.5 4.5 0 0 1 0 9h-6")
-export const TechReport = book("M22.5 16h11M28 16v16")
-
-export const Certificate = (props) => (
-  <Icon {...props}>
-    <path d="M26 42H8a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4h32a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4h-4" />
-    <path d="M12 15h24M12 24h8M12 33h8" strokeLinecap="round" />
-    <circle cx="31" cy="28.5" r="6" />
-    <path d="M27 32.98V44l4-3 4 3v-11.02A6 6 0 0 1 27 32.98z" fill="currentColor" />
-  </Icon>
-)
-
-export const Medal = (props) => (
-  <Icon {...props}>
-    <path d="M11.54 18.62L9.2 16.28C4.8 11.88 3.8 4 12 4H36C44.2 4 43.2 11.88 38.8 16.28L36.46 18.62" />
-    <path d="M20 12.92 17.6 10.52Q16 8.92 16.6 7.2M28 12.92l2.4-2.4Q32 8.92 31.4 7.2" strokeLinecap="round" />
-    <path d="M24 12.68A7.16 7.16 0 0 1 31.66 14.74A7.16 7.16 0 0 1 37.26 20.34A7.16 7.16 0 0 1 39.32 28A7.16 7.16 0 0 1 37.26 35.66A7.16 7.16 0 0 1 31.66 41.26A7.16 7.16 0 0 1 24 43.32A7.16 7.16 0 0 1 16.34 41.26A7.16 7.16 0 0 1 10.74 35.66A7.16 7.16 0 0 1 8.68 28A7.16 7.16 0 0 1 10.74 20.34A7.16 7.16 0 0 1 16.34 14.74A7.16 7.16 0 0 1 24 12.68z" />
-    <circle cx="24" cy="28" r="9" />
-  </Icon>
-)
-
-export const Trophy = (props) => (
-  <Icon {...props}>
-    <path d="M12 6h24v10a12 12 0 0 1-24 0z" />
-    <path d="M12 10H4v2a10 10 0 0 0 9.2 10M36 10h8v2a10 10 0 0 1-9.2 10M24 28v8" />
-    <rect x="14" y="36" width="20" height="8" rx="2" />
-  </Icon>
-)
-
-export const Stopwatch = (props) => (
-  <Icon {...props}>
-    <circle cx="24" cy="27" r="17" />
-    <path d="M19 4h10M24 4v6M24 27V18" strokeLinecap="round" />
-  </Icon>
-)
-
-export const Briefcase = (props) => (
-  <Icon {...props}>
-    <rect x="4" y="14" width="40" height="28" rx="4" />
-    <path d="M17 14V9a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v5M4 26h40" />
-  </Icon>
-)
-
-export const Flask = (props) => (
-  <Icon {...props}>
-    <path d="M18 4h12M20 4v14L6 40a3 3 0 0 0 2.6 4h30.8a3 3 0 0 0 2.6-4L28 18V4M11 32h26" />
   </Icon>
 )
 

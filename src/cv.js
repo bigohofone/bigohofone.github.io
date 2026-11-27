@@ -1,4 +1,4 @@
-import { footnotes, period } from "./format"
+import { period } from "./format"
 import resume from "./resume"
 import { readFileSync } from "node:fs"
 
@@ -51,13 +51,13 @@ const placeEntry = (place, title, item) =>
     body(item.summary),
   ])
 
-// Research Interest 는 사이트 소개 글의 "My research" 문단과 그 아래 번호 목록(1. 2.)을 그대로 쓴다
-const researchParagraphs = () =>
-  summary
-    .split(/\n\s*\n/)
-    .flatMap((text) => text.split(/\n(?=\d+\. )/))
-    .filter((text) => text.startsWith("My research") || /^\d+\. /.test(text))
-    .map((text) => `${tex(text)}\\par\\vspace{4pt}`)
+// Research Interest 는 사이트 소개 글의 "My research" 문단부터 "Previously" 문단 앞까지를 그대로 쓴다
+const researchParagraphs = () => {
+  const paragraphs = summary.split(/\n\s*\n/)
+  const start = paragraphs.findIndex((text) => text.startsWith("My research"))
+  const end = paragraphs.findIndex((text) => text.startsWith("Previously"))
+  return paragraphs.slice(start, end).map((text) => `${tex(text)}\\par\\vspace{4pt}`)
+}
 
 export function cvTex() {
   const links = [
@@ -88,7 +88,7 @@ export function cvTex() {
       "Publications",
       publications,
       (item) => entry([row(bold(item.name), italic(item.publisher)), row(authors(item.authors))]),
-      `(${footnotes.map(({ mark, text }) => `${mark} ${text}`).join(", ")})`,
+      "(* Denotes equal contribution, † Denotes corresponding author)",
     ),
 
     // 수상부터는 둘째 페이지에

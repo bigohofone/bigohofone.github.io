@@ -1,140 +1,90 @@
-/* 가변 글꼴. Inter 에 한글이 없어 한글만 Pretendard 로(쓰인 글자 묶음만 받는 dynamic subset) */
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/inter/wght-italic.css";
+/* Inter 에 한글이 없어 한글만 Pretendard 로(쓰인 글자 묶음만 받는 dynamic subset) */
+@import "@fontsource-variable/inter/opsz.css";
 @import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @import "katex/dist/katex.min.css";
 
-/* 아이콘 선 굵기 */
-:root {
-  --stroke: 1.5px;
-}
-
 @theme {
-  /* 아이콘 크기(어디서나 18px, Material 3 버튼 아이콘)와 글 사이(8px). 넘친 줄은 둘을 합친 만큼 들인다 */
-  --spacing-icon: 1.125rem;
-  --spacing-gap: 0.5rem;
-  --spacing-hang: calc(var(--spacing-icon) + var(--spacing-gap));
   --font-sans: "Inter Variable", "Pretendard Variable", sans-serif;
-  /* 바탕 대비 본문 7.6:1, 링크 4.5:1, 흐린 글씨는 카드 위에서도 4.5:1 (WCAG AA) */
-  --color-paper: #f6f8fa;
-  --color-ink: #49505b;
-  --color-ink-light: #646b76;
-  --color-link: #1f71d5;
-  /* 선과 옅은 바탕은 글자색을 섞어 만들어 다크 모드에서도 그대로 맞는다 */
-  --color-line: color-mix(in srgb, var(--color-ink-light) 40%, transparent);
-  --color-tint: color-mix(in srgb, var(--color-ink) 6%, transparent);
+  /* 값은 vite-plugin-colors.js 가 바탕 대비에 맞춰 계산해 index.html 에 넣는다 */
+  --color-paper: var(--background);
+  --color-ink: var(--ink);
+  --color-ink-light: var(--ink-light);
+  --color-line: var(--line);
+  --color-divider: var(--divider);
+  --color-focus: var(--focus);
+  --color-kaist: var(--kaist);
+  --color-upstage: var(--upstage);
+  --color-korea: var(--korea);
+  --color-nvidia: var(--nvidia);
 }
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 [data-theme="dark"] {
   color-scheme: dark;
-  --color-paper: #22272e;
-  --color-ink: #adbac7;
-  --color-ink-light: #9099a3;
-  --color-link: #84b5ed;
 }
 
 @layer base {
+  /* 화면 끝까지 닿는 구분선(100vw)이 스크롤바 폭만큼 가로 스크롤을 만들지 않게 */
   html {
-    /* 100vw 띠가 스크롤바 폭만큼 가로 스크롤을 만들지 않게 */
     overflow-x: clip;
   }
-  /* 키보드 초점: 2px 링크 색 테두리(대비 4.1:1 이상, WCAG 2.4.13) */
   :focus-visible {
-    outline: 2px solid var(--color-link);
-    outline-offset: 2px;
+    @apply outline-2 outline-offset-2 outline-focus;
   }
   /* 한글은 글자마다가 아니라 띄어쓰기에서만 줄을 바꾼다 */
   body {
     word-break: keep-all;
   }
+  /* 마크다운 밖의 링크도 마크다운 본문의 링크(typography 플러그인)와 같게: 둘레 글자색, 밑줄(색만으로 구분하지 않게, WCAG 1.4.1),
+     굵기 500. 기관 링크만 기관 색 */
   a {
-    color: var(--color-link);
+    @apply font-medium text-inherit underline;
+  }
+  /* 마우스·키보드가 오면 밑줄을 굵게(색만 바꾸지 않게). 움직임 효과는 없어 동작 줄이기 설정과 상관없다 */
+  a:is(:hover, :focus-visible) {
+    @apply decoration-2;
   }
 }
 
-/* 문장 속 링크는 링크 색의 옅은 실선 밑줄, 마우스·키보드가 오면 진하고 굵게. 색만으로 구분하지 않게(WCAG 1.4.1) 늘 긋는다.
-   typography 플러그인의 밑줄보다 앞서도록 레이어 밖에 두고, 단추(no-underline)는 뺀다. 색은 base 의 a 와 기관 색 클래스가 정한다 */
-a:not(.no-underline) {
-  text-decoration: underline 1px color-mix(in srgb, currentColor 40%, transparent);
-  text-underline-offset: 0.25em;
-  &:is(:hover, :focus-visible) {
-    text-decoration-color: currentColor;
-    text-decoration-thickness: 2px;
-  }
+/* 구분선은 화면 좌우 끝까지, 위아래 여백 72px(본문이 화면 가운데라 calc(50% - 50vw) 만큼 당기면 왼쪽 끝에 닿는다) */
+.prose hr {
+  @apply my-18 ml-[calc(50%-50vw)] w-screen max-w-none;
 }
 
-/* 섹션 사이 64px */
-.prose > * + h2 {
-  margin-top: 4rem;
-}
-
-/* 좁은 화면에선 프로필 아래와 첫 쪽 섹션 사이를 화면 끝까지 닿는 8px 띠(Material heavy divider)로 나눈다.
-   띠를 품은 상자가 화면 가운데에 있어 calc(50% - 50vw) 만큼 당기면 화면 왼쪽 끝에 닿는다. 위아래 32px */
-@media (width < 64rem) {
-  header::after,
-  .home > h2:not(:first-child)::before {
-    content: "";
-    display: block;
-    width: 100vw;
-    height: 0.5rem;
-    margin-left: calc(50% - 50vw);
-    background: var(--color-tint);
-  }
-  header::after {
-    margin-top: 2rem;
-  }
-  .home > h2:not(:first-child) {
-    margin-top: 2rem;
-  }
-  .home > h2:not(:first-child)::before {
-    margin-bottom: 2rem;
-  }
-}
-
-/* 아이콘을 줄이거나 키워도 선 굵기는 화면에서 --stroke 그대로 */
+/* 아이콘을 줄이거나 키워도 선 굵기는 화면에서 1.5px 그대로 */
 svg * {
   vector-effect: non-scaling-stroke;
-  stroke-width: var(--stroke);
+  stroke-width: 1.5px;
 }
 
-/* 마크다운 본문(typography 플러그인)을 사이트 색에 맞춘다(색 변수가 다크 모드를 따라간다). 링크는 위의 점선 밑줄,
-   굵기는 보통 400·굵게 600 둘만, 인라인 코드 앞뒤 ` 는 뺀다 */
+/* 본문과 블로그 글(typography 플러그인)의 색만 사이트 색에 맞춘다(색 변수가 다크 모드를 따라간다) */
 .prose {
   --tw-prose-body: var(--color-ink);
   --tw-prose-headings: var(--color-ink);
   --tw-prose-lead: var(--color-ink);
-  --tw-prose-links: var(--color-link);
+  --tw-prose-links: inherit;
   --tw-prose-bold: var(--color-ink);
   --tw-prose-counters: var(--color-ink-light);
   --tw-prose-bullets: var(--color-ink-light);
-  --tw-prose-hr: var(--color-line);
+  --tw-prose-hr: var(--color-divider);
   --tw-prose-quotes: var(--color-ink-light);
   --tw-prose-quote-borders: var(--color-line);
   --tw-prose-captions: var(--color-ink-light);
   --tw-prose-code: var(--color-ink);
   --tw-prose-pre-code: var(--color-ink);
-  --tw-prose-pre-bg: var(--color-tint);
+  --tw-prose-pre-bg: var(--color-divider);
   --tw-prose-th-borders: var(--color-line);
   --tw-prose-td-borders: var(--color-line);
-  & :is(a, blockquote) {
-    font-weight: inherit;
-  }
-  & :is(h1, h2, h3, h4, strong, th, dt) {
-    font-weight: 600;
-  }
-  & code::before,
-  & code::after {
-    content: none;
+  & :is(h1, h2, h3, h4) {
+    font-weight: 500;
   }
 }
 
-/* 코드 색(Shiki): 라이트는 글자에 박혀 있고 다크는 변수로 온다 */
-.shiki {
-  background-color: var(--color-tint) !important;
-  border-radius: 0.5rem;
+/* 코드 색(Shiki 고대비 테마, 글자 7:1): 라이트는 글자에 박혀 있고 다크는 변수로 온다 */
+[data-theme="dark"] .shiki {
+  background-color: var(--shiki-dark-bg) !important;
 }
 [data-theme="dark"] .shiki,
 [data-theme="dark"] .shiki span {

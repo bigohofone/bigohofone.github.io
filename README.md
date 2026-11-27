@@ -28,7 +28,7 @@ npm run deploy   # 빌드(사이트 + CV PDF) 후 gh-pages 로 배포
 
 표준에 없어서 덧붙인 키:
 
-- `type`: 모든 목록 항목의 종류. 사이트 아이콘과 범례, CV 순서에 쓴다
+- `type`: 모든 목록 항목의 종류. CV 에서 묶는 순서에 쓴다
   - `work`: industry·academia
   - `awards`: honor·award·competition
   - `publications`: conference·journal·preprint·tech report
@@ -36,7 +36,6 @@ npm run deploy   # 빌드(사이트 + CV PDF) 후 gh-pages 로 배포
   - `volunteer`: club
 - `publications[].authors`: 저자 (`*` 공동 1저자, `†` 교신저자)
 - `publications[].links`: `url`(Paper) 말고 더 붙일 링크, `{ "Code": "https://…" }`
-- `awards[].selected`: `false` 면 사이트에서 숨김(CV 에는 나옴)
 - `education[].location`, `education[].summary`: CV 에 쓰는 위치와 설명
 
 ## 블로그

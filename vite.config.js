@@ -11,6 +11,7 @@ import rehypeShiki from "@shikijs/rehype"
 import { shrinkImages } from "./vite-plugin-shrink-images.js"
 import { cv } from "./vite-plugin-cv.js"
 import { prerender } from "./vite-plugin-prerender.js"
+import { colors } from "./vite-plugin-colors.js"
 
 // 블로그 글의 머리말에 title(첫 "# 제목")과 minutes(읽는 시간)를 넣어 목록·쪽 제목에 쓴다.
 // 읽는 시간은 코드·수식을 빼고 영어는 분당 230 단어, 한글은 분당 500 글자로 센다
@@ -35,9 +36,9 @@ const markdown = mdx({
   format: "md",
   development: false,
   remarkPlugins: [remarkFrontmatter, remarkPost, remarkMdxFrontmatter, remarkGfm, remarkMath],
-  rehypePlugins: [rehypeKatex, [rehypeShiki, { themes: { light: "github-light", dark: "github-dark-dimmed" } }]],
+  rehypePlugins: [rehypeKatex, [rehypeShiki, { themes: { light: "github-light-high-contrast", dark: "github-dark-high-contrast" } }]],
 })
 
 export default defineConfig({
-  plugins: [{ enforce: "pre", ...markdown }, react(), tailwindcss(), shrinkImages(), cv(), prerender()],
+  plugins: [{ enforce: "pre", ...markdown }, react(), tailwindcss(), colors(), shrinkImages(), cv(), prerender()],
 })
