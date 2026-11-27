@@ -196,7 +196,7 @@ export default function App({ path }) {
             alt={`Photo of ${basics.name}`}
             className="mx-auto aspect-4/5 w-60 rounded-sm object-cover"
           />
-          <Name>{basics.name}</Name>
+          <Name className="mb-6">{basics.name}</Name>
           <p>
             {AFFILIATIONS.map(({ position, name, url }) => (
               <span key={name} className="block">
