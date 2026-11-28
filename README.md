@@ -40,7 +40,7 @@ npm run deploy   # 빌드(사이트 + CV PDF) 후 gh-pages 로 배포
 
 ## 블로그
 
-지금은 배포하지 않는다(`src/blog/index.js` 의 `PUBLISH = false`). 개발 서버의 `/blog/` 에서는 그대로 보인다.
+배포에서 빼려면 `src/blog/index.js` 의 `PUBLISH` 를 `false` 로 바꾼다(개발 서버에서는 그대로 보인다).
 
 `src/blog/` 에 글 하나당 `.md` 하나. 파일 이름이 주소다(`hello.md` → `/blog/hello/`). `_` 로 시작하는 파일은 개발 서버에서만 보인다(예시·초안).
 
