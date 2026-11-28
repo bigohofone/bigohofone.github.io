@@ -1,11 +1,11 @@
 import { Theme, Color, BackgroundColor } from "@adobe/leonardo-contrast-colors"
 
 // 색은 대략의 색(colorKeys)과 바탕 대비만 정하고, 실제 값은 Leonardo 가 라이트·다크 바탕마다 그 대비에 맞춰 계산한다.
-// 본문 7:1(WCAG AAA), 흐린 글씨·기관 링크 4.5:1(AA), 표 선·초점 테두리 3:1(글자 아닌 UI, AA), 구분선·코드 상자 바탕 1.25:1
+// 제목 10.5:1, 본문 7:1(WCAG AAA), 흐린 글씨·기관 링크 4.5:1(AA), 표 선·초점 테두리 3:1(글자 아닌 UI, AA), 구분선·코드 상자 바탕 1.25:1
 const gray = new BackgroundColor({
   name: "gray",
   colorKeys: ["#49505b"],
-  ratios: { ink: 7, "ink-light": 4.5, line: 3, divider: 1.25 },
+  ratios: { "ink-strong": 10.5, ink: 7, "ink-light": 4.5, line: 3, divider: 1.25 },
 })
 const COLORS = [
   gray,

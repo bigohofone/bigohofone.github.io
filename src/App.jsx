@@ -1,3 +1,4 @@
+import { Fragment, useEffect, useState } from "react"
 import { period } from "./format"
 import { posts } from "./blog"
 import * as Icons from "./icons"
@@ -38,7 +39,7 @@ function OrgLink({ href, ...props }) {
   return <a href={href} {...props} className={ORG_COLORS[href.split("/")[2]]} />
 }
 
-// 아이콘 단추는 Material 3 기준: 아이콘 24px, 누를 곳 48px(WCAG 2.5.5 AAA 44px 이상), 누를 곳 사이 8px. 아이콘 사이는 32px
+// 아이콘 단추는 아이콘 20px 를 48×48 상자 가운데에(누를 곳 48px, WCAG 2.5.5 AAA 44px 이상)
 const ICON_BUTTON = "grid size-12 place-items-center"
 
 // 빌드 때 HTML 로 미리 그려 두므로 상태 없이 CSS(dark:)로 아이콘을 고른다
@@ -61,46 +62,38 @@ function Section({ title, children }) {
     <>
       <hr />
       <h2>{title}</h2>
-      <div className="not-prose space-y-4">{children}</div>
+      <ul className="not-prose space-y-4">{children}</ul>
     </>
   )
 }
 
-// 목록 한 항목: 제목 아래에 작은 글씨로 설명, 날짜, 링크
-function Item({ title, sub, date, links = {} }) {
+// 섹션 목록(ul)의 한 항목: 제목 아래에 작은 글씨로 설명, 날짜
+function Item({ title, sub, date }) {
   return (
-    <div>
+    <li>
       <p>{title}</p>
-      <div className="text-sm">
-        <p className="text-ink-light">
-          {sub}
-          <br />
-          {date}
-        </p>
-        <p className="space-x-4">
-          {Object.entries(links).map(([label, url]) => (
-            <a key={label} href={url}>
-              {label}
-            </a>
-          ))}
-        </p>
-      </div>
-    </div>
+      <p className="text-sm text-ink-light">
+        {sub}
+        <br />
+        {date}
+      </p>
+    </li>
   )
 }
 
 function Home() {
   return (
     <>
+      <Profile />
+      <hr />
       <Summary components={{ a: OrgLink }} />
       <Section title="Publications">
         {publications.map((paper) => (
           <Item
             key={paper.name}
-            title={paper.name}
+            title={<a href={paper.url}>{paper.name}</a>}
             sub={paper.authors}
             date={paper.publisher}
-            links={{ Paper: paper.url, ...paper.links }}
           />
         ))}
       </Section>
@@ -123,20 +116,24 @@ function Home() {
   )
 }
 
+// 글 목록: 글마다 제목(h2)과 그 아래 읽는 시간 · 작성일. 크기와 간격은 typography 기본값.
+// 쪽 제목이 글 쪽의 제목과 같은 높이에 오도록 위에 태그 줄(28px)과 그 아래 여백(20px)만큼 빈 칸을 둔다
 function BlogList({ tag }) {
   return (
     <>
+      <div className="h-12" />
       <h1>{tag ? `#${tag}` : "Blog"}</h1>
       {posts
         .filter((post) => !tag || post.tags.includes(tag))
         .map((post) => (
-          <p key={post.slug}>
-            <a href={`/blog/${post.slug}/`}>{post.title}</a>
-            <span className="text-ink-light">
-              {" "}
-              · {post.date} · {post.minutes} min
-            </span>
-          </p>
+          <Fragment key={post.slug}>
+            <h2>
+              <a href={`/blog/${post.slug}/`}>{post.title}</a>
+            </h2>
+            <p className="text-ink-light">
+              {post.minutes} min read · <time dateTime={post.date}>{post.date}</time>
+            </p>
+          </Fragment>
         ))}
       {tag && (
         <p>
@@ -147,30 +144,40 @@ function BlogList({ tag }) {
   )
 }
 
-// "# 제목" 바로 아래에 작성일과 태그를 붙인다
+// 글 머리(Medium 처럼): 위에 태그(#태그), "# 제목", 아래 한 줄에 사진·이름(누르면 첫 쪽으로) · 읽는 시간 · 작성일.
+// 글쓴이 줄 위아래 여백은 h1 크기만큼
 function Post({ post }) {
   const Title = ({ children }) => (
     <>
-      <h1>{children}</h1>
-      <p className="space-x-2 text-ink-light">
-        <span>{post.date}</span>
-        {post.tags.map((tag) => (
-          <a key={tag} href={`/blog/tags/${encodeURIComponent(tag)}/`}>
-            #{tag}
-          </a>
+      <p className="not-prose mb-5">
+        {post.tags.map((tag, i) => (
+          <Fragment key={tag}>
+            {i > 0 && " · "}
+            <a href={`/blog/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
+          </Fragment>
         ))}
       </p>
+      <h1>{children}</h1>
+      <div className="not-prose my-(--h1) flex items-center gap-1">
+        <a href="/" className="flex items-center gap-3">
+          <img src={basics.image} alt="" className="size-10 rounded-full object-cover object-top" />
+          {basics.name}
+        </a>
+        <span className="text-ink-light">
+          · {post.minutes} min read · {post.date}
+        </span>
+      </div>
     </>
   )
-  return (
-    <>
-      <p>
-        <a href="/blog/">← Blog</a>
-      </p>
-      <post.Content components={{ a: OrgLink, h1: Title }} />
-    </>
-  )
+  return <post.Content components={{ a: OrgLink, h1: Title }} />
 }
+
+const NAV = [
+  { label: "Home", link: "/" },
+  { label: "Blog", link: "/blog/" },
+]
+// 지금 보는 쪽의 메뉴: Blog 는 블로그 아래 모든 쪽에서
+const onPage = (path, link) => (link === "/" ? path === "/" : path.startsWith(link))
 
 // 주소로 쪽을 고른다. 빌드 때 쪽마다 미리 그릴 때도 같은 path 를 넘긴다
 function pageOf(path) {
@@ -181,42 +188,72 @@ function pageOf(path) {
   return post ? <Post post={post} /> : <BlogList />
 }
 
-// h1 은 쪽마다 하나: 첫 쪽은 이름, 블로그는 쪽 제목(이름은 h2)
+// 첫 쪽의 프로필: 가운데에 사진, 이름(쪽의 h1), 소속, 바로가기
+function Profile() {
+  return (
+    <header className="text-center">
+      <img
+        src={basics.image}
+        alt={`Photo of ${basics.name}`}
+        className="mx-auto aspect-4/5 w-60 rounded-sm object-cover"
+      />
+      <h1 className="mb-6">{basics.name}</h1>
+      <p>
+        {AFFILIATIONS.map(({ position, name, url }) => (
+          <span key={name} className="block">
+            {position} @ <OrgLink href={url}>{name}</OrgLink>
+          </span>
+        ))}
+      </p>
+      <ul className="not-prose mt-8 flex flex-wrap justify-center">
+        {CONTACTS.map(({ label, link, Icon }) => (
+          <li key={label}>
+            <a href={link} aria-label={label} title={label} className={ICON_BUTTON}>
+              <Icon />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </header>
+  )
+}
+
+// 위에 붙은 메뉴. 맨 위에선 밑줄이 없다가 스크롤하면 본문과 갈라 주는 선(7:1)이 생긴다
+function Nav({ path }) {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 0)
+    update()
+    window.addEventListener("scroll", update, { passive: true })
+    return () => window.removeEventListener("scroll", update)
+  }, [])
+  return (
+    <nav
+      className={`sticky top-0 z-10 -mx-6 flex items-center justify-between bg-paper px-6 py-2 ${scrolled ? "shadow-[0_var(--stroke)_var(--color-ink)]" : ""}`}
+    >
+      <ul className="flex gap-4">
+        {NAV.map(({ label, link }) => (
+          <li key={label}>
+            <a
+              href={link}
+              aria-current={onPage(path, link) ? "page" : undefined}
+              className="no-underline hover:underline aria-[current]:underline"
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <ThemeToggle />
+    </nav>
+  )
+}
+
 export default function App({ path }) {
-  const Name = path.startsWith("/blog") ? "h2" : "h1"
   return (
     <div className="px-6 pb-24">
-      <div className="flex justify-end py-2">
-        <ThemeToggle />
-      </div>
-      <main className="prose mx-auto">
-        <header className="text-center">
-          <img
-            src={basics.image}
-            alt={`Photo of ${basics.name}`}
-            className="mx-auto aspect-4/5 w-60 rounded-sm object-cover"
-          />
-          <Name className="mb-6">{basics.name}</Name>
-          <p>
-            {AFFILIATIONS.map(({ position, name, url }) => (
-              <span key={name} className="block">
-                {position} @ <OrgLink href={url}>{name}</OrgLink>
-              </span>
-            ))}
-          </p>
-          <ul className="not-prose mt-8 flex justify-center gap-2">
-            {CONTACTS.map(({ label, link, Icon }) => (
-              <li key={label}>
-                <a href={link} aria-label={label} title={label} className={ICON_BUTTON}>
-                  <Icon />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </header>
-        <hr />
-        {pageOf(path)}
-      </main>
+      <Nav path={path} />
+      <main className="prose mx-auto">{pageOf(path)}</main>
       <footer className="mt-24 text-center">
         © {new Date().getFullYear()} {basics.name}
       </footer>

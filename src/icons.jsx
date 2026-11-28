@@ -1,7 +1,7 @@
-// 48×48 격자에 그리고 가운데 40×40(4~44)만 보여 24px 상자를 꽉 채운다. 가장자리 선이 반쯤 잘리지 않게 overflow 는 보인다
+// 48×48 격자에 그리고 가운데 40×40(4~44)만 보여 20px 상자를 꽉 채운다. 가장자리 선이 반쯤 잘리지 않게 overflow 는 보인다
 const Icon = ({ children, className = "", ...props }) => (
   <svg
-    className={`size-6 ${className}`}
+    className={`size-5 ${className}`}
     viewBox="4 4 40 40"
     overflow="visible"
     fill="none"

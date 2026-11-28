@@ -9,6 +9,7 @@
   --font-sans: "Inter Variable", "Pretendard Variable", sans-serif;
   /* 값은 vite-plugin-colors.js 가 바탕 대비에 맞춰 계산해 index.html 에 넣는다 */
   --color-paper: var(--background);
+  --color-ink-strong: var(--ink-strong);
   --color-ink: var(--ink);
   --color-ink-light: var(--ink-light);
   --color-line: var(--line);
@@ -26,6 +27,13 @@
 }
 
 @layer base {
+  /* 모든 선(구분선·표 선·밑줄·아이콘)의 굵기. 브라우저가 border 굵기는 정수 px 로 내려 버려서(1.5px → 1px)
+     선은 border 대신 바탕색·그림자로 긋는다 */
+  :root {
+    --stroke: 1.5px;
+    /* h1 크기: 화면 폭 320px 에서 1024px 사이에 24px 에서 36px 까지 끊김 없이(clamp(최소, 기울기에 맞춘 식, 최대)) */
+    --h1: clamp(1.5rem, 1.159rem + 1.705vw, 2.25rem);
+  }
   /* 화면 끝까지 닿는 구분선(100vw)이 스크롤바 폭만큼 가로 스크롤을 만들지 않게 */
   html {
     overflow-x: clip;
@@ -42,27 +50,35 @@
   a {
     @apply font-medium text-inherit underline;
   }
-  /* 마우스·키보드가 오면 밑줄을 굵게(색만 바꾸지 않게). 움직임 효과는 없어 동작 줄이기 설정과 상관없다 */
-  a:is(:hover, :focus-visible) {
-    @apply decoration-2;
+}
+
+/* 밑줄은 --stroke 굵기에 글자색을 옅게(40%) 섞은 색. 마우스·키보드가 오면 글자색 그대로 진해진다(0.15초에 걸쳐).
+   typography 플러그인의 링크 밑줄보다 앞서도록 레이어 밖에 둔다 */
+a {
+  text-decoration-thickness: var(--stroke);
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  transition: text-decoration-color 0.15s;
+  &:is(:hover, :focus-visible) {
+    text-decoration-color: currentColor;
   }
 }
 
 /* 구분선은 화면 좌우 끝까지, 위아래 여백 72px(본문이 화면 가운데라 calc(50% - 50vw) 만큼 당기면 왼쪽 끝에 닿는다) */
 .prose hr {
-  @apply my-18 ml-[calc(50%-50vw)] w-screen max-w-none;
+  @apply my-18 ml-[calc(50%-50vw)] w-screen max-w-none border-0 bg-divider;
+  height: var(--stroke);
 }
 
-/* 아이콘을 줄이거나 키워도 선 굵기는 화면에서 1.5px 그대로 */
+/* 아이콘을 줄이거나 키워도 선 굵기는 화면에서 --stroke 그대로 */
 svg * {
   vector-effect: non-scaling-stroke;
-  stroke-width: 1.5px;
+  stroke-width: var(--stroke);
 }
 
 /* 본문과 블로그 글(typography 플러그인)의 색만 사이트 색에 맞춘다(색 변수가 다크 모드를 따라간다) */
 .prose {
   --tw-prose-body: var(--color-ink);
-  --tw-prose-headings: var(--color-ink);
+  --tw-prose-headings: var(--color-ink-strong);
   --tw-prose-lead: var(--color-ink);
   --tw-prose-links: inherit;
   --tw-prose-bold: var(--color-ink);
@@ -79,6 +95,24 @@ svg * {
   --tw-prose-td-borders: var(--color-line);
   & :is(h1, h2, h3, h4) {
     font-weight: 500;
+  }
+  /* 제목 크기는 화면 폭 320px 에서 1024px 사이에 한 단계 아래 크기에서 typography 기본 크기까지 끊김 없이 커진다
+     (h1 24→36px, h2 20→24px, h3 16→20px). clamp(최소, 기울기에 맞춘 식, 최대) */
+  & h1 {
+    font-size: var(--h1);
+  }
+  & h2 {
+    font-size: clamp(1.25rem, 1.136rem + 0.568vw, 1.5rem);
+  }
+  & h3 {
+    font-size: clamp(1rem, 0.886rem + 0.568vw, 1.25rem);
+  }
+  /* 표의 가로선도 --stroke 굵기로(칸 아래쪽 그림자) */
+  & :is(thead, tbody tr) {
+    border-bottom-width: 0;
+  }
+  & :is(th, td) {
+    box-shadow: inset 0 calc(-1 * var(--stroke)) var(--color-line);
   }
 }
 
